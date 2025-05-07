@@ -26,14 +26,15 @@ public class Spawner : MonoBehaviour {
 
     private void Start() {
         Spawn();
+        
     }
 
-    private void Spawn() { 
+    private void Spawn() {
         // Создаем текстуру 4x4 пикселя (минимальный размер для FullRect)
         Texture2D texture = new(4, 4, TextureFormat.RGBA32, false) {
             wrapMode = TextureWrapMode.Repeat,
             filterMode = FilterMode.Point
-        }; 
+        };
         // Заполняем текстуру белым цветом
         Color32[] pixels = new Color32[4 * 4];
         for (int i = 0; i < pixels.Length; i++) {
@@ -52,46 +53,47 @@ public class Spawner : MonoBehaviour {
             SpriteMeshType.FullRect
         );
 
-        for (int teamIndex = 1; teamIndex <= 2; teamIndex ++)
-        for (int gameObjectIndex = 0; gameObjectIndex < 11; gameObjectIndex++) {
+        for (int teamIndex = 1; teamIndex <= 2; teamIndex++) {
+            for (int gameObjectIndex = 0; gameObjectIndex < 11; gameObjectIndex++) {
 
-            // Создаем новый игровой объект
-            GameObject gameObject = new($"UnitTeam{teamIndex}_{gameObjectIndex}");
+                // Создаем новый игровой объект
+                GameObject gameObject = new($"UnitTeam{teamIndex}_{gameObjectIndex}");
 
-            // Добавляем компонент SpriteRenderer
-            SpriteRenderer renderer = gameObject.AddComponent<SpriteRenderer>();
-            renderer.sprite = sprite;
-            renderer.drawMode = SpriteDrawMode.Tiled;
-            renderer.tileMode = SpriteTileMode.Continuous;
-            renderer.size = spriteSize;
+                // Добавляем компонент SpriteRenderer
+                SpriteRenderer renderer = gameObject.AddComponent<SpriteRenderer>();
+                renderer.sprite = sprite;
+                renderer.drawMode = SpriteDrawMode.Tiled;
+                renderer.tileMode = SpriteTileMode.Continuous;
+                renderer.size = spriteSize;
 
-            // Устанавливаем цвет
-            renderer.color = useRandomColor ? GetRandomColor() : fixedColor;
+                // Устанавливаем цвет
+                renderer.color = useRandomColor ? GetRandomColor() : fixedColor;
 
-            //renderer.color = spriteColor;
-            //renderer.sortingOrder = sortingOrder;
+                //renderer.color = spriteColor;
+                //renderer.sortingOrder = sortingOrder;
 
-            // Назначаем материал, если указан
-            //if (spriteMaterial != null) {
-            //    renderer.material = spriteMaterial;
-            //}
+                // Назначаем материал, если указан
+                //if (spriteMaterial != null) {
+                //    renderer.material = spriteMaterial;
+                //}
 
-            float x = gameObjectIndex % 2 == 0 ? gameObjectIndex / 2 * 1.5f : -(gameObjectIndex + 1) / 2 * 1.5f;
-            float y = teamIndex==1? - 2 : 2;
-            Vector2 spawnPosition = new(x, y);
-            // Устанавливаем родителя и позицию
-            if (units != null) {
-                gameObject.transform.SetParent(units.transform);
-                gameObject.transform.localPosition = spawnPosition;
-                gameObject.transform.localScale = _localScale;
+                float x = gameObjectIndex % 2 == 0 ? gameObjectIndex / 2 * 1.5f : -(gameObjectIndex + 1) / 2 * 1.5f;
+                float y = teamIndex == 1 ? -2 : 2;
+                Vector2 spawnPosition = new(x, y);
+                // Устанавливаем родителя и позицию
+                if (units != null) {
+                    gameObject.transform.SetParent(units.transform);
+                    gameObject.transform.localPosition = spawnPosition;
+                    gameObject.transform.localScale = _localScale;
+                }
+                else {
+                    gameObject.transform.position = spawnPosition;
+                }
+
+                // Настройки рендеринга
+                renderer.sortingOrder = sortingOrder;
+                renderer.maskInteraction = SpriteMaskInteraction.None;
             }
-            else {
-                gameObject.transform.position = spawnPosition;
-            }
-
-            // Настройки рендеринга
-            renderer.sortingOrder = sortingOrder;
-            renderer.maskInteraction = SpriteMaskInteraction.None;
         }
     }
 
