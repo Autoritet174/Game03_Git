@@ -5,15 +5,15 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class LoaderAllHeroes : MonoBehaviour {
     private List<HeroStats> allHeroes = new();
     public GameObject content;
 
-    public GameObject imagePrefab;
+    public GameObject prefabIconHero;
 
     private async void Start() {
         await GetAllHeroes();
@@ -45,20 +45,25 @@ public class LoaderAllHeroes : MonoBehaviour {
                ?? throw new JsonException("Не удалось десериализовать список героев.");
     }
 
-    void AddAllImageOnContent() {
-        for (int i = 0; i < allHeroes.Count; i++) {
-            GameObject go_image = Instantiate(imagePrefab);
+    private void AddAllImageOnContent() {
+        foreach (HeroStats heroStats in allHeroes) {
+            GameObject _prefabIconHero = Instantiate(prefabIconHero);
 
-            Transform transform = go_image.transform;
+            Transform transform = _prefabIconHero.transform;
             transform.SetParent(content.transform, false); // Устанавливаем родительский объект (Content)
 
-            if (transform.TryGetComponent<Image>(out Image image)) {
-                // Генерируем случайный цвет
+            // Изображение
+            Transform childImage = _prefabIconHero.transform.Find("ImageHero");
+            if (childImage != null && childImage.TryGetComponent(out Image image)) {
                 Color randomColor = new(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
-                // Применяем случайный цвет к Image
                 image.color = randomColor;
             }
 
+            // Текст
+            Transform childText = _prefabIconHero.transform.Find("TextHero");
+            if (childText != null && childText.TryGetComponent(out TextMeshProUGUI textMeshPro)) {
+                textMeshPro.text = heroStats.NameEn;
+            }
         }
     }
 }
