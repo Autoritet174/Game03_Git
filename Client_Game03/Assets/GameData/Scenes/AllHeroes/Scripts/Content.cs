@@ -23,7 +23,7 @@ public class Content : MonoBehaviour {
         // Проходим по всем дочерним элементам Content
         foreach (Transform child in content) {
             // Проверяем, является ли дочерний элемент Image
-            if (child.TryGetComponent<Image>(out Image image)) {
+            if (child.TryGetComponent(out Image image)) {
                 // Генерируем случайный цвет
                 Color randomColor = new(Random.value, Random.value, Random.value);
                 // Применяем случайный цвет к Image

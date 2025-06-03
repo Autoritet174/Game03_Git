@@ -1,5 +1,6 @@
 using General;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -42,7 +43,7 @@ public class Initializator1 : MonoBehaviour
         if (textures != null && textures.Length > index) {
             image.sprite = textures[index];
         }
-
+        Debug.Log(1);
         square.transform.localScale = Vector3.one*100;
         square.transform.localPosition = new Vector3(110, -110 * index + 50, 0);
     }

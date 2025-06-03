@@ -78,8 +78,7 @@ public class ScrollView : MonoBehaviour {
         }
 
         float cellWidth = totalAvailableWidth / columnCount;
-        gridLayout.cellSize = new Vector2(cellWidth, cellWidth);
-        
+        gridLayout.cellSize = new Vector2(cellWidth, cellWidth * 16f / 9f);
 
         scrollRect = GetComponentInParent<ScrollRect>();
 
