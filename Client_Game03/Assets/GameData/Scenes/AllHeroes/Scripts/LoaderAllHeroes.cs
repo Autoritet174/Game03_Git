@@ -62,7 +62,7 @@ public class LoaderAllHeroes : MonoBehaviour {
             // Текст
             Transform childText = _prefabIconHero.transform.Find("TextHero");
             if (childText != null && childText.TryGetComponent(out TextMeshProUGUI textMeshPro)) {
-                textMeshPro.text = heroStats.NameEn;
+                textMeshPro.text = heroStats.Name;
             }
         }
     }
