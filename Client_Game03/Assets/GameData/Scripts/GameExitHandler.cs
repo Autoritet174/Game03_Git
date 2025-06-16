@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections;
-using System;
+using UnityEngine;
 
 public static class GameExitHandler {
     public static void ExitGame() {
@@ -10,7 +10,7 @@ public static class GameExitHandler {
         // Получаем MonoBehaviour для запуска корутины
         MonoBehaviour coroutineHost = GetCoroutineHost();
         if (coroutineHost != null) {
-            coroutineHost.StartCoroutine(ExitRoutine());
+            _ = coroutineHost.StartCoroutine(ExitRoutine());
         }
         else {
             Debug.LogError("No MonoBehaviour found to start coroutine!");
@@ -56,9 +56,9 @@ public static class GameExitHandler {
     }
 
     private static bool IsWindowsMacOrLinux() {
-        return Application.platform == RuntimePlatform.WindowsPlayer ||
-               Application.platform == RuntimePlatform.OSXPlayer ||
-               Application.platform == RuntimePlatform.LinuxPlayer;
+        return Application.platform is RuntimePlatform.WindowsPlayer or
+               RuntimePlatform.OSXPlayer or
+               RuntimePlatform.LinuxPlayer;
     }
 
     private static bool IsAndroid() {
@@ -83,7 +83,7 @@ public static class GameExitHandler {
 
     private static void QuitAndroid() {
         try {
-            AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaClass unityPlayer = new("com.unity3d.player.UnityPlayer");
             AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
             activity.Call("finishAndRemoveTask");
         }
@@ -102,8 +102,8 @@ public static class GameExitHandler {
         // В WebGL нельзя закрыть вкладку, только выйти из полноэкранного режима
         Screen.fullScreen = false;
         // Можно показать сообщение для пользователя
-        GameObject message = new GameObject("ExitMessage");
-        var text = message.AddComponent<TMPro.TextMeshProUGUI>();
+        GameObject message = new("ExitMessage");
+        TMPro.TextMeshProUGUI text = message.AddComponent<TMPro.TextMeshProUGUI>();
         text.text = "Please close the browser tab to exit";
         text.alignment = TMPro.TextAlignmentOptions.Center;
         text.fontSize = 24;
