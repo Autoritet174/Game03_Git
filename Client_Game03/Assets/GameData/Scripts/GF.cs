@@ -1,5 +1,9 @@
 ﻿namespace Assets.GameData.Scripts {
-    public static class GlobalFunctions {
+
+    /// <summary>
+    /// GlobalFunctions
+    /// </summary>
+    public static class GF {
 
         public static void Log(object message) {
 #if UNITY_EDITOR

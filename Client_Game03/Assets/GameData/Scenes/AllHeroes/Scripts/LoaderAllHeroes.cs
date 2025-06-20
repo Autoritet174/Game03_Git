@@ -25,7 +25,7 @@ public class LoaderAllHeroes : MonoBehaviour {
         StringContent content = new("", Encoding.UTF8, "application/json");
 
         client.Timeout = TimeSpan.FromSeconds(60);
-        HttpResponseMessage response = await client.PostAsync(GlobalConsts.Uri_login, content);
+        HttpResponseMessage response = await client.PostAsync(GC.Uri_login, content);
 
         if (!response.IsSuccessStatusCode) {
             //_ = MessageBox.Show("Ошибка авторизации");

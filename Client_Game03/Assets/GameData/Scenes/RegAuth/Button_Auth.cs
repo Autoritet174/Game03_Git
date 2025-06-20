@@ -14,13 +14,14 @@ public class Button_Auth : MonoBehaviour {
     UnityEngine.UI.Button myButton;
 
     [SerializeField]
-    TextMeshProUGUI login;
+    TMP_InputField login;
 
     [SerializeField]
-    TextMeshProUGUI password;
+    TMP_InputField password;
 
     public async void Login() {
-        string loginString = General.Functions.GetEmailOrNull(login.text.Trim());
+        int l1 = login.text.Length;
+        string loginString = General.GF.GetEmailOrNull(login.text.Trim());
         if (loginString == null) {
             // тут нужно сообщение об ошибке
             return;
@@ -30,17 +31,18 @@ public class Button_Auth : MonoBehaviour {
             myButton.interactable = false;
             await Task.Run(async () => {
                 using HttpClient client = new();
-                LoginRequest payload = new() { 
+                RequestLogin payload = new() { 
                     Username = loginString, 
                     Password = password.text.Trim()
                 };
+                int l = payload.Username.Length;
                 string json = JsonConvert.SerializeObject(payload);
                 StringContent content = new(json, Encoding.UTF8, "application/json");
 
-                client.Timeout = TimeSpan.FromSeconds(5);
+                client.Timeout = TimeSpan.FromSeconds(60);
                 //_ = log.AppendLine($"{i} попытка авторизоваться");
                 try {
-                    HttpResponseMessage response = await client.PostAsync(GlobalConsts.Uri_login, content);
+                    HttpResponseMessage response = await client.PostAsync(GC.Uri_login, content);
                        
                     if (!response.IsSuccessStatusCode) {
                         //_ = MessageBox.Show("Ошибка авторизации");
@@ -48,22 +50,22 @@ public class Button_Auth : MonoBehaviour {
                     }
 
                     string result = await response.Content.ReadAsStringAsync();
-                    dynamic obj = JsonConvert.DeserializeObject(result) ?? "";
-                    //GlobalVariables.Jwt_token = obj.token;
-                   // var obj = JObject.Parse(result);
-                    //GlobalVariables.Jwt_token = obj["token"]?.ToString() ?? "";
+                    JObject obj = JObject.Parse(result);
+                    //dynamic obj = JsonConvert.DeserializeObject(result) ?? "";
+                    GV.Jwt_token = obj["token"]?.ToString() ?? "";
+                    //GV.Jwt_token = obj["token"]?.ToString() ?? "";
 
                     //_ = log.AppendLine("авторизован");
+                    GF.Log("авторизован");
                 }
-                catch {
-
+                catch (Exception ex){
+                    Debug.LogError("[HTTP] "+ex.Message);
                 }
                 
             });
         }
-        catch (System.Exception) {
-
-            throw;
+        catch (Exception ex) {
+            Debug.LogError("[Login] " + ex.Message);
         }
         finally {
             myButton.interactable = true;
