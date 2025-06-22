@@ -59,13 +59,13 @@ public class Button_Auth : MonoBehaviour {
                     GF.Log("авторизован");
                 }
                 catch (Exception ex){
-                    Debug.LogError("[HTTP] "+ex.Message);
+                    GF.Log(ex.Message);
                 }
                 
             });
         }
         catch (Exception ex) {
-            Debug.LogError("[Login] " + ex.Message);
+            GF.Log(ex.Message);
         }
         finally {
             myButton.interactable = true;
