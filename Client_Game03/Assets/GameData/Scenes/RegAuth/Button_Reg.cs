@@ -21,7 +21,14 @@ public class Button_Reg : MonoBehaviour
             client.Timeout = TimeSpan.FromSeconds(60);
             //_ = log.AppendLine($"{i} попытка авторизоватьс€");
             try {
+                string s = client.ToString();
+                GF.Log("Bearer: " + GV.Jwt_token);
                 HttpResponseMessage response = await client.PostAsync(GC.Uri_test, content);
+                // ѕолучаем заголовки ответа в виде строки
+                string headersString = GetHeadersAsString(response);
+
+                // ѕолучаем тело ответа в виде строки
+                string bodyString = await response.Content.ReadAsStringAsync();
 
                 if (response.IsSuccessStatusCode) {
                     GF.Log("SUCCES");
@@ -31,9 +38,30 @@ public class Button_Reg : MonoBehaviour
                 }
             }
             catch (Exception ex) {
-                Debug.LogError("[HTTP] " + ex.Message);
+                GF.Log("[HTTP] " + ex.Message);
             }
 
         });
+    }
+    // ћетод дл€ преобразовани€ заголовков в строку
+    private static string GetHeadersAsString(HttpResponseMessage response) {
+        var headers = response.Headers;
+        var contentHeaders = response.Content?.Headers;
+
+        var headersString = "HTTP/" + response.Version + " " + (int)response.StatusCode + " " + response.ReasonPhrase + "\n";
+
+        // ƒобавл€ем основные заголовки ответа
+        foreach (var header in headers) {
+            headersString += $"{header.Key}: {string.Join(", ", header.Value)}\n";
+        }
+
+        // ƒобавл€ем заголовки содержимого (если есть)
+        if (contentHeaders != null) {
+            foreach (var header in contentHeaders) {
+                headersString += $"{header.Key}: {string.Join(", ", header.Value)}\n";
+            }
+        }
+
+        return headersString;
     }
 }

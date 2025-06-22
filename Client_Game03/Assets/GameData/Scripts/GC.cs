@@ -7,7 +7,7 @@ public static class GC {
     /// <summary>
     /// URL API старт
     /// </summary>
-    private const string URL_HEADER = "http://localhost:5141/api/";
+    private const string URL_HEADER = "https://localhost:7227/api/";
 
     /// <summary>
     /// URL авторизации
