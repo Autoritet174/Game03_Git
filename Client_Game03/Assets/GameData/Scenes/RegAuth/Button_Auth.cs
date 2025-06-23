@@ -1,50 +1,58 @@
+using Assets.GameData.Scripts;
 using General.DataBaseModels;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Net.Http;
 using System.Text;
-using System;
 using System.Threading.Tasks;
-using UnityEngine;
-using Newtonsoft.Json;
 using TMPro;
-using Assets.GameData.Scripts;
-using Newtonsoft.Json.Linq;
+using UnityEngine;
 
-public class Button_Auth : MonoBehaviour {
+public class Button_Auth : MonoBehaviour
+{
     [SerializeField]
-    UnityEngine.UI.Button myButton;
-
-    [SerializeField]
-    TMP_InputField login;
+    private UnityEngine.UI.Button myButton;
 
     [SerializeField]
-    TMP_InputField password;
+    private TMP_InputField login;
 
-    public async void Login() {
+    [SerializeField]
+    private TMP_InputField password;
+
+    public async void Login()
+    {
         int l1 = login.text.Length;
         string loginString = General.GF.GetEmailOrNull(login.text.Trim());
-        if (loginString == null) {
+        if (loginString == null)
+        {
             // тут нужно сообщение об ошибке
             return;
         }
 
-        try {
+        try
+        {
             myButton.interactable = false;
-            await Task.Run(async () => {
+            await Task.Run(async () =>
+            {
                 using HttpClient client = new();
-                RequestLogin payload = new() { 
-                    Username = loginString, 
+                General.Requests.Login payload = new()
+                {
+                    Email = loginString,
                     Password = password.text.Trim()
                 };
-                int l = payload.Username.Length;
+                int l = payload.Email.Length;
                 string json = JsonConvert.SerializeObject(payload);
                 StringContent content = new(json, Encoding.UTF8, "application/json");
 
                 client.Timeout = TimeSpan.FromSeconds(60);
                 //_ = log.AppendLine($"{i} попытка авторизоваться");
-                try {
-                    HttpResponseMessage response = await client.PostAsync(GC.Uri_login, content);
-                       
-                    if (!response.IsSuccessStatusCode) {
+                try
+                {
+                    HttpResponseMessage response = await client.PostAsync(General.URLs.Uri_login, content);
+
+                    if (!response.IsSuccessStatusCode)
+                    {
                         //_ = MessageBox.Show("Ошибка авторизации");
                         return;
                     }
@@ -58,16 +66,19 @@ public class Button_Auth : MonoBehaviour {
                     //_ = log.AppendLine("авторизован");
                     GF.Log("авторизован");
                 }
-                catch (Exception ex){
+                catch (Exception ex)
+                {
                     GF.Log(ex.Message);
                 }
-                
+
             });
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             GF.Log(ex.Message);
         }
-        finally {
+        finally
+        {
             myButton.interactable = true;
         }
     }
