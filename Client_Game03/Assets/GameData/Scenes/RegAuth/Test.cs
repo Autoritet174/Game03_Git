@@ -15,7 +15,7 @@ namespace Assets.GameData.Scenes.RegAuth
 
         private void Start()
         {
-            login.text = "SuperAdmin@mail.ru";
+            login.text = "SUPERADMIN@MAIL.RU";
             //login.text = "~!\"¹;%:?*()_+!@#$%^&*()_+{}[];':\"<>,./?\\/|";
             password.text = "testPassword";
         }
