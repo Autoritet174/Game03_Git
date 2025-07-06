@@ -1,17 +1,16 @@
-﻿using Mono.Cecil;
+﻿namespace Assets.GameData.Scripts
+{
 
-namespace Assets.GameData.Scripts {
+    public static class Logger
+    {
 
-    /// <summary>
-    /// GlobalFunctions
-    /// </summary>
-    public static class GF {
-
-        public static void Log(object message, int type = 0) {
+        public static void Log(object message, int type = 0)
+        {
 #if UNITY_EDITOR
             string s = $"---GAME_03: {message}";
 
-            switch (type) {
+            switch (type)
+            {
                 case 1:
                     UnityEngine.Debug.LogWarning(s);
                     break;
@@ -29,7 +28,8 @@ namespace Assets.GameData.Scripts {
         /// LogWarning
         /// </summary>
         /// <param name="message"></param>
-        public static void LogW(object message) {
+        public static void LogW(object message)
+        {
 #if UNITY_EDITOR
             UnityEngine.Debug.Log(message);
 #endif
@@ -39,7 +39,8 @@ namespace Assets.GameData.Scripts {
         /// LogError
         /// </summary>
         /// <param name="message"></param>
-        public static void LogE(object message) {
+        public static void LogE(object message)
+        {
 #if UNITY_EDITOR
             UnityEngine.Debug.Log(message);
 #endif

@@ -1,5 +1,4 @@
 using Assets.GameData.Scripts;
-using General.DataBaseModels;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -19,6 +18,9 @@ public class Button_Auth : MonoBehaviour
 
     [SerializeField]
     private TMP_InputField password;
+
+    [SerializeField]
+    GameObject windowMessage;
 
     public async void Login()
     {
@@ -64,18 +66,18 @@ public class Button_Auth : MonoBehaviour
                     //GV.Jwt_token = obj["token"]?.ToString() ?? "";
 
                     //_ = log.AppendLine("авторизован");
-                    GF.Log("авторизован");
+                    Assets.GameData.Scripts.Logger.Log("авторизован");
                 }
                 catch (Exception ex)
                 {
-                    GF.Log(ex.Message);
+                    Assets.GameData.Scripts.Logger.Log(ex.Message);
                 }
 
             });
         }
         catch (Exception ex)
         {
-            GF.Log(ex.Message);
+            Assets.GameData.Scripts.Logger.Log(ex.Message);
         }
         finally
         {

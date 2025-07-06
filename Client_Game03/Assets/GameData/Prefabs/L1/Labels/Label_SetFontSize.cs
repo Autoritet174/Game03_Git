@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class Label : MonoBehaviour {
+public class Label_SetFontSize : MonoBehaviour {
 
     [SerializeField]
     TextMeshProUGUI textMeshPro_Label;

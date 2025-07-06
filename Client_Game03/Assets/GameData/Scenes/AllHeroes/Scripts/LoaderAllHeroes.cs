@@ -1,4 +1,3 @@
-using General.DataBaseModels;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -10,7 +9,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class LoaderAllHeroes : MonoBehaviour {
-    private List<HeroStats> allHeroes = new();
+    //private List<HeroStats> allHeroes = new();
     public GameObject content;
 
     public GameObject prefabIconHero;
@@ -41,29 +40,29 @@ public class LoaderAllHeroes : MonoBehaviour {
             throw new JsonException("Поле 'heroes' отсутствует или имеет неверный тип.");
         }
 
-        allHeroes = JsonSerializer.Deserialize<List<HeroStats>>(heroesElement.GetRawText())
-               ?? throw new JsonException("Не удалось десериализовать список героев.");
+        //allHeroes = JsonSerializer.Deserialize<List<HeroStats>>(heroesElement.GetRawText())
+        //       ?? throw new JsonException("Не удалось десериализовать список героев.");
     }
 
     private void AddAllImageOnContent() {
-        foreach (HeroStats heroStats in allHeroes) {
-            GameObject _prefabIconHero = Instantiate(prefabIconHero);
+        //foreach (HeroStats heroStats in allHeroes) {
+        //    GameObject _prefabIconHero = Instantiate(prefabIconHero);
 
-            Transform transform = _prefabIconHero.transform;
-            transform.SetParent(content.transform, false); // Устанавливаем родительский объект (Content)
+        //    Transform transform = _prefabIconHero.transform;
+        //    transform.SetParent(content.transform, false); // Устанавливаем родительский объект (Content)
 
-            // Изображение
-            Transform childImage = _prefabIconHero.transform.Find("ImageHero");
-            if (childImage != null && childImage.TryGetComponent(out Image image)) {
-                Color randomColor = new(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
-                image.color = randomColor;
-            }
+        //    // Изображение
+        //    Transform childImage = _prefabIconHero.transform.Find("ImageHero");
+        //    if (childImage != null && childImage.TryGetComponent(out Image image)) {
+        //        Color randomColor = new(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
+        //        image.color = randomColor;
+        //    }
 
-            // Текст
-            Transform childText = _prefabIconHero.transform.Find("TextHero");
-            if (childText != null && childText.TryGetComponent(out TextMeshProUGUI textMeshPro)) {
-                textMeshPro.text = heroStats.Name;
-            }
-        }
+        //    // Текст
+        //    Transform childText = _prefabIconHero.transform.Find("TextHero");
+        //    if (childText != null && childText.TryGetComponent(out TextMeshProUGUI textMeshPro)) {
+        //        textMeshPro.text = heroStats.Name;
+        //    }
+        //}
     }
 }

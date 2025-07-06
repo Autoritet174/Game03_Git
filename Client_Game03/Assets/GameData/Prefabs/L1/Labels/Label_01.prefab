@@ -149,5 +149,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35b302f8f904e4743ab2ea3e20185248, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textMeshPro_InputField: {fileID: 0}
-  textMeshPro_Label: {fileID: 0}
+  textMeshPro_Label: {fileID: 4538837714860262312}
