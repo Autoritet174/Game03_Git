@@ -24,7 +24,7 @@ public class Button_Reg : MonoBehaviour
             try
             {
                 string s = client.ToString();
-                Assets.GameData.Scripts.Logger.Log("Bearer: " + GV.Jwt_token);
+                Assets.GameData.Scripts.Logger2.Log("Bearer: " + GV.Jwt_token);
                 HttpResponseMessage response = await client.PostAsync(General.URLs.Uri_test, content);
                 // ѕолучаем заголовки ответа в виде строки
                 string headersString = GetHeadersAsString(response);
@@ -34,16 +34,16 @@ public class Button_Reg : MonoBehaviour
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Assets.GameData.Scripts.Logger.Log("SUCCES");
+                    Assets.GameData.Scripts.Logger2.Log("SUCCES");
                 }
                 else
                 {
-                    Assets.GameData.Scripts.Logger.Log("NOT SUCCES");
+                    Assets.GameData.Scripts.Logger2.Log("NOT SUCCES");
                 }
             }
             catch (Exception ex)
             {
-                Assets.GameData.Scripts.Logger.Log("[HTTP] " + ex.Message);
+                Assets.GameData.Scripts.Logger2.Log("[HTTP] " + ex.Message);
             }
 
         });

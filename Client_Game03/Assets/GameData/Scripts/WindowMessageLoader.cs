@@ -3,34 +3,40 @@ using UnityEngine;
 
 namespace Assets.GameData.Scripts
 {
-    public class WindowMessageLoader
-    {  /// <summary>
-       /// Загружает Canvas-префаб из Resources, настраивает его RenderMode и камеру.
-       /// </summary>
-       /// <param name="path">Путь к префабу в папке Resources (без расширения).</param>
-       /// <returns>Созданный Canvas или null, если что-то пошло не так.</returns>
+    public static class WindowMessageLoader
+    {
+        private static readonly string prefabTag = "WindowMessage";
+
+        /// <summary>
+        /// Загружает Canvas-префаб из Resources, настраивает его RenderMode и камеру.
+        /// </summary>
+        /// <param name="path">Путь к префабу в папке Resources (без расширения).</param>
+        /// <returns>Созданный Canvas или null, если что-то пошло не так.</returns>
         public static void Show(string message, bool buttonActive)
         {
-            string prefabTag = "WindowMessage";
-            GameObject prefab = GameObject.FindWithTag(prefabTag);
+            if (string.IsNullOrEmpty(message))
+            {
+                throw new System.Exception("message is empty");
+            }
 
-            if (prefab == null)
+            GameObject prefab_Object = GameObject.FindWithTag(prefabTag);
+            Canvas canvas = null;
+            if (prefab_Object == null)
             {
                 string path = "Prefabs/L3/WindowMessage/WindowMessage-Canvas";
-                prefab = Resources.Load<GameObject>(path);
-                if (prefab == null)
+                prefab_Object = Resources.Load<GameObject>(path);
+                if (prefab_Object == null)
                 {
                     throw new System.Exception($"Not found prefab in Resources '{path}'");
                 }
 
-                prefab.tag = prefabTag;
-                prefab.name = prefabTag;
+                prefab_Object.tag = prefabTag;
+                prefab_Object.name = prefabTag;
 
-                // Создаём экземпляр
-                GameObject canvasObj = Object.Instantiate(prefab);
-                if (!canvasObj.TryGetComponent(out Canvas canvas))
+                prefab_Object = Object.Instantiate(prefab_Object);
+                if (!prefab_Object.TryGetComponent(out canvas))
                 {
-                    Object.Destroy(canvasObj);
+                    Object.Destroy(prefab_Object);
                     throw new System.Exception($"Not found Canvas in prefab");
                 }
 
@@ -39,29 +45,37 @@ namespace Assets.GameData.Scripts
                 {
                     throw new System.Exception($"Not found game object with tag 'MainCamera'");
                 }
-
-                canvas.renderMode = RenderMode.ScreenSpaceCamera;
                 canvas.worldCamera = mainCamera;
-
-
-                Transform windosImageTransform = canvas.transform.Find("Window-Image");
-                GameObject go_label = windosImageTransform.Find("MainText-Label").gameObject;
-
-                if (!go_label.TryGetComponent(out TextMeshProUGUI tmpText))
-                {
-                    throw new System.Exception($"Not found 'TextMeshProUGUI'");
-                }
-
-                tmpText.text = message;
-
-                GameObject go_button = windosImageTransform.Find("Ok-Button").gameObject;
-
-                go_button.SetActive(buttonActive);
-
             }
 
+            if (canvas == null && !prefab_Object.TryGetComponent(out canvas))
+            {
+                Object.Destroy(prefab_Object);
+                throw new System.Exception($"Not found Canvas in prefab");
+            }
 
+            Transform windosImageTransform = canvas.transform.Find("Window-Image");
+            GameObject go_label = windosImageTransform.Find("MainText-Label").gameObject;
 
+            if (!go_label.TryGetComponent(out TextMeshProUGUI tmpText))
+            {
+                throw new System.Exception($"Not found 'TextMeshProUGUI'");
+            }
+
+            tmpText.text = message;
+
+            GameObject go_button = windosImageTransform.Find("Ok-Button").gameObject;
+            go_button.SetActive(buttonActive);
         }
+
+        public static void Hide()
+        {
+            GameObject prefab = GameObject.FindWithTag(prefabTag);
+            if (prefab != null)
+            {
+                Object.Destroy(prefab);
+            }
+        }
+
     }
 }

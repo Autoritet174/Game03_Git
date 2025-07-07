@@ -35,7 +35,7 @@ namespace Assets.GameData.Scenes.RegAuth
             //// —брасываем позицию и масштаб
             //rectTransform.localPosition = Vector3.zero;
             //rectTransform.localScale = Vector3.one;
-            Scripts.WindowMessageLoader.Show("blablabla", true);
+            //Scripts.WindowMessageLoader.Show("blablabla", true);
         }
 #endif
     }

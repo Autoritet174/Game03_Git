@@ -9,5 +9,6 @@ public class WindowMessageButton : MonoBehaviour
     public void OnClick()
     {
         windowMessage_Canvas.SetActive(false);
+        //Destroy(windowMessage_Canvas);
     }
 }

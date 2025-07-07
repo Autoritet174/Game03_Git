@@ -2,89 +2,133 @@ using Assets.GameData.Scripts;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-
+using UnityEngine.UI;
+using Logger2 = Assets.GameData.Scripts.Logger2;
 public class Button_Auth : MonoBehaviour
 {
     [SerializeField]
-    private UnityEngine.UI.Button myButton;
+    private Button buttonLogin;
 
     [SerializeField]
-    private TMP_InputField login;
+    private TMP_InputField textEmail;
 
     [SerializeField]
-    private TMP_InputField password;
+    private TMP_InputField textPassword;
 
-    [SerializeField]
-    GameObject windowMessage;
+    private WindowMessageController windowMessageController;
+
 
     public async void Login()
     {
-        int l1 = login.text.Length;
-        string loginString = General.GF.GetEmailOrNull(login.text.Trim());
+        if (windowMessageController == null)
+        {
+            GameObject windowMessage = GameObjectFinder.FindByTag(WindowMessageInitializator.PrefabTag);
+            windowMessageController = windowMessage.GetComponent<WindowMessageController>();
+        }
+
+
+        int l1 = textEmail.text.Length;
+        string loginString = General.GF.GetEmailOrNull(textEmail.text.Trim());
         if (loginString == null)
         {
-            // тут нужно сообщение об ошибке
+            windowMessageController.SetText("Неверный email", true);
             return;
         }
 
+
+        buttonLogin.interactable = false;
+
+        bool haveInternet = false;
+
         try
         {
-            myButton.interactable = false;
             await Task.Run(async () =>
             {
+                //проверка интернета
+                haveInternet = await InternetChecker.CheckInternetConnectionAsync();
+
+                windowMessageController.SetText("Авторизация...", false);
+
                 using HttpClient client = new();
+                client.Timeout = TimeSpan.FromSeconds(10);
+
                 General.Requests.Login payload = new()
                 {
                     Email = loginString,
-                    Password = password.text.Trim()
+                    Password = textPassword.text.Trim()
                 };
-                int l = payload.Email.Length;
+
                 string json = JsonConvert.SerializeObject(payload);
                 StringContent content = new(json, Encoding.UTF8, "application/json");
 
-                client.Timeout = TimeSpan.FromSeconds(60);
-                //_ = log.AppendLine($"{i} попытка авторизоваться");
                 try
                 {
                     HttpResponseMessage response = await client.PostAsync(General.URLs.Uri_login, content);
 
                     if (!response.IsSuccessStatusCode)
                     {
-                        //_ = MessageBox.Show("Ошибка авторизации");
+                        string errorDetails = await response.Content.ReadAsStringAsync();
+                        string userMessage = response.StatusCode switch
+                        {
+                            HttpStatusCode.Unauthorized => "Неверный email или пароль",
+                            HttpStatusCode.BadRequest => "Ошибка в запросе",
+                            _ => $"Ошибка сервера: {(int)response.StatusCode}"
+                        };
+
+                        windowMessageController.SetText(userMessage, true);
+                        Logger2.Log($"Ошибка авторизации: {response.StatusCode}\n{errorDetails}");
                         return;
                     }
 
                     string result = await response.Content.ReadAsStringAsync();
                     JObject obj = JObject.Parse(result);
-                    //dynamic obj = JsonConvert.DeserializeObject(result) ?? "";
                     GV.Jwt_token = obj["token"]?.ToString() ?? "";
-                    //GV.Jwt_token = obj["token"]?.ToString() ?? "";
 
-                    //_ = log.AppendLine("авторизован");
-                    Assets.GameData.Scripts.Logger.Log("авторизован");
+                    if (GV.Jwt_token == string.Empty)
+                    {
+                        windowMessageController.SetText("Ошибка авторизации. Пустой токен.", true);
+                        return;
+                    }
+
+                    windowMessageController.SetText("Авторизация выполнена!", false);
+                }
+                catch (TaskCanceledException ex) when (ex.InnerException is TimeoutException)
+                {
+                    windowMessageController.SetText("Сервер не доступен", true);
+                }
+                catch (HttpRequestException ex) when (ex.InnerException is WebException)
+                {
+                    if (haveInternet)
+                    {
+                        windowMessageController.SetText("Нет подключения к интернету", true);
+                    }
+                    else {
+                        windowMessageController.SetText("Сервер не доступен", true);
+                    }
                 }
                 catch (Exception ex)
                 {
-                    Assets.GameData.Scripts.Logger.Log(ex.Message);
+                    windowMessageController.SetText($"APP_ERROR: {ex.Message}", true);
+                    Logger2.Log($"GAME_UNVALIDATED_ERROR: {ex.Message}\n{ex.StackTrace}");
                 }
-
             });
         }
         catch (Exception ex)
         {
-            Assets.GameData.Scripts.Logger.Log(ex.Message);
+            windowMessageController.SetText("APP_EXCEPTION: An exception has occurred, see log file", true);
+            Logger2.LogE(ex);
         }
         finally
         {
-            myButton.interactable = true;
+            buttonLogin.interactable = true;
         }
     }
-
 
     //public async void Test() {
     //    using var httpClient = new HttpClient();

@@ -1,7 +1,9 @@
-﻿namespace Assets.GameData.Scripts
+﻿using System;
+
+namespace Assets.GameData.Scripts
 {
 
-    public static class Logger
+    public static class Logger2
     {
 
         public static void Log(object message, int type = 0)
@@ -39,10 +41,10 @@
         /// LogError
         /// </summary>
         /// <param name="message"></param>
-        public static void LogE(object message)
+        public static void LogE(Exception ex)
         {
 #if UNITY_EDITOR
-            UnityEngine.Debug.Log(message);
+            //UnityEngine.Debug.Log("APP_EXCEPTION: An exception has occurred, see log file");
 #endif
         }
     }

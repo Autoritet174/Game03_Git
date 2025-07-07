@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 267407167786300312}
   - component: {fileID: 4238085504055336700}
   - component: {fileID: 8601292758980318257}
+  - component: {fileID: 9137821577847383817}
   m_Layer: 5
   m_Name: WindowMessage-Canvas
   m_TagString: WindowMessage
@@ -180,6 +181,22 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &9137821577847383817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5663705731110885038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 008e3479d16f4aa4586d54f7d0c12e3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  labelText: {fileID: 0}
+  button: {fileID: 0}
+  buttonGameObject: {fileID: 0}
+  canvas: {fileID: 0}
 --- !u!1 &7738556587450455833
 GameObject:
   m_ObjectHideFlags: 0
