@@ -1,7 +1,8 @@
+using Assets.GameData.Scripts;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static System.Net.Mime.MediaTypeNames;
 
 public class WindowMessageController : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class WindowMessageController : MonoBehaviour
         UpdateComponents();
     }
 
-    void UpdateComponents()
+    private void UpdateComponents()
     {
         if (canvasGameObject == null || labelText == null || buttonGameObject == null)
         {
@@ -26,19 +27,32 @@ public class WindowMessageController : MonoBehaviour
             buttonGameObject = button.gameObject;
         }
     }
+    public void SetTextLocale(string locale, bool buttonActive)
+    {
+        SetText(LocalizationManager.GetValue(locale), buttonActive);
+    }
     public void SetText(string text, bool buttonActive)
     {
-        UpdateComponents();
         UnityMainThreadDispatcher.RunOnMainThread(() =>
         {
+            UpdateComponents();
             canvasGameObject.SetActive(true);
+            if (!buttonActive)
+            {
+                text += "...";
+            }
             labelText.text = text;
             buttonGameObject.SetActive(buttonActive);
         });
-      
+    }
+    public void SetTextErrorAndWriteExceptionInLog(Exception ex)
+    {
+        SetText("APP_EXCEPTION: An exception has occurred, see log file", true);
+        Logger2.LogE(ex);
     }
 
-    public void Hide() {
+    public void Hide()
+    {
         UpdateComponents();
         UnityMainThreadDispatcher.RunOnMainThread(() =>
         {

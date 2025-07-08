@@ -1,24 +1,73 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Assets.GameData.Scripts
 {
-    public class LocalizationManager: MonoBehaviour
+    public static class LocalizationManager
     {
-        public static Dictionary<string, string> Localization = new();
-        private void Start()
+        private static Dictionary<string, string> localization = new();
+        public static string Language { get; private set; }
+
+        public static string GetValue(string key)
         {
-            Init();
+            return localization[key];
         }
-        private void Init()
+
+        public static string GetKeyError(JObject jObject)
         {
-            string languageCode = "ru";
-            TextAsset jsonFile = Resources.Load<TextAsset>($"Localization/{languageCode}/data.json");
-            Localization = JsonUtility.FromJson<Dictionary<string, string>>(jsonFile.text);
+            General.ServerErrors.Error err = General.ServerErrors.Error.Unknown;
+            try
+            {
+                long code = long.Parse(jObject["code"]?.ToString() ?? ((long)General.ServerErrors.Error.Unknown).ToString());
+                err = General.ServerErrors.GetResponse(code);
+            }
+            catch { }
+
+            string key = err switch
+            {
+                General.ServerErrors.Error.Auth_EmailOrPassword_Empty => "Errors.EmailOrPassword_Empty",
+                General.ServerErrors.Error.Auth_EmailAndPassword_NotFound => "Errors.EmailAndPassword_NotFound",
+                _ => "Errors.Server_UnknownError",
+            };
+
+            return key;
+        }
+
+
+        public static void Init(string language)
+        {
+            Language = language;
+            TextAsset jsonFile = Resources.Load<TextAsset>($"Localization/{language}/data");
+            localization.Clear();
+            localization = ParseDeepJson(jsonFile.text);
+        }
+
+
+        private static Dictionary<string, string> ParseDeepJson(string jsonText)
+        {
+            Dictionary<string, string> result = new();
+            JObject obj = JObject.Parse(jsonText);
+
+            void ProcessToken(JToken token, string currentPath)
+            {
+                switch (token.Type)
+                {
+                    case JTokenType.Object:
+                        foreach (JProperty prop in token.Children<JProperty>())
+                        {
+                            ProcessToken(prop.Value, $"{currentPath}{prop.Name}.");
+                        }
+                        break;
+                    case JTokenType.String:
+                        result[currentPath.TrimEnd('.')] = token.ToString();
+                        break;
+                }
+            }
+
+            ProcessToken(obj, "");
+            return result;
         }
     }
 }

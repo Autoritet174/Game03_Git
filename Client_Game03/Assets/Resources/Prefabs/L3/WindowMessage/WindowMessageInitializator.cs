@@ -1,12 +1,10 @@
-using System.IO;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class WindowMessageInitializator : MonoBehaviour
 {
     public static string PrefabTag { get; } = "WindowMessage";
 
-    void Start()
+    private void Start()
     {
         string path = "Prefabs/L3/WindowMessage/WindowMessage-Canvas";
         GameObject prefab_Object = Resources.Load<GameObject>(path);

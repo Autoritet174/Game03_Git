@@ -1,0 +1,24 @@
+{
+	"UI": {
+		"Button_Login": "Login",
+		"Button_Reg": "Register",
+		"Button_Close": "Exit Game",
+		"Label_Email": "Email",
+		"Label_Password": "Password"
+	},
+	
+	"Errors": {
+		"Server_UnknownError": "Server: Unknown error",
+		"Not_Email": "Entered text is not an email",
+		"Empty_Token": "Empty token",
+		"Server_Unavailable": "Server unavailable",
+		"No_internet_connection": "No internet connection",
+		"EmailOrPassword_Empty": "Email or password is empty",
+		"EmailAndPassword_NotFound": "Email and password not found"
+	},
+	
+	"Info": {
+		"Authorization": "Authorization",
+		"AuthorizationSuccess": "Authorization successful"
+	}
+}

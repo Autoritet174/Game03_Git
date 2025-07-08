@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Logger2 = Assets.GameData.Scripts.Logger2;
 public class Button_Auth : MonoBehaviour
 {
     [SerializeField]
@@ -33,11 +32,18 @@ public class Button_Auth : MonoBehaviour
         }
 
 
-        int l1 = textEmail.text.Length;
-        string loginString = General.GF.GetEmailOrNull(textEmail.text.Trim());
-        if (loginString == null)
+        string emailString = textEmail.text?.Trim() ?? string.Empty;
+        string passwordString = textPassword.text?.Trim() ?? string.Empty;
+
+        if (emailString == string.Empty || passwordString == string.Empty)
         {
-            windowMessageController.SetText("Неверный email", true);
+            windowMessageController.SetTextLocale("Errors.EmailOrPassword_Empty", true);
+            return;
+        }
+
+        if (!General.GF.IsEmail(emailString))
+        {
+            windowMessageController.SetTextLocale("Errors.Not_Email", true);
             return;
         }
 
@@ -53,15 +59,15 @@ public class Button_Auth : MonoBehaviour
                 //проверка интернета
                 haveInternet = await InternetChecker.CheckInternetConnectionAsync();
 
-                windowMessageController.SetText("Авторизация...", false);
+                windowMessageController.SetTextLocale("Info.Authorization", false);
 
                 using HttpClient client = new();
-                client.Timeout = TimeSpan.FromSeconds(10);
+                client.Timeout = TimeSpan.FromSeconds(15);
 
                 General.Requests.Login payload = new()
                 {
-                    Email = loginString,
-                    Password = textPassword.text.Trim()
+                    Email = emailString,
+                    Password = passwordString
                 };
 
                 string json = JsonConvert.SerializeObject(payload);
@@ -71,58 +77,49 @@ public class Button_Auth : MonoBehaviour
                 {
                     HttpResponseMessage response = await client.PostAsync(General.URLs.Uri_login, content);
 
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    JObject jObject = JObject.Parse(responseContent);
+
                     if (!response.IsSuccessStatusCode)
                     {
-                        string errorDetails = await response.Content.ReadAsStringAsync();
-                        string userMessage = response.StatusCode switch
-                        {
-                            HttpStatusCode.Unauthorized => "Неверный email или пароль",
-                            HttpStatusCode.BadRequest => "Ошибка в запросе",
-                            _ => $"Ошибка сервера: {(int)response.StatusCode}"
-                        };
-
-                        windowMessageController.SetText(userMessage, true);
-                        Logger2.Log($"Ошибка авторизации: {response.StatusCode}\n{errorDetails}");
+                        windowMessageController.SetTextLocale(LocalizationManager.GetKeyError(jObject), true);
                         return;
                     }
 
-                    string result = await response.Content.ReadAsStringAsync();
-                    JObject obj = JObject.Parse(result);
-                    GV.Jwt_token = obj["token"]?.ToString() ?? "";
+                    GV.Jwt_token = jObject["token"]?.ToString() ?? "";
 
                     if (GV.Jwt_token == string.Empty)
                     {
-                        windowMessageController.SetText("Ошибка авторизации. Пустой токен.", true);
+                        windowMessageController.SetTextLocale("Errors.Empty_Token", true);
                         return;
                     }
 
-                    windowMessageController.SetText("Авторизация выполнена!", false);
+                    windowMessageController.SetTextLocale("Info.AuthorizationSuccess", true);
                 }
                 catch (TaskCanceledException ex) when (ex.InnerException is TimeoutException)
                 {
-                    windowMessageController.SetText("Сервер не доступен", true);
+                    windowMessageController.SetTextLocale("Errors.Server_Unavailable", true);
                 }
                 catch (HttpRequestException ex) when (ex.InnerException is WebException)
                 {
                     if (haveInternet)
                     {
-                        windowMessageController.SetText("Нет подключения к интернету", true);
+                        windowMessageController.SetTextLocale("Errors.No_internet_connection", true);
                     }
-                    else {
-                        windowMessageController.SetText("Сервер не доступен", true);
+                    else
+                    {
+                        windowMessageController.SetTextLocale("Errors.Server_Unavailable", true);
                     }
                 }
                 catch (Exception ex)
                 {
-                    windowMessageController.SetText($"APP_ERROR: {ex.Message}", true);
-                    Logger2.Log($"GAME_UNVALIDATED_ERROR: {ex.Message}\n{ex.StackTrace}");
+                    windowMessageController.SetTextErrorAndWriteExceptionInLog(ex);
                 }
             });
         }
         catch (Exception ex)
         {
-            windowMessageController.SetText("APP_EXCEPTION: An exception has occurred, see log file", true);
-            Logger2.LogE(ex);
+            windowMessageController.SetTextErrorAndWriteExceptionInLog(ex);
         }
         finally
         {

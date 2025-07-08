@@ -1,10 +1,24 @@
 {
-	"ui":{
-		"buttonOk":"Ok",
-		"test": "qwe"
+	"UI" : {
+		"Button_Login": "Вход",
+		"Button_Reg": "Регистрация",
+		"Button_Close": "Выйти из игры",
+		"Label_Email": "Электронная почта",
+		"Label_Password": "Пароль"
 	},
-	"ui1":{
-		"buttonOk":"Ok",
-		"test": "qwe"
+	
+	"Errors": {
+		"Server_UnknownError" : "Сервер, неизвесная ошибка",
+		"Not_Email" : "Введённый текст не емаил",
+		"Empty_Token" : "Пустой токен",
+		"Server_Unavailable" : "Сервер не доступен",
+		"No_internet_connection" : "Нет подключения к интернету",
+		"EmailOrPassword_Empty" : "Емаил или пароль пустой",
+		"EmailAndPassword_NotFound" : "Емаил и пароль не найдены"
+	},
+	
+	"Info" : {
+		"Authorization" : "Авторизация",
+		"AuthorizationSuccess" : "Авторизация успешна"
 	}
 }
