@@ -50,6 +50,11 @@ public class Button_Auth : MonoBehaviour
 
         buttonLogin.interactable = false;
 
+        // Данные авторизации и характеристики аппаратного устройства
+        General.ModelHttp.Authorization payload = new(emailString, passwordString, SystemInfo.deviceModel, SystemInfo.deviceType.ToString(), SystemInfo.operatingSystem, SystemInfo.processorType, SystemInfo.processorCount, SystemInfo.systemMemorySize, SystemInfo.graphicsDeviceName, SystemInfo.graphicsMemorySize);
+
+
+
         bool haveInternet = false;
 
         try
@@ -64,11 +69,19 @@ public class Button_Auth : MonoBehaviour
                 using HttpClient client = new();
                 client.Timeout = TimeSpan.FromSeconds(15);
 
-                General.Requests.Login payload = new()
+                UnityMainThreadDispatcher.RunOnMainThread(() =>
                 {
-                    Email = emailString,
-                    Password = passwordString
-                };
+                    Debug.Log("Device Model: " + SystemInfo.deviceModel);
+                    Debug.Log("Device Type: " + SystemInfo.deviceType);
+                    Debug.Log("Operating System: " + SystemInfo.operatingSystem);
+                    Debug.Log("Processor Type: " + SystemInfo.processorType);
+                    Debug.Log("Processor Count: " + SystemInfo.processorCount);
+                    Debug.Log("System Memory Size (MB): " + SystemInfo.systemMemorySize);
+                    Debug.Log("Graphics Device Name: " + SystemInfo.graphicsDeviceName);
+                    Debug.Log("Graphics Memory Size (MB): " + SystemInfo.graphicsMemorySize);
+                });
+
+
 
                 string json = JsonConvert.SerializeObject(payload);
                 StringContent content = new(json, Encoding.UTF8, "application/json");
