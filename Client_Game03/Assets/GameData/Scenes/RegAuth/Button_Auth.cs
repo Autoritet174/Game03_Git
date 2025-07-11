@@ -108,6 +108,7 @@ public class Button_Auth : MonoBehaviour
                     }
 
                     windowMessageController.SetTextLocale("Info.AuthorizationSuccess", true);
+                    //Scene
                 }
                 catch (TaskCanceledException ex) when (ex.InnerException is TimeoutException)
                 {
