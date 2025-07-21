@@ -7,9 +7,9 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using TMPro;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class Button_Auth : MonoBehaviour
 {
     [SerializeField]
@@ -52,12 +52,13 @@ public class Button_Auth : MonoBehaviour
         buttonLogin.interactable = false;
 
         // Данные авторизации и характеристики аппаратного устройства
-        General.ModelHttp.Authorization payload = new(emailString, passwordString, SystemInfo.deviceModel, SystemInfo.deviceType.ToString(), SystemInfo.operatingSystem, SystemInfo.processorType, SystemInfo.processorCount, SystemInfo.systemMemorySize, SystemInfo.graphicsDeviceName, SystemInfo.graphicsMemorySize);
+        General.ModelHttp.Authorization payload = new(emailString, passwordString, SystemInfo.deviceModel, SystemInfo.deviceType.ToString(), SystemInfo.operatingSystem, SystemInfo.processorType, SystemInfo.processorCount, SystemInfo.systemMemorySize, SystemInfo.graphicsDeviceName, SystemInfo.graphicsMemorySize, SystemInfo.deviceUniqueIdentifier);
 
         try
         {
             bool success = await LoginAsync(payload);
-            if (success) {
+            if (success)
+            {
                 UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
             }
         }
@@ -93,6 +94,7 @@ public class Button_Auth : MonoBehaviour
             Debug.Log("System Memory Size (MB): " + SystemInfo.systemMemorySize);
             Debug.Log("Graphics Device Name: " + SystemInfo.graphicsDeviceName);
             Debug.Log("Graphics Memory Size (MB): " + SystemInfo.graphicsMemorySize);
+            Debug.Log("Device Unique Identifier: " + SystemInfo.deviceUniqueIdentifier);
         });
 
 
@@ -122,7 +124,7 @@ public class Button_Auth : MonoBehaviour
             }
 
             //windowMessageController.SetTextLocale("Info.AuthorizationSuccess", true);
-            
+
             return true;
         }
         catch (TaskCanceledException ex) when (ex.InnerException is TimeoutException)

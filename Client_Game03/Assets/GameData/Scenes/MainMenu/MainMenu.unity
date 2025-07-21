@@ -962,8 +962,28 @@ PrefabInstance:
       value: 38
       objectReference: {fileID: 0}
     - target: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.504717
+      objectReference: {fileID: 0}
+    - target: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.504717
+      objectReference: {fileID: 0}
+    - target: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_fontSizeBase
       value: 38
+      objectReference: {fileID: 0}
+    - target: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4286677503
       objectReference: {fileID: 0}
     - target: {fileID: 3807660933039814845, guid: 69df13b9663aae84abba0dc00d1c5f67, type: 3}
       propertyPath: m_text
