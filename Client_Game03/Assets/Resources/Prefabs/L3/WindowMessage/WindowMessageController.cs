@@ -27,9 +27,9 @@ public class WindowMessageController : MonoBehaviour
             buttonGameObject = button.gameObject;
         }
     }
-    public void SetTextLocale(string locale, bool buttonActive)
+    public void SetTextLocale(string keyLocalization, bool buttonActive)
     {
-        SetText(LocalizationManager.GetValue(locale), buttonActive);
+        SetText(LocalizationManager.GetValue(keyLocalization), buttonActive);
     }
     public void SetText(string text, bool buttonActive)
     {

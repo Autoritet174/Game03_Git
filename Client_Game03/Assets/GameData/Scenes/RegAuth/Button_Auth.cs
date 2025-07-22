@@ -84,18 +84,18 @@ public class Button_Auth : MonoBehaviour
         using HttpClient client = new();
         client.Timeout = TimeSpan.FromSeconds(15);
 
-        UnityMainThreadDispatcher.RunOnMainThread(() =>
-        {
-            Debug.Log("Device Model: " + SystemInfo.deviceModel);
-            Debug.Log("Device Type: " + SystemInfo.deviceType);
-            Debug.Log("Operating System: " + SystemInfo.operatingSystem);
-            Debug.Log("Processor Type: " + SystemInfo.processorType);
-            Debug.Log("Processor Count: " + SystemInfo.processorCount);
-            Debug.Log("System Memory Size (MB): " + SystemInfo.systemMemorySize);
-            Debug.Log("Graphics Device Name: " + SystemInfo.graphicsDeviceName);
-            Debug.Log("Graphics Memory Size (MB): " + SystemInfo.graphicsMemorySize);
-            Debug.Log("Device Unique Identifier: " + SystemInfo.deviceUniqueIdentifier);
-        });
+        //UnityMainThreadDispatcher.RunOnMainThread(() =>
+        //{
+        //    Debug.Log("Device Model: " + SystemInfo.deviceModel);
+        //    Debug.Log("Device Type: " + SystemInfo.deviceType);
+        //    Debug.Log("Operating System: " + SystemInfo.operatingSystem);
+        //    Debug.Log("Processor Type: " + SystemInfo.processorType);
+        //    Debug.Log("Processor Count: " + SystemInfo.processorCount);
+        //    Debug.Log("System Memory Size (MB): " + SystemInfo.systemMemorySize);
+        //    Debug.Log("Graphics Device Name: " + SystemInfo.graphicsDeviceName);
+        //    Debug.Log("Graphics Memory Size (MB): " + SystemInfo.graphicsMemorySize);
+        //    Debug.Log("Device Unique Identifier: " + SystemInfo.deviceUniqueIdentifier);
+        //});
 
 
 

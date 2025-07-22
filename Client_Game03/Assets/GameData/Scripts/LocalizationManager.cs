@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Assets.GameData.Scripts
 {
@@ -15,6 +14,11 @@ namespace Assets.GameData.Scripts
             return localization[key];
         }
 
+        /// <summary>
+        /// Получить строку которая является ключом к тексту ошибки
+        /// </summary>
+        /// <param name="jObject"></param>
+        /// <returns></returns>
         public static string GetKeyError(JObject jObject)
         {
             General.ServerErrors.Error err = General.ServerErrors.Error.Unknown;

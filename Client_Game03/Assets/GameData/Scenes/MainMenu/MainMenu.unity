@@ -141,6 +141,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Button_AllHero
       objectReference: {fileID: 0}
+    - target: {fileID: 3468390062173969539, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 853199121}
+    - target: {fileID: 3468390062173969539, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 3468390062173969539, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Button_AllHeroes, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3468390062173969539, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 4587221065149263836, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
