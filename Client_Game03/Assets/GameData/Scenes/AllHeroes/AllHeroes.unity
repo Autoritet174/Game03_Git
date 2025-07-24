@@ -433,7 +433,7 @@ GameObject:
   - component: {fileID: 527144260}
   - component: {fileID: 527144261}
   m_Layer: 0
-  m_Name: LoaderAllHeroes
+  m_Name: Initializer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
