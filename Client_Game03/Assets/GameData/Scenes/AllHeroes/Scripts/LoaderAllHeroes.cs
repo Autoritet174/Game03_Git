@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class LoaderAllHeroes : MonoBehaviour
 {
-    private static readonly List<HeroStats> allHeroes = new();
+    private static readonly List<object> allHeroes = new();
     public GameObject content;
 
     public GameObject prefabIconHero;
