@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Assets.GameData.ScriptsP;
+using System;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -40,15 +42,19 @@ namespace Assets.GameData.Scripts
         }
 
 
-        private static readonly HttpClient _httpClient;
-        static HttpHelper() {
+        private static HttpClient _httpClient;
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void InitializeOnLoad()
+        {
             _httpClient = new();
 
-            //Ini ini = Ini.Create("");
-            //ini.Read();
             string s = Application.dataPath;
-
-            _httpClient.Timeout = TimeSpan.FromSeconds(10);
+            Ini ini = Ini.Create(Path.Combine(Application.dataPath, @"GameData\Config\Main.ini"));
+            if (!double.TryParse(ini.Read("Http", "timeout"), out double timeout))
+            {
+                timeout = 10;
+            }
+            _httpClient.Timeout = TimeSpan.FromSeconds(timeout);
         }
 
         /// <summary>
