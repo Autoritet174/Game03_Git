@@ -1,3 +1,4 @@
+using Assets.GameData.Scripts;
 using TMPro;
 using UnityEngine;
 
@@ -6,18 +7,21 @@ namespace Assets.GameData.Scenes.RegAuth
     public class Test : MonoBehaviour
     {
 #if UNITY_EDITOR
-        [SerializeField]
-        private TMP_InputField login;
+        //[SerializeField]
+        //private TMP_InputField login;
 
-        [SerializeField]
-        private TMP_InputField password;
+        //[SerializeField]
+        //private TMP_InputField password;
 
 
         private void Start()
         {
-            login.text = "SUPERADMIN@MAIL.RU";
+            GameObjectFinder.FindTMPInputFieldByName("InputText_Email (uuid=9b99b098-1949-4b68-bba9-df3660bc95d4)").text = "SUPERADMIN@MAIL.RU";
+            GameObjectFinder.FindTMPInputFieldByName("InputText_Password (uuid=8003daed-ae09-43b9-b033-ae5bb5f5eb38)").text = "testPassword";
+
+            //login.text = "SUPERADMIN@MAIL.RU";
             //login.text = "~!\"¹;%:?*()_+!@#$%^&*()_+{}[];':\"<>,./?\\/|";
-            password.text = "testPassword";
+            //password.text = "testPassword";
 
             //GameObject prefab = Resources.Load<GameObject>("Prefabs/L3/WindowMessage/WindowMessage");
             //Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);

@@ -286,7 +286,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2883646782141063761, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_Name
-      value: Button_Reg
+      value: Button_Reg (uuid=2a005517-6f5d-4d33-9073-679b00e241c3)
       objectReference: {fileID: 0}
     - target: {fileID: 3468390062173969539, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -398,7 +398,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7472474048920386172, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_Name
-      value: Text_ButtonReg
+      value: Text_ButtonReg (uuid=a57ac64e-4067-48f2-a49e-3a7a82eac12a)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -637,6 +637,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: InputTextWithLabel_Email
       objectReference: {fileID: 0}
+    - target: {fileID: 3338646523037028161, guid: ad30f6bb67d557a448f4be15d5210435, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 5291216256889219086, guid: ad30f6bb67d557a448f4be15d5210435, type: 3}
       propertyPath: m_text
       value: "\u042D\u043B\u0435\u043A\u0442\u0440\u043E\u043D\u043D\u0430\u044F
@@ -649,11 +653,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6618445939301808511, guid: ad30f6bb67d557a448f4be15d5210435, type: 3}
       propertyPath: m_Name
-      value: InputText_Email
+      value: InputText_Email (uuid=9b99b098-1949-4b68-bba9-df3660bc95d4)
       objectReference: {fileID: 0}
     - target: {fileID: 8483003886948020554, guid: ad30f6bb67d557a448f4be15d5210435, type: 3}
       propertyPath: m_Name
-      value: Label_Email
+      value: Label_Email (uuid=d7e89f75-89bf-4fc0-b243-349e38906945)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8483003886948020554, guid: ad30f6bb67d557a448f4be15d5210435, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8839283908540848149, guid: ad30f6bb67d557a448f4be15d5210435, type: 3}
       propertyPath: m_Pivot.x
@@ -761,7 +769,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2883646782141063761, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_Name
-      value: Button_Close
+      value: Button_Close (uuid=339dfa57-6aea-4f00-a918-a1d81f832cd9)
       objectReference: {fileID: 0}
     - target: {fileID: 3468390062173969539, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -893,7 +901,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7472474048920386172, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_Name
-      value: Text_ButtonClose
+      value: Text_ButtonClose (uuid=33cf102b-5708-4091-884c-032b4188d79b)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -918,7 +926,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!114 &869916670
 MonoBehaviour:
@@ -967,17 +975,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: edb8c09ec4250db4a93573832c734463, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &965591041 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
-  m_PrefabInstance: {fileID: 511304325}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1025962079
@@ -1099,7 +1096,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1228003612
 Transform:
@@ -1128,11 +1125,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f6b2b56a68ae4c44b059dcadb50c12d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  labelEmail: {fileID: 1941807986}
-  labelPassword: {fileID: 1732076545}
-  buttonLogin: {fileID: 1964421197}
-  buttonReg: {fileID: 965591041}
-  buttonClose: {fileID: 1481095588}
 --- !u!1 &1408877120
 GameObject:
   m_ObjectHideFlags: 0
@@ -1148,7 +1140,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!114 &1408877121
 MonoBehaviour:
@@ -1162,8 +1154,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12720c73c778e7749ad199b2c79722f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  login: {fileID: 1822506638}
-  password: {fileID: 1563843152}
 --- !u!4 &1408877122
 Transform:
   m_ObjectHideFlags: 0
@@ -1179,28 +1169,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1481095588 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
-  m_PrefabInstance: {fileID: 785325535}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1563843152 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4955856536118758517, guid: ad30f6bb67d557a448f4be15d5210435, type: 3}
-  m_PrefabInstance: {fileID: 1878434642}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1634810302
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1211,7 +1179,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2883646782141063761, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_Name
-      value: Button_Login
+      value: Button_Login (uuid=0043f96f-ff37-40c4-9a7f-4b302be4eff7)
       objectReference: {fileID: 0}
     - target: {fileID: 2883646782141063761, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1351,7 +1319,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7472474048920386172, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_Name
-      value: Text_ButtonLogin
+      value: Text_ButtonLogin (uuid=e7b048da-baf4-424c-99ad-023d13161d43)
       objectReference: {fileID: 0}
     - target: {fileID: 7472474048920386172, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1370,17 +1338,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4587221065149263836, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
   m_PrefabInstance: {fileID: 1634810302}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1634810304 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3468390062173969539, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
-  m_PrefabInstance: {fileID: 1634810302}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 891312729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1634810307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1393,9 +1350,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bda32b675bb4dab4ba4e72839ed5dd27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonLogin: {fileID: 1634810304}
-  textEmail: {fileID: 1822506638}
-  textPassword: {fileID: 1563843152}
 --- !u!1 &1659423645
 GameObject:
   m_ObjectHideFlags: 0
@@ -1457,28 +1411,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 662cb1f462afae24495afbeded6fac82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1732076545 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5454568065863142396, guid: ad30f6bb67d557a448f4be15d5210435, type: 3}
-  m_PrefabInstance: {fileID: 1878434642}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1822506638 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4955856536118758517, guid: ad30f6bb67d557a448f4be15d5210435, type: 3}
-  m_PrefabInstance: {fileID: 633516348}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1878434642
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1499,6 +1431,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: InputTextWithLabel_Password
       objectReference: {fileID: 0}
+    - target: {fileID: 3338646523037028161, guid: ad30f6bb67d557a448f4be15d5210435, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 5291216256889219086, guid: ad30f6bb67d557a448f4be15d5210435, type: 3}
       propertyPath: m_text
       value: "\u041F\u0430\u0440\u043E\u043B\u044C"
@@ -1509,11 +1445,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6618445939301808511, guid: ad30f6bb67d557a448f4be15d5210435, type: 3}
       propertyPath: m_Name
-      value: InputText_Password
+      value: InputText_Password (uuid=8003daed-ae09-43b9-b033-ae5bb5f5eb38)
       objectReference: {fileID: 0}
     - target: {fileID: 8483003886948020554, guid: ad30f6bb67d557a448f4be15d5210435, type: 3}
       propertyPath: m_Name
-      value: Label_Password
+      value: Label_Password (uuid=e7f6163f-b580-4491-b5e0-8aa1c004c951)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8483003886948020554, guid: ad30f6bb67d557a448f4be15d5210435, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8839283908540848149, guid: ad30f6bb67d557a448f4be15d5210435, type: 3}
       propertyPath: m_Pivot.x
@@ -1605,28 +1545,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8839283908540848149, guid: ad30f6bb67d557a448f4be15d5210435, type: 3}
   m_PrefabInstance: {fileID: 1878434642}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1941807986 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5454568065863142396, guid: ad30f6bb67d557a448f4be15d5210435, type: 3}
-  m_PrefabInstance: {fileID: 633516348}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1964421197 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
-  m_PrefabInstance: {fileID: 1634810302}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2032354753
 GameObject:
   m_ObjectHideFlags: 0

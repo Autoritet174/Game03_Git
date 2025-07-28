@@ -1,18 +1,61 @@
 ﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Reflection;
 using UnityEngine;
 
 namespace Assets.GameData.Scripts
 {
     public static class LocalizationManager
     {
-        private static Dictionary<string, string> localization = new();
-        public static string Language { get; private set; }
+        public enum Languages
+        {
+            [Description("en")]
+            English = 1,
 
+            [Description("ru")]
+            Russian = 2
+        }
+
+        /// <summary>
+        /// Минимальная процедура получения строки из Description конкретного значения Languages.
+        /// </summary>
+        /// <param name="language">Значение перечисления Languages.</param>
+        /// <returns>Строка из атрибута Description.</returns>
+        private static string GetLanguageCode(Languages language)
+        {
+            FieldInfo field = typeof(Languages).GetField(language.ToString());
+            DescriptionAttribute attr = (DescriptionAttribute)Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute));
+            return attr?.Description ?? throw new InvalidOperationException("DescriptionAttribute not found.");
+        }
+
+        /// <summary>
+        /// Язык интерфейса.
+        /// </summary>
+        public static Languages Language
+        {
+            get => language;
+            set
+            {
+                language = value;
+                Init();
+            }
+        }
+
+        private static Dictionary<string, string> localization = new();
+        private static Languages language;
+
+        /// <summary>
+        /// Получаем локализованный текст, если не удается найти возвращаем ключ.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public static string GetValue(string key)
         {
-            return localization[key];
+            return localization.TryGetValue(key, out string value) ? value : key;
         }
+
 
         /// <summary>
         /// Получить строку которая является ключом к тексту ошибки
@@ -40,10 +83,9 @@ namespace Assets.GameData.Scripts
         }
 
 
-        public static void Init(string language)
+        private static void Init()
         {
-            Language = language;
-            TextAsset jsonFile = Resources.Load<TextAsset>($"Localization/{language}/data");
+            TextAsset jsonFile = Resources.Load<TextAsset>($"Localization/{GetLanguageCode(language)}/data");
             localization.Clear();
             localization = ParseDeepJson(jsonFile.text);
         }
@@ -73,5 +115,6 @@ namespace Assets.GameData.Scripts
             ProcessToken(obj, "");
             return result;
         }
+
     }
 }

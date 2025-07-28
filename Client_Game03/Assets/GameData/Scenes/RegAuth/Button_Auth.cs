@@ -12,15 +12,9 @@ using UnityEngine.UI;
 
 public class Button_Auth : MonoBehaviour
 {
-    [SerializeField]
     private Button buttonLogin;
-
-    [SerializeField]
     private TMP_InputField textEmail;
-
-    [SerializeField]
     private TMP_InputField textPassword;
-
     private WindowMessageController windowMessageController;
 
 
@@ -30,6 +24,17 @@ public class Button_Auth : MonoBehaviour
         {
             GameObject windowMessage = GameObjectFinder.FindByTag(WindowMessageInitializator.PrefabTag);
             windowMessageController = windowMessage.GetComponent<WindowMessageController>();
+        }
+        if (textEmail == null)
+        {
+            textEmail = GameObjectFinder.FindTMPInputFieldByName("InputText_Email (uuid=9b99b098-1949-4b68-bba9-df3660bc95d4)");
+        }
+        if (textPassword == null) {
+            textPassword = GameObjectFinder.FindTMPInputFieldByName("InputText_Password (uuid=8003daed-ae09-43b9-b033-ae5bb5f5eb38)");
+        }
+        if (buttonLogin == null)
+        {
+            buttonLogin = GameObjectFinder.FindButtonByName("Button_Login (uuid=0043f96f-ff37-40c4-9a7f-4b302be4eff7)");
         }
 
 
@@ -75,9 +80,8 @@ public class Button_Auth : MonoBehaviour
 
     private async Task<bool> LoginAsync(General.ModelHttp.Authorization payload)
     {
-        bool haveInternet = false;
         //проверка интернета
-        haveInternet = await InternetChecker.CheckInternetConnectionAsync();
+        bool haveInternet = await InternetChecker.CheckInternetConnectionAsync();
 
         windowMessageController.SetTextLocale("Info.Authorization", false);
 
@@ -134,14 +138,7 @@ public class Button_Auth : MonoBehaviour
         }
         catch (HttpRequestException ex) when (ex.InnerException is WebException)
         {
-            if (haveInternet)
-            {
-                windowMessageController.SetTextLocale("Errors.No_internet_connection", true);
-            }
-            else
-            {
-                windowMessageController.SetTextLocale("Errors.Server_Unavailable", true);
-            }
+            windowMessageController.SetTextLocale(haveInternet ? "Errors.Server_Unavailable" : "Errors.No_internet_connection", true);
             return false;
         }
         catch (Exception ex)

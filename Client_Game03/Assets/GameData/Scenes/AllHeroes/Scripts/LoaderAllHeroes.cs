@@ -19,6 +19,7 @@ public class LoaderAllHeroes : MonoBehaviour
             await GetAllHeroes();
         }
         AddAllImageOnContent();
+
     }
 
     
