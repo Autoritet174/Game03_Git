@@ -43,12 +43,16 @@ namespace Assets.GameData.Scripts
 
 
         private static HttpClient _httpClient;
+
+        /// <summary>
+        /// Выполняется один раз при старте игры до загрузки сцен.
+        /// </summary>
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void InitializeOnLoad()
         {
+            Debug.Log("InitializeOnLoad");
             _httpClient = new();
 
-            string s = Application.dataPath;
             Ini ini = Ini.Create(Path.Combine(Application.dataPath, @"GameData\Config\Main.ini"));
             if (!double.TryParse(ini.Read("Http", "timeout"), out double timeout))
             {
@@ -65,7 +69,7 @@ namespace Assets.GameData.Scripts
         /// <returns>
         /// Строка с телом ответа при успешном выполнении запроса (код 2xx); в противном случае — null.
         /// </returns>
-        /// <exception cref="ArgumentNullException">Если uri или jsonBody равны null.</exception>
+        /// <exception cref="ArgumentNullException">Если uri is null.</exception>
         public static async Task<string> TryHttpRequestAsync(Uri uri, string jsonBody)
         {
             if (uri == null)
@@ -73,9 +77,9 @@ namespace Assets.GameData.Scripts
                 throw new ArgumentNullException(nameof(uri));
             }
 
-            if (jsonBody == null)
+            if (string.IsNullOrWhiteSpace(jsonBody))
             {
-                throw new ArgumentNullException(nameof(jsonBody));
+                jsonBody = "{}";
             }
 
             try
@@ -83,7 +87,14 @@ namespace Assets.GameData.Scripts
                 StringContent content = new(jsonBody, Encoding.UTF8, "application/json");
                 using HttpResponseMessage response = await _httpClient.PostAsync(uri, content);
 
-                return !response.IsSuccessStatusCode ? null : await response.Content.ReadAsStringAsync();
+                if (!response.IsSuccessStatusCode)
+                {
+                    return null;
+                }
+                else
+                {
+                    return await response.Content.ReadAsStringAsync();
+                }
             }
             catch
             {
