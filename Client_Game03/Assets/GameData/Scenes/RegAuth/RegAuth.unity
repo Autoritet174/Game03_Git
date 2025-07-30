@@ -911,50 +911,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1677650459}
   m_SourcePrefab: {fileID: 100100000, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
---- !u!1 &869916669
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 869916671}
-  - component: {fileID: 869916670}
-  m_Layer: 0
-  m_Name: WindowMessageInitializator
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
---- !u!114 &869916670
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 869916669}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4395bd9989e3b0e4792887138af87fc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &869916671
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 869916669}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &891312729 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2883646782141063761, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
@@ -1191,7 +1147,7 @@ PrefabInstance:
       objectReference: {fileID: 1634810307}
     - target: {fileID: 3468390062173969539, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Login
+      value: ButtonLogin_OnClick
       objectReference: {fileID: 0}
     - target: {fileID: 3468390062173969539, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -1612,5 +1568,4 @@ SceneRoots:
   - {fileID: 2032354757}
   - {fileID: 1025962083}
   - {fileID: 1408877122}
-  - {fileID: 869916671}
   - {fileID: 1228003612}

@@ -2,149 +2,78 @@ using Assets.GameData.Scripts;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Button_Auth : MonoBehaviour
 {
-    private Button buttonLogin;
-    private TMP_InputField textEmail;
-    private TMP_InputField textPassword;
-    private WindowMessageController windowMessageController;
 
-
-    public async void Login()
+    public async void ButtonLogin_OnClick()
     {
-        if (windowMessageController == null)
+        Button buttonLogin = null;
+        try
         {
-            GameObject windowMessage = GameObjectFinder.FindByTag(WindowMessageInitializator.PrefabTag);
-            windowMessageController = windowMessage.GetComponent<WindowMessageController>();
-        }
-        if (textEmail == null)
-        {
-            textEmail = GameObjectFinder.FindTMPInputFieldByName("InputText_Email (uuid=9b99b098-1949-4b68-bba9-df3660bc95d4)");
-        }
-        if (textPassword == null) {
-            textPassword = GameObjectFinder.FindTMPInputFieldByName("InputText_Password (uuid=8003daed-ae09-43b9-b033-ae5bb5f5eb38)");
-        }
-        if (buttonLogin == null)
-        {
+            TMP_InputField textEmail = GameObjectFinder.FindTMPInputFieldByName("InputText_Email (uuid=9b99b098-1949-4b68-bba9-df3660bc95d4)");
+
+            TMP_InputField textPassword = GameObjectFinder.FindTMPInputFieldByName("InputText_Password (uuid=8003daed-ae09-43b9-b033-ae5bb5f5eb38)");
+
             buttonLogin = GameObjectFinder.FindButtonByName("Button_Login (uuid=0043f96f-ff37-40c4-9a7f-4b302be4eff7)");
-        }
 
 
-        string emailString = textEmail.text?.Trim() ?? string.Empty;
-        string passwordString = textPassword.text?.Trim() ?? string.Empty;
+            string emailString = textEmail.text?.Trim() ?? string.Empty;
+            string passwordString = textPassword.text?.Trim() ?? string.Empty;
 
-        if (emailString == string.Empty || passwordString == string.Empty)
-        {
-            windowMessageController.SetTextLocale("Errors.EmailOrPassword_Empty", true);
-            return;
-        }
-
-        if (!General.GF.IsEmail(emailString))
-        {
-            windowMessageController.SetTextLocale("Errors.Not_Email", true);
-            return;
-        }
-
-
-        buttonLogin.interactable = false;
-
-        // ƒанные авторизации и характеристики аппаратного устройства
-        General.ModelHttp.Authorization payload = new(emailString, passwordString, SystemInfo.deviceModel, SystemInfo.deviceType.ToString(), SystemInfo.operatingSystem, SystemInfo.processorType, SystemInfo.processorCount, SystemInfo.systemMemorySize, SystemInfo.graphicsDeviceName, SystemInfo.graphicsMemorySize, SystemInfo.deviceUniqueIdentifier);
-
-        try
-        {
-            bool success = await LoginAsync(payload);
-            if (success)
+            if (emailString == string.Empty || passwordString == string.Empty)
             {
-                UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
-            }
-        }
-        catch (Exception ex)
-        {
-            windowMessageController.SetTextErrorAndWriteExceptionInLog(ex);
-        }
-        finally
-        {
-            buttonLogin.interactable = true;
-        }
-    }
-
-
-    private async Task<bool> LoginAsync(General.ModelHttp.Authorization payload)
-    {
-        //проверка интернета
-        bool haveInternet = await InternetChecker.CheckInternetConnectionAsync();
-
-        windowMessageController.SetTextLocale("Info.Authorization", false);
-
-        using HttpClient client = new();
-        client.Timeout = TimeSpan.FromSeconds(15);
-
-        //UnityMainThreadDispatcher.RunOnMainThread(() =>
-        //{
-        //    Debug.Log("Device Model: " + SystemInfo.deviceModel);
-        //    Debug.Log("Device Type: " + SystemInfo.deviceType);
-        //    Debug.Log("Operating System: " + SystemInfo.operatingSystem);
-        //    Debug.Log("Processor Type: " + SystemInfo.processorType);
-        //    Debug.Log("Processor Count: " + SystemInfo.processorCount);
-        //    Debug.Log("System Memory Size (MB): " + SystemInfo.systemMemorySize);
-        //    Debug.Log("Graphics Device Name: " + SystemInfo.graphicsDeviceName);
-        //    Debug.Log("Graphics Memory Size (MB): " + SystemInfo.graphicsMemorySize);
-        //    Debug.Log("Device Unique Identifier: " + SystemInfo.deviceUniqueIdentifier);
-        //});
-
-
-
-        string json = JsonConvert.SerializeObject(payload);
-        StringContent content = new(json, Encoding.UTF8, "application/json");
-
-        try
-        {
-            HttpResponseMessage response = await client.PostAsync(General.URLs.Uri_login, content);
-
-            string responseContent = await response.Content.ReadAsStringAsync();
-            JObject jObject = JObject.Parse(responseContent);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                windowMessageController.SetTextLocale(LocalizationManager.GetKeyError(jObject), true);
-                return false;
+                GameMessage.ShowLocale("Errors.EmailOrPassword_Empty", true);
+                return;
             }
 
-            GV.Jwt_token = jObject["token"]?.ToString() ?? "";
+            if (!General.GF.IsEmail(emailString))
+            {
+                GameMessage.ShowLocale("Errors.Not_Email", true);
+                return;
+            }
+
+            // ƒанные авторизации и характеристики аппаратного устройства
+            General.ModelHttp.Authorization payload = new(emailString, passwordString, SystemInfo.deviceModel, SystemInfo.deviceType.ToString(), SystemInfo.operatingSystem, SystemInfo.processorType, SystemInfo.processorCount, SystemInfo.systemMemorySize, SystemInfo.graphicsDeviceName, SystemInfo.graphicsMemorySize, SystemInfo.deviceUniqueIdentifier);
+
+            string json = JsonConvert.SerializeObject(payload);
+
+            // Ѕлокируем кнопку и выводим сообщение непосредственно перед await
+            buttonLogin.interactable = false;
+            GameMessage.ShowLocale("Info.Authorization", false);
+
+            JObject jObject = await HttpRequester.GetResponceAsync(General.URLs.Uri_login, json);
+            if (jObject == null)
+            {
+                GameMessage.ShowLocale("Errors.Server_InvalidResponse", true);
+                return;
+            }
+
+            GV.Jwt_token = jObject["token"]?.ToString() ?? string.Empty;
 
             if (GV.Jwt_token == string.Empty)
             {
-                windowMessageController.SetTextLocale("Errors.Empty_Token", true);
-                return false;
+                GameMessage.ShowLocale("Errors.Empty_Token", true);
+                return;
             }
 
-            //windowMessageController.SetTextLocale("Info.AuthorizationSuccess", true);
+            //await GameMessage.ShowAndWaitCloseAsync($"Success! Token = {GV.Jwt_token}");
 
-            return true;
-        }
-        catch (TaskCanceledException ex) when (ex.InnerException is TimeoutException)
-        {
-            windowMessageController.SetTextLocale("Errors.Server_Unavailable", true);
-            return false;
-        }
-        catch (HttpRequestException ex) when (ex.InnerException is WebException)
-        {
-            windowMessageController.SetTextLocale(haveInternet ? "Errors.Server_Unavailable" : "Errors.No_internet_connection", true);
-            return false;
+            UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
         }
         catch (Exception ex)
         {
-            windowMessageController.SetTextErrorAndWriteExceptionInLog(ex);
-            return false;
+            GameMessage.ShowError(ex);
+        }
+        finally
+        {
+            if (buttonLogin != null)
+            {
+                buttonLogin.interactable = true;
+            }
         }
     }
 

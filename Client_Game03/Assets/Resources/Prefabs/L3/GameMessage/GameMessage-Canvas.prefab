@@ -89,9 +89,8 @@ GameObject:
   - component: {fileID: 267407167786300312}
   - component: {fileID: 4238085504055336700}
   - component: {fileID: 8601292758980318257}
-  - component: {fileID: 9137821577847383817}
   m_Layer: 5
-  m_Name: WindowMessage-Canvas
+  m_Name: GameMessage-Canvas
   m_TagString: WindowMessage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -181,22 +180,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &9137821577847383817
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5663705731110885038}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 008e3479d16f4aa4586d54f7d0c12e3e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  labelText: {fileID: 0}
-  button: {fileID: 0}
-  buttonGameObject: {fileID: 0}
-  canvas: {fileID: 0}
 --- !u!1 &7738556587450455833
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,14 +408,14 @@ PrefabInstance:
     - target: {fileID: 3468390062173969539, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 4836571507073047338}
+      objectReference: {fileID: 6092055741543914193}
     - target: {fileID: 3468390062173969539, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnClick
+      value: Destroy_OnClick
       objectReference: {fileID: 0}
     - target: {fileID: 3468390062173969539, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: WindowMessageButton, Assembly-CSharp
+      value: Assets.GameData.Scripts.GameMessage, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 3468390062173969539, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -544,7 +527,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2883646782141063761, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4836571507073047338}
+      addedObject: {fileID: 6092055741543914193}
   m_SourcePrefab: {fileID: 100100000, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
 --- !u!224 &7596192185096446779 stripped
 RectTransform:
@@ -556,7 +539,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2883646782141063761, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
   m_PrefabInstance: {fileID: 6251574397873458407}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4836571507073047338
+--- !u!114 &6092055741543914193
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -565,7 +548,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 9135209564002315958}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c2c67e5020ace04d9d26c727ffaf7b7, type: 3}
+  m_Script: {fileID: 11500000, guid: 797c3c63c0234e548b311d019ab17f85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  windowMessage_Canvas: {fileID: 5663705731110885038}
