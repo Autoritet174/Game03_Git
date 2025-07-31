@@ -9,6 +9,7 @@ public class Content : MonoBehaviour {
     /// Покрашивает все Image в Content в случайный цвет.
     /// </summary>
     private void Start() {
+        Debug.Log(111);
         ColorImagesInContent();
     }
 
