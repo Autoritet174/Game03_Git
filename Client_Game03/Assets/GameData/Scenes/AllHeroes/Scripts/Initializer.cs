@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -15,6 +16,7 @@ public class Initializer : MonoBehaviour
     public GameObject content;
 
     public GameObject prefabIconHero;
+
 
     private async void Start()
     {
@@ -43,6 +45,7 @@ public class Initializer : MonoBehaviour
         }
     }
 
+
     private void AddAllImageOnContent()
     {
         foreach (HeroBaseEntity heroStats in allHeroes)
@@ -54,10 +57,25 @@ public class Initializer : MonoBehaviour
 
             // Изображение
             Transform childImage = _prefabIconHero.transform.Find("ImageHero");
-            if (childImage != null && childImage.TryGetComponent(out Image image))
+            if (childImage != null && childImage.TryGetComponent(out UnityEngine.UI.Image image))
             {
-                Color randomColor = new(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
-                image.color = randomColor;
+                //Color randomColor = new(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
+                //image.color = randomColor;
+
+                // Загрузка PNG из Resources
+                Sprite loadedSprite = Resources.Load<Sprite>($"Images/Heroes/{heroStats.Name}");
+
+                if (loadedSprite != null)
+                {
+                    image.sprite = loadedSprite; // Устанавливаем загруженный спрайт
+                    //image.color = Color.white;   // Сбрасываем цвет в белый (убираем случайный)
+                }
+                else
+                {
+                    Debug.LogError("Не удалось загрузить изображение warrior.png из Resources!");
+                    // Запасной вариант - случайный цвет
+                    image.color = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
+                }
             }
 
             // Текст
