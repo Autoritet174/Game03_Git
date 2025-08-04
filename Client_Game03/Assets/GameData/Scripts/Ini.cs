@@ -1,6 +1,6 @@
 ﻿using IniParser;
 using IniParser.Model;
-namespace Assets.GameData.ScriptsP
+namespace Assets.GameData.Scripts
 {
 
     public class Ini

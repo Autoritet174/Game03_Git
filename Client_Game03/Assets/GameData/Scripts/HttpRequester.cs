@@ -1,5 +1,4 @@
-﻿using Assets.GameData.ScriptsP;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.Net;
@@ -15,11 +14,12 @@ namespace Assets.GameData.Scripts
     {
 
         private static HttpClient _httpClient;
-        static bool inited = false;
+        private static bool inited = false;
 
         internal static void Init()
         {
-            if (inited) {
+            if (inited)
+            {
                 Debug.LogError("HttpRequester inited");
                 return;
             }

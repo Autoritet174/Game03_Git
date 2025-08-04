@@ -1,10 +1,4 @@
 using Assets.GameData.Scripts;
-using Newtonsoft.Json;
-using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class Button_Reg : MonoBehaviour
@@ -51,5 +45,5 @@ public class Button_Reg : MonoBehaviour
         //}
     }
 
-    
+
 }
