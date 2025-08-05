@@ -48,7 +48,7 @@ public class Button_Auth : MonoBehaviour
             JObject jObject = await HttpRequester.GetResponceAsync(General.URLs.Uri_login, json);
             if (jObject == null)
             {
-                GameMessage.ShowLocale("Errors.Server_InvalidResponse", true);
+                //GameMessage.ShowLocale("Errors.Server_InvalidResponse", true);
                 return;
             }
 

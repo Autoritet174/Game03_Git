@@ -57,6 +57,16 @@ namespace Assets.GameData.Scripts
         }
 
         /// <summary>
+        /// Выводит игровое сообщение по ключу локализации и ожидает закрытие окна.
+        /// </summary>
+        public static async Task ShowErrorAndWaitCloseAsync(Exception ex)
+        {
+            Show("APP_EXCEPTION: An exception has occurred, see log file.", true);
+            LoggerException.LogException(ex);
+            await UniTask.WaitUntil(() => !_opened);
+        }
+
+        /// <summary>
         /// Выводит игровое сообщение по ключу локализации.
         /// </summary>
         public static void ShowLocale(string keyLocalization, bool buttonActive)

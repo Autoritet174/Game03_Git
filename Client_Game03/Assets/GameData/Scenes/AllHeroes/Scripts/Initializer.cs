@@ -12,7 +12,7 @@ using UnityEngine.UI;
 
 public class Initializer : MonoBehaviour
 {
-    private static List<HeroBaseEntity> allHeroes = new();
+    private static readonly List<HeroBaseEntity> allHeroes = new();
     public GameObject content;
 
     public GameObject prefabIconHero;

@@ -78,7 +78,7 @@ namespace Assets.GameData.Scripts
         /// </returns>
         public static async Task<JObject> GetResponceAsync(Uri uri, string jsonBody = "{}")
         {
-            JObject resultJObject = null;
+
             if (uri == null)
             {
                 //throw new ArgumentNullException(nameof(uri));
@@ -100,7 +100,6 @@ namespace Assets.GameData.Scripts
 
             try
             {
-
                 using HttpRequestMessage request = new(HttpMethod.Post, uri)
                 {
                     Content = new StringContent(jsonBody, Encoding.UTF8, "application/json")
@@ -113,30 +112,32 @@ namespace Assets.GameData.Scripts
 
                 using HttpResponseMessage response = await _httpClient.SendAsync(request);
                 string responseContent = await response.Content.ReadAsStringAsync();
+                JObject resultJObject = JObject.Parse(responseContent);
 
-                resultJObject = JObject.Parse(responseContent);
-
-                if (!response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode)
                 {
-                    GameMessage.ShowLocale(LocalizationManager.GetKeyError(resultJObject), true);
+                    return resultJObject;
                 }
-
+                else
+                {
+                    await GameMessage.ShowLocaleAndWaitCloseAsync(LocalizationManager.GetKeyError(resultJObject));
+                }
             }
             catch (TaskCanceledException ex) when (ex.InnerException is TimeoutException)
             {
-                GameMessage.ShowLocale("Errors.Server_Timeout", true);
+                await GameMessage.ShowLocaleAndWaitCloseAsync("Errors.Server_Timeout");
             }
             catch (HttpRequestException ex) when (ex.InnerException is WebException)
             {
                 bool haveInternet = await InternetChecker.CheckInternetConnectionAsync();
-                GameMessage.ShowLocale(haveInternet ? "Errors.Server_Unavailable" : "Errors.No_internet_connection", true);
+                await GameMessage.ShowLocaleAndWaitCloseAsync(haveInternet ? "Errors.Server_Unavailable" : "Errors.No_internet_connection");
             }
             catch (Exception ex)
             {
-                GameMessage.ShowError(ex);
+                await GameMessage.ShowErrorAndWaitCloseAsync(ex);
             }
 
-            return resultJObject;
+            return null;
         }
 
     }
