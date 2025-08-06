@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dea69d41f90c6ea4fa55c27c1d60c145, type: 3}
-  m_Name: AddressableAssetGroupSortSettings
+  m_Script: {fileID: 11500000, guid: 5834b5087d578d24c926ce20cd31e6d6, type: 3}
+  m_Name: HeroImage_ContentUpdateGroupSchema
   m_EditorClassIdentifier: 
-  sortOrder:
-  - 6bee0c1a0f9b3f044a826f8e51fe74c5
-  - d28dde80470f64f4797946333d02fb59
-  - 2ffd505fea132264fb92065a7554e0cf
+  m_Group: {fileID: 11400000, guid: e9d164e57f2c72c4f97f7696782ee5a1, type: 2}
+  m_StaticContent: 0
