@@ -9,6 +9,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.UI;
 public class Initializer : MonoBehaviour
 {
     private static readonly List<HeroBaseEntity> allHeroes = new();
@@ -23,7 +24,7 @@ public class Initializer : MonoBehaviour
         {
             await FullListAllHeroes();
         }
-        AddAllImageOnContent();
+        await AddAllImageOnContent();
     }
 
 
@@ -51,95 +52,79 @@ public class Initializer : MonoBehaviour
         }
     }
 
-
-    //private void AddAllImageOnContent()
-    //{
-    //    foreach (HeroBaseEntity heroStats in allHeroes)
-    //    {
-    //        GameObject _prefabIconHero = Instantiate(prefabIconHero);
-
-    //        Transform transform = _prefabIconHero.transform;
-    //        transform.SetParent(content.transform, false); // Устанавливаем родительский объект (Content)
-
-    //        // Изображение
-    //        Transform childImage = _prefabIconHero.transform.Find("ImageHero");
-    //        if (childImage != null && childImage.TryGetComponent(out UnityEngine.UI.Image image))
-    //        {
-    //            //Color randomColor = new(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
-    //            //image.color = randomColor;
-
-    //            // Загрузка PNG из Resources
-    //            Sprite loadedSprite = Resources.Load<Sprite>($"Images/Heroes/{heroStats.Name}");
-
-    //            if (loadedSprite != null)
-    //            {
-    //                image.sprite = loadedSprite; // Устанавливаем загруженный спрайт
-    //                //image.color = Color.white;   // Сбрасываем цвет в белый (убираем случайный)
-    //            }
-    //            else
-    //            {
-    //                Debug.LogError($"Не удалось загрузить изображение {heroStats.Name} из Resources!");
-    //                // Запасной вариант - случайный цвет
-    //                image.color = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
-    //            }
-    //        }
-
-    //        // Текст
-    //        Transform childText = _prefabIconHero.transform.Find("TextHero");
-    //        if (childText != null && childText.TryGetComponent(out TextMeshProUGUI textMeshPro))
-    //        {
-    //            textMeshPro.text = heroStats.Name;
-    //        }
-    //    }
-    //}
-
-
-    private async void AddAllImageOnContent()
+    private async Task AddAllImageOnContent()
     {
         foreach (HeroBaseEntity heroStats in allHeroes)
         {
-            GameObject _prefabIconHero = Instantiate(prefabIconHero);
-            Transform transform = _prefabIconHero.transform;
-            transform.SetParent(content.transform, false);
+            await LoadHeroByName(heroStats.Name);
+        }
+    }
 
-            // Текст (может быть установлен сразу)
-            Transform childText = _prefabIconHero.transform.Find("TextHero");
-            if (childText != null && childText.TryGetComponent(out TextMeshProUGUI textMeshPro))
+    async Task LoadHeroByName(string heroName) {
+        GameObject _prefabIconHero = Instantiate(prefabIconHero);
+        _prefabIconHero.name = heroName;
+
+        Transform transform = _prefabIconHero.transform;
+        transform.SetParent(content.transform, false);
+
+        // Текст (может быть установлен сразу)
+        Transform childText = _prefabIconHero.transform.Find("TextHero");
+        if (childText != null && childText.TryGetComponent(out TextMeshProUGUI textMeshPro))
+        {
+            textMeshPro.text = heroName;
+        }
+
+        // Изображение (загружаем через Addressable)
+        Transform childImage = _prefabIconHero.transform.Find("ImageHero");
+        if (childImage != null && childImage.TryGetComponent(out UnityEngine.UI.Image image))
+        {
+            string addressableKey = $"hero-image-{heroName.ToLower()}"; // Ключ без расширения .png
+
+            try
             {
-                textMeshPro.text = heroStats.Name;
-            }
+                // Загружаем спрайт асинхронно
+                AsyncOperationHandle<Sprite> handle = Addressables.LoadAssetAsync<Sprite>(addressableKey);
+                _ = await handle.Task;
 
-            // Изображение (загружаем через Addressable)
-            Transform childImage = _prefabIconHero.transform.Find("ImageHero");
-            if (childImage != null && childImage.TryGetComponent(out UnityEngine.UI.Image image))
-            {
-                //string addressablePath = $"Assets/GameData/AddressableAssets/Images/Heroes/{heroStats.Name}.png";
-                string addressableKey = $"HeroImage/{heroStats.Name.ToLower()}"; // Ключ без расширения .png
-
-                try
+                if (handle.Status == AsyncOperationStatus.Succeeded && handle.Result != null)
                 {
-                    // Загружаем спрайт асинхронно
-                    AsyncOperationHandle<Sprite> handle = Addressables.LoadAssetAsync<Sprite>(addressableKey);
-                    _ = await handle.Task;
+                    image.sprite = handle.Result;
 
-                    if (handle.Status == AsyncOperationStatus.Succeeded && handle.Result != null)
-                    {
-                        image.sprite = handle.Result;
-                    }
-                    else
-                    {
-                        Debug.LogError($"Не удалось загрузить изображение {heroStats.Name} из Addressable Assets!");
-                        image.color = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
-                    }
+                    // Настройка отображения:
+                    image.preserveAspect = true; // Сохраняет пропорции изображения
+                    image.type = Image.Type.Simple; // Режим без растягивания
 
-                    // Освобождаем handle после использования
-                    Addressables.Release(handle);
+                    // Настройки RectTransform
+                    RectTransform rt = image.rectTransform;
+
+                    // 1. Растягиваем по вертикали на 100%
+                    rt.anchorMin = new Vector2(0f, 0.12f); // Якорь снизу по центру
+                    rt.anchorMax = new Vector2(1f, 1f); // Якорь сверху по центру
+                    rt.sizeDelta = new Vector2(0, 0);     // Растягиваем по якорям
+
+                    // 2. Фиксируем ширину по пропорциям текстуры
+                    float aspectRatio = (float)handle.Result.texture.width / handle.Result.texture.height;
+                    float targetWidth = rt.rect.height * aspectRatio;
+                    rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, targetWidth);
+
+                    // 3. Центрируем
+                    rt.pivot = new Vector2(0.5f, 0.5f);
+                    rt.anchoredPosition = Vector2.zero;
+                    //image.color = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
                 }
-                catch (Exception ex)
+                else
                 {
-                    Debug.LogError($"Ошибка при загрузке изображения {heroStats.Name}: {ex.Message}");
+                    Debug.LogError($"Не удалось загрузить изображение {heroName} из Addressable Assets!");
                     image.color = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
                 }
+
+                // Освобождаем handle после использования
+                Addressables.Release(handle);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Ошибка при загрузке изображения {heroName}: {ex.Message}");
+                image.color = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
             }
         }
     }

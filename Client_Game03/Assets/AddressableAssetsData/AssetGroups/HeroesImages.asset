@@ -10,13 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: HeroImage
+  m_Name: HeroesImages
   m_EditorClassIdentifier: 
-  m_GroupName: HeroImage
+  m_GroupName: HeroesImages
   m_GUID: d28dde80470f64f4797946333d02fb59
   m_SerializeEntries:
+  - m_GUID: 2ec9fa0ab0bc37349b82eade1dc63297
+    m_Address: hero-image-rogue
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d79d3b42ea825f0438fcfcc84528ffb9
-    m_Address: warrior
+    m_Address: hero-image-warrior
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
