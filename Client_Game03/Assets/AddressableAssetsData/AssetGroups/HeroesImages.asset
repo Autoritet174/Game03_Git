@@ -15,8 +15,8 @@ MonoBehaviour:
   m_GroupName: HeroesImages
   m_GUID: d28dde80470f64f4797946333d02fb59
   m_SerializeEntries:
-  - m_GUID: 2ec9fa0ab0bc37349b82eade1dc63297
-    m_Address: hero-image-rogue
+  - m_GUID: ca418bef7f8098449a59e1dc949968c3
+    m_Address: hero-image-null
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

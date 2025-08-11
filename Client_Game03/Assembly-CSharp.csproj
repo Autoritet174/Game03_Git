@@ -91,6 +91,7 @@
     <Compile Include="Assets\GameData\Scenes\TEST_01\TestScript.cs" />
     <Compile Include="Assets\GameData\Prefabs\L1\Labels\Label_SetFontSize.cs" />
     <Compile Include="Assets\GameData\Scenes\RegAuth\LocalizationManagerLoadLocale.cs" />
+    <Compile Include="Assets\GameData\Scripts\AddressableHelper.cs" />
     <Compile Include="Assets\GameData\Scenes\AllHeroes\Scripts\Initializer.cs" />
     <Compile Include="Assets\GameData\Scenes\RegAuth\Button_Auth.cs" />
     <Compile Include="Assets\GameData\Scripts\Test.cs" />

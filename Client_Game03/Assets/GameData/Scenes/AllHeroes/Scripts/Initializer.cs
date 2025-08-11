@@ -12,6 +12,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 public class Initializer : MonoBehaviour
 {
+    const string heroImageNull = "hero-image-null";
     private static readonly List<HeroBaseEntity> allHeroes = new();
     public GameObject content;
 
@@ -20,6 +21,8 @@ public class Initializer : MonoBehaviour
 
     private async void Start()
     {
+
+
         if (allHeroes.Count == 0)
         {
             await FullListAllHeroes();
@@ -60,7 +63,8 @@ public class Initializer : MonoBehaviour
         }
     }
 
-    async Task LoadHeroByName(string heroName) {
+    private async Task LoadHeroByName(string heroName)
+    {
         GameObject _prefabIconHero = Instantiate(prefabIconHero);
         _prefabIconHero.name = heroName;
 
@@ -82,44 +86,41 @@ public class Initializer : MonoBehaviour
 
             try
             {
-                // Загружаем спрайт асинхронно
-                AsyncOperationHandle<Sprite> handle = Addressables.LoadAssetAsync<Sprite>(addressableKey);
-                _ = await handle.Task;
-
-                if (handle.Status == AsyncOperationStatus.Succeeded && handle.Result != null)
+                AsyncOperationHandle<Sprite> handle;
+                bool loadNull = true;
+                bool loadColor = true;
+                if (await AddressableHelper.CheckIfKeyExists(addressableKey))
                 {
-                    image.sprite = handle.Result;
-
-                    // Настройка отображения:
-                    image.preserveAspect = true; // Сохраняет пропорции изображения
-                    image.type = Image.Type.Simple; // Режим без растягивания
-
-                    // Настройки RectTransform
-                    RectTransform rt = image.rectTransform;
-
-                    // 1. Растягиваем по вертикали на 100%
-                    rt.anchorMin = new Vector2(0f, 0.12f); // Якорь снизу по центру
-                    rt.anchorMax = new Vector2(1f, 1f); // Якорь сверху по центру
-                    rt.sizeDelta = new Vector2(0, 0);     // Растягиваем по якорям
-
-                    // 2. Фиксируем ширину по пропорциям текстуры
-                    float aspectRatio = (float)handle.Result.texture.width / handle.Result.texture.height;
-                    float targetWidth = rt.rect.height * aspectRatio;
-                    rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, targetWidth);
-
-                    // 3. Центрируем
-                    rt.pivot = new Vector2(0.5f, 0.5f);
-                    rt.anchoredPosition = Vector2.zero;
-                    //image.color = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
+                    handle = Addressables.LoadAssetAsync<Sprite>(addressableKey);
+                    _ = await handle.Task;
+                    if (handle.Status == AsyncOperationStatus.Succeeded && handle.Result != null)
+                    {
+                        SetImage(handle, image);
+                        loadNull = false;
+                        loadColor = false;
+                        //Addressables.Release(handle);
+                    }
                 }
-                else
+
+
+                if (loadNull && await AddressableHelper.CheckIfKeyExists(heroImageNull))
+                {
+                    handle = Addressables.LoadAssetAsync<Sprite>(heroImageNull);
+                    _ = await handle.Task;
+                    if (handle.Status == AsyncOperationStatus.Succeeded && handle.Result != null)
+                    {
+                        SetImage(handle, image);
+                        loadColor = false;
+                        //Addressables.Release(handle);
+                    }
+                }
+
+
+                if (loadColor)
                 {
                     Debug.LogError($"Не удалось загрузить изображение {heroName} из Addressable Assets!");
                     image.color = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
                 }
-
-                // Освобождаем handle после использования
-                Addressables.Release(handle);
             }
             catch (Exception ex)
             {
@@ -127,6 +128,32 @@ public class Initializer : MonoBehaviour
                 image.color = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
             }
         }
+    }
+
+    void SetImage(AsyncOperationHandle<Sprite> handle, UnityEngine.UI.Image image) {
+        image.sprite = handle.Result;
+
+        // Настройка отображения:
+        image.preserveAspect = true; // Сохраняет пропорции изображения
+        image.type = Image.Type.Simple; // Режим без растягивания
+
+        // Настройки RectTransform
+        RectTransform rt = image.rectTransform;
+
+        // 1. Растягиваем по вертикали на 100%
+        rt.anchorMin = new Vector2(0f, 0.12f); // Якорь снизу по центру
+        rt.anchorMax = new Vector2(1f, 1f); // Якорь сверху по центру
+        rt.sizeDelta = new Vector2(0, 0);     // Растягиваем по якорям
+
+        // 2. Фиксируем ширину по пропорциям текстуры
+        float aspectRatio = (float)handle.Result.texture.width / handle.Result.texture.height;
+        float targetWidth = rt.rect.height * aspectRatio;
+        rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, targetWidth);
+
+        // 3. Центрируем
+        rt.pivot = new Vector2(0.5f, 0.5f);
+        rt.anchoredPosition = Vector2.zero;
+        //image.color = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
     }
 
 }

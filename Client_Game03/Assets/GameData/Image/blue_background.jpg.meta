@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 2ec9fa0ab0bc37349b82eade1dc63297
+guid: a1ca3ba395e130e4ba4f8a607fedc05a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1504909034587979103
-    second: rogue_0
+      213: -5839665708152596885
+    second: blue_background_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: rogue_0
+      name: blue_background_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 798
-        height: 241
+        width: 1024
+        height: 1024
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f5d74e92bc282e410800000000000000
-      internalID: 1504909034587979103
+      spriteID: b66d8827af655fea0800000000000000
+      internalID: -5839665708152596885
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      rogue_0: 1504909034587979103
+      blue_background_0: -5839665708152596885
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
