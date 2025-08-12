@@ -17,8 +17,10 @@ namespace Assets.GameData.Scripts
             if (state == PlayModeStateChange.ExitingEditMode)
             {
                 const string StartScenePath = @"Assets\GameData\Scenes\RegAuth\RegAuth.unity";
+
+                string path = EditorSceneManager.GetActiveScene().path;
                 // Проверяем, не загружена ли уже нужная сцена
-                if (EditorSceneManager.GetActiveScene().path != StartScenePath)
+                if (path != StartScenePath && path != "Assets/GameData/Scenes/TEST_01/Test_01.unity")
                 {
                     // Сохраняем текущую сцену (если нужно)
                     if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())

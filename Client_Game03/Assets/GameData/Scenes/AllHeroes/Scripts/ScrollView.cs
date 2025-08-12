@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ScrollView : MonoBehaviour {
+public class ScrollView : MonoBehaviour
+{
 
     [Header("Настройки ScrollView")]
     [SerializeField] private RectTransform content; // Контент ScrollView
@@ -11,14 +12,7 @@ public class ScrollView : MonoBehaviour {
     /// <summary>
     /// Количество колонок в сетке.
     /// </summary>
-    public int columnCount = 4;
-
-
-
-    /// <summary>
-    /// Отступ между элементами в пикселях.
-    /// </summary>
-    public float spacing = 20f;
+    private readonly int columnCount = 5;
 
     /// <summary>
     /// Компонент ScrollRect, к которому привязан скрипт.
@@ -43,49 +37,61 @@ public class ScrollView : MonoBehaviour {
     /// <summary>
     /// Выполняется при запуске. Настраивает размеры ячеек в GridLayoutGroup.
     /// </summary>
-    private void Start() {
+    private void Start()
+    {
 
-
+        //Screen.width;
 
         // Внешний отступ (слева и справа) в пикселях.
-        float horizontalPadding = spacing;
+
+
+
 
         scrollRect = GetComponent<ScrollRect>();
         scrollRectTransform = scrollRect.GetComponent<RectTransform>();
         gridLayout = scrollRect.content.GetComponent<GridLayoutGroup>();
 
-        if (gridLayout == null) {
+        if (gridLayout == null)
+        {
             throw new MissingComponentException("На объекте Content отсутствует компонент GridLayoutGroup.");
         }
 
         // Устанавливаем Constraint как FixedColumnCount
         gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
 
-        // Устанавливаем количество колонок (в данном случае 4)
+        // Устанавливаем количество колонок
         gridLayout.constraintCount = columnCount;
 
 
-        if (verticalScrollbar == null) {
+        if (verticalScrollbar == null)
+        {
             throw new MissingReferenceException("Поле verticalScrollbar должно быть назначено в инспекторе.");
         }
 
         float scrollViewWidth = scrollRectTransform.rect.width;
         float scrollbarWidth = verticalScrollbar.rect.width;
 
-        float totalAvailableWidth = scrollViewWidth - scrollbarWidth - (horizontalPadding * 2) - (spacing * (columnCount - 1));
-        if (totalAvailableWidth <= 0) {
+        float percentWidthForImage = 0.8f;
+
+        //float totalAvailableWidth = scrollViewWidth - scrollbarWidth - (horizontalPadding * 2) - (spacing * (columnCount - 1));
+        float totalAvailableWidth = scrollViewWidth - scrollbarWidth;
+        if (totalAvailableWidth <= 0)
+        {
             throw new System.Exception("Недостаточно ширины для размещения элементов.");
         }
 
-        float cellWidth = totalAvailableWidth / columnCount;
-        gridLayout.cellSize = new Vector2(cellWidth, cellWidth * 16f / 9f);
+        float cellWidth = totalAvailableWidth / columnCount * percentWidthForImage;
+        gridLayout.cellSize = new Vector2(cellWidth, cellWidth);
+        // Отступ между элементами в пикселях.
+        float spacing = totalAvailableWidth / (columnCount - 1) * (1 - percentWidthForImage);
+        gridLayout.spacing = new Vector2(spacing, spacing);
 
         scrollRect = GetComponentInParent<ScrollRect>();
 
-        if (scrollRect != null) {
-
+        if (scrollRect != null)
+        {
             //Метод для настройки ScrollSensitivity так, чтобы при единичном повороте колеса мыши прокручивалась одна ячейка.
-            scrollRect.scrollSensitivity = (cellWidth + spacing) / 6f / 2f;
+            scrollRect.scrollSensitivity = (cellWidth + spacing);// / 6f / 2f;
         }
     }
 }

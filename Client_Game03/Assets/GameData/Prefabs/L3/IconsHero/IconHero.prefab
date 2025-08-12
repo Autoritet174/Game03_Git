@@ -64,6 +64,7 @@ GameObject:
   - component: {fileID: 5817701931972952071}
   - component: {fileID: 7450172918111955576}
   - component: {fileID: 6579401579308604448}
+  - component: {fileID: 9018932716084318576}
   m_Layer: 5
   m_Name: ImageHero
   m_TagString: Untagged
@@ -142,6 +143,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AspectMode: 2
   m_AspectRatio: 1
+--- !u!114 &9018932716084318576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4743077465603302880}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowMaskGraphic: 1
 --- !u!1 &7984262072050365419
 GameObject:
   m_ObjectHideFlags: 0

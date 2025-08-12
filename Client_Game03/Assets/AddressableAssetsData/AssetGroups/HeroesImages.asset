@@ -15,13 +15,28 @@ MonoBehaviour:
   m_GroupName: HeroesImages
   m_GUID: d28dde80470f64f4797946333d02fb59
   m_SerializeEntries:
+  - m_GUID: 8853087249795c44c80ab7a11200a5e6
+    m_Address: hero-image-hammerman
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ca418bef7f8098449a59e1dc949968c3
     m_Address: hero-image-null
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d7041702f6300584ea45a7458c2ec5f6
+    m_Address: hero-image-warrior-face
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d79d3b42ea825f0438fcfcc84528ffb9
     m_Address: hero-image-warrior
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fbf1e23455d4e8744acd6c051a8cf5c4
+    m_Address: hero-image-rogue
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

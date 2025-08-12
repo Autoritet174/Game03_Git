@@ -21,8 +21,6 @@ public class Initializer : MonoBehaviour
 
     private async void Start()
     {
-
-
         if (allHeroes.Count == 0)
         {
             await FullListAllHeroes();
@@ -82,7 +80,7 @@ public class Initializer : MonoBehaviour
         Transform childImage = _prefabIconHero.transform.Find("ImageHero");
         if (childImage != null && childImage.TryGetComponent(out UnityEngine.UI.Image image))
         {
-            string addressableKey = $"hero-image-{heroName.ToLower()}"; //  люч без расширени€ .png
+            string addressableKey = $"hero-image-{heroName.ToLower()}-face"; //  люч без расширени€ .png
 
             try
             {
@@ -137,23 +135,23 @@ public class Initializer : MonoBehaviour
         image.preserveAspect = true; // —охран€ет пропорции изображени€
         image.type = Image.Type.Simple; // –ежим без раст€гивани€
 
-        // Ќастройки RectTransform
-        RectTransform rt = image.rectTransform;
+        //// Ќастройки RectTransform
+        //RectTransform rt = image.rectTransform;
 
-        // 1. –аст€гиваем по вертикали на 100%
-        rt.anchorMin = new Vector2(0f, 0.12f); // якорь снизу по центру
-        rt.anchorMax = new Vector2(1f, 1f); // якорь сверху по центру
-        rt.sizeDelta = new Vector2(0, 0);     // –аст€гиваем по €кор€м
+        //// 1. –аст€гиваем по вертикали на 100%
+        //rt.anchorMin = new Vector2(0f, 0.12f); // якорь снизу по центру
+        //rt.anchorMax = new Vector2(1f, 1f); // якорь сверху по центру
+        //rt.sizeDelta = new Vector2(0, 0);     // –аст€гиваем по €кор€м
 
-        // 2. ‘иксируем ширину по пропорци€м текстуры
-        float aspectRatio = (float)handle.Result.texture.width / handle.Result.texture.height;
-        float targetWidth = rt.rect.height * aspectRatio;
-        rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, targetWidth);
+        //// 2. ‘иксируем ширину по пропорци€м текстуры
+        //float aspectRatio = (float)handle.Result.texture.width / handle.Result.texture.height;
+        //float targetWidth = rt.rect.height * aspectRatio;
+        //rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, targetWidth);
 
-        // 3. ÷ентрируем
-        rt.pivot = new Vector2(0.5f, 0.5f);
-        rt.anchoredPosition = Vector2.zero;
-        //image.color = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
+        //// 3. ÷ентрируем
+        //rt.pivot = new Vector2(0.5f, 0.5f);
+        //rt.anchoredPosition = Vector2.zero;
+        ////image.color = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
     }
 
 }
