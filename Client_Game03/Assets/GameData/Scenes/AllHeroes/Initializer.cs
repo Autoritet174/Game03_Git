@@ -77,7 +77,8 @@ public class Initializer : MonoBehaviour
         }
 
         // Изображение (загружаем через Addressable)
-        Transform childImage = _prefabIconHero.transform.Find("ImageHero");
+        Transform childImageMask = _prefabIconHero.transform.Find("ImageMask");
+        Transform childImage = childImageMask.Find("ImageHero");
         if (childImage != null && childImage.TryGetComponent(out UnityEngine.UI.Image image))
         {
             string addressableKey = $"hero-image-{heroName.ToLower()}-face"; // Ключ без расширения .png

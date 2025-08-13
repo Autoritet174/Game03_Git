@@ -1,5 +1,4 @@
 using Assets.GameData.Scripts;
-using TMPro;
 using UnityEngine;
 
 namespace Assets.GameData.Scenes.RegAuth

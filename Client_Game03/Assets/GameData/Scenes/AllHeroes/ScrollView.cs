@@ -12,7 +12,7 @@ public class ScrollView : MonoBehaviour
     /// <summary>
     /// Количество колонок в сетке.
     /// </summary>
-    private readonly int columnCount = 5;
+    private readonly int columnCount = 8;
 
     /// <summary>
     /// Компонент ScrollRect, к которому привязан скрипт.
@@ -71,7 +71,7 @@ public class ScrollView : MonoBehaviour
         float scrollViewWidth = scrollRectTransform.rect.width;
         float scrollbarWidth = verticalScrollbar.rect.width;
 
-        float percentWidthForImage = 0.8f;
+        float percentWidthForImage = 0.9f;
 
         //float totalAvailableWidth = scrollViewWidth - scrollbarWidth - (horizontalPadding * 2) - (spacing * (columnCount - 1));
         float totalAvailableWidth = scrollViewWidth - scrollbarWidth;

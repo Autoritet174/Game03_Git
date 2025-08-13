@@ -7,6 +7,6 @@ public class InputField : MonoBehaviour
     TextMeshProUGUI textMeshPro;
 
     private void Awake() {
-        textMeshPro.fontSize = GetComponent<RectTransform>().rect.height / 1.8f;
+        //textMeshPro.fontSize = GetComponent<RectTransform>().rect.height / 1.8f;
     }
 }

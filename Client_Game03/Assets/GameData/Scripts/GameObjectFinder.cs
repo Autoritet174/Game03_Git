@@ -1,8 +1,7 @@
-﻿
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Assets.GameData.Scripts
 {
@@ -30,7 +29,8 @@ namespace Assets.GameData.Scripts
                     return obj;
                 }
             }
-            return null;
+
+            throw new System.Exception($"Не найден GameObject с тегом {tag}");
         }
 
 
@@ -54,7 +54,7 @@ namespace Assets.GameData.Scripts
                 }
             }
 
-            return null;
+            throw new System.Exception($"Не найден GameObject с именем {name}");
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace Assets.GameData.Scripts
                 }
             }
 
-            return null;
+            throw new System.Exception($"Не найден TextMeshProUGUI с именем {name}");
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace Assets.GameData.Scripts
                 }
             }
 
-            return null;
+            throw new System.Exception($"Не найден TMP_InputField с именем {name}");
         }
 
         /// <summary>
@@ -197,10 +197,12 @@ namespace Assets.GameData.Scripts
             {
                 Button found = FindButtonInChildrenRecursive(root.transform, name);
                 if (found != null)
+                {
                     return found;
+                }
             }
 
-            return null;
+            throw new System.Exception($"Не найден Button с именем {name}");
         }
 
         /// <summary>
@@ -212,13 +214,17 @@ namespace Assets.GameData.Scripts
         private static Button FindButtonInChildrenRecursive(Transform parent, string name)
         {
             if (parent.name == name)
+            {
                 return parent.GetComponent<Button>();
+            }
 
             foreach (Transform child in parent)
             {
                 Button found = FindButtonInChildrenRecursive(child, name);
                 if (found != null)
+                {
                     return found;
+                }
             }
 
             return null;

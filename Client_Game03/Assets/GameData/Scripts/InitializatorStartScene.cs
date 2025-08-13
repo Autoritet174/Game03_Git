@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR
+using UnityEditor;
 using UnityEditor.SceneManagement;
 
 namespace Assets.GameData.Scripts
@@ -38,3 +39,4 @@ namespace Assets.GameData.Scripts
 
     }
 }
+#endif
