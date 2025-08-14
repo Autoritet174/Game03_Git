@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: efcef7ff676d0eb4999df3a1944e17fd
+guid: 09e3cb02a13285a41ae754bdd8bdd0b9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4470253925074098001
-    second: button_00003_128x128_Highlighed_04_0
+      213: -6438190081975044825
+    second: button_close_512_512_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: button_00003_128x128_Highlighed_04_0
+      name: button_close_512_512_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 128
-        height: 128
+        width: 512
+        height: 512
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 22, y: 22, z: 22, w: 22}
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 15756dba248890e30800000000000000
-      internalID: 4470253925074098001
+      spriteID: 7253f6f3b34f6a6a0800000000000000
+      internalID: -6438190081975044825
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 9622b60e9ba435d459eb359a02773433
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      button_00003_128x128_Highlighed_04_0: 4470253925074098001
+      button_close_512_512_0: -6438190081975044825
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

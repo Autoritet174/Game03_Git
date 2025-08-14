@@ -90,6 +90,7 @@
     <Compile Include="Assets\GameData\Scripts\GameObjectFinder.cs" />
     <Compile Include="Assets\GameData\Scenes\TEST_01\TestScript.cs" />
     <Compile Include="Assets\GameData\Prefabs\L1\Labels\Label_SetFontSize.cs" />
+    <Compile Include="Assets\GameData\Scenes\AllHeroes\ButtonClose.cs" />
     <Compile Include="Assets\GameData\Scenes\RegAuth\LocalizationManagerLoadLocale.cs" />
     <Compile Include="Assets\GameData\Scripts\AddressableHelper.cs" />
     <Compile Include="Assets\GameData\Scenes\RegAuth\Button_Auth.cs" />
@@ -106,7 +107,6 @@
     <None Include="Assets\Идеи и заметки\Другое.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
     <None Include="Assets\Идеи и заметки\Типы существ 2.txt" />
-    <None Include="Assets\AddressableAssetsData\link.xml" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\SDFFunctions.hlsl" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
