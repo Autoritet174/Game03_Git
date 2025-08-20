@@ -3,16 +3,16 @@ using UnityEngine.UI;
 
 public class ScrollView : MonoBehaviour
 {
-
-    [Header("Настройки ScrollView")]
-    [SerializeField] private RectTransform content; // Контент ScrollView
+    [SerializeField]
+    private RectTransform content; // Контент ScrollView
     //[SerializeField] private bool isVertical = true; // Ось прокрутки (вертикальная или горизонтальная)
 
 
     /// <summary>
     /// Количество колонок в сетке.
     /// </summary>
-    private readonly int columnCount = 8;
+    [SerializeField]
+    private int columnCount = 8;
 
     /// <summary>
     /// Компонент ScrollRect, к которому привязан скрипт.
@@ -32,66 +32,94 @@ public class ScrollView : MonoBehaviour
     /// <summary>
     /// Компонент RectTransform у вертикальной полосы прокрутки.
     /// </summary>
-    public RectTransform verticalScrollbar;
+    [SerializeField]
+    private RectTransform verticalScrollbar;
+
+    private float _lastHeight;
+    private float _lastWidth;
 
     /// <summary>
     /// Выполняется при запуске. Настраивает размеры ячеек в GridLayoutGroup.
     /// </summary>
     private void Start()
     {
-
-        //Screen.width;
-
-        // Внешний отступ (слева и справа) в пикселях.
-
-
-
-
-        scrollRect = GetComponent<ScrollRect>();
-        scrollRectTransform = scrollRect.GetComponent<RectTransform>();
-        gridLayout = scrollRect.content.GetComponent<GridLayoutGroup>();
-
-        if (gridLayout == null)
+        OnResize();
+    }
+    private void Update()
+    {
+        // Проверяем изменение высоты Canvas
+        if (!Mathf.Approximately(Screen.height, _lastHeight) || !Mathf.Approximately(Screen.width, _lastWidth))
         {
-            throw new MissingComponentException("На объекте Content отсутствует компонент GridLayoutGroup.");
+            OnResize();
         }
-
-        // Устанавливаем Constraint как FixedColumnCount
-        gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
-
-        // Устанавливаем количество колонок
-        gridLayout.constraintCount = columnCount;
-
+    }
+    void OnResize() {
+        _lastHeight = Screen.height;
+        _lastWidth = Screen.width;
 
         if (verticalScrollbar == null)
         {
             throw new MissingReferenceException("Поле verticalScrollbar должно быть назначено в инспекторе.");
         }
+        if (scrollRect == null)
+        {
+            scrollRect = GetComponent<ScrollRect>();
+        }
+        if (scrollRectTransform == null)
+        {
+            scrollRectTransform = scrollRect.GetComponent<RectTransform>();
+        }
+        if (gridLayout == null)
+        {
+            gridLayout = scrollRect.content.GetComponent<GridLayoutGroup>();
+            if (gridLayout == null)
+            {
+                throw new MissingComponentException("На объекте Content отсутствует компонент GridLayoutGroup.");
+            }
+        }
 
-        float scrollViewWidth = scrollRectTransform.rect.width;
+
+        // Устанавливаем Constraint как FixedColumnCount
+        gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+
+      
+
+
+
+        float scrollViewWidth = scrollRectTransform.rect.width * 0.95f;
         float scrollbarWidth = verticalScrollbar.rect.width;
 
         float percentWidthForImage = 0.9f;
 
         //float totalAvailableWidth = scrollViewWidth - scrollbarWidth - (horizontalPadding * 2) - (spacing * (columnCount - 1));
         float totalAvailableWidth = scrollViewWidth - scrollbarWidth;
-        if (totalAvailableWidth <= 0)
+        //Debug.Log("totalAvailableWidth=" + totalAvailableWidth);
+        if (totalAvailableWidth < 200)
         {
-            throw new System.Exception("Недостаточно ширины для размещения элементов.");
+            totalAvailableWidth = 200;
         }
 
+        columnCount = totalAvailableWidth switch
+        {
+            <= 300 => 3,
+            <= 800 => Mathf.RoundToInt(totalAvailableWidth / 100),
+            _ => 8,
+        };
+
+        // Устанавливаем количество колонокя
+        gridLayout.constraintCount = columnCount;
         float cellWidth = totalAvailableWidth / columnCount * percentWidthForImage;
         gridLayout.cellSize = new Vector2(cellWidth, cellWidth);
+
         // Отступ между элементами в пикселях.
         float spacing = totalAvailableWidth / (columnCount - 1) * (1 - percentWidthForImage);
         gridLayout.spacing = new Vector2(spacing, spacing);
 
-        scrollRect = GetComponentInParent<ScrollRect>();
+        //scrollRect = GetComponentInParent<ScrollRect>();
 
-        if (scrollRect != null)
-        {
-            //Метод для настройки ScrollSensitivity так, чтобы при единичном повороте колеса мыши прокручивалась одна ячейка.
-            scrollRect.scrollSensitivity = (cellWidth + spacing);// / 6f / 2f;
-        }
+
+        //настройки ScrollSensitivity так, чтобы при единичном повороте колеса мыши прокручивалась одна ячейка.
+        scrollRect.scrollSensitivity = cellWidth + spacing;// / 6f / 2f;
+
     }
 }
