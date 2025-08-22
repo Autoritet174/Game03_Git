@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -57,6 +58,7 @@ namespace Assets.GameData.Scripts
             throw new System.Exception($"Не найден GameObject с именем {name}");
         }
 
+
         /// <summary>
         /// Рекурсивно ищет объект по имени среди всех потомков заданного Transform.
         /// </summary>
@@ -84,44 +86,77 @@ namespace Assets.GameData.Scripts
 
 
         /// <summary>
-        /// Рекурсивно ищет компонент TextMeshProUGUI по имени объекта.
+        /// Ищет объект указанного типа в активной сцене.
+        /// Если имя не указано, возвращает первый найденный объект указанного типа.
+        /// Если указан startParent, поиск выполняется начиная с его дочерних объектов.
         /// </summary>
-        /// <param name="name">Имя объекта, содержащего компонент TextMeshProUGUI.</param>
-        /// <returns>TextMeshProUGUI-компонент или null, если не найден.</returns>
-        public static TextMeshProUGUI FindTextMeshProUGUIByName(string name)
+        /// <typeparam name="T">Тип компонента, который требуется найти.</typeparam>
+        /// <param name="name">Имя искомого объекта (необязательный параметр).</param>
+        /// <param name="startParent">Трансформ, откуда начинать поиск (или null для поиска от корня сцены).</param>
+        /// <returns>Найденный компонент указанного типа.</returns>
+        /// <exception cref="Exception">Если объект не найден.</exception>
+        public static T FindByName<T>(string name = null, Transform startParent = null) where T : Component
         {
-            GameObject[] rootObjects = SceneManager
-                .GetActiveScene()
-                .GetRootGameObjects();
-
-            foreach (GameObject root in rootObjects)
+            if (startParent != null)
             {
-                TextMeshProUGUI found = FindTMPInChildrenRecursive(root.transform, name);
+                T found = FindInChildrenRecursive<T>(startParent, name);
                 if (found != null)
                 {
                     return found;
                 }
             }
+            else
+            {
+                GameObject[] rootObjects = SceneManager
+                    .GetActiveScene()
+                    .GetRootGameObjects();
 
-            throw new System.Exception($"Не найден TextMeshProUGUI с именем {name}");
+                foreach (GameObject root in rootObjects)
+                {
+                    T found = FindInChildrenRecursive<T>(root.transform, name);
+                    if (found != null)
+                    {
+                        return found;
+                    }
+                }
+            }
+
+            throw new Exception(
+                name == null
+                    ? $"Не найден объект типа {typeof(T).Name}"
+                    : $"Не найден объект типа {typeof(T).Name} с именем {name}"
+            );
         }
 
+
         /// <summary>
-        /// Рекурсивно ищет компонент TextMeshProUGUI среди потомков по имени объекта.
+        /// Рекурсивный поиск объекта указанного типа по имени среди дочерних объектов.
+        /// Если имя не указано, возвращает первый найденный объект указанного типа.
         /// </summary>
-        /// <param name="parent">Родительский Transform.</param>
-        /// <param name="name">Имя искомого объекта.</param>
-        /// <returns>TextMeshProUGUI-компонент или null.</returns>
-        private static TextMeshProUGUI FindTMPInChildrenRecursive(Transform parent, string name)
+        /// <typeparam name="T">Тип компонента, который требуется найти.</typeparam>
+        /// <param name="parent">Родительский трансформ для поиска.</param>
+        /// <param name="name">Имя искомого объекта (или null для поиска первого объекта).</param>
+        /// <returns>Найденный компонент или null, если объект отсутствует.</returns>
+        private static T FindInChildrenRecursive<T>(Transform parent, string name) where T : Component
         {
-            if (parent.name == name)
+            if (string.IsNullOrEmpty(name))
             {
-                return parent.GetComponent<TextMeshProUGUI>();
+                if (parent.TryGetComponent(out T component))
+                {
+                    return component;
+                }
+            }
+            else if (parent.name == name)
+            {
+                if (parent.TryGetComponent(out T component))
+                {
+                    return component;
+                }
             }
 
             foreach (Transform child in parent)
             {
-                TextMeshProUGUI found = FindTMPInChildrenRecursive(child, name);
+                T found = FindInChildrenRecursive<T>(child, name);
                 if (found != null)
                 {
                     return found;
@@ -131,104 +166,6 @@ namespace Assets.GameData.Scripts
             return null;
         }
 
-
-
-        /// <summary>
-        /// Рекурсивно ищет компонент TMP_InputField по имени объекта.
-        /// </summary>
-        /// <param name="name">Имя объекта, содержащего компонент TMP_InputField.</param>
-        /// <returns>TMP_InputField-компонент или null, если не найден.</returns>
-        public static TMP_InputField FindTMPInputFieldByName(string name)
-        {
-            GameObject[] rootObjects = UnityEngine.SceneManagement.SceneManager
-                .GetActiveScene()
-                .GetRootGameObjects();
-
-            foreach (GameObject root in rootObjects)
-            {
-                TMP_InputField found = FindTMPInputFieldInChildrenRecursive(root.transform, name);
-                if (found != null)
-                {
-                    return found;
-                }
-            }
-
-            throw new System.Exception($"Не найден TMP_InputField с именем {name}");
-        }
-
-        /// <summary>
-        /// Рекурсивно ищет компонент TMP_InputField среди потомков по имени объекта.
-        /// </summary>
-        /// <param name="parent">Родительский Transform.</param>
-        /// <param name="name">Имя искомого объекта.</param>
-        /// <returns>TMP_InputField-компонент или null.</returns>
-        private static TMP_InputField FindTMPInputFieldInChildrenRecursive(Transform parent, string name)
-        {
-            if (parent.name == name)
-            {
-                return parent.GetComponent<TMP_InputField>();
-            }
-
-            foreach (Transform child in parent)
-            {
-                TMP_InputField found = FindTMPInputFieldInChildrenRecursive(child, name);
-                if (found != null)
-                {
-                    return found;
-                }
-            }
-
-            return null;
-        }
-
-
-        /// <summary>
-        /// Рекурсивно ищет компонент Button по имени объекта.
-        /// </summary>
-        /// <param name="name">Имя объекта, содержащего компонент Button.</param>
-        /// <returns>Button-компонент или null, если не найден.</returns>
-        public static Button FindButtonByName(string name)
-        {
-            GameObject[] rootObjects = UnityEngine.SceneManagement.SceneManager
-                .GetActiveScene()
-                .GetRootGameObjects();
-
-            foreach (GameObject root in rootObjects)
-            {
-                Button found = FindButtonInChildrenRecursive(root.transform, name);
-                if (found != null)
-                {
-                    return found;
-                }
-            }
-
-            throw new System.Exception($"Не найден Button с именем {name}");
-        }
-
-        /// <summary>
-        /// Рекурсивно ищет компонент Button среди потомков по имени объекта.
-        /// </summary>
-        /// <param name="parent">Родительский Transform.</param>
-        /// <param name="name">Имя искомого объекта.</param>
-        /// <returns>Button-компонент или null.</returns>
-        private static Button FindButtonInChildrenRecursive(Transform parent, string name)
-        {
-            if (parent.name == name)
-            {
-                return parent.GetComponent<Button>();
-            }
-
-            foreach (Transform child in parent)
-            {
-                Button found = FindButtonInChildrenRecursive(child, name);
-                if (found != null)
-                {
-                    return found;
-                }
-            }
-
-            return null;
-        }
     }
 
 }

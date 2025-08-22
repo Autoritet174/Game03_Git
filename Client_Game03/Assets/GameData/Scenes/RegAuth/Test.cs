@@ -1,4 +1,5 @@
 using Assets.GameData.Scripts;
+using TMPro;
 using UnityEngine;
 
 namespace Assets.GameData.Scenes.RegAuth
@@ -15,8 +16,8 @@ namespace Assets.GameData.Scenes.RegAuth
 
         private void Start()
         {
-            GameObjectFinder.FindTMPInputFieldByName("InputText_Email (uuid=9b99b098-1949-4b68-bba9-df3660bc95d4)").text = "SUPERADMIN@MAIL.RU";
-            GameObjectFinder.FindTMPInputFieldByName("InputText_Password (uuid=8003daed-ae09-43b9-b033-ae5bb5f5eb38)").text = "testPassword";
+            GameObjectFinder.FindByName<TMP_InputField>("InputText_Email (uuid=9b99b098-1949-4b68-bba9-df3660bc95d4)").text = "SUPERADMIN@MAIL.RU";
+            GameObjectFinder.FindByName<TMP_InputField>("InputText_Password (uuid=8003daed-ae09-43b9-b033-ae5bb5f5eb38)").text = "testPassword";
 
             //login.text = "SUPERADMIN@MAIL.RU";
             //login.text = "~!\"¹;%:?*()_+!@#$%^&*()_+{}[];':\"<>,./?\\/|";

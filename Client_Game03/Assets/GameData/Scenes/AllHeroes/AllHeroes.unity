@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 102251195}
   - component: {fileID: 102251197}
   m_Layer: 5
-  m_Name: Content
+  m_Name: Content (id=0a40ce51)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -219,9 +219,8 @@ GameObject:
   - component: {fileID: 132301340}
   - component: {fileID: 132301339}
   - component: {fileID: 132301338}
-  - component: {fileID: 132301341}
   m_Layer: 5
-  m_Name: Scroll View
+  m_Name: Scroll View (id=2e9cbb1a)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -316,21 +315,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 132301336}
   m_CullTransparentMesh: 1
---- !u!114 &132301341
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 132301336}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08ade3b7fbef89447aba0597e92a589a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  content: {fileID: 102251194}
-  columnCount: 5
-  verticalScrollbar: {fileID: 1766745477}
 --- !u!1 &176101338
 GameObject:
   m_ObjectHideFlags: 0
@@ -344,7 +328,7 @@ GameObject:
   - component: {fileID: 176101341}
   - component: {fileID: 176101343}
   m_Layer: 5
-  m_Name: Viewport
+  m_Name: Viewport (id=12f9409c)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -432,7 +416,7 @@ GameObject:
   - component: {fileID: 527144260}
   - component: {fileID: 527144261}
   m_Layer: 0
-  m_Name: Initializer
+  m_Name: AllHeroes_Script
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -447,7 +431,7 @@ Transform:
   m_GameObject: {fileID: 527144259}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.31877214, y: -0.44511765, z: 10.226265}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -465,7 +449,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e33b09583d689b439f93e9da00c7f2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  content: {fileID: 102251193}
   prefabIconHero: {fileID: 4581803169952703482, guid: c35939273b3873b48ad1c399aca7154a, type: 3}
 --- !u!1 &758041991
 GameObject:
@@ -727,7 +710,6 @@ MonoBehaviour:
   m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
-  m_Version: 2
   m_TaaSettings:
     m_Quality: 3
     m_FrameInfluence: 0.1
@@ -735,6 +717,7 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+  m_Version: 2
 --- !u!81 &1022238143
 AudioListener:
   m_ObjectHideFlags: 0
@@ -1051,7 +1034,6 @@ MonoBehaviour:
   m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
-  m_Version: 2
   m_TaaSettings:
     m_Quality: 3
     m_FrameInfluence: 0.1
@@ -1059,6 +1041,7 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+  m_Version: 2
 --- !u!114 &1323003134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1400,7 +1383,7 @@ GameObject:
   - component: {fileID: 1766745479}
   - component: {fileID: 1766745478}
   m_Layer: 5
-  m_Name: Scrollbar Vertical
+  m_Name: Scrollbar Vertical (id=75511cdc)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
