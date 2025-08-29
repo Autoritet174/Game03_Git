@@ -15,8 +15,33 @@ MonoBehaviour:
   m_GroupName: Rarity
   m_GUID: 7d50739eb45129f4dae3f3b0a746fa8c
   m_SerializeEntries:
+  - m_GUID: 1bbe394f6a327f54ab468eb5b24555bc
+    m_Address: rarity5
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4165355ef7ff7524e886fbaef0765572
+    m_Address: rarity4
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7412a12c4a1b7f84791e148a45f1332e
+    m_Address: rarity3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7475046caeaacc0449ff2369c7dba1a2
+    m_Address: rarity6
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 948efda3ade22914fbcf43e66cf0975e
     m_Address: rarity1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 96839e67bbc3d6b4d937716d68734e46
+    m_Address: rarity2
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

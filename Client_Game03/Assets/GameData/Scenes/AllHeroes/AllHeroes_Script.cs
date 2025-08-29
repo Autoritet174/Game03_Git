@@ -14,6 +14,7 @@ public class AllHeroes_Script : MonoBehaviour
 {
     private ScrollRect scrollView;
     private RectTransform content;
+    private RectTransform buttonClose;
 
 
     /// <summary>
@@ -51,7 +52,7 @@ public class AllHeroes_Script : MonoBehaviour
     private GameObject prefabIconHero;
     private bool inited = false;
 
-
+    private readonly int r = 4;
     private async void Start()
     {
         Task taskLoad = null;
@@ -63,6 +64,7 @@ public class AllHeroes_Script : MonoBehaviour
 
         scrollView = GameObjectFinder.FindByName<ScrollRect>("Scroll View (id=2e9cbb1a)");
         content = GameObjectFinder.FindByName<RectTransform>("Content (id=0a40ce51)", startParent: scrollView.transform);
+        buttonClose = GameObjectFinder.FindByName<RectTransform>("ButtonClose (id=5cd5cc79)");
         scrollRect = scrollView.GetComponent<ScrollRect>();
         GameObject ScrollbarVertical = GameObjectFinder.FindByName("Scrollbar Vertical (id=75511cdc)");
         verticalScrollbar = ScrollbarVertical.GetComponent<RectTransform>();
@@ -76,10 +78,11 @@ public class AllHeroes_Script : MonoBehaviour
 
         await AddAllImageOnContent();
 
-        OnResize();
+
 
         inited = true;
     }
+
     private void Update()
     {
         if (inited && (!Mathf.Approximately(Screen.height, _lastHeight) || !Mathf.Approximately(Screen.width, _lastWidth)))
@@ -87,7 +90,6 @@ public class AllHeroes_Script : MonoBehaviour
             OnResize();
         }
     }
-
 
     private async Task FullListAllHeroes()
     {
@@ -108,9 +110,23 @@ public class AllHeroes_Script : MonoBehaviour
         foreach (JObject heroObj in heroesArray.Cast<JObject>())
         {
             string name = heroObj["name"]?.ToString();
+            HeroBaseEntity.RarityLevel rarity = (HeroBaseEntity.RarityLevel)Convert.ToInt32(heroObj["rarity"]);
             //Debug.Log(name);
-            allHeroes.Add(new HeroBaseEntity(name));
+            allHeroes.Add(new HeroBaseEntity(name, rarity));
         }
+
+        allHeroes.Sort(static (a, b) =>
+        {
+            int result = b.Rarity.CompareTo(a.Rarity);
+            if (result != 0)
+            {// сортировка по редкости по убыванию
+                return result;
+            }
+
+            // сортировка по имени по возрастанию
+            return a.Name.CompareTo(b.Name);
+
+        });
     }
 
     private async Task AddAllImageOnContent()
@@ -118,14 +134,16 @@ public class AllHeroes_Script : MonoBehaviour
         List<Task> list = new();
         foreach (HeroBaseEntity heroStats in allHeroes)
         {
-            list.Add(LoadHeroByName(heroStats.Name));
+            list.Add(LoadHeroByName(heroStats));
         }
+        OnResize();
         await Task.WhenAll(list);
     }
 
-    private async Task LoadHeroByName(string heroName)
+    private async Task LoadHeroByName(HeroBaseEntity hero)
     {
         GameObject _prefabIconHero = Instantiate(prefabIconHero);
+        string heroName = hero.Name;
         _prefabIconHero.name = heroName;
 
         Transform transform = _prefabIconHero.transform;
@@ -155,10 +173,10 @@ public class AllHeroes_Script : MonoBehaviour
                 AsyncOperationHandle<Sprite> handleHero;
                 bool loadNull = true;
                 bool loadColor = true;
+                AsyncOperationHandle<Sprite> handleRarity = Addressables.LoadAssetAsync<Sprite>($"rarity{(int)hero.Rarity}");
                 if (await AddressableHelper.CheckIfKeyExists(addressableKey))
                 {
                     handleHero = Addressables.LoadAssetAsync<Sprite>(addressableKey);
-                    AsyncOperationHandle<Sprite> handleRarity = Addressables.LoadAssetAsync<Sprite>("rarity1");
                     _ = await handleHero.Task;
                     _ = await handleRarity.Task;
                     if (handleHero.Status == AsyncOperationStatus.Succeeded && handleHero.Result != null)
@@ -179,6 +197,7 @@ public class AllHeroes_Script : MonoBehaviour
                     if (handleHero.Status == AsyncOperationStatus.Succeeded && handleHero.Result != null)
                     {
                         SetImage(handleHero, imageHero);
+                        SetImage(handleRarity, imageRarity);
                         loadColor = false;
                         //Addressables.Release(handle);
                     }
@@ -189,6 +208,7 @@ public class AllHeroes_Script : MonoBehaviour
                 {
                     Debug.LogError($"Ќе удалось загрузить изображение {heroName} из Addressable Assets!");
                     imageHero.color = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
+                    SetImage(handleRarity, imageRarity);
                 }
             }
             catch (Exception ex)
@@ -273,5 +293,15 @@ public class AllHeroes_Script : MonoBehaviour
         {
             textMeshProUGUI.fontSize = cellWidth * 0.16f;
         }
+
+        // кнопка "«акрыть"
+        float buttonClose_coefW = _lastWidth / 1920f;
+        float buttonClose_coefH = _lastHeight / 1080f;
+        float buttonClose_coef = buttonClose_coefW > buttonClose_coefH ? buttonClose_coefW : buttonClose_coefH;
+        float pos = -55 * buttonClose_coef;
+        float size = 100 * buttonClose_coef;
+        buttonClose.anchoredPosition = new Vector2(pos, pos);
+        buttonClose.sizeDelta = new Vector2(size, size);
+
     }
 }
