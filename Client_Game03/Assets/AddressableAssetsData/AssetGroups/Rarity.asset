@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Rarity
   m_GUID: 7d50739eb45129f4dae3f3b0a746fa8c
   m_SerializeEntries:
+  - m_GUID: 11f6154acccf7174c9ca350dc9a175c9
+    m_Address: raritySelected
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1bbe394f6a327f54ab468eb5b24555bc
     m_Address: rarity5
     m_ReadOnly: 0

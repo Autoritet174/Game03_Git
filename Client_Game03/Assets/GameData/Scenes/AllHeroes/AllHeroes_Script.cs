@@ -5,11 +5,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.EventSystems;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
+using static General.Enums;
+using static UnityEditor.Handles;
 public class AllHeroes_Script : MonoBehaviour
 {
     private ScrollRect scrollView;
@@ -52,7 +56,7 @@ public class AllHeroes_Script : MonoBehaviour
     private GameObject prefabIconHero;
     private bool inited = false;
 
-    private readonly int r = 4;
+    //private readonly int r = 4;
     private async void Start()
     {
         Task taskLoad = null;
@@ -109,10 +113,11 @@ public class AllHeroes_Script : MonoBehaviour
         allHeroes.Clear();
         foreach (JObject heroObj in heroesArray.Cast<JObject>())
         {
+            Guid id = new(heroObj["id"]?.ToString());
             string name = heroObj["name"]?.ToString();
-            HeroBaseEntity.RarityLevel rarity = (HeroBaseEntity.RarityLevel)Convert.ToInt32(heroObj["rarity"]);
-            //Debug.Log(name);
-            allHeroes.Add(new HeroBaseEntity(name, rarity));
+            RarityLevel rarity = (RarityLevel)Convert.ToInt32(heroObj["rarity"]);
+            //Debug.Log(id);
+            allHeroes.Add(new HeroBaseEntity(id, name, rarity));
         }
 
         allHeroes.Sort(static (a, b) =>
@@ -125,7 +130,6 @@ public class AllHeroes_Script : MonoBehaviour
 
             // сортировка по имени по возрастанию
             return a.Name.CompareTo(b.Name);
-
         });
     }
 
@@ -174,6 +178,7 @@ public class AllHeroes_Script : MonoBehaviour
                 bool loadNull = true;
                 bool loadColor = true;
                 AsyncOperationHandle<Sprite> handleRarity = Addressables.LoadAssetAsync<Sprite>($"rarity{(int)hero.Rarity}");
+                AsyncOperationHandle<Sprite> handleEntered = Addressables.LoadAssetAsync<Sprite>($"raritySelected");
                 if (await AddressableHelper.CheckIfKeyExists(addressableKey))
                 {
                     handleHero = Addressables.LoadAssetAsync<Sprite>(addressableKey);
@@ -185,6 +190,11 @@ public class AllHeroes_Script : MonoBehaviour
                         SetImage(handleRarity, imageRarity);
                         loadNull = false;
                         loadColor = false;
+
+                        // Добавляем компонент для обработки кликов
+                        ImageHeroHandler clickHandler = _prefabIconHero.AddComponent<ImageHeroHandler>();
+                        clickHandler.Initialize(hero, handleRarity.Result, handleEntered.Result, HeroView, imageRarity);
+
                         //Addressables.Release(handle);
                     }
                 }
@@ -218,6 +228,15 @@ public class AllHeroes_Script : MonoBehaviour
             }
         }
     }
+
+
+    public void HeroView(HeroBaseEntity hero)
+    {
+        //Debug.Log("Клик на изображение с параметром: " + inputString);
+        // Здесь делайте что нужно с inputString
+
+    }
+
 
     private void SetImage(AsyncOperationHandle<Sprite> handle, UnityEngine.UI.Image image)
     {
