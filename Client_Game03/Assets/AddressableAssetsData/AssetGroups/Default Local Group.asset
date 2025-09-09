@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 2ffd505fea132264fb92065a7554e0cf
   m_SerializeEntries:
+  - m_GUID: c3acb7d9b8c0e884cb19e0bf3e3811af
+    m_Address: Canvas_HeroViewer
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c96f9fe0e0b975c4eb16dac8fa75fcf0
     m_Address: GameMessage-Canvas
     m_ReadOnly: 0

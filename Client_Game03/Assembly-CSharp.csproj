@@ -61,14 +61,17 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.2.1f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\GameData\Scenes\MainMenu\Button_InBattle.cs" />
+    <Compile Include="Assets\GameData\Scenes\MainMenu\Button_AllHeroes.cs" />
     <Compile Include="Assets\GameData\Prefabs\L1\Buttons\Button_01_Init.cs" />
-    <Compile Include="Assets\GameData\Scenes\MainMenu\Scripts\Button_InBattle.cs" />
-    <Compile Include="Assets\GameData\Scenes\MainMenu\Scripts\Button_AllHeroes.cs" />
+    <Compile Include="Assets\GameData\Scripts\ButtonCloseHelper.cs" />
+    <Compile Include="Assets\GameData\Scripts\ButtonClose_Click_MoveToMainMenu.cs" />
     <Compile Include="Assets\GameData\Scripts\InternetChecker.cs" />
     <Compile Include="Assets\GameData\Scenes\RegAuth\Button_Reg.cs" />
     <Compile Include="Assets\GameData\Scripts\InitializatorGlobal.cs" />
     <Compile Include="Assets\GameData\Scripts\LoggerException.cs" />
     <Compile Include="Assets\GameData\Scripts\GameExitHandler.cs" />
+    <Compile Include="Assets\GameData\Scenes\MainMenu\Button_Collection.cs" />
     <Compile Include="Assets\GameData\Scripts\HttpRequester.cs" />
     <Compile Include="Assets\GameData\Prefabs\L1\InputFields\InputField.cs" />
     <Compile Include="Assets\GameData\AddressableAssets\Prefabs\L3\GameMessage\GameMessageButtonClose.cs" />
@@ -90,7 +93,6 @@
     <Compile Include="Assets\GameData\Scripts\GameObjectFinder.cs" />
     <Compile Include="Assets\GameData\Scenes\TEST_01\TestScript.cs" />
     <Compile Include="Assets\GameData\Prefabs\L1\Labels\Label_SetFontSize.cs" />
-    <Compile Include="Assets\GameData\Scenes\AllHeroes\ButtonClose.cs" />
     <Compile Include="Assets\GameData\Scenes\RegAuth\LocalizationManagerLoadLocale.cs" />
     <Compile Include="Assets\GameData\Scripts\AddressableHelper.cs" />
     <Compile Include="Assets\GameData\Scenes\RegAuth\Button_Auth.cs" />

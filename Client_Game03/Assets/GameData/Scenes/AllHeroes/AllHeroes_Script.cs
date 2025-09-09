@@ -5,15 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.EventSystems;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 using static General.Enums;
-using static UnityEditor.Handles;
 public class AllHeroes_Script : MonoBehaviour
 {
     private ScrollRect scrollView;
@@ -54,7 +51,14 @@ public class AllHeroes_Script : MonoBehaviour
 
     [SerializeField]
     private GameObject prefabIconHero;
+
+    [SerializeField]
+    private GameObject prefabHeroViewer;
     private bool inited = false;
+
+    private readonly Dictionary<string, RectTransform> dictOnResizeButtonClose = new();
+    private readonly Dictionary<string, RectTransform> dictOnResizeHeroName = new();
+    private readonly Dictionary<string, TextMeshProUGUI> dictOnResizeHeroNameFont = new();
 
     //private readonly int r = 4;
     private async void Start()
@@ -74,6 +78,9 @@ public class AllHeroes_Script : MonoBehaviour
         verticalScrollbar = ScrollbarVertical.GetComponent<RectTransform>();
         scrollRectTransform = scrollRect.GetComponent<RectTransform>();
         gridLayout = scrollRect.content.GetComponent<GridLayoutGroup>();
+
+        //ButtonCloseHelper.UpdateSize(_lastWidth, _lastHeight, buttonClose);
+        OnResize();
 
         if (taskLoad != null)
         {
@@ -230,39 +237,76 @@ public class AllHeroes_Script : MonoBehaviour
     }
 
 
-    public void HeroView(HeroBaseEntity hero)
+    public async Task HeroView(HeroBaseEntity hero)
     {
-        //Debug.Log("Клик на изображение с параметром: " + inputString);
-        // Здесь делайте что нужно с inputString
+        GameObject _prefabHeroViewer = Instantiate(prefabHeroViewer);
+        Canvas canvas = _prefabHeroViewer.GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        canvas.worldCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 
+        //Кнопка "Закрыть"
+        const string _buttonClose__Name = "ButtonClose (id=1berxtk2)";
+        Button _buttonClose = GameObjectFinder.FindByName<Button>(_buttonClose__Name, _prefabHeroViewer.transform);
+
+        RectTransform _buttonClose__RT = GameObjectFinder.FindByName<RectTransform>(_buttonClose__Name);
+        _ = dictOnResizeButtonClose.TryAdd($"{_buttonClose__Name}{_buttonClose__RT.GetHashCode()}", _buttonClose__RT);
+
+        await Task.Delay(0);
+
+        OnResizeAllDictotaries();
+
+
+
+        //Имя героя
+        const string _Text_HeroName__Name = "Text_HeroName (id=rw8uftqp)";
+        TextMeshProUGUI _Text_HeroName = GameObjectFinder.FindByName<TextMeshProUGUI>(_Text_HeroName__Name, _prefabHeroViewer.transform);
+        _Text_HeroName.text = hero.Name;
+
+        RectTransform _Text_HeroName__RT = GameObjectFinder.FindByName<RectTransform>(_Text_HeroName__Name);
+        _ = dictOnResizeHeroName.TryAdd($"{_Text_HeroName__Name}{_Text_HeroName__RT.GetHashCode()}", _Text_HeroName__RT);
+
+        TextMeshProUGUI textMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>(_Text_HeroName__Name);
+        _ = dictOnResizeHeroNameFont.TryAdd($"{_Text_HeroName__Name}{textMeshProUGUI.GetHashCode()}", textMeshProUGUI);
+
+
+        //Изображение героя
+        const string imageHeroFull__Name = "Image_HeroFull (id=6z1ddxml)";
+        Image imageHero = GameObjectFinder.FindByName<Image>(imageHeroFull__Name);
+
+
+
+
+        //Привязать метод
+        _buttonClose.onClick.AddListener(() =>
+        {
+            string key = $"{_buttonClose__Name}{_buttonClose__RT.GetHashCode()}";
+            if (dictOnResizeButtonClose.TryGetValue(key, out _))
+            {
+                _ = dictOnResizeButtonClose.Remove(key);
+            }
+
+            key = $"{_Text_HeroName__Name}{_Text_HeroName__RT.GetHashCode()}";
+            if (dictOnResizeHeroName.TryGetValue(key, out _))
+            {
+                _ = dictOnResizeHeroName.Remove(key);
+            }
+
+            key = $"{_Text_HeroName__Name}{textMeshProUGUI.GetHashCode()}";
+            if (dictOnResizeHeroNameFont.TryGetValue(key, out _))
+            {
+                _ = dictOnResizeHeroNameFont.Remove(key);
+            }
+
+            Destroy(_prefabHeroViewer);
+        });
     }
 
 
     private void SetImage(AsyncOperationHandle<Sprite> handle, UnityEngine.UI.Image image)
     {
         image.sprite = handle.Result;
-
-        // Настройка отображения:
         image.preserveAspect = true; // Сохраняет пропорции изображения
-        image.type = Image.Type.Simple; // Режим без растягивания
-
-        //// Настройки RectTransform
-        //RectTransform rt = image.rectTransform;
-
-        //// 1. Растягиваем по вертикали на 100%
-        //rt.anchorMin = new Vector2(0f, 0.12f); // Якорь снизу по центру
-        //rt.anchorMax = new Vector2(1f, 1f); // Якорь сверху по центру
-        //rt.sizeDelta = new Vector2(0, 0);     // Растягиваем по якорям
-
-        //// 2. Фиксируем ширину по пропорциям текстуры
-        //float aspectRatio = (float)handle.Result.texture.width / handle.Result.texture.height;
-        //float targetWidth = rt.rect.height * aspectRatio;
-        //rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, targetWidth);
-
-        //// 3. Центрируем
-        //rt.pivot = new Vector2(0.5f, 0.5f);
-        //rt.anchoredPosition = Vector2.zero;
-        ////image.color = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
+        image.type = Image.Type.Simple; // Режим без растягивания;
     }
 
     private void OnResize()
@@ -313,14 +357,27 @@ public class AllHeroes_Script : MonoBehaviour
             textMeshProUGUI.fontSize = cellWidth * 0.16f;
         }
 
-        // кнопка "Закрыть"
-        float buttonClose_coefW = _lastWidth / 1920f;
-        float buttonClose_coefH = _lastHeight / 1080f;
-        float buttonClose_coef = buttonClose_coefW > buttonClose_coefH ? buttonClose_coefW : buttonClose_coefH;
-        float pos = -55 * buttonClose_coef;
-        float size = 100 * buttonClose_coef;
-        buttonClose.anchoredPosition = new Vector2(pos, pos);
-        buttonClose.sizeDelta = new Vector2(size, size);
+        ButtonCloseHelper.UpdateSize(_lastWidth, _lastHeight, buttonClose);
+
+        OnResizeAllDictotaries();
+    }
+
+    private void OnResizeAllDictotaries()
+    {
+        foreach (KeyValuePair<string, RectTransform> item in dictOnResizeButtonClose)
+        {
+            ButtonCloseHelper.UpdateSize(_lastWidth, _lastHeight, item.Value);
+        }
+
+        foreach (KeyValuePair<string, RectTransform> item in dictOnResizeHeroName)
+        {
+            item.Value.offsetMin = new Vector2(0, 993 * _lastHeight / 1080);
+        }
+
+        foreach (KeyValuePair<string, TextMeshProUGUI> item in dictOnResizeHeroNameFont)
+        {
+            item.Value.fontSize = 66.66666f * _lastHeight / 1080;
+        }
 
     }
 }

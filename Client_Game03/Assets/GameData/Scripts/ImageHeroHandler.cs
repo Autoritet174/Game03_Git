@@ -2,16 +2,17 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System.Threading.Tasks;
 
 public class ImageHeroHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     private HeroBaseEntity hero;
     private Sprite normalSprite;
     private Sprite hoverSprite;
-    private System.Action<HeroBaseEntity> clickCallback;
+    private System.Func<HeroBaseEntity, Task> clickCallback; // Изменено на Func с Task
     private Image imageComponent;
 
-    public void Initialize(HeroBaseEntity hero, Sprite normal, Sprite hover, System.Action<HeroBaseEntity> callback, Image imageComponent)
+    public void Initialize(HeroBaseEntity hero, Sprite normal, Sprite hover, System.Func<HeroBaseEntity, Task> callback, Image imageComponent)
     {
         this.hero = hero;
         normalSprite = normal;
@@ -19,13 +20,11 @@ public class ImageHeroHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
         clickCallback = callback;
         this.imageComponent = imageComponent;
 
-        //imageComponent = GetComponent<Image>();
         if (imageComponent != null && normalSprite != null)
         {
             imageComponent.sprite = normalSprite;
         }
 
-        // Включаем Raycast Target для обработки событий
         if (imageComponent != null)
         {
             imageComponent.raycastTarget = true;
@@ -35,18 +34,42 @@ public class ImageHeroHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (hoverSprite != null && imageComponent != null)
+        {
             imageComponent.sprite = hoverSprite;
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         if (normalSprite != null && imageComponent != null)
+        {
             imageComponent.sprite = normalSprite;
+        }
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    // Асинхронный обработчик клика
+    public async void OnPointerClick(PointerEventData eventData)
     {
-        clickCallback?.Invoke(hero);
+        if (clickCallback != null)
+        {
+            // Вызываем асинхронный callback и ждем результат
+            await clickCallback(hero);
+            // Можно обработать результат если нужно
+        }
+    }
+
+
+    private async System.Threading.Tasks.Task HandleClickAsync()
+    {
+        try
+        {
+            await clickCallback(hero);
+            // Обработка результата
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"Error in click handler: {ex.Message}");
+        }
     }
 
     // Обновление параметров

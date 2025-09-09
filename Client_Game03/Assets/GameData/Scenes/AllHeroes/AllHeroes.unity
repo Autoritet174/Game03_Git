@@ -450,6 +450,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefabIconHero: {fileID: 4581803169952703482, guid: c35939273b3873b48ad1c399aca7154a, type: 3}
+  prefabHeroViewer: {fileID: 5030384346222043023, guid: c3acb7d9b8c0e884cb19e0bf3e3811af, type: 3}
 --- !u!1 &758041991
 GameObject:
   m_ObjectHideFlags: 0
@@ -544,8 +545,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 132301337}
   - {fileID: 1482660614}
+  - {fileID: 132301337}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -993,7 +994,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1084,11 +1085,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8118241554056136677, guid: 651b152dc775c274e883b03aa92e7c7b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LoadScene_MainMenu
+      value: OnClick
       objectReference: {fileID: 0}
     - target: {fileID: 8118241554056136677, guid: 651b152dc775c274e883b03aa92e7c7b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ButtonClose, Assembly-CSharp
+      value: ButtonClose_Click_MoveToMainMenu, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8118241554056136677, guid: 651b152dc775c274e883b03aa92e7c7b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -1120,11 +1121,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8374392617803685409, guid: 651b152dc775c274e883b03aa92e7c7b, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 86
       objectReference: {fileID: 0}
     - target: {fileID: 8374392617803685409, guid: 651b152dc775c274e883b03aa92e7c7b, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 86
       objectReference: {fileID: 0}
     - target: {fileID: 8374392617803685409, guid: 651b152dc775c274e883b03aa92e7c7b, type: 3}
       propertyPath: m_LocalScale.x
@@ -1168,11 +1169,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8374392617803685409, guid: 651b152dc775c274e883b03aa92e7c7b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -55
+      value: -43
       objectReference: {fileID: 0}
     - target: {fileID: 8374392617803685409, guid: 651b152dc775c274e883b03aa92e7c7b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -55
+      value: -43
       objectReference: {fileID: 0}
     - target: {fileID: 8374392617803685409, guid: 651b152dc775c274e883b03aa92e7c7b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1213,7 +1214,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1482660615}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c2d7f332dc6b374e8f40ffbe3664dbe, type: 3}
+  m_Script: {fileID: 11500000, guid: b3d67de4665f290469c300971e57af22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1490128151
