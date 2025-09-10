@@ -1,7 +1,9 @@
+using Assets.GameData.Scenes.AllHeroes;
 using Assets.GameData.Scripts;
 using General.GameEntities;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,17 +13,11 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 using static General.Enums;
-public class AllHeroes_Script : MonoBehaviour
+public class AllHeroes : MonoBehaviour
 {
     private ScrollRect scrollView;
     private RectTransform content;
     private RectTransform buttonClose;
-
-
-    /// <summary>
-    /// Количество колонок в сетке.
-    /// </summary>
-    private int columnCount = 8;
 
     /// <summary>
     /// Компонент ScrollRect, к которому привязан скрипт.
@@ -39,32 +35,32 @@ public class AllHeroes_Script : MonoBehaviour
     private RectTransform scrollRectTransform;
 
     /// <summary>
-    /// Компонент RectTransform у вертикальной полосы прокрутки.
+    /// Компонент RectTransform у вертикальной полосы прокрутки. Для изменения размера шрифта при изменении размера окна.
     /// </summary>
     private RectTransform verticalScrollbar;
-    private readonly System.Collections.Concurrent.ConcurrentBag<TextMeshProUGUI> list_TextMeshProUGUI_heroNames = new();
+    private readonly ConcurrentBag<TextMeshProUGUI> list_TextMeshProUGUI_heroNames = new();
+    private readonly Dictionary<string, RectTransform> dictOnResizeButtonClose = new();
+    private readonly Dictionary<string, RectTransform> dictOnResizeHeroName = new();
+    private readonly Dictionary<string, TextMeshProUGUI> dictOnResizeHeroNameFont = new();
 
     private float _lastHeight;
     private float _lastWidth;
-    private const string heroImageNull = "hero-image-null";
-    private static readonly List<HeroBaseEntity> allHeroes = new();
 
     [SerializeField]
     private GameObject prefabIconHero;
 
-    [SerializeField]
-    private GameObject prefabHeroViewer;
+    //[SerializeField]
+    //private GameObject prefabHeroViewer;
     private bool inited = false;
 
-    private readonly Dictionary<string, RectTransform> dictOnResizeButtonClose = new();
-    private readonly Dictionary<string, RectTransform> dictOnResizeHeroName = new();
-    private readonly Dictionary<string, TextMeshProUGUI> dictOnResizeHeroNameFont = new();
+    private int columnCount = 8;
+
 
     //private readonly int r = 4;
     private async void Start()
     {
         Task taskLoad = null;
-        if (allHeroes.Count == 0)
+        if (AllHeroesConsts.AllHeroes.Count == 0)
         {
             taskLoad = FullListAllHeroes();
         }
@@ -117,17 +113,17 @@ public class AllHeroes_Script : MonoBehaviour
             throw new InvalidOperationException("Ключ 'heroes' отсутствует или не является массивом.");
         }
 
-        allHeroes.Clear();
+        AllHeroesConsts.AllHeroes.Clear();
         foreach (JObject heroObj in heroesArray.Cast<JObject>())
         {
             Guid id = new(heroObj["id"]?.ToString());
             string name = heroObj["name"]?.ToString();
             RarityLevel rarity = (RarityLevel)Convert.ToInt32(heroObj["rarity"]);
             //Debug.Log(id);
-            allHeroes.Add(new HeroBaseEntity(id, name, rarity));
+            AllHeroesConsts.AllHeroes.Add(new HeroBaseEntity(id, name, rarity));
         }
 
-        allHeroes.Sort(static (a, b) =>
+        AllHeroesConsts.AllHeroes.Sort(static (a, b) =>
         {
             int result = b.Rarity.CompareTo(a.Rarity);
             if (result != 0)
@@ -143,7 +139,7 @@ public class AllHeroes_Script : MonoBehaviour
     private async Task AddAllImageOnContent()
     {
         List<Task> list = new();
-        foreach (HeroBaseEntity heroStats in allHeroes)
+        foreach (HeroBaseEntity heroStats in AllHeroesConsts.AllHeroes)
         {
             list.Add(LoadHeroByName(heroStats));
         }
@@ -177,7 +173,7 @@ public class AllHeroes_Script : MonoBehaviour
             && childImageRarity != null && childImageRarity.TryGetComponent(out UnityEngine.UI.Image imageRarity)
             )
         {
-            string addressableKey = $"hero-image-{heroName.ToLower()}-face"; // Ключ без расширения .png
+            string addressableKey = $"hero-image-{heroName.ToLower()}-face";
 
             try
             {
@@ -207,9 +203,9 @@ public class AllHeroes_Script : MonoBehaviour
                 }
 
 
-                if (loadNull && await AddressableHelper.CheckIfKeyExists(heroImageNull))
+                if (loadNull && await AddressableHelper.CheckIfKeyExists(AllHeroesConsts.HeroImageNull))
                 {
-                    handleHero = Addressables.LoadAssetAsync<Sprite>(heroImageNull);
+                    handleHero = Addressables.LoadAssetAsync<Sprite>(AllHeroesConsts.HeroImageNull);
                     _ = await handleHero.Task;
                     if (handleHero.Status == AsyncOperationStatus.Succeeded && handleHero.Result != null)
                     {
@@ -237,34 +233,123 @@ public class AllHeroes_Script : MonoBehaviour
     }
 
 
+
+
+    private void SetImage(AsyncOperationHandle<Sprite> handle, UnityEngine.UI.Image image)
+    {
+        image.sprite = handle.Result;
+        image.preserveAspect = true; // Сохраняет пропорции изображения
+        image.type = Image.Type.Simple; // Режим без растягивания;
+    }
+
+    private void OnResize()
+    {
+        _lastHeight = Screen.height;
+        _lastWidth = Screen.width;
+
+        // Устанавливаем Constraint как FixedcolumnCount
+        gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+
+        float scrollView_Width = scrollRectTransform.rect.width * 0.95f;
+        float scrollBar_Width = verticalScrollbar.rect.width;
+
+        float percentWidthForImage = 0.9f;
+
+        //float totalAvailableWidth = scrollViewWidth - scrollbarWidth - (horizontalPadding * 2) - (spacing * (columnCount - 1));
+        float totalAvailableWidth = scrollView_Width - scrollBar_Width;
+        //Debug.Log("totalAvailableWidth=" + totalAvailableWidth);
+        if (totalAvailableWidth < 200f)
+        {
+            totalAvailableWidth = 200f;
+        }
+
+        columnCount = totalAvailableWidth switch
+        {
+            <= 300f => 3,
+            <= 800f => Mathf.RoundToInt(totalAvailableWidth / 100f),
+            _ => 8,
+        };
+
+        // Устанавливаем количество колонок
+        gridLayout.constraintCount = columnCount;
+        float cellWidth = totalAvailableWidth / columnCount * percentWidthForImage;
+        gridLayout.cellSize = new Vector2(cellWidth, cellWidth);
+
+        // Отступ между элементами в пикселях.
+        float spacing = totalAvailableWidth / (columnCount - 1) * (1f - percentWidthForImage);
+        gridLayout.spacing = new Vector2(spacing, spacing);
+
+        //scrollRect = GetComponentInParent<ScrollRect>();
+
+
+        //настройки ScrollSensitivity так, чтобы при единичном повороте колеса мыши прокручивалась одна ячейка.
+        scrollRect.scrollSensitivity = cellWidth + spacing;// / 6f / 2f;
+
+        foreach (TextMeshProUGUI textMeshProUGUI in list_TextMeshProUGUI_heroNames)
+        {
+            textMeshProUGUI.fontSize = cellWidth * 0.16f;
+        }
+
+        ButtonCloseHelper.UpdateSize(_lastWidth, _lastHeight, buttonClose);
+
+        OnResizeAllDictotaries();
+    }
+
+    private void OnResizeAllDictotaries()
+    {
+
+        foreach (KeyValuePair<string, RectTransform> item in dictOnResizeButtonClose)
+        {
+            ButtonCloseHelper.UpdateSize(_lastWidth, _lastHeight, item.Value);
+        }
+
+        foreach (KeyValuePair<string, RectTransform> item in dictOnResizeHeroName)
+        {
+            item.Value.offsetMin = new Vector2(0, 993 * _lastHeight / 1080);
+        }
+
+        foreach (KeyValuePair<string, TextMeshProUGUI> item in dictOnResizeHeroNameFont)
+        {
+            item.Value.fontSize = 66.66666f * _lastHeight / 1080;
+        }
+
+    }
+
     public async Task HeroView(HeroBaseEntity hero)
     {
-        GameObject _prefabHeroViewer = Instantiate(prefabHeroViewer);
-        Canvas canvas = _prefabHeroViewer.GetComponent<Canvas>();
+
+        GameObject prefabHeroViewer;
+        
+        string addressableKey = $"HeroViewer";
+        AsyncOperationHandle<GameObject> prefabHeroViewer_handle = Addressables.LoadAssetAsync<GameObject>(addressableKey);
+        _ = await prefabHeroViewer_handle.Task;
+        prefabHeroViewer = prefabHeroViewer_handle.Status == AsyncOperationStatus.Succeeded
+            ? Instantiate(prefabHeroViewer_handle.Result)
+            : throw new Exception($"{nameof(prefabHeroViewer)} не загружен");
+        prefabHeroViewer.name = $"IconHero_{hero.Name}";
+
+
+        Canvas canvas = GameObjectFinder.FindByName<Canvas>($"Canvas_HeroViewer (id=6fpbu4db)", prefabHeroViewer.transform);
         canvas.renderMode = RenderMode.ScreenSpaceCamera;
         canvas.worldCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 
+
         //Кнопка "Закрыть"
         const string _buttonClose__Name = "ButtonClose (id=1berxtk2)";
-        Button _buttonClose = GameObjectFinder.FindByName<Button>(_buttonClose__Name, _prefabHeroViewer.transform);
-
+        Button _buttonClose = GameObjectFinder.FindByName<Button>(_buttonClose__Name, prefabHeroViewer.transform);
         RectTransform _buttonClose__RT = GameObjectFinder.FindByName<RectTransform>(_buttonClose__Name);
         _ = dictOnResizeButtonClose.TryAdd($"{_buttonClose__Name}{_buttonClose__RT.GetHashCode()}", _buttonClose__RT);
 
-        await Task.Delay(0);
 
         OnResizeAllDictotaries();
 
 
-
         //Имя героя
         const string _Text_HeroName__Name = "Text_HeroName (id=rw8uftqp)";
-        TextMeshProUGUI _Text_HeroName = GameObjectFinder.FindByName<TextMeshProUGUI>(_Text_HeroName__Name, _prefabHeroViewer.transform);
+        TextMeshProUGUI _Text_HeroName = GameObjectFinder.FindByName<TextMeshProUGUI>(_Text_HeroName__Name, prefabHeroViewer.transform);
         _Text_HeroName.text = hero.Name;
-
         RectTransform _Text_HeroName__RT = GameObjectFinder.FindByName<RectTransform>(_Text_HeroName__Name);
         _ = dictOnResizeHeroName.TryAdd($"{_Text_HeroName__Name}{_Text_HeroName__RT.GetHashCode()}", _Text_HeroName__RT);
-
         TextMeshProUGUI textMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>(_Text_HeroName__Name);
         _ = dictOnResizeHeroNameFont.TryAdd($"{_Text_HeroName__Name}{textMeshProUGUI.GetHashCode()}", textMeshProUGUI);
 
@@ -272,9 +357,18 @@ public class AllHeroes_Script : MonoBehaviour
         //Изображение героя
         const string imageHeroFull__Name = "Image_HeroFull (id=6z1ddxml)";
         Image imageHero = GameObjectFinder.FindByName<Image>(imageHeroFull__Name);
-
-
-
+        string imageHeroFull__Image = $"hero-image-{hero.Name.ToLower()}";
+        AsyncOperationHandle<Sprite> imageHero_handle = Addressables.LoadAssetAsync<Sprite>(imageHeroFull__Image);
+        _ = await imageHero_handle.Task;
+        if (imageHero_handle.Status == AsyncOperationStatus.Succeeded)
+        {
+            SetImage(imageHero_handle, imageHero);
+        }
+        else
+        {
+            throw new Exception($"{nameof(imageHero_handle)} не загружен");
+        }
+        
 
         //Привязать метод
         _buttonClose.onClick.AddListener(() =>
@@ -297,87 +391,12 @@ public class AllHeroes_Script : MonoBehaviour
                 _ = dictOnResizeHeroNameFont.Remove(key);
             }
 
-            Destroy(_prefabHeroViewer);
+            Destroy(prefabHeroViewer);
         });
+
+
+        //Анимация
+        await AllHeroesConsts.RunAnimationImage(imageHero, 500);
     }
 
-
-    private void SetImage(AsyncOperationHandle<Sprite> handle, UnityEngine.UI.Image image)
-    {
-        image.sprite = handle.Result;
-        image.preserveAspect = true; // Сохраняет пропорции изображения
-        image.type = Image.Type.Simple; // Режим без растягивания;
-    }
-
-    private void OnResize()
-    {
-        _lastHeight = Screen.height;
-        _lastWidth = Screen.width;
-
-        // Устанавливаем Constraint как FixedColumnCount
-        gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
-
-        float scrollViewWidth = scrollRectTransform.rect.width * 0.95f;
-        float scrollbarWidth = verticalScrollbar.rect.width;
-
-        float percentWidthForImage = 0.9f;
-
-        //float totalAvailableWidth = scrollViewWidth - scrollbarWidth - (horizontalPadding * 2) - (spacing * (columnCount - 1));
-        float totalAvailableWidth = scrollViewWidth - scrollbarWidth;
-        //Debug.Log("totalAvailableWidth=" + totalAvailableWidth);
-        if (totalAvailableWidth < 200)
-        {
-            totalAvailableWidth = 200;
-        }
-
-        columnCount = totalAvailableWidth switch
-        {
-            <= 300 => 3,
-            <= 800 => Mathf.RoundToInt(totalAvailableWidth / 100),
-            _ => 8,
-        };
-
-        // Устанавливаем количество колонокя
-        gridLayout.constraintCount = columnCount;
-        float cellWidth = totalAvailableWidth / columnCount * percentWidthForImage;
-        gridLayout.cellSize = new Vector2(cellWidth, cellWidth);
-
-        // Отступ между элементами в пикселях.
-        float spacing = totalAvailableWidth / (columnCount - 1) * (1 - percentWidthForImage);
-        gridLayout.spacing = new Vector2(spacing, spacing);
-
-        //scrollRect = GetComponentInParent<ScrollRect>();
-
-
-        //настройки ScrollSensitivity так, чтобы при единичном повороте колеса мыши прокручивалась одна ячейка.
-        scrollRect.scrollSensitivity = cellWidth + spacing;// / 6f / 2f;
-
-        foreach (TextMeshProUGUI textMeshProUGUI in list_TextMeshProUGUI_heroNames)
-        {
-            textMeshProUGUI.fontSize = cellWidth * 0.16f;
-        }
-
-        ButtonCloseHelper.UpdateSize(_lastWidth, _lastHeight, buttonClose);
-
-        OnResizeAllDictotaries();
-    }
-
-    private void OnResizeAllDictotaries()
-    {
-        foreach (KeyValuePair<string, RectTransform> item in dictOnResizeButtonClose)
-        {
-            ButtonCloseHelper.UpdateSize(_lastWidth, _lastHeight, item.Value);
-        }
-
-        foreach (KeyValuePair<string, RectTransform> item in dictOnResizeHeroName)
-        {
-            item.Value.offsetMin = new Vector2(0, 993 * _lastHeight / 1080);
-        }
-
-        foreach (KeyValuePair<string, TextMeshProUGUI> item in dictOnResizeHeroNameFont)
-        {
-            item.Value.fontSize = 66.66666f * _lastHeight / 1080;
-        }
-
-    }
 }

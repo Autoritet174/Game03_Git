@@ -10,18 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Default Local Group
-  m_EditorClassIdentifier: 
-  m_GroupName: Default Local Group
-  m_GUID: 2ffd505fea132264fb92065a7554e0cf
+  m_Name: Scene_AllHeroes
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Scene_AllHeroes
+  m_GUID: 7fabef21e1f1e474c86895de81fe273c
   m_SerializeEntries:
-  - m_GUID: c3acb7d9b8c0e884cb19e0bf3e3811af
-    m_Address: HeroViewer
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c96f9fe0e0b975c4eb16dac8fa75fcf0
-    m_Address: GameMessage-Canvas
+  - m_GUID: c35939273b3873b48ad1c399aca7154a
+    m_Address: IconHero
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -29,5 +24,5 @@ MonoBehaviour:
   m_Settings: {fileID: 11400000, guid: 3ac335a41d78635408bb61e4d6efbbe7, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: fe1b21e70ca5db0409090edf51392fd6, type: 2}
-    - {fileID: 11400000, guid: d0535bc227ed80a498eabe356ab74725, type: 2}
+    - {fileID: 11400000, guid: 2305a2d2fb2cbcc43addc18ea563e3cc, type: 2}
+    - {fileID: 11400000, guid: dbef74dd351dccc4abf96e8393d9c1ca, type: 2}
