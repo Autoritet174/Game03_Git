@@ -6,7 +6,7 @@ namespace Assets.GameData.Scenes.RegAuth
 {
     public class Test : MonoBehaviour
     {
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
         //[SerializeField]
         //private TMP_InputField login;
 
@@ -16,8 +16,8 @@ namespace Assets.GameData.Scenes.RegAuth
 
         private void Start()
         {
-            GameObjectFinder.FindByName<TMP_InputField>("InputText_Email (uuid=9b99b098-1949-4b68-bba9-df3660bc95d4)").text = "SUPERADMIN@MAIL.RU";
-            GameObjectFinder.FindByName<TMP_InputField>("InputText_Password (uuid=8003daed-ae09-43b9-b033-ae5bb5f5eb38)").text = "testPassword";
+            GameObjectFinder.FindByName<TMP_InputField>("InputText_Email (id=96oaypns)").text = "SUPERADMIN@MAIL.RU";
+            GameObjectFinder.FindByName<TMP_InputField>("InputText_Password (id=9vfnj9oh)").text = "testPassword";
 
             //login.text = "SUPERADMIN@MAIL.RU";
             //login.text = "~!\"¹;%:?*()_+!@#$%^&*()_+{}[];':\"<>,./?\\/|";
@@ -40,6 +40,6 @@ namespace Assets.GameData.Scenes.RegAuth
             //rectTransform.localScale = Vector3.one;
             //Scripts.WindowMessageLoader.Show("blablabla", true);
         }
-#endif
+//#endif
     }
 }

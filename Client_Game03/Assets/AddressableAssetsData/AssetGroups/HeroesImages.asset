@@ -15,13 +15,48 @@ MonoBehaviour:
   m_GroupName: HeroesImages
   m_GUID: d28dde80470f64f4797946333d02fb59
   m_SerializeEntries:
-  - m_GUID: 0430ec65fcb331a44bf1b17eb3b21478
-    m_Address: hero-image-hammerman-face
+  - m_GUID: 009cfadacfc9bdd4f9b5ef3e06b2f711
+    m_Address: hero-image-novice huntress
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 8853087249795c44c80ab7a11200a5e6
+  - m_GUID: 2a44617b38138404595827501fbf6083
+    m_Address: hero-image-rogue
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2fb794e92c2a55e40a3d5f32c05e05e0
+    m_Address: hero-image-orc with axes
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 509b1620981370848b45e316e9d73fc0
+    m_Address: hero-image-warrior
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7656264df9f9cf048b48a4b102d0633b
     m_Address: hero-image-hammerman
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 904361aed096ca14aa97e33719b9fde9
+    m_Address: hero-image-novice huntress_face
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9b90b7f4d83d76d44b9acb9325f543a0
+    m_Address: hero-image-hammerman_face
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a06e3d2e860c07746b9d3deb402f84e0
+    m_Address: hero-image-rogue_face
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c3df6a83196df564fb228b2604755abc
+    m_Address: hero-image-orc with axes_face
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -30,23 +65,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d7041702f6300584ea45a7458c2ec5f6
-    m_Address: hero-image-warrior-face
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d79d3b42ea825f0438fcfcc84528ffb9
-    m_Address: hero-image-warrior
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e07ce3beec78dd548bf57596e1067de8
-    m_Address: hero-image-rogue-face
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fbf1e23455d4e8744acd6c051a8cf5c4
-    m_Address: hero-image-rogue
+  - m_GUID: f4b85e8f901e6c0418f515d4cc2f1c71
+    m_Address: hero-image-warrior_face
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 0430ec65fcb331a44bf1b17eb3b21478
+guid: 904361aed096ca14aa97e33719b9fde9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5653526019256598085
-    second: hammerman_face_0
+      213: 4656177830990205541
+    second: novice huntress_face_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: hammerman_face_0
+      name: novice huntress_face_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 340
-        height: 340
+        width: 530
+        height: 530
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bb148c50a04aa81b0800000000000000
-      internalID: -5653526019256598085
+      spriteID: 562583b51111e9040800000000000000
+      internalID: 4656177830990205541
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      hammerman_face_0: -5653526019256598085
+      novice huntress_face_0: 4656177830990205541
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

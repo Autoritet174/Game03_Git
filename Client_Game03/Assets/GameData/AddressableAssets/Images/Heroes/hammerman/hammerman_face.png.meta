@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 8853087249795c44c80ab7a11200a5e6
+guid: 9b90b7f4d83d76d44b9acb9325f543a0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4954986833374113214
-    second: hammerman_0
+      213: -5653526019256598085
+    second: hammerman_face_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -76,8 +76,8 @@ TextureImporter:
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
-    compressionQuality: 100
-    crunchedCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
     ignorePlatformSupport: 0
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: hammerman_0
+      name: hammerman_face_0
       rect:
         serializedVersion: 2
-        x: 78
+        x: 0
         y: 0
-        width: 859
-        height: 994
+        width: 340
+        height: 340
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2429ff94ab95c3bb0800000000000000
-      internalID: -4954986833374113214
+      spriteID: bb148c50a04aa81b0800000000000000
+      internalID: -5653526019256598085
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      hammerman_0: -4954986833374113214
+      hammerman_face_0: -5653526019256598085
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: e07ce3beec78dd548bf57596e1067de8
+guid: f4b85e8f901e6c0418f515d4cc2f1c71
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2076077711291743312
-    second: rogue_face_0
+      213: 4034090175681365772
+    second: warrior_face_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: rogue_face_0
+      name: warrior_face_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 256
-        height: 256
+        width: 400
+        height: 400
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 05c76abcda5bfcc10800000000000000
-      internalID: 2076077711291743312
+      spriteID: c07816924a7fbf730800000000000000
+      internalID: 4034090175681365772
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      rogue_face_0: 2076077711291743312
+      warrior_face_0: 4034090175681365772
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

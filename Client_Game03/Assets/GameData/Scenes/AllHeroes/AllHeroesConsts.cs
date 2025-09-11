@@ -12,8 +12,7 @@ namespace Assets.GameData.Scenes.AllHeroes
 
         internal static List<HeroBaseEntity> AllHeroes { get; } = new();
 
-
-        internal static Color[] colorsAnimation = new Color[9];
+        private static readonly Color[] colorsAnimation = new Color[9];
 
         static AllHeroesConsts()
         {

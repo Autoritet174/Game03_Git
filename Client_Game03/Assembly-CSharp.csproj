@@ -64,6 +64,7 @@
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_InBattle.cs" />
     <Compile Include="Assets\GameData\Scenes\AllHeroes\AllHeroesConsts.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_AllHeroes.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\Collection_Initializator.cs" />
     <Compile Include="Assets\GameData\Prefabs\L1\Buttons\Button_01_Init.cs" />
     <Compile Include="Assets\GameData\Scripts\ButtonCloseHelper.cs" />
     <Compile Include="Assets\GameData\Scripts\ButtonClose_Click_MoveToMainMenu.cs" />

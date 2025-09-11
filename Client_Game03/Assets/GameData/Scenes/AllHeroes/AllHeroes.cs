@@ -173,7 +173,7 @@ public class AllHeroes : MonoBehaviour
             && childImageRarity != null && childImageRarity.TryGetComponent(out UnityEngine.UI.Image imageRarity)
             )
         {
-            string addressableKey = $"hero-image-{heroName.ToLower()}-face";
+            string addressableKey = $"hero-image-{heroName.ToLower()}_face";
 
             try
             {

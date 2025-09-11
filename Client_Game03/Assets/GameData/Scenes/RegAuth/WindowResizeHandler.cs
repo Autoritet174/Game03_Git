@@ -40,10 +40,10 @@ public class WindowResizeHandler : MonoBehaviour
     private float _lastWidth;
     private void Start()
     {
-        //    textMeshPro_Email_input = GameObjectFinder.FindTMPInputFieldByName("InputText_Email (uuid=9b99b098-1949-4b68-bba9-df3660bc95d4)");
-        //    textMeshPro_Password_input = GameObjectFinder.FindTMPInputFieldByName("InputText_Password (uuid=8003daed-ae09-43b9-b033-ae5bb5f5eb38)");
-        //    textMeshPro_Email_label = GameObjectFinder.FindTextMeshProUGUIByName("Label_Email (uuid=d7e89f75-89bf-4fc0-b243-349e38906945)");
-        //    textMeshPro_Password_label = GameObjectFinder.FindTextMeshProUGUIByName("Label_Password (uuid=e7f6163f-b580-4491-b5e0-8aa1c004c951)");
+        //    textMeshPro_Email_input = GameObjectFinder.FindTMPInputFieldByName("InputText_Email (id=96oaypns)");
+        //    textMeshPro_Password_input = GameObjectFinder.FindTMPInputFieldByName("InputText_Password (id=9vfnj9oh)");
+        //    textMeshPro_Email_label = GameObjectFinder.FindTextMeshProUGUIByName("Label_Email (id=ndtil638)");
+        //    textMeshPro_Password_label = GameObjectFinder.FindTextMeshProUGUIByName("Label_Password (id=e319ahd6)");
 
         if (imageBackground != null && imageBackground.sprite != null)
         {
