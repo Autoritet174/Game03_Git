@@ -118,9 +118,11 @@ public class AllHeroes : MonoBehaviour
         {
             Guid id = new(heroObj["id"]?.ToString());
             string name = heroObj["name"]?.ToString();
+            float baseHealth = (float)Convert.ToDouble( heroObj["baseHealth"]);
+            float baseAttack = (float)Convert.ToDouble(heroObj["baseAttack"]);
             RarityLevel rarity = (RarityLevel)Convert.ToInt32(heroObj["rarity"]);
             //Debug.Log(id);
-            AllHeroesConsts.AllHeroes.Add(new HeroBaseEntity(id, name, rarity));
+            AllHeroesConsts.AllHeroes.Add(new HeroBaseEntity(id, name, rarity, baseHealth, baseAttack));
         }
 
         AllHeroesConsts.AllHeroes.Sort(static (a, b) =>
@@ -160,7 +162,7 @@ public class AllHeroes : MonoBehaviour
         Transform childText = _prefabIconHero.transform.Find("TextHero");
         if (childText != null && childText.TryGetComponent(out TextMeshProUGUI textMeshPro))
         {
-            textMeshPro.text = heroName;
+            textMeshPro.text = heroName.ToUpper1Char();
             list_TextMeshProUGUI_heroNames.Add(textMeshPro);
         }
 
@@ -319,7 +321,7 @@ public class AllHeroes : MonoBehaviour
     {
 
         GameObject prefabHeroViewer;
-        
+
         string addressableKey = $"HeroViewer";
         AsyncOperationHandle<GameObject> prefabHeroViewer_handle = Addressables.LoadAssetAsync<GameObject>(addressableKey);
         _ = await prefabHeroViewer_handle.Task;
@@ -347,7 +349,7 @@ public class AllHeroes : MonoBehaviour
         //Имя героя
         const string _Text_HeroName__Name = "Text_HeroName (id=rw8uftqp)";
         TextMeshProUGUI _Text_HeroName = GameObjectFinder.FindByName<TextMeshProUGUI>(_Text_HeroName__Name, prefabHeroViewer.transform);
-        _Text_HeroName.text = hero.Name;
+        _Text_HeroName.text = hero.Name.ToUpper1Char();
         RectTransform _Text_HeroName__RT = GameObjectFinder.FindByName<RectTransform>(_Text_HeroName__Name);
         _ = dictOnResizeHeroName.TryAdd($"{_Text_HeroName__Name}{_Text_HeroName__RT.GetHashCode()}", _Text_HeroName__RT);
         TextMeshProUGUI textMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>(_Text_HeroName__Name);
@@ -368,7 +370,7 @@ public class AllHeroes : MonoBehaviour
         {
             throw new Exception($"{nameof(imageHero_handle)} не загружен");
         }
-        
+
 
         //Привязать метод
         _buttonClose.onClick.AddListener(() =>

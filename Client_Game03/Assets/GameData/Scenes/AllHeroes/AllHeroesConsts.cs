@@ -24,7 +24,8 @@ namespace Assets.GameData.Scenes.AllHeroes
             colorsAnimation[^1] = Color.white;
         }
 
-        internal static async Task RunAnimationImage(Image image, float milliseconds = 1000) {
+        internal static async Task RunAnimationImage(Image image, float milliseconds = 1000)
+        {
             try
             {
                 int delay_ms = (int)(milliseconds / (colorsAnimation.Length + 1));
@@ -36,11 +37,13 @@ namespace Assets.GameData.Scenes.AllHeroes
                 }
                 image.color = Color.white;
             }
-            catch {
+            catch
+            {
                 try
                 {
                     image.color = Color.white;
-                }catch { }
+                }
+                catch { }
             }
         }
     }
