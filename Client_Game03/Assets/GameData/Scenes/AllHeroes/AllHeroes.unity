@@ -416,7 +416,7 @@ GameObject:
   - component: {fileID: 527144260}
   - component: {fileID: 527144261}
   m_Layer: 0
-  m_Name: AllHeroes_Script
+  m_Name: AllHeroes_ScriptInitializator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

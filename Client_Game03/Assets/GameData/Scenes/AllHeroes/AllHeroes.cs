@@ -235,8 +235,6 @@ public class AllHeroes : MonoBehaviour
     }
 
 
-
-
     private void SetImage(AsyncOperationHandle<Sprite> handle, UnityEngine.UI.Image image)
     {
         image.sprite = handle.Result;

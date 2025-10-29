@@ -9,7 +9,7 @@ public class ImageHeroHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
     private HeroBaseEntity hero;
     private Sprite normalSprite;
     private Sprite hoverSprite;
-    private System.Func<HeroBaseEntity, Task> clickCallback; // Изменено на Func с Task
+    private System.Func<HeroBaseEntity, Task> clickCallback;
     private Image imageComponent;
 
     public void Initialize(HeroBaseEntity hero, Sprite normal, Sprite hover, System.Func<HeroBaseEntity, Task> callback, Image imageComponent)
@@ -47,7 +47,10 @@ public class ImageHeroHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
         }
     }
 
-    // Асинхронный обработчик клика
+    /// <summary>
+    /// Асинхронный обработчик клика
+    /// </summary>
+    /// <param name="eventData"></param>
     public async void OnPointerClick(PointerEventData eventData)
     {
         if (clickCallback != null)
@@ -72,7 +75,6 @@ public class ImageHeroHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
         }
     }
 
-    // Обновление параметров
     public void UpdateParameter(HeroBaseEntity hero)
     {
         this.hero = hero;
