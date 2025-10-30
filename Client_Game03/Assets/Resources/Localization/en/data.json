@@ -16,7 +16,8 @@
 		"Server_InvalidResponse": "Invalid response from server",
 		"No_internet_connection": "No internet connection",
 		"EmailOrPassword_Empty": "Email or password is empty",
-		"EmailAndPassword_NotFound": "Email and password not found"
+		"EmailAndPassword_NotFound": "Email and password not found",
+		"ListAllHeroes_Empty": "The server returned an empty list of heroes"
 	},
 	
 	"Info": {

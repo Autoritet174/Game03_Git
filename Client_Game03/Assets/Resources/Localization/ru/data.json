@@ -16,7 +16,8 @@
 		"Server_InvalidResponse": "Неверный ответ от сервера",
 		"No_internet_connection" : "Нет подключения к интернету",
 		"EmailOrPassword_Empty" : "Емаил или пароль пустой",
-		"EmailAndPassword_NotFound" : "Емаил и пароль не найдены"
+		"EmailAndPassword_NotFound" : "Емаил и пароль не найдены",
+		"ListAllHeroes_Empty": "Сервер вернул пустой список героев"
 	},
 	
 	"Info" : {

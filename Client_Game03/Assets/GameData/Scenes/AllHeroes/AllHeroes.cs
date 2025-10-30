@@ -104,7 +104,8 @@ public class AllHeroes : MonoBehaviour
 
         if (jsonObject == null)
         {
-            throw new ArgumentNullException(nameof(jsonObject));
+            GameMessage.ShowLocale("Errors.ListAllHeroes_Empty", true);
+            return;
         }
 
         JToken heroesToken = jsonObject["heroes"];

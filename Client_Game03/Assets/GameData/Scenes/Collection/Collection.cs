@@ -1,34 +1,55 @@
 using Assets.GameData.Scripts;
-using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using static UnityEditor.Progress;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class Collection : MonoBehaviour
 {
+
+    private const int ColorOffButtonRGBValue = 100;
+    private static Color ColorOffButton = new(ColorOffButtonRGBValue / 255f, ColorOffButtonRGBValue / 255f, ColorOffButtonRGBValue / 255f);
     private bool inited = false;
     private float _lastHeight;
     private float _lastWidth;
 
-    RectTransform buttonHeroes;
-    TextMeshProUGUI buttonHeroesTmp;
-
-    RectTransform buttonItems;
-    TextMeshProUGUI buttonItemsTmp;
-
-    void Start()
+    private class TabButton
     {
-        buttonHeroes = GameObjectFinder.FindByName<RectTransform>("ButtonHeroes (id=40jhb51a)");
-        buttonHeroesTmp = GameObjectFinder.FindByName<TextMeshProUGUI>("Text (TMP) (id=wl92ls1m)");
+        public readonly string name;
+        public readonly RectTransform rectTransform;
+        public readonly Button button;
+        public readonly TextMeshProUGUI textMeshProUGUI;
+        public readonly Image image;
 
-        buttonItems = GameObjectFinder.FindByName<RectTransform>("ButtonItems (id=k5hqeyat)");
-        buttonItemsTmp = GameObjectFinder.FindByName<TextMeshProUGUI>("Text (TMP) (id=cklw2id1)");
+        public TabButton(string name, string nameText, UnityAction action)
+        {
+            this.name = name;
+            button = GameObjectFinder.FindByName<Button>(name);
+            rectTransform = GameObjectFinder.FindByName<RectTransform>(name);
+            image = GameObjectFinder.FindByName<Image>(name);
+            textMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>(nameText);
+            button.onClick.AddListener(action);
+        }
+    }
 
+    private TabButton tabButtonHeroes, tabButtonItem;
+
+    private readonly Dictionary<string, TabButton> tabButtonsDict = new();
+
+    private readonly CollectionHero collectionHero = new();
+    private void Start()
+    {
+        tabButtonHeroes = new("ButtonHeroes (id=40jhb51a)", "Text (TMP) (id=wl92ls1m)", OnClickHeroes);
+        tabButtonItem = new("ButtonItems (id=k5hqeyat)", "Text (TMP) (id=cklw2id1)", OnClickItems);
+
+        tabButtonsDict.Add(tabButtonHeroes.button.name, tabButtonHeroes);
+        tabButtonsDict.Add(tabButtonItem.button.name, tabButtonItem);
 
         inited = true;
         OnResize();
     }
+
     private void Update()
     {
         if (inited && (!Mathf.Approximately(Screen.height, _lastHeight) || !Mathf.Approximately(Screen.width, _lastWidth)))
@@ -36,11 +57,36 @@ public class Collection : MonoBehaviour
             OnResize();
         }
     }
-    private void OnResize() {
+
+    private void OnResize()
+    {
         _lastHeight = Screen.height;
         _lastWidth = Screen.width;
 
-        buttonHeroesTmp.fontSize = 32f * _lastHeight / 1080;
-        buttonItemsTmp.fontSize = 32f * _lastHeight / 1080;
+        //buttonHeroesTmp.fontSize = 32f * _lastHeight / 1080;
+        //buttonItemsTmp.fontSize = 32f * _lastHeight / 1080;
     }
+
+    public void OnClickHeroes()
+    {
+        OnClickTabButton(tabButtonHeroes);
+        tabButtonHeroes.image.color = Color.white;
+
+    }
+
+    public void OnClickItems()
+    {
+        OnClickTabButton(tabButtonItem);
+
+
+    }
+
+    private void OnClickTabButton(TabButton tabButtonPressed)
+    {
+        foreach (KeyValuePair<string, TabButton> item in tabButtonsDict)
+        {
+            item.Value.image.color = item.Value.name == tabButtonPressed.name ? Color.white : ColorOffButton;
+        }
+    }
+
 }

@@ -107,9 +107,7 @@ namespace Assets.GameData.Scripts
             }
             else
             {
-                GameObject[] rootObjects = SceneManager
-                    .GetActiveScene()
-                    .GetRootGameObjects();
+                GameObject[] rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
 
                 foreach (GameObject root in rootObjects)
                 {
