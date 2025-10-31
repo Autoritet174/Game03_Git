@@ -15,8 +15,7 @@
 		"Server_Unavailable": "Server unavailable",
 		"Server_InvalidResponse": "Invalid response from server",
 		"No_internet_connection": "No internet connection",
-		"EmailOrPassword_Empty": "Email or password is empty",
-		"EmailAndPassword_NotFound": "Email and password not found",
+		"AuthInvalidCredentials": "Invalid Credentials",
 		"ListAllHeroes_Empty": "The server returned an empty list of heroes"
 	},
 	

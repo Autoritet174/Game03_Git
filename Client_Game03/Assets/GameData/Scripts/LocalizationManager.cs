@@ -74,8 +74,7 @@ namespace Assets.GameData.Scripts
 
             string key = err switch
             {
-                General.ServerErrors.Error.Auth_EmailOrPassword_Empty => "Errors.EmailOrPassword_Empty",
-                General.ServerErrors.Error.Auth_EmailAndPassword_NotFound => "Errors.EmailAndPassword_NotFound",
+                General.ServerErrors.Error.AuthInvalidCredentials => "Errors.AuthInvalidCredentials",
                 _ => "Errors.Server_UnknownError",
             };
 
