@@ -37,8 +37,25 @@ public class Button_Auth : MonoBehaviour
             }
 
             // Данные авторизации и характеристики аппаратного устройства
-            General.ModelHttp.Authorization payload = new(emailString, passwordString, SystemInfo.deviceModel, SystemInfo.deviceType.ToString(), SystemInfo.operatingSystem, SystemInfo.processorType, SystemInfo.processorCount, SystemInfo.systemMemorySize, SystemInfo.graphicsDeviceName, SystemInfo.graphicsMemorySize, SystemInfo.deviceUniqueIdentifier);
+            General.ModelHttp.Authorization payload = new(
+                emailString,
+                passwordString,
+                TimeZoneInfo.Local.BaseUtcOffset.Minutes,
+                System.Environment.UserName,
+                SystemInfo.deviceUniqueIdentifier,
+                SystemInfo.deviceModel,
+                SystemInfo.deviceType.ToString(),
+                SystemInfo.operatingSystem,
+                SystemInfo.processorType,
+                SystemInfo.processorCount,
+                SystemInfo.systemMemorySize,
+                SystemInfo.graphicsDeviceName,
+                SystemInfo.graphicsMemorySize,
+                SystemInfo.supportsInstancing,
+                SystemInfo.npotSupport.ToString()
+               );
 
+           
             string json = JsonConvert.SerializeObject(payload);
 
             // Блокируем кнопку и выводим сообщение непосредственно перед await
