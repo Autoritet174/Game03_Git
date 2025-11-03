@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -50,9 +51,9 @@ namespace Assets.GameData.Scripts
         /// <summary>
         /// Выводит игровое сообщение по ключу локализации и ожидает закрытие окна.
         /// </summary>
-        public static async Task ShowLocaleAndWaitCloseAsync(string keyLocalization)
+        public static async Task ShowLocaleAndWaitCloseAsync(string keyLocalization, Dictionary<string, string> argDict = null)
         {
-            Show(LocalizationManager.GetValue(keyLocalization), true);
+            Show(LocalizationManager.GetValue(keyLocalization), true, argDict);
             await UniTask.WaitUntil(() => !_opened);
         }
 
@@ -86,11 +87,22 @@ namespace Assets.GameData.Scripts
         /// <summary>
         /// Основной метод отображения сообщения.
         /// </summary>
-        public static void Show(string message, bool buttonActive)
+        public static void Show(string message, bool buttonActive, Dictionary<string, string> argDict = null)
         {
             if (string.IsNullOrEmpty(message))
             {
                 throw new Exception("Message cannot be empty.");
+            }
+
+            // обновить message с учетом argDict
+            if (argDict != null) {
+                foreach (var item in argDict)
+                {
+                    if (message.Contains(item.Key))
+                    {
+                        message = message.Replace(item.Key, item.Value);
+                    }
+                }
             }
 
             // Если окно уже существует, обновляем текст

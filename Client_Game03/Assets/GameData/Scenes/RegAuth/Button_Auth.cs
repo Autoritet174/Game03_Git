@@ -40,7 +40,7 @@ public class Button_Auth : MonoBehaviour
             General.ModelHttp.Authorization payload = new(
                 emailString,
                 passwordString,
-                TimeZoneInfo.Local.BaseUtcOffset.Minutes,
+                (TimeZoneInfo.Local.BaseUtcOffset.Hours * 60) + TimeZoneInfo.Local.BaseUtcOffset.Minutes,
                 System.Environment.UserName,
                 SystemInfo.deviceUniqueIdentifier,
                 SystemInfo.deviceModel,

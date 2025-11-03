@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
+using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -120,7 +122,9 @@ namespace Assets.GameData.Scripts
                 }
                 else
                 {
-                    await GameMessage.ShowLocaleAndWaitCloseAsync(LocalizationManager.GetKeyError(resultJObject));
+                    Dictionary<string, string> argDict = new();
+                    var keyError = LocalizationManager.GetKeyError(resultJObject, argDict);
+                    await GameMessage.ShowLocaleAndWaitCloseAsync(keyError, argDict);
                 }
             }
             catch (TaskCanceledException ex) when (ex.InnerException is TimeoutException)

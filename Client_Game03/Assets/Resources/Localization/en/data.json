@@ -16,6 +16,9 @@
 		"Server_InvalidResponse": "Invalid response from server",
 		"No_internet_connection": "No internet connection",
 		"AuthInvalidCredentials": "Invalid Credentials",
+		"TooManyRequests" : "Too many attempts, try again in {timeRemaining}",
+		"AccountBannedUntil" : "Your account has been banned. Please try again in {timeRemaining}. Your account will be unbanned on {datetimeExpiration}.",
+		"AccountBannedPermanently" : "Your account has been banned permanently.",
 		"ListAllHeroes_Empty": "The server returned an empty list of heroes"
 	},
 	
