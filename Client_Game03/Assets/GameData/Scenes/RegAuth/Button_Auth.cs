@@ -53,7 +53,7 @@ public class Button_Auth : MonoBehaviour
                 SystemInfo.graphicsMemorySize,
                 SystemInfo.supportsInstancing,
                 SystemInfo.npotSupport.ToString()
-               );
+            );
 
            
             string json = JsonConvert.SerializeObject(payload);

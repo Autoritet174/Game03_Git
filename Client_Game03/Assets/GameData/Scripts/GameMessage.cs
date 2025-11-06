@@ -11,7 +11,7 @@ namespace Assets.GameData.Scripts
 {
     public class GameMessage : MonoBehaviour
     {
-        private const string ObjectName = "GameMessage (uuid=6822cd84-695a-4840-9eb7-1cae1b16a9a6)";
+        private const string ObjectName = "GameMessage (id=p25hg2gr)";
         private const string PrefabAddress = "GameMessage-Canvas"; // Адрес префаба в Addressables
         private static bool _opened = false;
         private static GameObject _currentInstance;
@@ -95,8 +95,9 @@ namespace Assets.GameData.Scripts
             }
 
             // обновить message с учетом argDict
-            if (argDict != null) {
-                foreach (var item in argDict)
+            if (argDict != null)
+            {
+                foreach (KeyValuePair<string, string> item in argDict)
                 {
                     if (message.Contains(item.Key))
                     {
