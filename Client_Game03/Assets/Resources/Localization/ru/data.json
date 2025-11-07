@@ -19,11 +19,13 @@
 		"TooManyRequests" : "Слишком много попыток, попробуйте через {timeRemaining}",
 		"AccountBannedUntil" : "Ваша учётная запись заблокирована. Повторите попытку через {timeRemaining}. Учётная запись будет разблокирована {datetimeExpiration}.",
 		"AccountBannedPermanently" : "Ваша учётная запись заблокирована бессрочно.",
-		"ListAllHeroes_Empty": "Сервер вернул пустой список героев"
+		"ListAllHeroes_Empty": "Сервер вернул пустой список героев",
+		"OpeningWebSocketFailed": "Ошибка открытия веб сокета"
 	},
 	
 	"Info" : {
-		"Authorization" : "Авторизация",
-		"AuthorizationSuccess" : "Авторизация успешна"
+		"Authentication" : "Аутентификация",
+		"AuthenticationSuccess" : "Авторизация успешна",
+		"OpeningWebSocket" : "Установка соединения...",
 	}
 }

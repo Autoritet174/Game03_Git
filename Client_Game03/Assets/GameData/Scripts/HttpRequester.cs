@@ -107,9 +107,9 @@ namespace Assets.GameData.Scripts
                     Content = new StringContent(jsonBody, Encoding.UTF8, "application/json")
                 };
 
-                if (!string.IsNullOrWhiteSpace(GV.Jwt_token))
+                if (!string.IsNullOrWhiteSpace(GlobalVariables.Jwt_token))
                 {
-                    request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", GV.Jwt_token);
+                    request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", GlobalVariables.Jwt_token);
                 }
 
                 using HttpResponseMessage response = await _httpClient.SendAsync(request);

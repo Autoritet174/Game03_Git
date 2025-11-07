@@ -70,9 +70,9 @@ namespace Assets.GameData.Scripts
         /// <summary>
         /// Выводит игровое сообщение по ключу локализации.
         /// </summary>
-        public static void ShowLocale(string keyLocalization, bool buttonActive)
+        public static void ShowLocale(string keyLocalization, bool buttonActive, bool isProcess = false)
         {
-            Show(LocalizationManager.GetValue(keyLocalization), buttonActive);
+            Show(LocalizationManager.GetValue(keyLocalization), buttonActive, isProcess: isProcess);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Assets.GameData.Scripts
         /// <summary>
         /// Основной метод отображения сообщения.
         /// </summary>
-        public static void Show(string message, bool buttonActive, Dictionary<string, string> argDict = null)
+        public static void Show(string message, bool buttonActive, Dictionary<string, string> argDict = null, bool isProcess = false)
         {
             if (string.IsNullOrEmpty(message))
             {
@@ -109,7 +109,7 @@ namespace Assets.GameData.Scripts
             // Если окно уже существует, обновляем текст
             if (_currentInstance != null)
             {
-                UpdateMessage(_currentInstance, message, buttonActive);
+                UpdateMessage(_currentInstance, message, buttonActive, isProcess: isProcess);
                 return;
             }
 
@@ -136,7 +136,7 @@ namespace Assets.GameData.Scripts
                     }
                     canvas.worldCamera = mainCamera;
 
-                    UpdateMessage(_currentInstance, message, buttonActive);
+                    UpdateMessage(_currentInstance, message, buttonActive, isProcess: isProcess);
                 }
                 else
                 {
@@ -148,7 +148,7 @@ namespace Assets.GameData.Scripts
         /// <summary>
         /// Обновляет текст и кнопку в уже созданном окне.
         /// </summary>
-        private static void UpdateMessage(GameObject messageInstance, string message, bool buttonActive)
+        private static void UpdateMessage(GameObject messageInstance, string message, bool buttonActive, bool isProcess = false)
         {
             Canvas canvas = messageInstance.GetComponent<Canvas>();
             Transform windowsImageTransform = canvas.transform.Find("Window-Image");
@@ -157,6 +157,12 @@ namespace Assets.GameData.Scripts
             if (!mainTextLabel.TryGetComponent(out TextMeshProUGUI tmpText))
             {
                 throw new Exception("TextMeshProUGUI component not found.");
+            }
+
+
+            if (isProcess)
+            {
+                message += "...";
             }
 
             tmpText.text = message;

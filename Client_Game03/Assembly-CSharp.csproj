@@ -76,6 +76,8 @@
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_Collection.cs" />
     <Compile Include="Assets\GameData\Scripts\HttpRequester.cs" />
     <Compile Include="Assets\GameData\Prefabs\L1\InputFields\InputField.cs" />
+    <Compile Include="Assets\GameData\Scripts\GlobalVariables.cs" />
+    <Compile Include="Assets\GameData\Scripts\WebSocketClient.cs" />
     <Compile Include="Assets\GameData\AddressableAssets\Prefabs\L3\GameMessage\GameMessageButtonClose.cs" />
     <Compile Include="Assets\GameData\Scripts\LocalizationManager.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\CollectionHero.cs" />
@@ -85,8 +87,7 @@
     <Compile Include="Assets\GameData\Scripts\GameMessage.cs" />
     <Compile Include="Assets\GameData\Scripts\InitializatorStartScene.cs" />
     <Compile Include="Assets\GameData\Scenes\RegAuth\Button_Close.cs" />
-    <Compile Include="Assets\GameData\Scripts\GV.cs" />
-    <Compile Include="Assets\GameData\Scripts\GC.cs" />
+    <Compile Include="Assets\GameData\Scripts\GlobalConsts.cs" />
     <Compile Include="Assets\GameData\Scripts\ImageHeroHandler.cs" />
     <Compile Include="Assets\GameData\Scripts\Ini.cs" />
     <Compile Include="Assets\GameData\Scenes\RegAuth\WindowResizeHandler.cs" />
