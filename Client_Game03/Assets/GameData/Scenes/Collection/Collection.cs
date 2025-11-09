@@ -1,4 +1,5 @@
 using Assets.GameData.Scripts;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -38,7 +39,7 @@ public class Collection : MonoBehaviour
     private readonly Dictionary<string, TabButton> tabButtonsDict = new();
 
     private readonly CollectionHero collectionHero = new();
-    private void Start()
+    private async void Start()
     {
         tabButtonHeroes = new("ButtonHeroes (id=40jhb51a)", "Text (TMP) (id=wl92ls1m)", OnClickHeroes);
         tabButtonItem = new("ButtonItems (id=k5hqeyat)", "Text (TMP) (id=cklw2id1)", OnClickItems);
@@ -48,6 +49,11 @@ public class Collection : MonoBehaviour
 
         inited = true;
         OnResize();
+
+        //получить инвентарь героев
+
+        JObject jObject = await HttpRequester.GetResponceAsync(General.URLs.Uri_InventoryHeroes);
+        //string s = jObject["token"]?.ToString() ?? string.Empty;
     }
 
     private void Update()

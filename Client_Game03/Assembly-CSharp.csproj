@@ -89,7 +89,6 @@
     <Compile Include="Assets\GameData\Scenes\RegAuth\Button_Close.cs" />
     <Compile Include="Assets\GameData\Scripts\GlobalConsts.cs" />
     <Compile Include="Assets\GameData\Scripts\ImageHeroHandler.cs" />
-    <Compile Include="Assets\GameData\Scripts\Ini.cs" />
     <Compile Include="Assets\GameData\Scenes\RegAuth\WindowResizeHandler.cs" />
     <Compile Include="Assets\GameData\Scripts\Spawner.cs" />
     <Compile Include="Assets\GameData\Scripts\HardwareIdentifier.cs" />

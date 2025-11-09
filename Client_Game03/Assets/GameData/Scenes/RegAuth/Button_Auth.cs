@@ -53,12 +53,11 @@ public class Button_Auth : MonoBehaviour
                 SystemInfo.npotSupport.ToString()
             );
 
-            string json = JsonConvert.SerializeObject(payload);
-
             // Блокируем кнопку и выводим сообщение непосредственно перед await
             buttonLogin.interactable = false;
             GameMessage.ShowLocale("Info.Authentication", false, isProcess: true);
 
+            string json = JsonConvert.SerializeObject(payload);
             JObject jObject = await HttpRequester.GetResponceAsync(General.URLs.Uri_login, json);
             if (jObject == null)
             {

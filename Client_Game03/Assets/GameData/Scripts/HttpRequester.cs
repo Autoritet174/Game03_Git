@@ -87,22 +87,14 @@ namespace Assets.GameData.Scripts
                 return null;
             }
 
-            if (jsonBody == null)
+            if (string.IsNullOrWhiteSpace(jsonBody))
             {
                 jsonBody = "{}";
             }
-            else
-            {
-                jsonBody = jsonBody.Trim();
-                if (jsonBody == string.Empty)
-                {
-                    jsonBody = "{}";
-                }
-            }
 
-            try
-            {
-                using HttpRequestMessage request = new(HttpMethod.Post, uri)
+            //try
+            //{
+            using HttpRequestMessage request = new(HttpMethod.Post, uri)
                 {
                     Content = new StringContent(jsonBody, Encoding.UTF8, "application/json")
                 };
@@ -126,20 +118,20 @@ namespace Assets.GameData.Scripts
                     var keyError = LocalizationManager.GetKeyError(resultJObject, argDict);
                     await GameMessage.ShowLocaleAndWaitCloseAsync(keyError, argDict);
                 }
-            }
-            catch (TaskCanceledException ex) when (ex.InnerException is TimeoutException)
-            {
-                await GameMessage.ShowLocaleAndWaitCloseAsync("Errors.Server_Timeout");
-            }
-            catch (HttpRequestException ex) when (ex.InnerException is WebException)
-            {
-                bool haveInternet = await InternetChecker.CheckInternetConnectionAsync();
-                await GameMessage.ShowLocaleAndWaitCloseAsync(haveInternet ? "Errors.Server_Unavailable" : "Errors.No_internet_connection");
-            }
-            catch (Exception ex)
-            {
-                await GameMessage.ShowErrorAndWaitCloseAsync(ex);
-            }
+            //}
+            //catch (TaskCanceledException ex) when (ex.InnerException is TimeoutException)
+            //{
+            //    await GameMessage.ShowLocaleAndWaitCloseAsync("Errors.Server_Timeout");
+            //}
+            //catch (HttpRequestException ex) when (ex.InnerException is WebException)
+            //{
+            //    bool haveInternet = await InternetChecker.CheckInternetConnectionAsync();
+            //    await GameMessage.ShowLocaleAndWaitCloseAsync(haveInternet ? "Errors.Server_Unavailable" : "Errors.No_internet_connection");
+            //}
+            //catch (Exception ex)
+            //{
+            //    await GameMessage.ShowErrorAndWaitCloseAsync(ex);
+            //}
 
             return null;
         }
