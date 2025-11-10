@@ -67,7 +67,6 @@
     <Compile Include="Assets\GameData\Prefabs\L1\Buttons\Button_01_Init.cs" />
     <Compile Include="Assets\GameData\Scripts\ButtonCloseHelper.cs" />
     <Compile Include="Assets\GameData\Scripts\ButtonClose_Click_MoveToMainMenu.cs" />
-    <Compile Include="Assets\GameData\Scripts\InternetChecker.cs" />
     <Compile Include="Assets\GameData\Scenes\RegAuth\Button_Reg.cs" />
     <Compile Include="Assets\GameData\Scripts\InitializatorGlobal.cs" />
     <Compile Include="Assets\GameData\Scripts\StringExtensions.cs" />
@@ -76,12 +75,12 @@
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_Collection.cs" />
     <Compile Include="Assets\GameData\Scripts\HttpRequester.cs" />
     <Compile Include="Assets\GameData\Prefabs\L1\InputFields\InputField.cs" />
-    <Compile Include="Assets\GameData\Scripts\GlobalVariables.cs" />
     <Compile Include="Assets\GameData\Scripts\WebSocketClient.cs" />
     <Compile Include="Assets\GameData\AddressableAssets\Prefabs\L3\GameMessage\GameMessageButtonClose.cs" />
     <Compile Include="Assets\GameData\Scripts\LocalizationManager.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\CollectionHero.cs" />
     <Compile Include="Assets\GameData\Scenes\RegAuth\Test.cs" />
+    <Compile Include="Assets\GameData\Scripts\GlobalFields.cs" />
     <Compile Include="Assets\GameData\Scripts\UnityMainThreadDispatcher.cs" />
     <Compile Include="Assets\GameData\Scripts\ResetRectOffsets.cs" />
     <Compile Include="Assets\GameData\Scripts\GameMessage.cs" />
@@ -103,31 +102,41 @@
     <Compile Include="Assets\GameData\Scripts\Test.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Packages\Microsoft.Extensions.DependencyInjection.9.0.10\LICENSE.TXT" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\Идеи и заметки\Имена героям.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile-2-Pass.shader" />
     <None Include="Assets\Идеи и заметки\Слоты.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
+    <None Include="Assets\Packages\Microsoft.Extensions.DependencyInjection.Abstractions.9.0.10\lib\netstandard2.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
     <None Include="Assets\Идеи и заметки\Другое.txt" />
+    <None Include="Assets\Packages\Microsoft.Extensions.DependencyInjection.Abstractions.9.0.10\lib\netstandard2.1\Microsoft.Extensions.DependencyInjection.Abstractions.xml" />
+    <None Include="Assets\Packages\Microsoft.Extensions.DependencyInjection.Abstractions.9.0.10\useSharedDesignerContext.txt" />
+    <None Include="Assets\Packages\Microsoft.Extensions.DependencyInjection.Abstractions.9.0.10\THIRD-PARTY-NOTICES.TXT" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
     <None Include="Assets\Идеи и заметки\Типы существ 2.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
+    <None Include="Assets\Packages\Microsoft.Extensions.DependencyInjection.9.0.10\THIRD-PARTY-NOTICES.TXT" />
     <None Include="Assets\TextMesh Pro\Shaders\SDFFunctions.hlsl" />
+    <None Include="Assets\Packages\Microsoft.Extensions.DependencyInjection.Abstractions.9.0.10\LICENSE.TXT" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />
+    <None Include="Assets\Packages\Microsoft.Extensions.DependencyInjection.9.0.10\lib\netstandard2.1\Microsoft.Extensions.DependencyInjection.xml" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\Packages\ini-parser-netstandard.2.5.3\lib\netstandard2.0\INIFileParser.dll" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
     <None Include="Assets\Packages\ini-parser-netstandard.2.5.3\lib\netstandard2.0\INIFileParser.xml" />
+    <None Include="Assets\Packages\Microsoft.Extensions.DependencyInjection.9.0.10\useSharedDesignerContext.txt" />
     <None Include="Assets\Идеи и заметки\Типы существ.txt" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
+    <None Include="Assets\Packages\Microsoft.Extensions.DependencyInjection.9.0.10\lib\netstandard2.1\Microsoft.Extensions.DependencyInjection.dll" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
@@ -643,6 +652,10 @@
       <HintPath>Assets\Plugins\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
+      <HintPath>Assets\Packages\Microsoft.Extensions.DependencyInjection.Abstractions.9.0.10\lib\netstandard2.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System.IO.Hashing">
       <HintPath>Library\PackageCache\com.unity.collections@aea9d3bd5e19\Unity.Collections.Tests\System.IO.Hashing\System.IO.Hashing.dll</HintPath>
       <Private>False</Private>
@@ -667,6 +680,10 @@
       <HintPath>Library\PackageCache\com.unity.nuget.mono-cecil@d78732e851eb\Mono.Cecil.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection">
+      <HintPath>Assets\Packages\Microsoft.Extensions.DependencyInjection.9.0.10\lib\netstandard2.1\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System.Text.Json">
       <HintPath>Assets\Plugins\System.Text.Json.dll</HintPath>
       <Private>False</Private>
@@ -677,6 +694,10 @@
     </Reference>
     <Reference Include="System.IO.Pipelines">
       <HintPath>Assets\Plugins\System.IO.Pipelines.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Game03Client">
+      <HintPath>Assets\Plugins\Game03Client.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="netstandard">

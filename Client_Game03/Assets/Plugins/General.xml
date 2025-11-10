@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>General</name>
+    </assembly>
+    <members>
+        <member name="T:General.GF">
+            <summary>
+            Global Functions
+            </summary>
+        </member>
+        <member name="M:General.GF.IsEmail(System.String)">
+            <summary>
+            Пытается создать объект MailAddress из строки. Возвращает обратно входную строку без изменений при успехи, иначе null.
+            </summary>
+            <param name="email">Строка с предполагаемым адресом электронной почты.</param>
+            <returns>email, если создание прошло успешно; иначе null.</returns>
+        </member>
+        <member name="T:General.ModelHttp.Authorization">
+            <summary>
+            Класс, содержащий данные для авторизации пользователя и системную информацию об устройстве.
+            </summary>
+            <remarks>
+            Этот класс использует конструктор с параметрами для инициализации всех свойств.
+            Все поля обязательны для заполнения при создании экземпляра.
+            </remarks>
+            <remarks>
+            Инициализирует новый экземпляр класса <see cref="T:General.ModelHttp.Authorization"/>.
+            </remarks>
+            <param name="email">Адрес электронной почты пользователя, используемый для входа в систему.</param>
+            <param name="password">Пароль пользователя в открытом виде (должен передаваться по защищённому каналу).</param>
+            <param name="timeZoneInfo_Local_BaseUtcOffset_Minutes">Смещение локального часового пояса пользователя от UTC в минутах.</param>
+            <param name="system_Environment_UserName">Имя пользователя операционной системы, под которым запущено приложение.</param>
+            <param name="deviceModel">Модель устройства (например, 'iPhone 14', 'Samsung Galaxy S23').</param>
+            <param name="deviceType">Тип устройства (например, 'Mobile', 'Desktop', 'Console').</param>
+            <param name="operatingSystem">Операционная система устройства (например, 'Windows 11', 'macOS 14', 'Android 14').</param>
+            <param name="processorType">Архитектура и модель процессора (например, 'x64', 'ARM64').</param>
+            <param name="processorCount">Количество логических процессоров на устройстве.</param>
+            <param name="systemMemorySize">Объём оперативной памяти устройства в мегабайтах (МБ).</param>
+            <param name="graphicsDeviceName">Название графического адаптера (например, 'NVIDIA GeForce RTX 4070').</param>
+            <param name="graphicsMemorySize">Объём видеопамяти в мегабайтах (МБ).</param>
+            <param name="deviceUniqueIdentifier">Уникальный идентификатор устройства, используемый для привязки сессии.</param>
+            <param name="systemInfo_supportsInstancing">Указывает, поддерживает ли графическая система инстансинг (отрисовку множественных копий объектов за один вызов).</param>
+            <param name="systemInfo_npotSupport">Указывает, поддерживает ли графическая карта текстуры с размерами, не являющимися степенью двойки (NPOT).</param>
+        </member>
+        <member name="M:General.ModelHttp.Authorization.#ctor(System.String,System.String,System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.String,System.Int32,System.Boolean,System.String)">
+            <summary>
+            Класс, содержащий данные для авторизации пользователя и системную информацию об устройстве.
+            </summary>
+            <remarks>
+            Этот класс использует конструктор с параметрами для инициализации всех свойств.
+            Все поля обязательны для заполнения при создании экземпляра.
+            </remarks>
+            <remarks>
+            Инициализирует новый экземпляр класса <see cref="T:General.ModelHttp.Authorization"/>.
+            </remarks>
+            <param name="email">Адрес электронной почты пользователя, используемый для входа в систему.</param>
+            <param name="password">Пароль пользователя в открытом виде (должен передаваться по защищённому каналу).</param>
+            <param name="timeZoneInfo_Local_BaseUtcOffset_Minutes">Смещение локального часового пояса пользователя от UTC в минутах.</param>
+            <param name="system_Environment_UserName">Имя пользователя операционной системы, под которым запущено приложение.</param>
+            <param name="deviceModel">Модель устройства (например, 'iPhone 14', 'Samsung Galaxy S23').</param>
+            <param name="deviceType">Тип устройства (например, 'Mobile', 'Desktop', 'Console').</param>
+            <param name="operatingSystem">Операционная система устройства (например, 'Windows 11', 'macOS 14', 'Android 14').</param>
+            <param name="processorType">Архитектура и модель процессора (например, 'x64', 'ARM64').</param>
+            <param name="processorCount">Количество логических процессоров на устройстве.</param>
+            <param name="systemMemorySize">Объём оперативной памяти устройства в мегабайтах (МБ).</param>
+            <param name="graphicsDeviceName">Название графического адаптера (например, 'NVIDIA GeForce RTX 4070').</param>
+            <param name="graphicsMemorySize">Объём видеопамяти в мегабайтах (МБ).</param>
+            <param name="deviceUniqueIdentifier">Уникальный идентификатор устройства, используемый для привязки сессии.</param>
+            <param name="systemInfo_supportsInstancing">Указывает, поддерживает ли графическая система инстансинг (отрисовку множественных копий объектов за один вызов).</param>
+            <param name="systemInfo_npotSupport">Указывает, поддерживает ли графическая карта текстуры с размерами, не являющимися степенью двойки (NPOT).</param>
+        </member>
+        <member name="P:General.ModelHttp.Authorization.Email">
+            <summary>
+            Получает или задаёт адрес электронной почты пользователя.
+            </summary>
+            <value>Строка, содержащая email пользователя.</value>
+        </member>
+        <member name="P:General.ModelHttp.Authorization.Password">
+            <summary>
+            Получает или задаёт пароль пользователя.
+            </summary>
+            <value>Строка с паролем. Передача должна осуществляться по защищённому соединению.</value>
+        </member>
+        <member name="P:General.ModelHttp.Authorization.TimeZoneInfo_Local_BaseUtcOffset_Minutes">
+            <summary>
+            Получает или задаёт смещение локального часового пояса от UTC в минутах.
+            </summary>
+            <value>Целое число, представляющее разницу во времени (например, +180 для UTC+3).</value>
+        </member>
+        <member name="P:General.ModelHttp.Authorization.System_Environment_UserName">
+            <summary>
+            Получает или задаёт имя пользователя операционной системы.
+            </summary>
+            <value>Имя пользователя, под которым запущено приложение (например, 'JohnDoe').</value>
+        </member>
+        <member name="P:General.ModelHttp.Authorization.DeviceModel">
+            <summary>
+            Получает или задаёт модель устройства.
+            </summary>
+            <value>Описание аппаратной модели устройства.</value>
+        </member>
+        <member name="P:General.ModelHttp.Authorization.DeviceType">
+            <summary>
+            Получает или задаёт тип устройства.
+            </summary>
+            <value>Категория устройства: мобильное, настольное, игровая консоль и т.д.</value>
+        </member>
+        <member name="P:General.ModelHttp.Authorization.OperatingSystem">
+            <summary>
+            Получает или задаёт операционную систему устройства.
+            </summary>
+            <value>Название и версия ОС (например, 'Windows 10', 'iOS 17').</value>
+        </member>
+        <member name="P:General.ModelHttp.Authorization.ProcessorType">
+            <summary>
+            Получает или задаёт тип процессора устройства.
+            </summary>
+            <value>Архитектура и модель процессора (например, 'Intel Core i7', 'Apple M1').</value>
+        </member>
+        <member name="P:General.ModelHttp.Authorization.ProcessorCount">
+            <summary>
+            Получает или задаёт количество логических ядер процессора.
+            </summary>
+            <value>Число, равное количеству потоков процессора.</value>
+        </member>
+        <member name="P:General.ModelHttp.Authorization.SystemMemorySize">
+            <summary>
+            Получает или задаёт объём оперативной памяти устройства в мегабайтах.
+            </summary>
+            <value>Размер ОЗУ в мегабайтах (например, 16384 для 16 ГБ).</value>
+        </member>
+        <member name="P:General.ModelHttp.Authorization.GraphicsDeviceName">
+            <summary>
+            Получает или задаёт название графического устройства.
+            </summary>
+            <value>Модель видеокарты или встроенного GPU.</value>
+        </member>
+        <member name="P:General.ModelHttp.Authorization.GraphicsMemorySize">
+            <summary>
+            Получает или задаёт объём видеопамяти в мегабайтах.
+            </summary>
+            <value>Размер видеопамяти (VRAM) в МБ.</value>
+        </member>
+        <member name="P:General.ModelHttp.Authorization.DeviceUniqueIdentifier">
+            <summary>
+            Получает или задаёт уникальный идентификатор устройства.
+            </summary>
+            <value>Уникальная строка, идентифицирующая устройство (например, IMEI, UUID).</value>
+        </member>
+        <member name="P:General.ModelHttp.Authorization.SystemInfo_supportsInstancing">
+            <summary>
+            Получает или задаёт признак поддержки графической системой инстансинга.
+            </summary>
+            <value><c>true</c>, если поддерживается; иначе <c>false</c>.</value>
+        </member>
+        <member name="P:General.ModelHttp.Authorization.SystemInfo_npotSupport">
+            <summary>
+            Получает или задаёт информацию о поддержке текстур с размерами, не являющимися степенью двойки (NPOT).
+            </summary>
+            <value>Строка, описывающая уровень поддержки NPOT (например, 'Full', 'Restricted', 'None').</value>
+        </member>
+        <member name="T:General.ServerErrors.Error">
+            <summary>
+            Ошибки сервера в ответах клиенту
+            </summary>
+        </member>
+        <member name="F:General.URLs.URL_HEADER">
+            <summary>
+            URL API старт
+            </summary>
+        </member>
+    </members>
+</doc>

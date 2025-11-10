@@ -1,0 +1,132 @@
+# .editorconfig для C# 13 с рекомендациями по стилю кода
+# Этот файл включает новые возможности C# 13 и обеспечивает единообразие стиля кода.
+
+root = true  # Указывает, что это корневой файл конфигурации
+
+[*.cs]  # Применяет настройки ко всем C# файлам
+csharp_style_namespace_declarations = file_scoped:suggestion
+dotnet_diagnostic.CS1591.severity = warning
+
+# Общие настройки
+charset = utf-8  # Использовать кодировку UTF-8
+end_of_line = crlf  # Использовать символы конца строки CRLF (Windows)
+indent_style = space  # Использовать пробелы для отступов
+indent_size = 4  # Размер отступа — 4 пробела
+insert_final_newline = true  # Добавлять пустую строку в конце файла
+trim_trailing_whitespace = true  # Удалять пробелы в конце строк
+
+# Форматирование
+csharp_new_line_before_open_brace = all  # Открывающая фигурная скобка на новой строке
+csharp_new_line_between_members = true  # Пустая строка между членами класса
+csharp_indent_case_contents = true  # Отступ содержимого в блоках case
+csharp_indent_switch_labels = true  # Отступ меток в switch
+csharp_indent_block_contents = true  # Отступ содержимого блоков
+csharp_space_after_keywords_in_control_flow_statements = true  # Пробел после ключевых слов в управляющих конструкциях
+csharp_space_after_cast = false  # Без пробела после приведения типа
+csharp_space_before_colon_in_inheritance_clause = true  # Пробел перед двоеточием в наследовании
+csharp_space_around_binary_operators = before_and_after# Пробелы вокруг бинарных операторов
+
+# Именование
+dotnet_naming_rule.constants_should_be_uppercase_with_underscores.severity = warning
+dotnet_naming_rule.constants_should_be_uppercase_with_underscores.symbols = constants  # Применяется к константам
+dotnet_naming_rule.constants_should_be_uppercase_with_underscores.style = uppercase_with_underscores
+
+dotnet_naming_symbols.constants.applicable_kinds = field  # Применяется к полям
+dotnet_naming_symbols.constants.required_modifiers = const  # Только для полей с модификатором const
+
+dotnet_naming_style.uppercase_with_underscores.capitalization = all_upper  # Все буквы заглавные
+dotnet_naming_style.uppercase_with_underscores.word_separator = _  # Разделитель слов — подчеркивание
+
+# Документация
+dotnet_style_require_documentation_comments = public:warning  # Требовать комментарии документации для публичных членов
+dotnet_diagnostic.SA1600.severity = warning  # Каждый элемент должен иметь XML-комментарий
+dotnet_diagnostic.SA1604.severity = warning  # Комментарий должен содержать тег <summary>
+dotnet_diagnostic.SA1611.severity = warning  # Требуется <param> для всех параметров
+dotnet_diagnostic.SA1615.severity = warning  # Требуется <returns> для методов с возвращаемым значением
+dotnet_diagnostic.SA1623.severity = warning  # Текст <summary> должен корректно описывать элемент
+dotnet_diagnostic.SA1633.severity = warning  # Заголовок файла обязателен (описание/лицензия)
+
+# Стиль кода
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:warning  # Требовать модификаторы доступа для членов, не являющихся интерфейсами
+csharp_preferred_modifier_order = public, protected, internal, private, static, abstract, virtual, sealed, readonly, override, async:suggestion  # Рекомендуемый порядок модификаторов
+
+# Асинхронные методы
+dotnet_style_async_method_names = true:warning  # Методы асинхронного программирования должны иметь суффикс Async
+dotnet_diagnostic.SA1412.severity = warning  # Принудительно требовать суффикс Async
+
+# Использование var
+csharp_style_var_for_built_in_types = false:suggestion  # Разрешить использование var для встроенных типов
+csharp_style_var_when_type_is_apparent = false:suggestion  # Разрешить использование var, если тип очевиден
+csharp_style_var_elsewhere = false:suggestion  # Не использовать var, если тип неочевиден
+
+# Интерполяция строк
+dotnet_style_prefer_simplified_interpolation = true:suggestion  # Предпочтение упрощённой интерполяции строк
+
+# Коллекционные выражения
+dotnet_style_prefer_collection_expression = true:suggestion  # Предпочтение коллекционным выражениям
+
+# Параметры
+dotnet_style_prefer_auto_properties = true:suggestion  # Предпочтение авто-свойствам
+
+# Прочее
+dotnet_style_prefer_is_null_check_over_reference_equality_method = true:suggestion  # Предпочтение проверке на null через is null
+dotnet_style_prefer_null_check_over_type_check = true:suggestion  # Предпочтение проверке на null вместо проверки типа
+dotnet_style_prefer_conditional_expression_over_assignment = false:suggestion  # Не навязывать использование тернарного оператора вместо присваивания
+dotnet_style_prefer_compound_assignment = true:suggestion  # Предпочтение составным операторам присваивания
+dotnet_style_prefer_simplified_string_empty_check = true:suggestion  # Предпочтение упрощённой проверки на пустую строку
+dotnet_style_prefer_inferred_tuple_names = true:suggestion  # Предпочтение выводу имён элементов кортежей
+dotnet_style_prefer_inferred_anonymous_type_member_names = true:suggestion  # Предпочтение выводу имён членов анонимных типов
+dotnet_style_prefer_utf8_string_literals = true:suggestion  # Предпочтение строковым литералам UTF-8
+dotnet_style_prefer_switch_expression = true:suggestion  # Предпочтение выражениям switch
+dotnet_style_prefer_collection_initializer = true:suggestion  # Предпочтение инициализаторам коллекций
+dotnet_style_prefer_simplified_boolean_expressions = true:suggestion  # Предпочтение упрощённым булевым выражениям
+dotnet_style_prefer_auto_property_initializer = true:suggestion  # Предпочтение инициализаторам авто-свойств
+dotnet_style_prefer_inferred_anonymous_type_member_names = true:suggestion  # Предпочтение выводу имён членов анонимных типов
+
+# Новые возможности C# 13
+dotnet_style_prefer_params_collection = true:suggestion  # Предпочтение использованию коллекций в параметрах
+dotnet_style_prefer_primary_constructors = true:suggestion  # Предпочтение использованию основных конструкторов
+dotnet_style_prefer_implicit_indexer_access = true:suggestion  # Предпочтение неявному доступу к индексатору
+dotnet_style_prefer_ref_locals_in_iterators = true:suggestion  # Предпочтение использованию локальных переменных с ref в итераторах
+dotnet_style_prefer_ref_struct_implement_interfaces = true:suggestion  # Предпочтение использованию структур с ref для реализации интерфейсов
+dotnet_style_prefer_ref_struct_as_type_parameters = true:suggestion  # Предпочтение использованию структур с ref в качестве параметров типа
+dotnet_style_prefer_partial_properties = true:suggestion  # Предпочтение использованию частичных свойств
+dotnet_style_prefer_partial_indexers = true:suggestion  # Предпочтение использованию частичных индексаторов
+csharp_indent_labels = one_less_than_current
+csharp_style_throw_expression = true:suggestion
+csharp_style_prefer_null_check_over_type_check = true:suggestion
+csharp_prefer_simple_default_expression = true:suggestion
+csharp_style_prefer_local_over_anonymous_function = true:suggestion
+csharp_style_prefer_index_operator = true:suggestion
+csharp_style_prefer_range_operator = true:suggestion
+csharp_style_implicit_object_creation_when_type_is_apparent = true:suggestion
+csharp_style_prefer_implicitly_typed_lambda_expression = true:suggestion
+csharp_style_prefer_tuple_swap = true:suggestion
+csharp_style_prefer_unbound_generic_type_in_nameof = true:suggestion
+csharp_style_prefer_utf8_string_literals = true:suggestion
+csharp_style_inlined_variable_declaration = true:suggestion
+csharp_style_deconstructed_variable_declaration = true:suggestion
+csharp_style_unused_value_assignment_preference = discard_variable:suggestion
+csharp_style_unused_value_expression_statement_preference = discard_variable:silent
+
+[*.{cs,vb}]
+dotnet_style_operator_placement_when_wrapping = beginning_of_line
+tab_width = 4
+indent_size = 4
+dotnet_style_coalesce_expression = true:suggestion
+dotnet_style_null_propagation = true:suggestion
+dotnet_style_prefer_is_null_check_over_reference_equality_method = true:suggestion
+dotnet_style_prefer_auto_properties = true:suggestion
+dotnet_style_object_initializer = true:suggestion
+dotnet_style_collection_initializer = true:suggestion
+dotnet_style_prefer_simplified_boolean_expressions = true:suggestion
+dotnet_style_prefer_conditional_expression_over_assignment = false:suggestion
+dotnet_style_prefer_conditional_expression_over_return = true:silent
+dotnet_style_explicit_tuple_names = true:suggestion
+dotnet_style_prefer_inferred_tuple_names = true:suggestion
+dotnet_style_prefer_inferred_anonymous_type_member_names = true:suggestion
+dotnet_style_prefer_compound_assignment = true:suggestion
+dotnet_style_prefer_simplified_interpolation = true:suggestion
+dotnet_style_prefer_collection_expression = when_types_exactly_match:suggestion
+dotnet_style_namespace_match_folder = true:suggestion
+end_of_line = crlf

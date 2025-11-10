@@ -34,7 +34,7 @@ public class Button_Auth : MonoBehaviour
                 return;
             }
 
-            // Данные авторизации и характеристики аппаратного устройства
+            // Р”Р°РЅРЅС‹Рµ Р°РІС‚РѕСЂРёР·Р°С†РёРё Рё С…Р°СЂР°РєС‚РµСЂРёСЃС‚РёРєРё Р°РїРїР°СЂР°С‚РЅРѕРіРѕ СѓСЃС‚СЂРѕР№СЃС‚РІР°
             General.ModelHttp.Authorization payload = new(
                 emailString,
                 passwordString,
@@ -53,24 +53,16 @@ public class Button_Auth : MonoBehaviour
                 SystemInfo.npotSupport.ToString()
             );
 
-            // Блокируем кнопку и выводим сообщение непосредственно перед await
+            // Р‘Р»РѕРєРёСЂСѓРµРј РєРЅРѕРїРєСѓ Рё РІС‹РІРѕРґРёРј СЃРѕРѕР±С‰РµРЅРёРµ РЅРµРїРѕСЃСЂРµРґСЃС‚РІРµРЅРЅРѕ РїРµСЂРµРґ await
             buttonLogin.interactable = false;
             GameMessage.ShowLocale("Info.Authentication", false, isProcess: true);
 
             string json = JsonConvert.SerializeObject(payload);
-            JObject jObject = await HttpRequester.GetResponceAsync(General.URLs.Uri_login, json);
-            if (jObject == null)
-            {
-                GameMessage.ShowLocale("Errors.Server_InvalidResponse", true);
-                return;
-            }
 
-            GlobalVariables.Jwt_token = jObject["token"]?.ToString() ?? string.Empty;
-
-            if (GlobalVariables.Jwt_token == string.Empty)
+            Game03Client.JwtToken.JwtTokenResult jwtTokenResult = await GlobalFields.ClientGame.JwtToken.GetTokenAsync(json);
+            if (jwtTokenResult.Result == null)
             {
-                GameMessage.ShowLocale("Errors.Empty_Token", true);
-                return;
+
             }
 
             //await GameMessage.ShowAndWaitCloseAsync($"Success! Token = {GV.Jwt_token}");
@@ -79,10 +71,10 @@ public class Button_Auth : MonoBehaviour
             await Task.Delay(700);
             GameMessage.ShowLocale("Info.OpeningWebSocket", false, isProcess: true);
 
-            // Открываем веб сокет
-            GlobalVariables.webSocketClient = new WebSocketClient();
-            await GlobalVariables.webSocketClient.ConnectAsync();
-            if (!GlobalVariables.webSocketClient.Connected)
+            // РћС‚РєСЂС‹РІР°РµРј РІРµР± СЃРѕРєРµС‚
+            GlobalFields.webSocketClient = new WebSocketClient();
+            await GlobalFields.webSocketClient.ConnectAsync();
+            if (!GlobalFields.webSocketClient.Connected)
             {
                 GameMessage.ShowLocale("Errors.OpeningWebSocketFailed", true);
                 return;

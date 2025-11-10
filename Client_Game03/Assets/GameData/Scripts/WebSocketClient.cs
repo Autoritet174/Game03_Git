@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Net.WebSockets;
 using System.Text;
@@ -34,9 +34,9 @@ namespace Assets.GameData.Scripts
 
 
             // Добавляем JWT токен в заголовки, если он предоставлен
-            if (!string.IsNullOrEmpty(GlobalVariables.Jwt_token))
+            if (!string.IsNullOrEmpty(GlobalFields.Jwt_token))
             {
-                _webSocket.Options.SetRequestHeader("Authorization", $"Bearer {GlobalVariables.Jwt_token}");
+                _webSocket.Options.SetRequestHeader("Authorization", $"Bearer {GlobalFields.Jwt_token}");
             }
 
 

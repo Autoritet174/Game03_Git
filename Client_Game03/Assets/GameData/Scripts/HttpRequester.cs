@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -28,15 +28,10 @@ namespace Assets.GameData.Scripts
 
             _httpClient = new();
 
-            Ini ini = Ini.Create(Path.Combine(Application.dataPath, @"GameData\Config\Main.ini"));
-            if (!double.TryParse(ini.Read("Http", "timeout"), out double timeout))
-            {
-                timeout = 10;
-            }
+            double timeout = GlobalFields.ClientGame.IniFile.ReadDouble("Http", "timeout", 10);
             _httpClient.Timeout = TimeSpan.FromSeconds(timeout);
             inited = true;
         }
-
 
         /// <summary>
         /// Метод для преобразования заголовков в строку
@@ -69,7 +64,6 @@ namespace Assets.GameData.Scripts
             return headersString.ToString();
         }
 
-
         /// <summary>
         /// Выполняет HTTP POST-запрос с JSON-телом и возвращает ответ в виде JObject.
         /// </summary>
@@ -92,46 +86,46 @@ namespace Assets.GameData.Scripts
                 jsonBody = "{}";
             }
 
-            //try
-            //{
-            using HttpRequestMessage request = new(HttpMethod.Post, uri)
-                {
-                    Content = new StringContent(jsonBody, Encoding.UTF8, "application/json")
-                };
+            try
+            {
+                using HttpRequestMessage request = new(HttpMethod.Post, uri)
+            {
+                Content = new StringContent(jsonBody, Encoding.UTF8, "application/json")
+            };
 
-                if (!string.IsNullOrWhiteSpace(GlobalVariables.Jwt_token))
-                {
-                    request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", GlobalVariables.Jwt_token);
-                }
+            if (!string.IsNullOrWhiteSpace(GlobalFields.Jwt_token))
+            {
+                request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", GlobalFields.Jwt_token);
+            }
 
-                using HttpResponseMessage response = await _httpClient.SendAsync(request);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                JObject resultJObject = JObject.Parse(responseContent);
+            using HttpResponseMessage response = await _httpClient.SendAsync(request);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            JObject resultJObject = JObject.Parse(responseContent);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    return resultJObject;
-                }
-                else
-                {
-                    Dictionary<string, string> argDict = new();
-                    var keyError = LocalizationManager.GetKeyError(resultJObject, argDict);
-                    await GameMessage.ShowLocaleAndWaitCloseAsync(keyError, argDict);
-                }
-            //}
-            //catch (TaskCanceledException ex) when (ex.InnerException is TimeoutException)
-            //{
-            //    await GameMessage.ShowLocaleAndWaitCloseAsync("Errors.Server_Timeout");
-            //}
-            //catch (HttpRequestException ex) when (ex.InnerException is WebException)
-            //{
-            //    bool haveInternet = await InternetChecker.CheckInternetConnectionAsync();
-            //    await GameMessage.ShowLocaleAndWaitCloseAsync(haveInternet ? "Errors.Server_Unavailable" : "Errors.No_internet_connection");
-            //}
-            //catch (Exception ex)
-            //{
-            //    await GameMessage.ShowErrorAndWaitCloseAsync(ex);
-            //}
+            if (response.IsSuccessStatusCode)
+            {
+                return resultJObject;
+            }
+            else
+            {
+                Dictionary<string, string> argDict = new();
+                var keyError = LocalizationManager.GetKeyError(resultJObject, argDict);
+                await GameMessage.ShowLocaleAndWaitCloseAsync(keyError, argDict);
+            }
+            }
+            catch (TaskCanceledException ex) when (ex.InnerException is TimeoutException)
+            {
+                await GameMessage.ShowLocaleAndWaitCloseAsync("Errors.Server_Timeout");
+            }
+            catch (HttpRequestException ex) when (ex.InnerException is WebException)
+            {
+                bool haveInternet = await InternetChecker.CheckInternetConnectionAsync();
+                await GameMessage.ShowLocaleAndWaitCloseAsync(haveInternet ? "Errors.Server_Unavailable" : "Errors.No_internet_connection");
+            }
+            catch (Exception ex)
+            {
+                await GameMessage.ShowErrorAndWaitCloseAsync(ex);
+            }
 
             return null;
         }

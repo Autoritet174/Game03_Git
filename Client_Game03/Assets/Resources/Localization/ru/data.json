@@ -1,31 +1,35 @@
 {
 	"UI" : {
-		"Button_Login": "Вход",
-		"Button_Reg": "Регистрация",
-		"Button_Close": "Выйти из игры",
-		"Label_Email": "Электронная почта",
-		"Label_Password": "Пароль"
+		"Button": {
+			"Login": "Вход",
+			"Reg": "Регистрация",
+			"Close": "Выйти из игры"
+		},
+		"Label": {
+			"Email": "Электронная почта",
+			"Password": "Пароль"
+		}
 	},
-	
-	"Errors": {
-		"Server_UnknownError" : "Сервер, неизвесная ошибка",
-		"Not_Email" : "Введённый текст не емаил",
-		"Empty_Token" : "Пустой токен",
-		"Server_Timeout" : "Время ожидания ответа истекло",
-		"Server_Unavailable" : "Сервер не доступен",
-		"Server_InvalidResponse": "Неверный ответ от сервера",
-		"No_internet_connection" : "Нет подключения к интернету",
-		"AuthInvalidCredentials" : "Неверные учетные данные",
-		"TooManyRequests" : "Слишком много попыток, попробуйте через {timeRemaining}",
-		"AccountBannedUntil" : "Ваша учётная запись заблокирована. Повторите попытку через {timeRemaining}. Учётная запись будет разблокирована {datetimeExpiration}.",
-		"AccountBannedPermanently" : "Ваша учётная запись заблокирована бессрочно.",
-		"ListAllHeroes_Empty": "Сервер вернул пустой список героев",
-		"OpeningWebSocketFailed": "Ошибка открытия веб сокета"
+	"Error": {
+		"User": {
+			"NotEmail" : "Введённый текст не емаил",
+		},
+		"Server": {
+			"UnknownError" : "Неизвесная ошибка",
+			"Timeout" : "Время ожидания ответа истекло",
+			"Unavailable" : "Не доступен",
+			"InvalidResponse": "Неверный ответ",
+			"InvalidCredentials" : "Неверные учетные данные",
+			"TooManyRequests" : "Слишком много попыток, попробуйте через {timeRemaining}",
+			"AccountBannedUntil" : "Ваша учётная запись заблокирована. Повторите попытку через {timeRemaining}. Учётная запись будет разблокирована {datetimeExpiration}.",
+			"AccountBannedPermanently" : "Ваша учётная запись заблокирована бессрочно.",
+			"NoInternetConnection" : "Возможно, отсутствует подключение к интернету"
+		}
 	},
 	
 	"Info" : {
 		"Authentication" : "Аутентификация",
 		"AuthenticationSuccess" : "Авторизация успешна",
-		"OpeningWebSocket" : "Установка соединения...",
+		"OpeningWebSocket" : "Установка соединения",
 	}
 }
