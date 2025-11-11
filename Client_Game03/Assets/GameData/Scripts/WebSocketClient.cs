@@ -18,7 +18,7 @@ namespace Assets.GameData.Scripts
         public bool Connected { get; private set; } = false;
 
         // Событие для уведомления о статусе аутентификации
-        //public event Action<bool, string> OnAuthenticationResult;
+        // public event Action<bool, string> OnAuthenticationResult;
 
         public WebSocketClient()
         {
@@ -34,9 +34,10 @@ namespace Assets.GameData.Scripts
 
 
             // Добавляем JWT токен в заголовки, если он предоставлен
-            if (!string.IsNullOrEmpty(GlobalFields.Jwt_token))
+            string jwtToken = GlobalFields.ClientGame.JwtTokenProvider.GetTokenIfExists();
+            if (!string.IsNullOrEmpty(jwtToken))
             {
-                _webSocket.Options.SetRequestHeader("Authorization", $"Bearer {GlobalFields.Jwt_token}");
+                _webSocket.Options.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
             }
 
 

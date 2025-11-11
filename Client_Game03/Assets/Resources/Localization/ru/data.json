@@ -11,11 +11,13 @@
 		}
 	},
 	"Error": {
+		"UnknownError" : "Неизвесная ошибка",
 		"User": {
 			"NotEmail" : "Введённый текст не емаил",
+			"EmailEmpty" : "Не введен email",
+			"PasswordEmpty" : "Не введен пароль"
 		},
 		"Server": {
-			"UnknownError" : "Неизвесная ошибка",
 			"Timeout" : "Время ожидания ответа истекло",
 			"Unavailable" : "Не доступен",
 			"InvalidResponse": "Неверный ответ",
@@ -23,7 +25,8 @@
 			"TooManyRequests" : "Слишком много попыток, попробуйте через {timeRemaining}",
 			"AccountBannedUntil" : "Ваша учётная запись заблокирована. Повторите попытку через {timeRemaining}. Учётная запись будет разблокирована {datetimeExpiration}.",
 			"AccountBannedPermanently" : "Ваша учётная запись заблокирована бессрочно.",
-			"NoInternetConnection" : "Возможно, отсутствует подключение к интернету"
+			"NoInternetConnection" : "Возможно, отсутствует подключение к интернету",
+			"OpeningWebSocketFailed" : "Соединение не установлено"
 		}
 	},
 	

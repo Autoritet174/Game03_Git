@@ -1,4 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,8 +11,8 @@ namespace Assets.GameData.Scripts
 {
     public class GameMessage : MonoBehaviour
     {
-        private const string ObjectName = "GameMessage (id=p25hg2gr)";
-        private const string PrefabAddress = "GameMessage-Canvas"; // Адрес префаба в Addressables
+        private const string OBJECT_NAME = "GameMessage (id=p25hg2gr)";
+        private const string PREFAB_ADDRESS = "GameMessage-Canvas"; // Адрес префаба в Addressables
         private static bool _opened = false;
         private static GameObject _currentInstance;
 
@@ -53,7 +53,7 @@ namespace Assets.GameData.Scripts
         /// </summary>
         public static async Task ShowLocaleAndWaitCloseAsync(string keyLocalization, Dictionary<string, string> argDict = null)
         {
-            Show(LocalizationManager.GetValue(keyLocalization), true, argDict);
+            Show(GlobalFields.ClientGame.LocalizationManagerProvider.GetValue(keyLocalization), true, argDict);
             await UniTask.WaitUntil(() => !_opened);
         }
 
@@ -72,7 +72,7 @@ namespace Assets.GameData.Scripts
         /// </summary>
         public static void ShowLocale(string keyLocalization, bool buttonActive, bool isProcess = false)
         {
-            Show(LocalizationManager.GetValue(keyLocalization), buttonActive, isProcess: isProcess);
+            Show(GlobalFields.ClientGame.LocalizationManagerProvider.GetValue(keyLocalization), buttonActive, isProcess: isProcess);
         }
 
         /// <summary>
@@ -114,13 +114,13 @@ namespace Assets.GameData.Scripts
             }
 
             // Загружаем префаб через Addressables
-            AsyncOperationHandle<GameObject> loadHandle = Addressables.LoadAssetAsync<GameObject>(PrefabAddress);
+            AsyncOperationHandle<GameObject> loadHandle = Addressables.LoadAssetAsync<GameObject>(PREFAB_ADDRESS);
             loadHandle.Completed += handle =>
             {
                 if (handle.Status == AsyncOperationStatus.Succeeded)
                 {
                     _currentInstance = UnityEngine.Object.Instantiate(handle.Result);
-                    _currentInstance.name = ObjectName;
+                    _currentInstance.name = OBJECT_NAME;
                     _opened = true;
 
                     if (!_currentInstance.TryGetComponent(out Canvas canvas))
@@ -140,7 +140,7 @@ namespace Assets.GameData.Scripts
                 }
                 else
                 {
-                    Debug.LogError($"Failed to load prefab: {PrefabAddress}");
+                    Debug.LogError($"Failed to load prefab: {PREFAB_ADDRESS}");
                 }
             };
         }

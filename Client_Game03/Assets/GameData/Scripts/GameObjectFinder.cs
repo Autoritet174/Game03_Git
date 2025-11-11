@@ -1,8 +1,6 @@
-﻿using System;
-using TMPro;
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 namespace Assets.GameData.Scripts
 {

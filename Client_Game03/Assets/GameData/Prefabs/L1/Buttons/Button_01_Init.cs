@@ -4,7 +4,7 @@ using UnityEngine;
 public class Button_01_Init : MonoBehaviour
 {
     [SerializeField]
-    TextMeshProUGUI textMeshPro_Button;
+    private TextMeshProUGUI textMeshPro_Button;
 
     private void Awake()
     {

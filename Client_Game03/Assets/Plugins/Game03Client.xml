@@ -9,14 +9,24 @@
             Класс содержащий логику и веб взаимодействие игрового клиента.
             </summary>
         </member>
-        <member name="P:Game03Client.Game03.JwtToken">
+        <member name="P:Game03Client.Game03.JwtTokenProvider">
             <summary>
             Провайдер JwtToken.
             </summary>
         </member>
-        <member name="P:Game03Client.Game03.IniFile">
+        <member name="P:Game03Client.Game03.IniFileProvider">
             <summary>
             Провайдер IniFile.
+            </summary>
+        </member>
+        <member name="P:Game03Client.Game03.HttpRequesterProvider">
+            <summary>
+            Провайдер HttpRequester.
+            </summary>
+        </member>
+        <member name="P:Game03Client.Game03.LocalizationManagerProvider">
+            <summary>
+            Провайдер LocalizationManager.
             </summary>
         </member>
         <member name="M:Game03Client.Game03.DisposeAsync">
@@ -24,6 +34,56 @@
             Освободить ресурсы.
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:Game03Client.Game03.Create(System.String,General.StringCapsule,Game03Client.GameLanguage,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})">
+            <summary>
+            Фабрика.
+            </summary>
+            <param name="iniFileFullPath"></param>
+            <param name="stringCapsuleJsonFileData"></param>
+            <param name="languageGame"></param>
+            <param name="configure"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Game03Client.GameLanguage.NameEnglish">
+            <summary>
+            Наименование языка на английском языке.
+            </summary>
+        </member>
+        <member name="P:Game03Client.GameLanguage.NameLocale">
+            <summary>
+            Наименование языка на этом же языке.
+            </summary>
+        </member>
+        <member name="P:Game03Client.GameLanguage.NameShort">
+            <summary>
+            Двухбуквенное имя в нижнем регистре.
+            </summary>
+        </member>
+        <member name="P:Game03Client.GameLanguage.En">
+            <summary>
+            Английский.
+            </summary>
+        </member>
+        <member name="P:Game03Client.GameLanguage.Ru">
+            <summary>
+            Русский.
+            </summary>
+        </member>
+        <member name="P:Game03Client.GameLanguage.AllLanguages">
+            <summary>
+            Все языки доступные в игре.
+            </summary>
+        </member>
+        <member name="M:Game03Client.HttpRequester.HttpRequesterProvider.GetResponceAsync(System.String,System.String,System.Boolean)">
+            <summary>
+            Возвращает <see cref="T:Game03Client.HttpRequester.HttpRequesterResult"/> ответ. Если HttpRequesterResult <see cref="P:Game03Client.HttpRequester.HttpRequesterResult.Success"/> true, то  <see cref="P:Game03Client.HttpRequester.HttpRequesterResult.JObject"/> был корректно извлечен из ответа от сервера.
+            </summary>
+            <param name="url"></param>
+            <param name="jsonBody"></param>
+            <param name="useJwtToken"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
         </member>
         <member name="M:Game03Client.HttpRequester.HttpRequesterProvider.GetHeadersAsString(System.Net.Http.HttpResponseMessage)">
             <summary>
@@ -77,30 +137,27 @@
             <summary>
             Результат при получении токена.
             </summary>
-            <param name="result"></param>
-            <param name="keyError"></param>
-        </member>
-        <member name="M:Game03Client.JwtToken.JwtTokenResult.#ctor(System.String,System.String)">
-            <summary>
-            Результат при получении токена.
-            </summary>
-            <param name="result"></param>
-            <param name="keyError"></param>
         </member>
         <member name="P:Game03Client.JwtToken.JwtTokenResult.Result">
             <summary>
             Jwt токен. null если не получилось извлечь токен.
             </summary>
         </member>
-        <member name="P:Game03Client.JwtToken.JwtTokenResult.KeyError">
+        <member name="P:Game03Client.JwtToken.JwtTokenResult.JObject">
             <summary>
             Ключ ошибки если не удалось извлечь токен.
             </summary>
         </member>
-        <member name="T:Game03Client.L">
+        <member name="M:Game03Client.JwtToken.JwtTokenResult.#ctor(System.String,Newtonsoft.Json.Linq.JObject)">
+            <param name="result"></param>
+            <param name="jObject"></param>
+        </member>
+        <member name="M:Game03Client.LocalizationManager.LocalizationManagerProvider.GetTextByJObject(Newtonsoft.Json.Linq.JObject)">
             <summary>
-            Поля для получения ошибок по коду локализации.
+            Получить строку которая является ключом к тексту ошибки.
             </summary>
+            <param name="jObject"></param>
+            <returns></returns>
         </member>
         <member name="M:Game03Client.WebSocketClient.ReceiveMessagesAsync">
             <summary>

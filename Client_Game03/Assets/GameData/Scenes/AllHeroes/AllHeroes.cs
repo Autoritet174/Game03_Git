@@ -12,7 +12,11 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
+using L = General.LocalizationKeys;
+
 using static General.Enums;
+using General;
+
 public class AllHeroes : MonoBehaviour
 {
     private ScrollRect scrollView;
@@ -20,22 +24,22 @@ public class AllHeroes : MonoBehaviour
     private RectTransform buttonClose;
 
     /// <summary>
-    /// Компонент ScrollRect, к которому привязан скрипт.
+    /// РљРѕРјРїРѕРЅРµРЅС‚ ScrollRect, Рє РєРѕС‚РѕСЂРѕРјСѓ РїСЂРёРІСЏР·Р°РЅ СЃРєСЂРёРїС‚.
     /// </summary>
     private ScrollRect scrollRect;
 
     /// <summary>
-    /// Компонент GridLayoutGroup в Content.
+    /// РљРѕРјРїРѕРЅРµРЅС‚ GridLayoutGroup РІ Content.
     /// </summary>
     private GridLayoutGroup gridLayout;
 
     /// <summary>
-    /// Компонент RectTransform у Scroll View.
+    /// РљРѕРјРїРѕРЅРµРЅС‚ RectTransform Сѓ Scroll View.
     /// </summary>
     private RectTransform scrollRectTransform;
 
     /// <summary>
-    /// Компонент RectTransform у вертикальной полосы прокрутки. Для изменения размера шрифта при изменении размера окна.
+    /// РљРѕРјРїРѕРЅРµРЅС‚ RectTransform Сѓ РІРµСЂС‚РёРєР°Р»СЊРЅРѕР№ РїРѕР»РѕСЃС‹ РїСЂРѕРєСЂСѓС‚РєРё. Р”Р»СЏ РёР·РјРµРЅРµРЅРёСЏ СЂР°Р·РјРµСЂР° С€СЂРёС„С‚Р° РїСЂРё РёР·РјРµРЅРµРЅРёРё СЂР°Р·РјРµСЂР° РѕРєРЅР°.
     /// </summary>
     private RectTransform verticalScrollbar;
     private readonly ConcurrentBag<TextMeshProUGUI> list_TextMeshProUGUI_heroNames = new();
@@ -100,18 +104,24 @@ public class AllHeroes : MonoBehaviour
 
     private async Task FullListAllHeroes()
     {
-        JObject jsonObject = await HttpRequester.GetResponceAsync(General.URLs.Uri_GetListAllHeroes);
-
-        if (jsonObject == null)
+        Game03Client.HttpRequester.HttpRequesterResult result = await GlobalFields.ClientGame.HttpRequesterProvider.GetResponceAsync(General.Url.General.ListAllHeroes);
+        if (result == null)
         {
-            GameMessage.ShowLocale("Errors.ListAllHeroes_Empty", true);
+            GameMessage.ShowLocale(L.Error.Server.InvalidResponse, true);
+            return;
+        }
+        JObject jObject = result.JObject;
+
+        if (jObject == null)
+        {
+            GameMessage.ShowLocale(L.Error.Server.InvalidResponse, true);
             return;
         }
 
-        JToken heroesToken = jsonObject["heroes"];
+        JToken heroesToken = jObject["heroes"];
         if (heroesToken is not JArray heroesArray)
         {
-            throw new InvalidOperationException("Ключ 'heroes' отсутствует или не является массивом.");
+            throw new InvalidOperationException("РљР»СЋС‡ 'heroes' РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚ РёР»Рё РЅРµ СЏРІР»СЏРµС‚СЃСЏ РјР°СЃСЃРёРІРѕРј.");
         }
 
         AllHeroesConsts.AllHeroes.Clear();
@@ -119,7 +129,7 @@ public class AllHeroes : MonoBehaviour
         {
             Guid id = new(heroObj["id"]?.ToString());
             string name = heroObj["name"]?.ToString();
-            float baseHealth = (float)Convert.ToDouble( heroObj["baseHealth"]);
+            float baseHealth = (float)Convert.ToDouble(heroObj["baseHealth"]);
             float baseAttack = (float)Convert.ToDouble(heroObj["baseAttack"]);
             RarityLevel rarity = (RarityLevel)Convert.ToInt32(heroObj["rarity"]);
             //Debug.Log(id);
@@ -130,11 +140,11 @@ public class AllHeroes : MonoBehaviour
         {
             int result = b.Rarity.CompareTo(a.Rarity);
             if (result != 0)
-            {// сортировка по редкости по убыванию
+            {// СЃРѕСЂС‚РёСЂРѕРІРєР° РїРѕ СЂРµРґРєРѕСЃС‚Рё РїРѕ СѓР±С‹РІР°РЅРёСЋ
                 return result;
             }
 
-            // сортировка по имени по возрастанию
+            // СЃРѕСЂС‚РёСЂРѕРІРєР° РїРѕ РёРјРµРЅРё РїРѕ РІРѕР·СЂР°СЃС‚Р°РЅРёСЋ
             return a.Name.CompareTo(b.Name);
         });
     }
@@ -159,7 +169,7 @@ public class AllHeroes : MonoBehaviour
         Transform transform = _prefabIconHero.transform;
         transform.SetParent(content.transform, false);
 
-        // Текст (может быть установлен сразу)
+        // РўРµРєСЃС‚ (РјРѕР¶РµС‚ Р±С‹С‚СЊ СѓСЃС‚Р°РЅРѕРІР»РµРЅ СЃСЂР°Р·Сѓ)
         Transform childText = _prefabIconHero.transform.Find("TextHero");
         if (childText != null && childText.TryGetComponent(out TextMeshProUGUI textMeshPro))
         {
@@ -167,7 +177,7 @@ public class AllHeroes : MonoBehaviour
             list_TextMeshProUGUI_heroNames.Add(textMeshPro);
         }
 
-        // Изображение (загружаем через Addressable)
+        // РР·РѕР±СЂР°Р¶РµРЅРёРµ (Р·Р°РіСЂСѓР¶Р°РµРј С‡РµСЂРµР· Addressable)
         Transform childImageMaskHero = _prefabIconHero.transform.Find("ImageMaskHero");
         Transform childImageMaskRarity = _prefabIconHero.transform.Find("ImageMaskRarity");
         Transform childImageHero = childImageMaskHero.Find("ImageHero");
@@ -197,7 +207,7 @@ public class AllHeroes : MonoBehaviour
                         loadNull = false;
                         loadColor = false;
 
-                        // Добавляем компонент для обработки кликов
+                        // Р”РѕР±Р°РІР»СЏРµРј РєРѕРјРїРѕРЅРµРЅС‚ РґР»СЏ РѕР±СЂР°Р±РѕС‚РєРё РєР»РёРєРѕРІ
                         ImageHeroHandler clickHandler = _prefabIconHero.AddComponent<ImageHeroHandler>();
                         clickHandler.Initialize(hero, handleRarity.Result, handleEntered.Result, HeroView, imageRarity);
 
@@ -206,9 +216,9 @@ public class AllHeroes : MonoBehaviour
                 }
 
 
-                if (loadNull && await AddressableHelper.CheckIfKeyExists(AllHeroesConsts.HeroImageNull))
+                if (loadNull && await AddressableHelper.CheckIfKeyExists(AllHeroesConsts.HERO_IMAGE_NULL))
                 {
-                    handleHero = Addressables.LoadAssetAsync<Sprite>(AllHeroesConsts.HeroImageNull);
+                    handleHero = Addressables.LoadAssetAsync<Sprite>(AllHeroesConsts.HERO_IMAGE_NULL);
                     _ = await handleHero.Task;
                     if (handleHero.Status == AsyncOperationStatus.Succeeded && handleHero.Result != null)
                     {
@@ -222,14 +232,14 @@ public class AllHeroes : MonoBehaviour
 
                 if (loadColor)
                 {
-                    Debug.LogError($"Не удалось загрузить изображение {heroName} из Addressable Assets!");
+                    Debug.LogError($"РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ РёР·РѕР±СЂР°Р¶РµРЅРёРµ {heroName} РёР· Addressable Assets!");
                     imageHero.color = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
                     SetImage(handleRarity, imageRarity);
                 }
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Ошибка при загрузке изображения {heroName}: {ex.Message}");
+                Debug.LogError($"РћС€РёР±РєР° РїСЂРё Р·Р°РіСЂСѓР·РєРµ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ {heroName}: {ex.Message}");
                 imageHero.color = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
             }
         }
@@ -239,8 +249,8 @@ public class AllHeroes : MonoBehaviour
     private void SetImage(AsyncOperationHandle<Sprite> handle, UnityEngine.UI.Image image)
     {
         image.sprite = handle.Result;
-        image.preserveAspect = true; // Сохраняет пропорции изображения
-        image.type = Image.Type.Simple; // Режим без растягивания;
+        image.preserveAspect = true; // РЎРѕС…СЂР°РЅСЏРµС‚ РїСЂРѕРїРѕСЂС†РёРё РёР·РѕР±СЂР°Р¶РµРЅРёСЏ
+        image.type = Image.Type.Simple; // Р РµР¶РёРј Р±РµР· СЂР°СЃС‚СЏРіРёРІР°РЅРёСЏ;
     }
 
     private void OnResize()
@@ -248,7 +258,7 @@ public class AllHeroes : MonoBehaviour
         _lastHeight = Screen.height;
         _lastWidth = Screen.width;
 
-        // Устанавливаем Constraint как FixedcolumnCount
+        // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј Constraint РєР°Рє FixedcolumnCount
         gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
 
         float scrollView_Width = scrollRectTransform.rect.width * 0.95f;
@@ -271,19 +281,19 @@ public class AllHeroes : MonoBehaviour
             _ => 8,
         };
 
-        // Устанавливаем количество колонок
+        // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј РєРѕР»РёС‡РµСЃС‚РІРѕ РєРѕР»РѕРЅРѕРє
         gridLayout.constraintCount = columnCount;
         float cellWidth = totalAvailableWidth / columnCount * percentWidthForImage;
         gridLayout.cellSize = new Vector2(cellWidth, cellWidth);
 
-        // Отступ между элементами в пикселях.
+        // РћС‚СЃС‚СѓРї РјРµР¶РґСѓ СЌР»РµРјРµРЅС‚Р°РјРё РІ РїРёРєСЃРµР»СЏС….
         float spacing = totalAvailableWidth / (columnCount - 1) * (1f - percentWidthForImage);
         gridLayout.spacing = new Vector2(spacing, spacing);
 
         //scrollRect = GetComponentInParent<ScrollRect>();
 
 
-        //настройки ScrollSensitivity так, чтобы при единичном повороте колеса мыши прокручивалась одна ячейка.
+        //РЅР°СЃС‚СЂРѕР№РєРё ScrollSensitivity С‚Р°Рє, С‡С‚РѕР±С‹ РїСЂРё РµРґРёРЅРёС‡РЅРѕРј РїРѕРІРѕСЂРѕС‚Рµ РєРѕР»РµСЃР° РјС‹С€Рё РїСЂРѕРєСЂСѓС‡РёРІР°Р»Р°СЃСЊ РѕРґРЅР° СЏС‡РµР№РєР°.
         scrollRect.scrollSensitivity = cellWidth + spacing;// / 6f / 2f;
 
         foreach (TextMeshProUGUI textMeshProUGUI in list_TextMeshProUGUI_heroNames)
@@ -326,7 +336,7 @@ public class AllHeroes : MonoBehaviour
         _ = await prefabHeroViewer_handle.Task;
         prefabHeroViewer = prefabHeroViewer_handle.Status == AsyncOperationStatus.Succeeded
             ? Instantiate(prefabHeroViewer_handle.Result)
-            : throw new Exception($"{nameof(prefabHeroViewer)} не загружен");
+            : throw new Exception($"{nameof(prefabHeroViewer)} РЅРµ Р·Р°РіСЂСѓР¶РµРЅ");
         prefabHeroViewer.name = $"IconHero_{hero.Name}";
 
 
@@ -335,7 +345,7 @@ public class AllHeroes : MonoBehaviour
         canvas.worldCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 
 
-        //Кнопка "Закрыть"
+        //РљРЅРѕРїРєР° "Р—Р°РєСЂС‹С‚СЊ"
         const string _buttonClose__Name = "ButtonClose (id=1berxtk2)";
         Button _buttonClose = GameObjectFinder.FindByName<Button>(_buttonClose__Name, prefabHeroViewer.transform);
         RectTransform _buttonClose__RT = GameObjectFinder.FindByName<RectTransform>(_buttonClose__Name);
@@ -345,7 +355,7 @@ public class AllHeroes : MonoBehaviour
         OnResizeAllDictotaries();
 
 
-        //Имя героя
+        //РРјСЏ РіРµСЂРѕСЏ
         const string _Text_HeroName__Name = "Text_HeroName (id=rw8uftqp)";
         TextMeshProUGUI _Text_HeroName = GameObjectFinder.FindByName<TextMeshProUGUI>(_Text_HeroName__Name, prefabHeroViewer.transform);
         _Text_HeroName.text = hero.Name.ToUpper1Char();
@@ -355,7 +365,7 @@ public class AllHeroes : MonoBehaviour
         _ = dictOnResizeHeroNameFont.TryAdd($"{_Text_HeroName__Name}{textMeshProUGUI.GetHashCode()}", textMeshProUGUI);
 
 
-        //Изображение героя
+        //РР·РѕР±СЂР°Р¶РµРЅРёРµ РіРµСЂРѕСЏ
         const string imageHeroFull__Name = "Image_HeroFull (id=6z1ddxml)";
         Image imageHero = GameObjectFinder.FindByName<Image>(imageHeroFull__Name);
         string imageHeroFull__Image = $"hero-image-{hero.Name.ToLower()}";
@@ -367,11 +377,11 @@ public class AllHeroes : MonoBehaviour
         }
         else
         {
-            throw new Exception($"{nameof(imageHero_handle)} не загружен");
+            throw new Exception($"{nameof(imageHero_handle)} РЅРµ Р·Р°РіСЂСѓР¶РµРЅ");
         }
 
 
-        //Привязать метод
+        //РџСЂРёРІСЏР·Р°С‚СЊ РјРµС‚РѕРґ
         _buttonClose.onClick.AddListener(() =>
         {
             string key = $"{_buttonClose__Name}{_buttonClose__RT.GetHashCode()}";
@@ -396,7 +406,7 @@ public class AllHeroes : MonoBehaviour
         });
 
 
-        //Анимация
+        //РђРЅРёРјР°С†РёСЏ
         await AllHeroesConsts.RunAnimationImage(imageHero, 500);
     }
 

@@ -16,6 +16,11 @@
             <param name="email">Строка с предполагаемым адресом электронной почты.</param>
             <returns>email, если создание прошло успешно; иначе null.</returns>
         </member>
+        <member name="T:General.LocalizationKeys">
+            <summary>
+            Коды для получения текстовых ошибок из json файлов локализации.
+            </summary>
+        </member>
         <member name="T:General.ModelHttp.Authorization">
             <summary>
             Класс, содержащий данные для авторизации пользователя и системную информацию об устройстве.
@@ -160,12 +165,29 @@
             </summary>
             <value>Строка, описывающая уровень поддержки NPOT (например, 'Full', 'Restricted', 'None').</value>
         </member>
-        <member name="T:General.ServerErrors.Error">
+        <member name="T:General.StringCapsule">
             <summary>
-            Ошибки сервера в ответах клиенту
+            Класс капсула для переменной string. Можно передавать строку не копируя её.
             </summary>
         </member>
-        <member name="F:General.URLs.URL_HEADER">
+        <member name="M:General.StringCapsule.#ctor">
+            <summary>
+            Класс капсула для переменной string. Можно передавать строку не копируя её.
+            </summary>
+        </member>
+        <member name="M:General.StringExtensions.ToUpper1Char(System.String)">
+            <summary>
+            Если возможно, преобразуем первый символ в верхний регистр, остальные без изменений.
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="T:General.Url">
+            <summary>
+            Класс предоставляющий ссылки на api сервера.
+            </summary>
+        </member>
+        <member name="F:General.Url.URL_HEADER">
             <summary>
             URL API старт
             </summary>

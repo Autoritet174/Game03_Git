@@ -1,4 +1,4 @@
-﻿using General.GameEntities;
+using General.GameEntities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -8,7 +8,7 @@ namespace Assets.GameData.Scenes.AllHeroes
 {
     internal static class AllHeroesConsts
     {
-        internal const string HeroImageNull = "hero-image-null";
+        internal const string HERO_IMAGE_NULL = "hero-image-null";
 
         internal static List<HeroBaseEntity> AllHeroes { get; } = new();
 

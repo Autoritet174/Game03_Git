@@ -20,22 +20,22 @@ namespace Assets.GameData.Scenes.RegAuth
             GameObjectFinder.FindByName<TMP_InputField>("InputText_Password (id=9vfnj9oh)").text = "testPassword";
 
             //login.text = "SUPERADMIN@MAIL.RU";
-            //login.text = "~!\"№;%:?*()_+!@#$%^&*()_+{}[];':\"<>,./?\\/|";
+            //login.text = "~!\"в„–;%:?*()_+!@#$%^&*()_+{}[];':\"<>,./?\\/|";
             //password.text = "testPassword";
 
             //GameObject prefab = Resources.Load<GameObject>("Prefabs/L3/WindowMessage/WindowMessage");
             //Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
 
-            //// Получаем RectTransform
+            //// РџРѕР»СѓС‡Р°РµРј RectTransform
             //RectTransform rectTransform = prefab.GetComponent<RectTransform>();
 
-            //// Устанавливаем растягивание по всему родителю (если родитель - Canvas)
+            //// РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЂР°СЃС‚СЏРіРёРІР°РЅРёРµ РїРѕ РІСЃРµРјСѓ СЂРѕРґРёС‚РµР»СЋ (РµСЃР»Рё СЂРѕРґРёС‚РµР»СЊ - Canvas)
             //rectTransform.anchorMin = Vector2.zero; // (0, 0)
             //rectTransform.anchorMax = Vector2.one;   // (1, 1)
             //rectTransform.offsetMin = Vector2.zero; // Left, Bottom = 0
             //rectTransform.offsetMax = Vector2.zero; // Right, Top = 0
 
-            //// Сбрасываем позицию и масштаб
+            //// РЎР±СЂР°СЃС‹РІР°РµРј РїРѕР·РёС†РёСЋ Рё РјР°СЃС€С‚Р°Р±
             //rectTransform.localPosition = Vector3.zero;
             //rectTransform.localScale = Vector3.one;
             //Scripts.WindowMessageLoader.Show("blablabla", true);

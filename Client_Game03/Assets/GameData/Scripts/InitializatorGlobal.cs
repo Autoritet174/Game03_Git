@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+using Game03Client;
+using System.IO;
+using UnityEngine;
 
 namespace Assets.GameData.Scripts
 {
@@ -7,7 +9,8 @@ namespace Assets.GameData.Scripts
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         internal static void Init()
         {
-            HttpRequester.Init();
+            //HttpRequester.Init();
+            GlobalFields.Init();
         }
     }
 }

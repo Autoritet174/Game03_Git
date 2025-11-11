@@ -1,12 +1,13 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 public class InputField : MonoBehaviour
 {
     [SerializeField]
-    TextMeshProUGUI textMeshPro;
+    private TextMeshProUGUI textMeshPro;
 
-    private void Awake() {
+    private void Awake()
+    {
         //textMeshPro.fontSize = GetComponent<RectTransform>().rect.height / 1.8f;
     }
 }

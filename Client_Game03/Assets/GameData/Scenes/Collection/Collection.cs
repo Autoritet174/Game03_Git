@@ -50,9 +50,21 @@ public class Collection : MonoBehaviour
         inited = true;
         OnResize();
 
-        //получить инвентарь героев
+        //РїРѕР»СѓС‡РёС‚СЊ РёРЅРІРµРЅС‚Р°СЂСЊ РіРµСЂРѕРµРІ
+        Game03Client.HttpRequester.HttpRequesterResult httpRequesterProviderResult = await GlobalFields.ClientGame.HttpRequesterProvider.GetResponceAsync(General.Url.Inventory.Heroes);
+        if (httpRequesterProviderResult != null)
+        {
+            JObject jObject = httpRequesterProviderResult.JObject;
+            if (jObject != null)
+            {
+                JToken result = jObject["result"];
+                foreach (JToken jToken in result)
+                {
+                    Debug.Log($"{jToken["_id"]} | {jToken["o"]} | {jToken["h"]}");
+                }
 
-        JObject jObject = await HttpRequester.GetResponceAsync(General.URLs.Uri_InventoryHeroes);
+            }
+        }
         //string s = jObject["token"]?.ToString() ?? string.Empty;
     }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
@@ -31,15 +31,16 @@ namespace Assets.GameData.Scripts
         /// <returns>Сырой уникальный идентификатор.</returns>
         public static string GetRawDeviceIdentifier()
         {
-            return Application.platform switch
-            {
-                RuntimePlatform.WindowsPlayer or RuntimePlatform.WindowsEditor => SystemInfo.deviceUniqueIdentifier + Environment.MachineName,
-                RuntimePlatform.OSXPlayer or RuntimePlatform.OSXEditor => SystemInfo.deviceUniqueIdentifier + Environment.MachineName,
-                RuntimePlatform.LinuxPlayer or RuntimePlatform.LinuxEditor => SystemInfo.deviceUniqueIdentifier,
-                RuntimePlatform.Android => SystemInfo.deviceUniqueIdentifier + SystemInfo.operatingSystem,
-                RuntimePlatform.IPhonePlayer => SystemInfo.deviceUniqueIdentifier,
-                _ => SystemInfo.deviceUniqueIdentifier,
-            };
+            //return Application.platform switch
+            //{
+            //    RuntimePlatform.WindowsPlayer or RuntimePlatform.WindowsEditor => SystemInfo.deviceUniqueIdentifier + Environment.MachineName,
+            //    RuntimePlatform.OSXPlayer or RuntimePlatform.OSXEditor => SystemInfo.deviceUniqueIdentifier + Environment.MachineName,
+            //    RuntimePlatform.LinuxPlayer or RuntimePlatform.LinuxEditor => SystemInfo.deviceUniqueIdentifier,
+            //    RuntimePlatform.Android => SystemInfo.deviceUniqueIdentifier + SystemInfo.operatingSystem,
+            //    RuntimePlatform.IPhonePlayer => SystemInfo.deviceUniqueIdentifier,
+            //    _ => SystemInfo.deviceUniqueIdentifier,
+            //};
+            return SystemInfo.deviceUniqueIdentifier;
         }
 
         /// <summary>
