@@ -111,7 +111,6 @@ public class AllHeroes : MonoBehaviour
             return;
         }
         JObject jObject = result.JObject;
-
         if (jObject == null)
         {
             GameMessage.ShowLocale(L.Error.Server.InvalidResponse, true);

@@ -16,7 +16,7 @@ MonoBehaviour:
   m_GUID: d28dde80470f64f4797946333d02fb59
   m_SerializeEntries:
   - m_GUID: 009cfadacfc9bdd4f9b5ef3e06b2f711
-    m_Address: hero-image-novice huntress
+    m_Address: hero-image-huntress
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -41,7 +41,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 904361aed096ca14aa97e33719b9fde9
-    m_Address: hero-image-novice huntress_face
+    m_Address: hero-image-huntress_face
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
