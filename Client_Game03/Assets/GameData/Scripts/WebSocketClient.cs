@@ -10,7 +10,7 @@ namespace Assets.GameData.Scripts
 {
     public class WebSocketClient
     {
-        const string serverUrl = "ws://localhost:5001/ws/";
+        const string serverUrl = "wss://localhost:7227/ws/";
         private readonly ClientWebSocket _webSocket;
         private readonly Uri _serverUri;
         private readonly CancellationTokenSource _cts;
