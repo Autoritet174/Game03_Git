@@ -29,7 +29,6 @@ namespace Assets.GameData.Scripts
 
         public async Task ConnectAsync()
         {
-            
             Exception ex1 = null;
 
 

@@ -166,15 +166,21 @@ public class GroupDivider : MonoBehaviour
         float currentHeight = startHeight;
         float direction = Mathf.Sign(endHeight - startHeight);
         float totalDistance = Mathf.Abs(endHeight - startHeight);
+        void SetHeight(float h) {
+            cellsRectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, h);
+            rectTransformGroupDivider.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, h + 45.36f);
 
-        cellsRectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, currentHeight);
-
+            // Принудительно перестраиваем родительский макет после каждого шага
+            // Это необходимо, чтобы ScrollView и Vertical Layout Group реагировали на изменение высоты.
+            LayoutRebuilder.ForceRebuildLayoutImmediate(cellsRectTransform.parent.GetComponent<RectTransform>());
+        }
+        SetHeight(currentHeight);
         while (Mathf.Abs(currentHeight - endHeight) > 0.1f) // 0.1f - небольшой допуск
         {
             if (token.IsCancellationRequested)
             {
                 // Завершаем анимацию и устанавливаем высоту, куда двигались, чтобы не было "прыжка"
-                cellsRectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, endHeight);
+                SetHeight(endHeight);
                 return;
             }
 
@@ -192,21 +198,13 @@ public class GroupDivider : MonoBehaviour
                 currentHeight = endHeight;
             }
 
-            cellsRectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, currentHeight);
-            rectTransformGroupDivider.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, currentHeight + 45.36f);
-            //rectTransformDividerButton.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, currentHeight + 45.36f);
+            SetHeight(currentHeight);
 
-            // Принудительно перестраиваем родительский макет после каждого шага
-            // Это необходимо, чтобы ScrollView и Vertical Layout Group реагировали на изменение высоты.
-            LayoutRebuilder.ForceRebuildLayoutImmediate(cellsRectTransform.parent.GetComponent<RectTransform>());
 
             // Асинхронная задержка до следующего кадра (аналог yield return null в корутинах)
             await Task.Yield();
         }
-
-        cellsRectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, endHeight);
-        // Финальная перестройка макета после завершения
-        LayoutRebuilder.ForceRebuildLayoutImmediate(cellsRectTransform.parent.GetComponent<RectTransform>());
+        SetHeight(endHeight);
     }
 
     /// <summary>
