@@ -9,8 +9,6 @@ namespace Assets.GameData.Scripts
     /// </summary>
     public static class GlobalFields
     {
-        //public static string Jwt_token;
-        public static WebSocketClient webSocketClient = null;
         public static Game03 ClientGame { get; private set; }
         public static void Init()
         {

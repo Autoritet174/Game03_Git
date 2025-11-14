@@ -29,6 +29,11 @@
             Провайдер LocalizationManager.
             </summary>
         </member>
+        <member name="P:Game03Client.Game03.WebSocketClientProvider">
+            <summary>
+            Провайдер LocalizationManager.
+            </summary>
+        </member>
         <member name="M:Game03Client.Game03.DisposeAsync">
             <summary>
             Освободить ресурсы.
@@ -159,13 +164,13 @@
             <param name="jObject"></param>
             <returns></returns>
         </member>
-        <member name="M:Game03Client.WebSocketClient.ReceiveMessagesAsync">
+        <member name="M:Game03Client.WebSocketClient.WebSocketClientProvider.ReceiveMessagesAsync">
             <summary>
             Приём сообщений от сервера.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Game03Client.WebSocketClient.SendMessageAsync(System.String)">
+        <member name="M:Game03Client.WebSocketClient.WebSocketClientProvider.SendMessageAsync(System.String)">
             <summary>
             Отправить сообщение на сервер.
             </summary>

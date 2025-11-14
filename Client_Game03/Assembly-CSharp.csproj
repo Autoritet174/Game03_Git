@@ -73,7 +73,6 @@
     <Compile Include="Assets\GameData\Scripts\GameExitHandler.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_Collection.cs" />
     <Compile Include="Assets\GameData\Prefabs\L1\InputFields\InputField.cs" />
-    <Compile Include="Assets\GameData\Scripts\WebSocketClient.cs" />
     <Compile Include="Assets\GameData\AddressableAssets\Prefabs\L3\GameMessage\GameMessageButtonClose.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\CollectionHero.cs" />
     <Compile Include="Assets\GameData\Scenes\RegAuth\Test.cs" />

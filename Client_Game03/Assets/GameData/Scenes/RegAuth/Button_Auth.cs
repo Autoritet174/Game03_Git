@@ -83,9 +83,9 @@ public class Button_Auth : MonoBehaviour
             GameMessage.ShowLocale(L.Info.OpeningWebSocket, false, isProcess: true);
 
             // Открываем веб сокет
-            GlobalFields.webSocketClient = new WebSocketClient();
-            await GlobalFields.webSocketClient.ConnectAsync();
-            if (!GlobalFields.webSocketClient.Connected)
+             var webSocketClient = GlobalFields.ClientGame.WebSocketClientProvider;
+            await webSocketClient.ConnectAsync();
+            if (!webSocketClient.Connected)
             {
                 GameMessage.ShowLocale(L.Error.Server.OpeningWebSocketFailed, true);
                 return;

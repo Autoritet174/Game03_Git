@@ -1041,12 +1041,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9470ae958a434f444b756e6e61bb201d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GroupDivider
-  cellsContainer: {fileID: 458393694}
-  dividerButton: {fileID: 696097239}
-  rectTransformDividerButton: {fileID: 696097238}
-  rectTransformGroupDivider: {fileID: 230752663}
-  animationSpeed: 800
-  isExpanded: 1
+  gameObjectCellsContainer: {fileID: 0}
+  buttonDivider: {fileID: 0}
 --- !u!1 &246595863
 GameObject:
   m_ObjectHideFlags: 0
@@ -1510,12 +1506,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9470ae958a434f444b756e6e61bb201d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GroupDivider
-  cellsContainer: {fileID: 1858747679}
-  dividerButton: {fileID: 1035359271}
-  rectTransformDividerButton: {fileID: 1035359270}
-  rectTransformGroupDivider: {fileID: 416170390}
-  animationSpeed: 500
-  isExpanded: 1
+  gameObjectCellsContainer: {fileID: 0}
+  buttonDivider: {fileID: 0}
 --- !u!1001 &418720633
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3299,7 +3291,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 537206476}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.61667174
+  m_Size: 0.6166717
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -6636,12 +6628,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9470ae958a434f444b756e6e61bb201d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GroupDivider
-  cellsContainer: {fileID: 14748221}
-  dividerButton: {fileID: 891466759}
-  rectTransformDividerButton: {fileID: 891466758}
-  rectTransformGroupDivider: {fileID: 2016615456}
-  animationSpeed: 100
-  isExpanded: 1
+  gameObjectCellsContainer: {fileID: 14748221}
+  buttonDivider: {fileID: 891466759}
 --- !u!1 &2048326300
 GameObject:
   m_ObjectHideFlags: 0
