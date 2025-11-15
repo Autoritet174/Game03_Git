@@ -150,7 +150,7 @@ public class CollectionScene_InitializatorUpdater : MonoBehaviour, IResizeWindow
 
 
         // Кнопки вкладок
-        float tabButtonWidth = panelTopHeight * 3.7777777777777777777777777777778f; // = (0,17 * 1920) / (0,08 * 1080)
+        float tabButtonWidth = panelTopHeight * 3.777777f; // = (0,17 * 1920) / (0,08 * 1080)
         tabButtonItem.rectTransform.sizeDelta = tabButtonHeroes.rectTransform.sizeDelta = new Vector2(tabButtonWidth, panelTopHeight);
         tabButtonItem.rectTransform.anchoredPosition = new Vector2(tabButtonWidth, 0);
         tabButtonHeroes.textMeshProUGUI.fontSize = fontSize;

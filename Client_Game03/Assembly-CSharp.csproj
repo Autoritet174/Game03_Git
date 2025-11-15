@@ -133,6 +133,7 @@
     <None Include="Assets\Packages\Microsoft.Extensions.DependencyInjection.9.0.10\useSharedDesignerContext.txt" />
     <None Include="Assets\Идеи и заметки\Типы существ.txt" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+    <None Include="Assets\AddressableAssetsData\link.xml" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
     <None Include="Assets\Packages\Microsoft.Extensions.DependencyInjection.9.0.10\lib\netstandard2.1\Microsoft.Extensions.DependencyInjection.dll" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
