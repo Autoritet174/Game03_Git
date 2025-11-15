@@ -10,6 +10,7 @@ namespace Assets.GameData.Scripts
     public static class GlobalFields
     {
         public static Game03 ClientGame { get; private set; }
+
         public static void Init()
         {
             GameLanguage lang = GameLanguage.Ru;

@@ -72,6 +72,7 @@
     <Compile Include="Assets\GameData\Scripts\LoggerException.cs" />
     <Compile Include="Assets\GameData\Scripts\GameExitHandler.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_Collection.cs" />
+    <Compile Include="Assets\GameData\Scripts\IResizeWindow.cs" />
     <Compile Include="Assets\GameData\Prefabs\L1\InputFields\InputField.cs" />
     <Compile Include="Assets\GameData\AddressableAssets\Prefabs\L3\GameMessage\GameMessageButtonClose.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\CollectionHero.cs" />
@@ -88,10 +89,10 @@
     <Compile Include="Assets\GameData\Scenes\RegAuth\WindowResizeHandler.cs" />
     <Compile Include="Assets\GameData\Scripts\Spawner.cs" />
     <Compile Include="Assets\GameData\Scripts\HardwareIdentifier.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\CollectionScene_InitializatorUpdater.cs" />
     <Compile Include="Assets\GameData\Scripts\GameObjectFinder.cs" />
     <Compile Include="Assets\GameData\Scenes\TEST_01\TestScript.cs" />
     <Compile Include="Assets\GameData\Scenes\AllHeroes\AllHeroes.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\Collection.cs" />
     <Compile Include="Assets\GameData\Prefabs\L1\Labels\Label_SetFontSize.cs" />
     <Compile Include="Assets\GameData\Scenes\RegAuth\LocalizationManagerLoadLocale.cs" />
     <Compile Include="Assets\GameData\Scripts\AddressableHelper.cs" />

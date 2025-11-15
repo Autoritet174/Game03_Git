@@ -5,7 +5,7 @@ public class Button_Reg : MonoBehaviour
 {
     public void OnClick()
     {
-        GameMessage.Show("тут сделать ссылку на регистрацию", true);
+        GameMessage.Show("С‚СѓС‚ СЃРґРµР»Р°С‚СЊ СЃСЃС‹Р»РєСѓ РЅР° СЂРµРіРёСЃС‚СЂР°С†РёСЋ", true);
 
         //try
         //{
@@ -18,15 +18,15 @@ public class Button_Reg : MonoBehaviour
         //        StringContent content = new(json, Encoding.UTF8, "application/json");
 
         //        client.Timeout = TimeSpan.FromSeconds(60);
-        //        //_ = log.AppendLine($"{i} попытка авторизоваться");
+        //        //_ = log.AppendLine($"{i} РїРѕРїС‹С‚РєР° Р°РІС‚РѕСЂРёР·РѕРІР°С‚СЊСЃСЏ");
 
         //        string s = client.ToString();
         //        Assets.GameData.Scripts.Logger2.Log("Bearer: " + GV.Jwt_token);
         //        HttpResponseMessage response = await client.PostAsync(General.URLs.Uri_test, content);
-        //        // Получаем заголовки ответа в виде строки
+        //        // РџРѕР»СѓС‡Р°РµРј Р·Р°РіРѕР»РѕРІРєРё РѕС‚РІРµС‚Р° РІ РІРёРґРµ СЃС‚СЂРѕРєРё
         //        string headersString = HttpHelper.GetHeadersAsString(response);
 
-        //        // Получаем тело ответа в виде строки
+        //        // РџРѕР»СѓС‡Р°РµРј С‚РµР»Рѕ РѕС‚РІРµС‚Р° РІ РІРёРґРµ СЃС‚СЂРѕРєРё
         //        string bodyString = await response.Content.ReadAsStringAsync();
 
         //        if (response.IsSuccessStatusCode)
