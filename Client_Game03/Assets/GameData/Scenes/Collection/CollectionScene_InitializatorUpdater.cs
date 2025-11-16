@@ -1,6 +1,5 @@
 using Assets.GameData.Scripts;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -35,7 +34,6 @@ public class CollectionScene_InitializatorUpdater : MonoBehaviour, IResizeWindow
         }
     }
 
-
     private TabButton tabButtonHeroes, tabButtonItem;
     private Image imageBackground;
     private float imageBackgroundCoef = 1;
@@ -49,11 +47,45 @@ public class CollectionScene_InitializatorUpdater : MonoBehaviour, IResizeWindow
 
     private readonly CollectionHero collectionHero = new();
 
+    /// <summary>
+    /// Внутренняя панель, кнопки.
+    /// </summary>
+    private class InternalPanelButton
+    {
+        private readonly RectTransform rectTransform;
+        private readonly RectTransform rectTransformButton;
+        private readonly RectTransform rectTransformLabel;
+        private readonly TextMeshProUGUI textMeshProUGUILabel;
+        public InternalPanelButton(string name)
+        {
+            rectTransform = GameObjectFinder.FindByName<RectTransform>(name);
+            rectTransformButton = GameObjectFinder.FindByName<RectTransform>("Button", rectTransform.transform);
+            rectTransformLabel = GameObjectFinder.FindByName<RectTransform>("Label", rectTransform.transform);
+            textMeshProUGUILabel = GameObjectFinder.FindByName<TextMeshProUGUI>("Label", rectTransform.transform);
+        }
+        public void Refresh(float coefHeight, Vector2 vector008PercentOfHeight, float anchoredPositionX)
+        {
+            rectTransform.sizeDelta = vector008PercentOfHeight;
+            rectTransform.anchoredPosition = new(anchoredPositionX * coefHeight, -5 * coefHeight);
+            rectTransformButton.sizeDelta = new(77 * coefHeight, 77 * coefHeight);
+            rectTransformLabel.sizeDelta = new(86 * coefHeight, 13 * coefHeight);
+            rectTransformLabel.anchoredPosition = new(0, -86 * coefHeight);
+            textMeshProUGUILabel.fontSize = 18 * coefHeight;
+        }
+    }
+
+    private InternalPanelButton internalPanelHeroes;
+    private InternalPanelButton internalPanelItems;
+    private InternalPanelButton internalPanelFilter;
+    private InternalPanelButton internalPanelGroup;
+    private InternalPanelButton internalPanelSort;
+
 
     private async void Start()
     {
         tabButtonHeroes = new("ButtonHeroes (id=40jhb51a)", "Text (TMP) (id=wl92ls1m)", OnClickHeroes);
         tabButtonItem = new("ButtonItems (id=k5hqeyat)", "Text (TMP) (id=cklw2id1)", OnClickItems);
+
 
         // Изображение заднего фона
         imageBackground = GameObjectFinder.FindByName<Image>("Image_Background (id=688x18dt)");
@@ -69,6 +101,13 @@ public class CollectionScene_InitializatorUpdater : MonoBehaviour, IResizeWindow
         rectTransformPanelSelectedHeroTop = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHeroTop (id=0y6mrhc2)");
         SelectedHeroTop_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label_SelectedHero (id=ahrtgg43)");
 
+
+        // Внутренние кнопки
+        internalPanelHeroes = new("ImageButtonHeroes (id=pakco5ud)");
+        internalPanelItems = new("ImageButtonItems (id=vuhjngaz)");
+        internalPanelFilter = new("ImageButtonFilter (id=vjeqfzen)");
+        internalPanelGroup = new("ImageButtonGroup (id=hbsaogwl)");
+        internalPanelSort = new("ImageButtonSort (id=6nvcsrdm)");
 
 
         initialized = true;
@@ -124,7 +163,8 @@ public class CollectionScene_InitializatorUpdater : MonoBehaviour, IResizeWindow
             tabButtonHeroes.image.color = Color.white;
             tabButtonItem.image.color = ColorOffButton;
         }
-        else {
+        else
+        {
             tabButtonHeroes.image.color = ColorOffButton;
             tabButtonItem.image.color = Color.white;
         }
@@ -146,7 +186,10 @@ public class CollectionScene_InitializatorUpdater : MonoBehaviour, IResizeWindow
 
 
         // Верхняя панель
-        float panelTopHeight = 0.08f * _lastHeight;
+        float topPanelHeightPercent = 0.08f;
+        float coefHeight = _lastHeight / 1080f;
+        float panelTopHeight = topPanelHeightPercent * _lastHeight;
+        Vector2 vector008PercentOfHeight = new(panelTopHeight, panelTopHeight);
 
 
         // Кнопки вкладок
@@ -158,7 +201,8 @@ public class CollectionScene_InitializatorUpdater : MonoBehaviour, IResizeWindow
 
 
         // Кнопки "Закрыть"
-        rectTransformButtonCloseSelectedHero.sizeDelta = rectTransformButtonClose.sizeDelta = new Vector2(panelTopHeight, panelTopHeight);
+        rectTransformButtonClose.sizeDelta = vector008PercentOfHeight;
+        rectTransformButtonCloseSelectedHero.sizeDelta = vector008PercentOfHeight;
 
 
         // Панель выбранного героя. Верхняя панель
@@ -170,5 +214,14 @@ public class CollectionScene_InitializatorUpdater : MonoBehaviour, IResizeWindow
         SelectedHeroTop_TextMeshProUGUI.rectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth - panelTopHeight, panelTopHeight);
         SelectedHeroTop_TextMeshProUGUI.rectTransform.anchoredPosition = new Vector2(panelTopHeight, 0);
         SelectedHeroTop_TextMeshProUGUI.fontSize = 40f * fontSizeCoef;
+
+
+        // Внутренние кнопки
+        internalPanelHeroes.Refresh(coefHeight, vector008PercentOfHeight, 10);
+        internalPanelItems.Refresh(coefHeight, vector008PercentOfHeight, 10);
+        internalPanelFilter.Refresh(coefHeight, vector008PercentOfHeight, 150);
+        internalPanelGroup.Refresh(coefHeight, vector008PercentOfHeight, 256);
+        internalPanelSort.Refresh(coefHeight, vector008PercentOfHeight, 362);
+
     }
 }

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 25a6101a35a2a5e4daf8b3304b76b4ce
+guid: 728411386fb146b4c8be926aae0e4227
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8407736426136256192
-    second: selectRound1024x1024forPhotoshop_0
+      213: -5398885592057273472
+    second: button_highlighted_512x128_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -72,12 +72,12 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 512
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
+    textureCompression: 2
+    compressionQuality: 100
+    crunchedCompression: 1
     allowsAlphaSplitting: 0
     overridden: 0
     ignorePlatformSupport: 0
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: selectRound1024x1024forPhotoshop_0
+      name: button_highlighted_512x128_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1024
-        height: 1024
+        width: 512
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 6, y: 6, z: 6, w: 6}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0ceb6f4cbb74ea470800000000000000
-      internalID: 8407736426136256192
+      spriteID: 083a376982e4315b0800000000000000
+      internalID: -5398885592057273472
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 29b3ee2b666205942bd0ac0ead8d38fc
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      selectRound1024x1024forPhotoshop_0: 8407736426136256192
+      button_highlighted_512x128_0: -5398885592057273472
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
