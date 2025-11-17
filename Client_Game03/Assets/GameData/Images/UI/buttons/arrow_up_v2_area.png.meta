@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7412a12c4a1b7f84791e148a45f1332e
+guid: f44eecf8a8fdbc34f92edefed9747a4b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7216261289918973075
-    second: rarity3_0
+      213: -6513594938242086068
+    second: arrow_up_v2_area_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -72,12 +72,12 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 256
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
-    crunchedCompression: 1
+    crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
     ignorePlatformSupport: 0
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: rarity3_0
+      name: arrow_up_v2_area_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 256
-        height: 256
+        width: 352
+        height: 436
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 394c508e86f452460800000000000000
-      internalID: 7216261289918973075
+      spriteID: c4b4c470aef0b95a0800000000000000
+      internalID: -6513594938242086068
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 577ff0e5f1942b640a2de1bf6d46331f
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      rarity3_0: 7216261289918973075
+      arrow_up_v2_area_0: -6513594938242086068
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

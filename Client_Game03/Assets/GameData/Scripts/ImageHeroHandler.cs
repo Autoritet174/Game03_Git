@@ -1,4 +1,4 @@
-﻿using General.GameEntities;
+using General.GameEntities;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;

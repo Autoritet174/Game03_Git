@@ -113,6 +113,13 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Game03Client.GlobalFunctions.IGlobalFunctionsProvider.GetHeroById(System.Guid)">
+            <summary>
+            Получить героя по id.
+            </summary>
+            <param name="guid"></param>
+            <returns></returns>
+        </member>
         <member name="M:Game03Client.HttpRequester.HttpRequesterProvider.GetResponceAsync(System.String,System.String,System.Boolean)">
             <summary>
             Возвращает <see cref="T:Game03Client.HttpRequester.HttpRequesterResult"/> ответ. Если HttpRequesterResult <see cref="P:Game03Client.HttpRequester.HttpRequesterResult.Success"/> true, то  <see cref="P:Game03Client.HttpRequester.HttpRequesterResult.JObject"/> был корректно извлечен из ответа от сервера.

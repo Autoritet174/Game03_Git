@@ -1,11 +1,15 @@
 using Assets.GameData.Scripts;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 
-public class CollectionScene_InitializatorUpdater : MonoBehaviour, IResizeWindow
+public class CollectionScene_InitializatorUpdater : MonoBehaviour
 {
 
     public bool Initialized { get; private set; }
@@ -80,6 +84,8 @@ public class CollectionScene_InitializatorUpdater : MonoBehaviour, IResizeWindow
     private InternalPanelButton internalPanelGroup;
     private InternalPanelButton internalPanelSort;
 
+    private Transform transformCollectionContent;
+
 
     private async void Start()
     {
@@ -110,6 +116,10 @@ public class CollectionScene_InitializatorUpdater : MonoBehaviour, IResizeWindow
         internalPanelSort = new("ImageButtonSort (id=6nvcsrdm)");
 
 
+        // Коллекция контент
+        transformCollectionContent = GameObjectFinder.FindByName("Content (id=ddmjr9vy)").transform;
+
+
         initialized = true;
         OnResizeWindow();
 
@@ -126,11 +136,70 @@ public class CollectionScene_InitializatorUpdater : MonoBehaviour, IResizeWindow
             Debug.Log("jObject == null");
             return;
         }
+
         JToken result = jObject["result"];
+
+        // Получить уникальные имена групп
+        List<string> group_name_List = new();
         foreach (JToken j in result)
         {
-            Debug.Log($"_id={j["_id"]}; owner_id={j["owner_id"]}; hero_id={j["hero_id"]}; health={j["health"]}; attack={j["attack"]}; speed={j["speed"]}; strength={j["strength"]}; agility={j["agility"]}; intelligence={j["intelligence"]}");
+            //Debug.Log($"_id={j["_id"]}; owner_id={j["owner_id"]}; hero_id={j["hero_id"]}; health={j["health"]}; attack={j["attack"]}; speed={j["speed"]}; strength={j["strength"]}; agility={j["agility"]}; intelligence={j["intelligence"]}");
+            string group_name = j["group_name"]?.ToString()?.Trim() ?? string.Empty;
+            if (group_name != string.Empty && !group_name_List.Contains(group_name))
+            {
+                group_name_List.Add(group_name);
+            }
         }
+
+        string guidNoGroupStr = Guid.NewGuid().ToString();
+        group_name_List.Add(guidNoGroupStr);
+
+        // Добавить всех героев в список, для легкого удаления потом.
+        List<JToken> allHeroesJToken = new();
+        foreach (JToken j in result)
+        {
+            allHeroesJToken.Add(j);
+        }
+
+        Dictionary<string, List<JToken>> heroesByGroups = new();
+        foreach (string group_name_L in group_name_List)
+        {
+            List<JToken> list = new();
+            heroesByGroups.Add(group_name_L, list);
+
+            if (group_name_L == guidNoGroupStr)
+            {
+                list.AddRange(allHeroesJToken);
+                break;
+            }
+
+            for (int i = allHeroesJToken.Count - 1; i >= 0; i--)
+            {
+                JToken j = allHeroesJToken[i];
+                string group_name = j["group_name"]?.ToString()?.Trim() ?? string.Empty;
+                if (group_name == group_name_L)
+                {
+                    list.Add(j);
+                    _ = allHeroesJToken.Remove(j);
+                }
+            }
+        }
+
+
+        foreach (KeyValuePair<string, List<JToken>> keyValue in heroesByGroups)
+        {
+            AsyncOperationHandle<GameObject> groupDivider_NoGroup_addressable = Addressables.LoadAssetAsync<GameObject>($"GroupDividerPrefab");
+            GameObject groupDivider_NoGroup_transform = await groupDivider_NoGroup_addressable.Task;
+            GameObject groupDivider_NoGroup_GameObject = Instantiate(groupDivider_NoGroup_transform);
+            groupDivider_NoGroup_GameObject.transform.SetParent(transformCollectionContent, false);
+
+            string group_name = keyValue.Key == guidNoGroupStr ? null : keyValue.Key;
+            GroupDivider groupDivider_NoGroup = new(group_name);
+            await groupDivider_NoGroup.Init(groupDivider_NoGroup_GameObject, keyValue.Value);
+        }
+
+
+
         //string s = jObject["token"]?.ToString() ?? string.Empty;
     }
 

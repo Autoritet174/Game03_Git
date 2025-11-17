@@ -40,13 +40,16 @@ namespace Assets.GameData.Scripts
         /// <returns>Объект с заданным именем или null, если не найден.</returns>
         public static GameObject FindByName(string name)
         {
-            GameObject[] rootObjects = SceneManager
-                .GetActiveScene()
-                .GetRootGameObjects();
-
-            foreach (GameObject root in rootObjects)
+            GameObject[] rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
+            foreach (GameObject gameObject in rootObjects) {
+                if (gameObject.transform.name == name)
+                {
+                    return gameObject;
+                }
+            }
+            foreach (GameObject gameObject in rootObjects)
             {
-                GameObject found = FindInChildrenRecursive(root.transform, name);
+                GameObject found = FindByName(name, gameObject.transform);
                 if (found != null)
                 {
                     return found;
@@ -63,16 +66,15 @@ namespace Assets.GameData.Scripts
         /// <param name="parent">Родительский Transform для начала поиска.</param>
         /// <param name="name">Имя искомого объекта.</param>
         /// <returns>Объект с заданным именем или null.</returns>
-        private static GameObject FindInChildrenRecursive(Transform parent, string name)
+        public static GameObject FindByName(string name, Transform parent)
         {
-            if (parent.name == name)
-            {
-                return parent.gameObject;
-            }
-
             foreach (Transform child in parent)
             {
-                GameObject found = FindInChildrenRecursive(child, name);
+                if (child.name == name)
+                {
+                    return child.gameObject;
+                }
+                GameObject found = FindByName(name, child);
                 if (found != null)
                 {
                     return found;
