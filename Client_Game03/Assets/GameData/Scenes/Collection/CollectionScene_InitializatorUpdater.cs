@@ -113,7 +113,7 @@ public class CollectionScene_InitializatorUpdater : MonoBehaviour, IResizeWindow
         initialized = true;
         OnResizeWindow();
 
-        // Получить инвентарь героев
+        // Получить коллекцию героев игрока
         Game03Client.HttpRequester.HttpRequesterResult httpRequesterProviderResult = await GlobalFields.ClientGame.HttpRequesterProvider.GetResponceAsync(General.Url.Inventory.Heroes);
         if (httpRequesterProviderResult == null)
         {
@@ -127,9 +127,9 @@ public class CollectionScene_InitializatorUpdater : MonoBehaviour, IResizeWindow
             return;
         }
         JToken result = jObject["result"];
-        foreach (JToken jToken in result)
+        foreach (JToken j in result)
         {
-            Debug.Log($"{jToken["_id"]} | {jToken["o"]} | {jToken["h"]}");
+            Debug.Log($"_id={j["_id"]}; owner_id={j["owner_id"]}; hero_id={j["hero_id"]}; health={j["health"]}; attack={j["attack"]}; speed={j["speed"]}; strength={j["strength"]}; agility={j["agility"]}; intelligence={j["intelligence"]}");
         }
         //string s = jObject["token"]?.ToString() ?? string.Empty;
     }

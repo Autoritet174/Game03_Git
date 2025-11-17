@@ -4,6 +4,31 @@
         <name>General</name>
     </assembly>
     <members>
+        <member name="P:General.GameEntities.HeroBaseEntity.Id">
+            <summary>
+            Id героя.
+            </summary>
+        </member>
+        <member name="P:General.GameEntities.HeroBaseEntity.Name">
+            <summary>
+            Имя героя на англ.
+            </summary>
+        </member>
+        <member name="P:General.GameEntities.HeroBaseEntity.Rarity">
+            <summary>
+            Редкость героя.
+            </summary>
+        </member>
+        <member name="P:General.GameEntities.HeroBaseEntity.BaseHealth">
+            <summary>
+            Здоровье.
+            </summary>
+        </member>
+        <member name="P:General.GameEntities.HeroBaseEntity.BaseAttack">
+            <summary>
+            Атака.
+            </summary>
+        </member>
         <member name="T:General.GF">
             <summary>
             Global Functions

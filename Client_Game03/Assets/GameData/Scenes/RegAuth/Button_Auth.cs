@@ -60,7 +60,7 @@ public class Button_Auth : MonoBehaviour
 
             // Блокируем кнопку и выводим сообщение непосредственно перед await
             buttonLogin.interactable = false;
-            GameMessage.ShowLocale(L.Info.Authentication, false, isProcess: true);
+            GameMessage.ShowLocale(L.Info.Authentication, false);
 
             string json = JsonConvert.SerializeObject(payload);
 
@@ -80,16 +80,20 @@ public class Button_Auth : MonoBehaviour
 
             //GameMessage.ShowLocale(L.Info.AuthenticationSuccess, false);
             //await Task.Delay(100);
-            GameMessage.ShowLocale(L.Info.OpeningWebSocket, false, isProcess: true);
+            GameMessage.ShowLocale(L.Info.OpeningWebSocket, false);
 
             // Открываем веб сокет
-            var webSocketClient = GlobalFields.ClientGame.WebSocketClientProvider;
+            Game03Client.WebSocketClient.IWebSocketClientProvider webSocketClient = GlobalFields.ClientGame.WebSocketClientProvider;
             await webSocketClient.ConnectAsync();
             if (!webSocketClient.Connected)
             {
                 GameMessage.ShowLocale(L.Error.Server.OpeningWebSocketFailed, true);
                 return;
             }
+
+            GameMessage.ShowLocale(L.Info.LoadingData, false);
+            await GlobalFields.ClientGame.GlobalFunctionsProvider.LoadListAllHeroes();
+
 
             UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
         }

@@ -34,6 +34,11 @@
             Провайдер LocalizationManager.
             </summary>
         </member>
+        <member name="P:Game03Client.Game03.GlobalFunctionsProvider">
+            <summary>
+            Провайдер GlobalFunctions.
+            </summary>
+        </member>
         <member name="M:Game03Client.Game03.DisposeAsync">
             <summary>
             Освободить ресурсы.
@@ -49,6 +54,22 @@
             <param name="languageGame"></param>
             <param name="configure"></param>
             <returns></returns>
+        </member>
+        <member name="T:Game03Client.GameLanguage">
+            <summary>
+            Язык игры.
+            </summary>
+            <param name="nameEnglish">Наименование языка на английском.</param>
+            <param name="nameLocale">Наименование языка на это же языке.</param>
+            <param name="nameShort">Наименование языка на английском в две буквы.</param>
+        </member>
+        <member name="M:Game03Client.GameLanguage.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Язык игры.
+            </summary>
+            <param name="nameEnglish">Наименование языка на английском.</param>
+            <param name="nameLocale">Наименование языка на это же языке.</param>
+            <param name="nameShort">Наименование языка на английском в две буквы.</param>
         </member>
         <member name="P:Game03Client.GameLanguage.NameEnglish">
             <summary>
@@ -79,6 +100,18 @@
             <summary>
             Все языки доступные в игре.
             </summary>
+        </member>
+        <member name="M:Game03Client.GlobalFunctions.IGlobalFunctionsProvider.LoadListAllHeroes">
+            <summary>
+            Загрузить список всех героев.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Game03Client.GlobalFunctions.IGlobalFunctionsProvider.AllHeroes">
+            <summary>
+            Получить список героев.
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:Game03Client.HttpRequester.HttpRequesterProvider.GetResponceAsync(System.String,System.String,System.Boolean)">
             <summary>

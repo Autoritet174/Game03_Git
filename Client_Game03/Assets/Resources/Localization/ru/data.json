@@ -40,5 +40,6 @@
 		"Authentication" : "Аутентификация",
 		"AuthenticationSuccess" : "Авторизация успешна",
 		"OpeningWebSocket" : "Установка соединения",
+		"LoadingData" : "Загрузка данных",
 	}
 }

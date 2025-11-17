@@ -83,9 +83,9 @@ namespace Assets.GameData.Scripts
         /// <summary>
         /// Выводит игровое сообщение по ключу локализации.
         /// </summary>
-        public static void ShowLocale(string keyLocalization, bool buttonActive, bool isProcess = false)
+        public static void ShowLocale(string keyLocalization, bool buttonActive)
         {
-            Show(GlobalFields.ClientGame.LocalizationManagerProvider.GetValue(keyLocalization), buttonActive, isProcess: isProcess);
+            Show(GlobalFields.ClientGame.LocalizationManagerProvider.GetValue(keyLocalization), buttonActive);
         }
 
         /// <summary>
@@ -100,11 +100,12 @@ namespace Assets.GameData.Scripts
         /// <summary>
         /// Основной метод отображения сообщения.
         /// </summary>
-        public static void Show(string message, bool buttonActiveClose, bool isProcess = false, bool yesNoDialog = false)
+        public static void Show(string message, bool buttonActiveClose, bool yesNoDialog = false)
         {
             if (string.IsNullOrEmpty(message))
             {
                 Debug.Log("Сообщение не может быть пустым.");
+                message = string.Empty;
                 buttonActiveClose = true;
             }
 
@@ -112,7 +113,7 @@ namespace Assets.GameData.Scripts
             // Если окно уже существует, обновляем текст
             if (_currentInstance != null)
             {
-                UpdateMessage(message, buttonActiveClose, isProcess: isProcess, yesNoDialog: yesNoDialog);
+                UpdateMessage(message, buttonActiveClose, yesNoDialog: yesNoDialog);
                 return;
             }
 
@@ -139,7 +140,7 @@ namespace Assets.GameData.Scripts
                     }
                     canvas.worldCamera = mainCamera;
 
-                    UpdateMessage(message, buttonActiveClose, isProcess: isProcess, yesNoDialog: yesNoDialog);
+                    UpdateMessage(message, buttonActiveClose, yesNoDialog: yesNoDialog);
                 }
                 else
                 {
@@ -151,7 +152,7 @@ namespace Assets.GameData.Scripts
         /// <summary>
         /// Обновляет текст и кнопку в уже созданном окне.
         /// </summary>
-        private static void UpdateMessage(string message, bool buttonActiveClose, bool isProcess = false, bool yesNoDialog = false)
+        private static void UpdateMessage(string message, bool buttonActiveClose, bool yesNoDialog = false)
         {
             Canvas canvas = _currentInstance.GetComponent<Canvas>();
             Transform windowsImageTransform = canvas.transform.Find("Window-Image");
@@ -163,7 +164,7 @@ namespace Assets.GameData.Scripts
             }
 
 
-            if (isProcess)
+            if (!buttonActiveClose)
             {
                 message += "...";
             }

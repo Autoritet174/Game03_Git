@@ -70,6 +70,7 @@
     <Compile Include="Assets\GameData\Scenes\RegAuth\Button_Reg.cs" />
     <Compile Include="Assets\GameData\Scripts\InitializatorGlobal.cs" />
     <Compile Include="Assets\GameData\Scripts\LoggerException.cs" />
+    <Compile Include="Assets\GameData\Scenes\RegAuth\CustomCursor.cs" />
     <Compile Include="Assets\GameData\Scripts\GameExitHandler.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_Collection.cs" />
     <Compile Include="Assets\GameData\Scripts\IResizeWindow.cs" />
@@ -83,7 +84,6 @@
     <Compile Include="Assets\GameData\Scripts\GameMessage.cs" />
     <Compile Include="Assets\GameData\Scripts\InitializatorStartScene.cs" />
     <Compile Include="Assets\GameData\Scenes\RegAuth\Button_Close.cs" />
-    <Compile Include="Assets\GameData\Scripts\GlobalConsts.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\GroupDivider.cs" />
     <Compile Include="Assets\GameData\Scripts\ImageHeroHandler.cs" />
     <Compile Include="Assets\GameData\Scenes\RegAuth\WindowResizeHandler.cs" />

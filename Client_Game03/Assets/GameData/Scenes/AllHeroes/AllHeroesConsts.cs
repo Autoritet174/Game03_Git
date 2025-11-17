@@ -10,8 +10,6 @@ namespace Assets.GameData.Scenes.AllHeroes
     {
         internal const string HERO_IMAGE_NULL = "hero-image-null";
 
-        internal static List<HeroBaseEntity> AllHeroes { get; } = new();
-
         private static readonly Color[] colorsAnimation = new Color[9];
 
         static AllHeroesConsts()

@@ -8,23 +8,25 @@ using Newtonsoft.Json.Linq;
 /// Управляет сворачиванием/разворачиванием группы UI-элементов (ячеек)
 /// с асинхронной анимацией высоты.
 /// </summary>
-public class GroupDivider : MonoBehaviour
+public class GroupDivider
 {
+    string name;
+    public GroupDivider(string name) {
+        this.name = name;
+    }
+
+
     // --- Публичные поля, которые настраиваются в Инспекторе ---
 
     /// <summary>
     /// Контейнер, содержащий все ячейки инвентаря для этой группы.
     /// На этом объекте должен быть RectTransform.
     /// </summary>
-    [SerializeField]
-    [Header("Контейнер для ячеек")]
     private GameObject gameObjectCellsContainer;
 
     /// <summary>
     /// Кнопка, при клике на которую происходит сворачивание/разворачивание.
     /// </summary>
-    [SerializeField]
-    [Header("Кнопка-разделитель")]
     private Button buttonDivider;
     //[SerializeField]
     //private RectTransform rectTransformDividerButton

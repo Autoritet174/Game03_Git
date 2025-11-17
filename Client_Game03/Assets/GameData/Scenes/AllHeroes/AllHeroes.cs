@@ -63,13 +63,6 @@ public class AllHeroes : MonoBehaviour
     //private readonly int r = 4;
     private async void Start()
     {
-        Task taskLoad = null;
-        if (AllHeroesConsts.AllHeroes.Count == 0)
-        {
-            taskLoad = FullListAllHeroes();
-        }
-
-
         scrollView = GameObjectFinder.FindByName<ScrollRect>("Scroll View (id=2e9cbb1a)");
         content = GameObjectFinder.FindByName<RectTransform>("Content (id=0a40ce51)", startParent: scrollView.transform);
         buttonClose = GameObjectFinder.FindByName<RectTransform>("ButtonClose (id=5cd5cc79)");
@@ -81,11 +74,6 @@ public class AllHeroes : MonoBehaviour
 
         //ButtonCloseHelper.UpdateSize(_lastWidth, _lastHeight, buttonClose);
         OnResize();
-
-        if (taskLoad != null)
-        {
-            await taskLoad;
-        }
 
         await AddAllImageOnContent();
 
@@ -102,56 +90,10 @@ public class AllHeroes : MonoBehaviour
         }
     }
 
-    private async Task FullListAllHeroes()
-    {
-        Game03Client.HttpRequester.HttpRequesterResult result = await GlobalFields.ClientGame.HttpRequesterProvider.GetResponceAsync(General.Url.General.ListAllHeroes);
-        if (result == null)
-        {
-            GameMessage.ShowLocale(L.Error.Server.InvalidResponse, true);
-            return;
-        }
-        JObject jObject = result.JObject;
-        if (jObject == null)
-        {
-            GameMessage.ShowLocale(L.Error.Server.InvalidResponse, true);
-            return;
-        }
-
-        JToken heroesToken = jObject["heroes"];
-        if (heroesToken is not JArray heroesArray)
-        {
-            throw new InvalidOperationException("Ключ 'heroes' отсутствует или не является массивом.");
-        }
-
-        AllHeroesConsts.AllHeroes.Clear();
-        foreach (JObject heroObj in heroesArray.Cast<JObject>())
-        {
-            Guid id = new(heroObj["id"]?.ToString());
-            string name = heroObj["name"]?.ToString();
-            float baseHealth = (float)Convert.ToDouble(heroObj["baseHealth"]);
-            float baseAttack = (float)Convert.ToDouble(heroObj["baseAttack"]);
-            RarityLevel rarity = (RarityLevel)Convert.ToInt32(heroObj["rarity"]);
-            //Debug.Log(id);
-            AllHeroesConsts.AllHeroes.Add(new HeroBaseEntity(id, name, rarity, baseHealth, baseAttack));
-        }
-
-        AllHeroesConsts.AllHeroes.Sort(static (a, b) =>
-        {
-            int result = b.Rarity.CompareTo(a.Rarity);
-            if (result != 0)
-            {// сортировка по редкости по убыванию
-                return result;
-            }
-
-            // сортировка по имени по возрастанию
-            return a.Name.CompareTo(b.Name);
-        });
-    }
-
     private async Task AddAllImageOnContent()
     {
         List<Task> list = new();
-        foreach (HeroBaseEntity heroStats in AllHeroesConsts.AllHeroes)
+        foreach (HeroBaseEntity heroStats in GlobalFields.ClientGame.GlobalFunctionsProvider.AllHeroes)
         {
             list.Add(LoadHeroByName(heroStats));
         }
