@@ -62,6 +62,7 @@ public class GroupDivider : MonoBehaviour
     /// <param name="countInRow">Количество ячеек в строке.</param>
     public void Initialize(string nameGroup, JObject data, int countInRow = 12)
     {
+
         //cellsRectTransform = gameObjectCellsContainer.GetComponent<RectTransform>();
 
         //if (cellsRectTransform == null)

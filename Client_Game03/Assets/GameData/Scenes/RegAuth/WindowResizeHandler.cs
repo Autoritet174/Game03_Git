@@ -20,8 +20,8 @@ public class WindowResizeHandler : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI textMeshPro_Password_label;
 
-    [SerializeField]
-    private RectTransform _panelButton;
+    //[SerializeField]
+    //private RectTransform _panelButton;
 
     [SerializeField]
     private TextMeshProUGUI textMeshPro_ButtonLogin;
@@ -57,7 +57,7 @@ public class WindowResizeHandler : MonoBehaviour
 
     private void Update()
     {
-        // Ïðîâåðÿåì èçìåíåíèå âûñîòû Canvas
+        // ÐŸÑ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼ Ð¸Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ðµ Ð²Ñ‹ÑÐ¾Ñ‚Ñ‹ Canvas
         if (!Mathf.Approximately(Screen.height, _lastHeight) || !Mathf.Approximately(Screen.width, _lastWidth))
         {
             UpdatePanelAfterResize();
@@ -66,7 +66,7 @@ public class WindowResizeHandler : MonoBehaviour
 
     private void UpdatePanelAfterResize()
     {
-        // Ôèêñèðóåì íîâóþ âûñîòó
+        // Ð¤Ð¸ÐºÑÐ¸Ñ€ÑƒÐµÐ¼ Ð½Ð¾Ð²ÑƒÑŽ Ð²Ñ‹ÑÐ¾Ñ‚Ñƒ
         _lastHeight = Screen.height;
         _lastWidth = Screen.width;
 
@@ -86,8 +86,8 @@ public class WindowResizeHandler : MonoBehaviour
 
         // _panelButton
         float width = _lastHeight / 1.125f; // = _lastHeight * 960 / 1080;
-        _panelButton.sizeDelta = new Vector2(width, _lastHeight);
-        _panelButton.anchoredPosition = new Vector2((Screen.width - width) / 2, 0);
+        //_panelButton.sizeDelta = new Vector2(width, _lastHeight);
+        //_panelButton.anchoredPosition = new Vector2((Screen.width - width) / 2, 0);
 
 
         fontSize = 26 * fontSizeCoef;
@@ -99,6 +99,8 @@ public class WindowResizeHandler : MonoBehaviour
         // Background
         float coefScreen = _lastWidth / _lastHeight;// 10000/1000 = 10
         imageBackground.rectTransform.sizeDelta = coefScreen > imageBackgroundCoef ? new Vector2(_lastWidth, _lastWidth / imageBackgroundCoef) : new Vector2(_lastHeight * imageBackgroundCoef, _lastHeight);
+    }
+    void ResizeImageBackground(RectTransform rectTransform) {
 
     }
 }

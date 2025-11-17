@@ -1,11 +1,11 @@
 using Cysharp.Threading.Tasks;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using L = General.LocalizationKeys;
 
 namespace Assets.GameData.Scripts
 {
@@ -16,21 +16,23 @@ namespace Assets.GameData.Scripts
         private static bool _opened = false;
         private static GameObject _currentInstance;
 
-        private static GameMessage _instance;
+        private static bool resultYesNo = false;
 
-        public static GameMessage Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    GameObject go = new("GameMessageManager");
-                    _instance = go.AddComponent<GameMessage>();
-                    DontDestroyOnLoad(go); // Чтобы не уничтожался при загрузке новой сцены
-                }
-                return _instance;
-            }
-        }
+        //private static GameMessage _instance;
+
+        //public static GameMessage Instance
+        //{
+        //    get
+        //    {
+        //        if (_instance == null)
+        //        {
+        //            GameObject go = new("GameMessageManager");
+        //            _instance = go.AddComponent<GameMessage>();
+        //            DontDestroyOnLoad(go); // Чтобы не уничтожался при загрузке новой сцены
+        //        }
+        //        return _instance;
+        //    }
+        //}
 
 
 
@@ -51,10 +53,21 @@ namespace Assets.GameData.Scripts
         /// <summary>
         /// Выводит игровое сообщение по ключу локализации и ожидает закрытие окна.
         /// </summary>
-        public static async Task ShowLocaleAndWaitCloseAsync(string keyLocalization, Dictionary<string, string> argDict = null)
+        public static async Task ShowLocaleAndWaitCloseAsync(string keyLocalization)
         {
-            Show(GlobalFields.ClientGame.LocalizationManagerProvider.GetValue(keyLocalization), true, argDict);
+            Show(GlobalFields.ClientGame.LocalizationManagerProvider.GetValue(keyLocalization), true);
             await UniTask.WaitUntil(() => !_opened);
+        }
+
+        /// <summary>
+        /// Выводит игровое сообщение по ключу локализации и ожидает закрытие окна.
+        /// </summary>
+        public static async Task<bool> ShowLocaleYesNo(string keyLocalization)
+        {
+            resultYesNo = false;
+            Show(GlobalFields.ClientGame.LocalizationManagerProvider.GetValue(keyLocalization), buttonActiveClose: false, yesNoDialog: true);
+            await UniTask.WaitUntil(() => !_opened);
+            return resultYesNo;
         }
 
         /// <summary>
@@ -87,29 +100,19 @@ namespace Assets.GameData.Scripts
         /// <summary>
         /// Основной метод отображения сообщения.
         /// </summary>
-        public static void Show(string message, bool buttonActive, Dictionary<string, string> argDict = null, bool isProcess = false)
+        public static void Show(string message, bool buttonActiveClose, bool isProcess = false, bool yesNoDialog = false)
         {
             if (string.IsNullOrEmpty(message))
             {
-                throw new Exception("Message cannot be empty.");
+                Debug.Log("Сообщение не может быть пустым.");
+                buttonActiveClose = true;
             }
 
-            // обновить message с учетом argDict
-            if (argDict != null)
-            {
-                foreach (KeyValuePair<string, string> item in argDict)
-                {
-                    if (message.Contains(item.Key))
-                    {
-                        message = message.Replace(item.Key, item.Value);
-                    }
-                }
-            }
 
             // Если окно уже существует, обновляем текст
             if (_currentInstance != null)
             {
-                UpdateMessage(_currentInstance, message, buttonActive, isProcess: isProcess);
+                UpdateMessage(message, buttonActiveClose, isProcess: isProcess, yesNoDialog: yesNoDialog);
                 return;
             }
 
@@ -136,7 +139,7 @@ namespace Assets.GameData.Scripts
                     }
                     canvas.worldCamera = mainCamera;
 
-                    UpdateMessage(_currentInstance, message, buttonActive, isProcess: isProcess);
+                    UpdateMessage(message, buttonActiveClose, isProcess: isProcess, yesNoDialog: yesNoDialog);
                 }
                 else
                 {
@@ -148,9 +151,9 @@ namespace Assets.GameData.Scripts
         /// <summary>
         /// Обновляет текст и кнопку в уже созданном окне.
         /// </summary>
-        private static void UpdateMessage(GameObject messageInstance, string message, bool buttonActive, bool isProcess = false)
+        private static void UpdateMessage(string message, bool buttonActiveClose, bool isProcess = false, bool yesNoDialog = false)
         {
-            Canvas canvas = messageInstance.GetComponent<Canvas>();
+            Canvas canvas = _currentInstance.GetComponent<Canvas>();
             Transform windowsImageTransform = canvas.transform.Find("Window-Image");
             GameObject mainTextLabel = windowsImageTransform.Find("MainText-Label").gameObject;
 
@@ -167,20 +170,63 @@ namespace Assets.GameData.Scripts
 
             tmpText.text = message;
 
-            GameObject okButton = windowsImageTransform.Find("Ok-Button").gameObject;
-            okButton.SetActive(buttonActive);
+            GameObject gameObjectButtonOk = windowsImageTransform.Find("ButtonOk").gameObject;
+            GameObject gameObjectButtonNo = windowsImageTransform.Find("ButtonNo").gameObject;
+            GameObject gameObjectButtonYes = windowsImageTransform.Find("ButtonYes").gameObject;
 
-            // Подписываемся на кнопку, если она активна
-            if (buttonActive)
+            if (buttonActiveClose)
             {
-                UnityEngine.UI.Button button = okButton.GetComponent<UnityEngine.UI.Button>();
-                button.onClick.RemoveAllListeners();
-                button.onClick.AddListener(() =>
+                gameObjectButtonOk.SetActive(true);
+                gameObjectButtonYes.SetActive(false);
+                gameObjectButtonNo.SetActive(false);
+
+
+                UnityEngine.UI.Button buttonOk = gameObjectButtonOk.GetComponent<UnityEngine.UI.Button>();
+                TextMeshProUGUI buttonOkText = GameObjectFinder.FindByName<TextMeshProUGUI>("TextButtonOk", buttonOk.transform);
+                buttonOkText.text = GlobalFields.ClientGame.LocalizationManagerProvider.GetValue(L.UI.Button.Ok);
+
+                buttonOk.onClick.RemoveAllListeners();
+                buttonOk.onClick.AddListener(() =>
                 {
-                    UnityEngine.Object.Destroy(messageInstance);
+                    UnityEngine.Object.Destroy(_currentInstance);
                     _currentInstance = null;
                     _opened = false;
                 });
+            }
+            else if (yesNoDialog)
+            {
+                gameObjectButtonOk.SetActive(false);
+
+                gameObjectButtonYes.SetActive(true);
+                UnityEngine.UI.Button buttonYes = gameObjectButtonYes.GetComponent<UnityEngine.UI.Button>();
+                TextMeshProUGUI buttonYesText = GameObjectFinder.FindByName<TextMeshProUGUI>("TextButtonYes", buttonYes.transform);
+                buttonYesText.text = GlobalFields.ClientGame.LocalizationManagerProvider.GetValue(L.UI.Button.Yes);
+                buttonYes.onClick.RemoveAllListeners();
+                buttonYes.onClick.AddListener(() =>
+                {
+                    resultYesNo = true;
+                    UnityEngine.Object.Destroy(_currentInstance);
+                    _currentInstance = null;
+                    _opened = false;
+                });
+
+                gameObjectButtonNo.SetActive(true);
+                UnityEngine.UI.Button buttonNo = gameObjectButtonNo.GetComponent<UnityEngine.UI.Button>();
+                TextMeshProUGUI buttonNoText = GameObjectFinder.FindByName<TextMeshProUGUI>("TextButtonNo", buttonNo.transform);
+                buttonNoText.text = GlobalFields.ClientGame.LocalizationManagerProvider.GetValue(L.UI.Button.No);
+                buttonNo.onClick.RemoveAllListeners();
+                buttonNo.onClick.AddListener(() =>
+                {
+                    UnityEngine.Object.Destroy(_currentInstance);
+                    _currentInstance = null;
+                    _opened = false;
+                });
+            }
+            else
+            {
+                gameObjectButtonOk.SetActive(false);
+                gameObjectButtonYes.SetActive(false);
+                gameObjectButtonNo.SetActive(false);
             }
         }
     }

@@ -1,9 +1,16 @@
-﻿using System;
+using Assets.GameData.Scripts;
+using System;
 using System.Collections;
 using UnityEngine;
+using L = General.LocalizationKeys;
 
 public static class GameExitHandler {
-    public static void ExitGame() {
+    public static async void ExitGame() {
+        bool yesNo = await GameMessage.ShowLocaleYesNo(L.UI.Label.ExitTheGame);
+        if (!yesNo) {
+            return;
+        }
+
         // Сохраняем данные перед выходом
         //SaveSystem.SaveGame();
 

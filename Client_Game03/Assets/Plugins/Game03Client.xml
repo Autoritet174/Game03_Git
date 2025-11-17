@@ -157,12 +157,84 @@
             <param name="result"></param>
             <param name="jObject"></param>
         </member>
+        <member name="T:Game03Client.LocalizationManager.ILocalizationManagerProvider">
+            <summary>
+            Определяет контракт для провайдеров, управляющих получением локализованных строк.
+            </summary>
+        </member>
+        <member name="M:Game03Client.LocalizationManager.ILocalizationManagerProvider.GetTextByJObject(Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Получает локализованную строку текста ошибки на основе данных из JSON-объекта.
+            </summary>
+            <param name="jObject">Объект JSON, содержащий данные для локализации ошибки (например, "keyError").</param>
+            <returns>Локализованная строка ошибки с подставленными данными, если применимо.</returns>
+        </member>
+        <member name="M:Game03Client.LocalizationManager.ILocalizationManagerProvider.GetValue(System.String)">
+            <summary>
+            Получает локализованное строковое значение по заданному ключу.
+            </summary>
+            <param name="key">Ключ локализации.</param>
+            <returns>Локализованная строка. Если ключ не найден, возвращается сам ключ.</returns>
+        </member>
+        <member name="T:Game03Client.LocalizationManager.LocalizationManagerOptions">
+            <summary>
+            Предоставляет опции для инициализации провайдера локализации.
+            </summary>
+            <param name="jsonFileData">Капсула, содержащая строку с данными локализации в формате JSON.</param>
+            <param name="language">Язык, для которого предназначены данные локализации.</param>
+        </member>
+        <member name="M:Game03Client.LocalizationManager.LocalizationManagerOptions.#ctor(General.StringCapsule,Game03Client.GameLanguage)">
+            <summary>
+            Предоставляет опции для инициализации провайдера локализации.
+            </summary>
+            <param name="jsonFileData">Капсула, содержащая строку с данными локализации в формате JSON.</param>
+            <param name="language">Язык, для которого предназначены данные локализации.</param>
+        </member>
+        <member name="F:Game03Client.LocalizationManager.LocalizationManagerOptions.jsonFileData">
+            <summary>
+            Данные локализации в формате JSON, обернутые в <see cref="T:General.StringCapsule"/>.
+            </summary>
+        </member>
+        <member name="F:Game03Client.LocalizationManager.LocalizationManagerOptions.Language">
+            <summary>
+            Указывает язык, соответствующий загруженным данным.
+            </summary>
+        </member>
+        <member name="T:Game03Client.LocalizationManager.LocalizationManagerProvider">
+            <summary>
+            Реализация провайдера для управления локализацией, загружающая данные из JSON.
+            </summary>
+        </member>
+        <member name="F:Game03Client.LocalizationManager.LocalizationManagerProvider._localizationManagerOptions">
+            <summary>
+            Опции, содержащие данные локализации в формате JSON.
+            </summary>
+        </member>
+        <member name="M:Game03Client.LocalizationManager.LocalizationManagerProvider.#ctor(Game03Client.LocalizationManager.LocalizationManagerOptions)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Game03Client.LocalizationManager.LocalizationManagerProvider"/>.
+            </summary>
+            <param name="localizationManagerOptions">Опции локализации, содержащие JSON-строку с данными.</param>
+            <exception cref="T:Newtonsoft.Json.JsonReaderException">Вызывается, если JSON-строка в опциях недействительна.</exception>
+        </member>
+        <member name="F:Game03Client.LocalizationManager.LocalizationManagerProvider.localization">
+            <summary>
+            Словарь, хранящий ключи локализации (путь в JSON) и соответствующие им строковые значения.
+            </summary>
+        </member>
+        <member name="M:Game03Client.LocalizationManager.LocalizationManagerProvider.GetValue(System.String)">
+            <summary>
+            Получает локализованное строковое значение по ключу.
+            </summary>
+            <param name="key">Ключ локализации (например, "UI.Menu.StartGame").</param>
+            <returns>Локализованная строка, или сам ключ, если значение не найдено.</returns>
+        </member>
         <member name="M:Game03Client.LocalizationManager.LocalizationManagerProvider.GetTextByJObject(Newtonsoft.Json.Linq.JObject)">
             <summary>
-            Получить строку которая является ключом к тексту ошибки.
+            Получить локализованную строку текста ошибки на основе данных из <see cref="T:Newtonsoft.Json.Linq.JObject"/>.
             </summary>
-            <param name="jObject"></param>
-            <returns></returns>
+            <param name="jObject">Объект JSON, содержащий ключ ошибки ("keyError") и дополнительные данные.</param>
+            <returns>Локализованная строка ошибки с подставленными данными, или пустая строка, если <paramref name="jObject"/> равен null.</returns>
         </member>
         <member name="M:Game03Client.WebSocketClient.WebSocketClientProvider.ReceiveMessagesAsync">
             <summary>

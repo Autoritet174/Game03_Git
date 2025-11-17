@@ -5,6 +5,14 @@ public class ButtonClose_Click_MoveToMainMenu : MonoBehaviour
 {
     public void OnClick()
     {
-        SceneManager.LoadScene("MainMenu");
+        string main ="MainMenu";
+        if (SceneManager.GetActiveScene().name == main)
+        {
+            GameExitHandler.ExitGame();
+        }
+        else
+        {
+            SceneManager.LoadScene(main);
+        }
     }
 }
