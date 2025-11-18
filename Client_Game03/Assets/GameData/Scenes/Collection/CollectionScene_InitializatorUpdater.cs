@@ -2,6 +2,7 @@ using Assets.GameData.Scripts;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -89,116 +90,120 @@ public class CollectionScene_InitializatorUpdater : MonoBehaviour
 
     private async void Start()
     {
-        tabButtonHeroes = new("ButtonHeroes (id=40jhb51a)", "Text (TMP) (id=wl92ls1m)", OnClickHeroes);
-        tabButtonItem = new("ButtonItems (id=k5hqeyat)", "Text (TMP) (id=cklw2id1)", OnClickItems);
-
-
-        // Изображение заднего фона
-        imageBackground = GameObjectFinder.FindByName<Image>("Image_Background (id=688x18dt)");
-        if (imageBackground != null && imageBackground.sprite != null)
+        GameMessage.Show("Loading collection", false);
+        try
         {
-            Texture2D texture = imageBackground.sprite.texture;
-            imageBackgroundCoef = texture.width / (float)texture.height;
-        }
-        rectTransformPanelTop = GameObjectFinder.FindByName<RectTransform>("PanelTop (id=ibal8ya0)");
-        rectTransformButtonClose = GameObjectFinder.FindByName<RectTransform>("ButtonClose (id=4nretdab)");
-        rectTransformButtonCloseSelectedHero = GameObjectFinder.FindByName<RectTransform>("ButtonClose (id=0ursxw0e)");
-        rectTransformPanelSelectedHero = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHero (id=vs2gi8c6)");
-        rectTransformPanelSelectedHeroTop = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHeroTop (id=0y6mrhc2)");
-        SelectedHeroTop_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label_SelectedHero (id=ahrtgg43)");
+            tabButtonHeroes = new("ButtonHeroes (id=40jhb51a)", "Text (TMP) (id=wl92ls1m)", OnClickHeroes);
+            tabButtonItem = new("ButtonItems (id=k5hqeyat)", "Text (TMP) (id=cklw2id1)", OnClickItems);
 
 
-        // Внутренние кнопки
-        internalPanelHeroes = new("ImageButtonHeroes (id=pakco5ud)");
-        internalPanelItems = new("ImageButtonItems (id=vuhjngaz)");
-        internalPanelFilter = new("ImageButtonFilter (id=vjeqfzen)");
-        internalPanelGroup = new("ImageButtonGroup (id=hbsaogwl)");
-        internalPanelSort = new("ImageButtonSort (id=6nvcsrdm)");
-
-
-        // Коллекция контент
-        transformCollectionContent = GameObjectFinder.FindByName("Content (id=ddmjr9vy)").transform;
-
-
-        initialized = true;
-        OnResizeWindow();
-
-        // Получить коллекцию героев игрока
-        Game03Client.HttpRequester.HttpRequesterResult httpRequesterProviderResult = await GlobalFields.ClientGame.HttpRequesterProvider.GetResponceAsync(General.Url.Inventory.Heroes);
-        if (httpRequesterProviderResult == null)
-        {
-            Debug.Log("httpRequesterProviderResult == null");
-            return;
-        }
-        JObject jObject = httpRequesterProviderResult.JObject;
-        if (jObject == null)
-        {
-            Debug.Log("jObject == null");
-            return;
-        }
-
-        JToken result = jObject["result"];
-
-        // Получить уникальные имена групп
-        List<string> group_name_List = new();
-        foreach (JToken j in result)
-        {
-            //Debug.Log($"_id={j["_id"]}; owner_id={j["owner_id"]}; hero_id={j["hero_id"]}; health={j["health"]}; attack={j["attack"]}; speed={j["speed"]}; strength={j["strength"]}; agility={j["agility"]}; intelligence={j["intelligence"]}");
-            string group_name = j["group_name"]?.ToString()?.Trim() ?? string.Empty;
-            if (group_name != string.Empty && !group_name_List.Contains(group_name))
+            // Изображение заднего фона
+            imageBackground = GameObjectFinder.FindByName<Image>("Image_Background (id=688x18dt)");
+            if (imageBackground != null && imageBackground.sprite != null)
             {
-                group_name_List.Add(group_name);
+                Texture2D texture = imageBackground.sprite.texture;
+                imageBackgroundCoef = texture.width / (float)texture.height;
             }
-        }
+            rectTransformPanelTop = GameObjectFinder.FindByName<RectTransform>("PanelTop (id=ibal8ya0)");
+            rectTransformButtonClose = GameObjectFinder.FindByName<RectTransform>("ButtonClose (id=4nretdab)");
+            rectTransformButtonCloseSelectedHero = GameObjectFinder.FindByName<RectTransform>("ButtonClose (id=0ursxw0e)");
+            rectTransformPanelSelectedHero = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHero (id=vs2gi8c6)");
+            rectTransformPanelSelectedHeroTop = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHeroTop (id=0y6mrhc2)");
+            SelectedHeroTop_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label_SelectedHero (id=ahrtgg43)");
 
-        string guidNoGroupStr = Guid.NewGuid().ToString();
-        group_name_List.Add(guidNoGroupStr);
 
-        // Добавить всех героев в список, для легкого удаления потом.
-        List<JToken> allHeroesJToken = new();
-        foreach (JToken j in result)
-        {
-            allHeroesJToken.Add(j);
-        }
+            // Внутренние кнопки
+            internalPanelHeroes = new("ImageButtonHeroes (id=pakco5ud)");
+            internalPanelItems = new("ImageButtonItems (id=vuhjngaz)");
+            internalPanelFilter = new("ImageButtonFilter (id=vjeqfzen)");
+            internalPanelGroup = new("ImageButtonGroup (id=hbsaogwl)");
+            internalPanelSort = new("ImageButtonSort (id=6nvcsrdm)");
 
-        Dictionary<string, List<JToken>> heroesByGroups = new();
-        foreach (string group_name_L in group_name_List)
-        {
-            List<JToken> list = new();
-            heroesByGroups.Add(group_name_L, list);
 
-            if (group_name_L == guidNoGroupStr)
+            // Коллекция контент
+            transformCollectionContent = GameObjectFinder.FindByName("Content (id=ddmjr9vy)").transform;
+
+
+            initialized = true;
+            OnResizeWindow();
+
+            // Получить коллекцию героев игрока
+            Game03Client.HttpRequester.HttpRequesterResult httpRequesterProviderResult = await GlobalFields.ClientGame.HttpRequesterProvider.GetResponceAsync(General.Url.Inventory.Heroes);
+            if (httpRequesterProviderResult == null)
             {
-                list.AddRange(allHeroesJToken);
-                break;
+                Debug.Log("httpRequesterProviderResult == null");
+                return;
+            }
+            JObject jObject = httpRequesterProviderResult.JObject;
+            if (jObject == null)
+            {
+                Debug.Log("jObject == null");
+                return;
             }
 
-            for (int i = allHeroesJToken.Count - 1; i >= 0; i--)
+            JToken result = jObject["result"];
+
+            // Получить уникальные имена групп
+            List<string> group_name_List = new();
+            foreach (JToken j in result)
             {
-                JToken j = allHeroesJToken[i];
+                //Debug.Log($"_id={j["_id"]}; owner_id={j["owner_id"]}; hero_id={j["hero_id"]}; health={j["health"]}; attack={j["attack"]}; speed={j["speed"]}; strength={j["strength"]}; agility={j["agility"]}; intelligence={j["intelligence"]}");
                 string group_name = j["group_name"]?.ToString()?.Trim() ?? string.Empty;
-                if (group_name == group_name_L)
+                if (group_name != string.Empty && !group_name_List.Contains(group_name))
                 {
-                    list.Add(j);
-                    _ = allHeroesJToken.Remove(j);
+                    group_name_List.Add(group_name);
                 }
             }
+
+            string guidNoGroupStr = Guid.NewGuid().ToString();
+            group_name_List.Add(guidNoGroupStr);
+
+            // Добавить всех героев в список, для легкого удаления потом.
+            List<JToken> allHeroesJToken = new();
+            foreach (JToken j in result)
+            {
+                allHeroesJToken.Add(j);
+            }
+
+            Dictionary<string, List<JToken>> heroesByGroups = new();
+            foreach (string group_name_L in group_name_List)
+            {
+                List<JToken> list = new();
+                heroesByGroups.Add(group_name_L, list);
+
+                if (group_name_L == guidNoGroupStr)
+                {
+                    list.AddRange(allHeroesJToken);
+                    break;
+                }
+
+                for (int i = allHeroesJToken.Count - 1; i >= 0; i--)
+                {
+                    JToken j = allHeroesJToken[i];
+                    string group_name = j["group_name"]?.ToString()?.Trim() ?? string.Empty;
+                    if (group_name == group_name_L)
+                    {
+                        list.Add(j);
+                        _ = allHeroesJToken.Remove(j);
+                    }
+                }
+            }
+
+            List<Task> tasks = new();
+            foreach (KeyValuePair<string, List<JToken>> keyValue in heroesByGroups)
+            {
+                GameObject groupDivider_GameObject = Instantiate(await Addressables.LoadAssetAsync<GameObject>($"GroupDividerPrefab").Task);
+                groupDivider_GameObject.transform.SetParent(transformCollectionContent, false);
+                string group_name = keyValue.Key == guidNoGroupStr ? null : keyValue.Key;
+                GroupDivider groupDivider_NoGroup = new(group_name);
+                Task task = groupDivider_NoGroup.Init(groupDivider_GameObject, keyValue.Value);
+                tasks.Add(task);
+            }
+            await Task.WhenAll(tasks);
         }
-
-
-        foreach (KeyValuePair<string, List<JToken>> keyValue in heroesByGroups)
-        {
-            AsyncOperationHandle<GameObject> groupDivider_NoGroup_addressable = Addressables.LoadAssetAsync<GameObject>($"GroupDividerPrefab");
-            GameObject groupDivider_NoGroup_transform = await groupDivider_NoGroup_addressable.Task;
-            GameObject groupDivider_NoGroup_GameObject = Instantiate(groupDivider_NoGroup_transform);
-            groupDivider_NoGroup_GameObject.transform.SetParent(transformCollectionContent, false);
-
-            string group_name = keyValue.Key == guidNoGroupStr ? null : keyValue.Key;
-            GroupDivider groupDivider_NoGroup = new(group_name);
-            await groupDivider_NoGroup.Init(groupDivider_NoGroup_GameObject, keyValue.Value);
+        finally {
+            GameMessage.Close();
         }
-
-
 
         //string s = jObject["token"]?.ToString() ?? string.Empty;
     }

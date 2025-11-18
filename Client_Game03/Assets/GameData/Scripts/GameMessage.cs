@@ -230,5 +230,11 @@ namespace Assets.GameData.Scripts
                 gameObjectButtonNo.SetActive(false);
             }
         }
+
+        public static void Close() {
+            UnityEngine.Object.Destroy(_currentInstance);
+            _currentInstance = null;
+            _opened = false;
+        }
     }
 }

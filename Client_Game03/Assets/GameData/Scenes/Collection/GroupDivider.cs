@@ -60,6 +60,7 @@ public class GroupDivider : MonoBehaviour
 
         for (int i = 0; i < listHeroes.Count; i++)
         {
+            JToken j = listHeroes[i];
             GameObject gameObject = await Addressables.LoadAssetAsync<GameObject>("IconHero").Task;
             GameObject _prefabIconHero = Instantiate(gameObject);
             _prefabIconHero.transform.SetParent(transformCellsContainer);
@@ -76,7 +77,6 @@ public class GroupDivider : MonoBehaviour
             Transform childImageRarity = childImageMaskRarity.Find("ImageRarity");
             if (childImageHero != null && childImageHero.TryGetComponent(out Image imageHero) && childImageRarity != null && childImageRarity.TryGetComponent(out Image imageRarity))
             {
-                JToken j = listHeroes[i];
                 var hero_id = Guid.Parse(j["hero_id"].ToString());
 
                 General.GameEntities.HeroBaseEntity hero = GlobalFields.ClientGame.GlobalFunctionsProvider.GetHeroById(hero_id);
