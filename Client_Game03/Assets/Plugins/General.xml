@@ -4,6 +4,23 @@
         <name>General</name>
     </assembly>
     <members>
+        <member name="T:General.G">
+            <summary>
+            Глобальные статические поля, константы и функции.
+            </summary>
+        </member>
+        <member name="F:General.G.APPLICATION_JSON">
+            <summary>
+            Значение для mediaType StringContent.
+            </summary>
+        </member>
+        <member name="M:General.G.SecondsToTimeStr(System.Int64)">
+            <summary>
+            
+            </summary>
+            <param name="sec"></param>
+            <returns></returns>
+        </member>
         <member name="P:General.GameEntities.HeroBaseEntity.Id">
             <summary>
             Id героя.
@@ -29,21 +46,14 @@
             Атака.
             </summary>
         </member>
-        <member name="T:General.GF">
-            <summary>
-            Global Functions
-            </summary>
-        </member>
-        <member name="M:General.GF.IsEmail(System.String)">
-            <summary>
-            Пытается создать объект MailAddress из строки. Возвращает обратно входную строку без изменений при успехи, иначе null.
-            </summary>
-            <param name="email">Строка с предполагаемым адресом электронной почты.</param>
-            <returns>email, если создание прошло успешно; иначе null.</returns>
-        </member>
         <member name="T:General.LocalizationKeys">
             <summary>
             Коды для получения текстовых ошибок из json файлов локализации.
+            </summary>
+        </member>
+        <member name="F:General.LocalizationKeys.KEY_LOCALIZATION">
+            <summary>
+            Константа для отметки строк как те что можно считать из локализции.
             </summary>
         </member>
         <member name="T:General.ModelHttp.Authorization">
@@ -200,12 +210,33 @@
             Класс капсула для переменной string. Можно передавать строку не копируя её.
             </summary>
         </member>
-        <member name="M:General.StringExtensions.ToUpper1Char(System.String)">
+        <member name="T:General.StringExtension">
+            <summary>
+            Класс-расширение для string.
+            </summary>
+        </member>
+        <member name="M:General.StringExtension.ToUpper1Char(System.String)">
             <summary>
             Если возможно, преобразуем первый символ в верхний регистр, остальные без изменений.
             </summary>
             <param name="s"></param>
             <returns></returns>
+        </member>
+        <member name="M:General.StringExtension.get_IsEmpty(System.String)">
+            <inheritdoc cref="P:General.StringExtension.&lt;G&gt;$34505F560D9EACF86A87F3ED1F85E448.IsEmpty"/>
+        </member>
+        <member name="M:General.StringExtension.get_IsEmail(System.String)">
+            <inheritdoc cref="P:General.StringExtension.&lt;G&gt;$34505F560D9EACF86A87F3ED1F85E448.IsEmail"/>
+        </member>
+        <member name="P:General.StringExtension.&lt;G&gt;$34505F560D9EACF86A87F3ED1F85E448.IsEmpty">
+            <summary>
+            True если IsNullOrWhiteSpace
+            </summary>
+        </member>
+        <member name="P:General.StringExtension.&lt;G&gt;$34505F560D9EACF86A87F3ED1F85E448.IsEmail">
+            <summary>
+            Пытается создать объект MailAddress из строки. Возвращает значение результата.
+            </summary>
         </member>
         <member name="T:General.Url">
             <summary>

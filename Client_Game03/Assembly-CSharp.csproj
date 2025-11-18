@@ -64,7 +64,6 @@
     <Compile Include="Assets\GameData\AddressableAssets\Prefabs\L3\GameMessage\GameMessageButtonClose.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\CollectionHero.cs" />
     <Compile Include="Assets\GameData\Scenes\RegAuth\Test.cs" />
-    <Compile Include="Assets\GameData\Scripts\GlobalFields.cs" />
     <Compile Include="Assets\GameData\Scripts\UnityMainThreadDispatcher.cs" />
     <Compile Include="Assets\GameData\Scripts\ResetRectOffsets.cs" />
     <Compile Include="Assets\GameData\Scripts\GameMessage.cs" />
@@ -79,6 +78,7 @@
     <Compile Include="Assets\GameData\Scripts\GameObjectFinder.cs" />
     <Compile Include="Assets\GameData\Scenes\TEST_01\TestScript.cs" />
     <Compile Include="Assets\GameData\Scenes\AllHeroes\AllHeroes.cs" />
+    <Compile Include="Assets\GameData\Scripts\G.cs" />
     <Compile Include="Assets\GameData\Scenes\RegAuth\LocalizationManagerLoadLocale.cs" />
     <Compile Include="Assets\GameData\Scripts\AddressableHelper.cs" />
     <Compile Include="Assets\GameData\Scenes\RegAuth\Button_Auth.cs" />
@@ -629,12 +629,12 @@
       <HintPath>Library\PackageCache\com.unity.ext.nunit@031a54704bff\net40\unity-custom\nunit.framework.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.Bcl.AsyncInterfaces">
-      <HintPath>Assets\Plugins\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
       <HintPath>Assets\Packages\Microsoft.Extensions.DependencyInjection.Abstractions.10.0.0\lib\netstandard2.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces">
+      <HintPath>Assets\Plugins\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.IO.Hashing">

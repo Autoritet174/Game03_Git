@@ -16,6 +16,7 @@ using L = General.LocalizationKeys;
 
 using static General.Enums;
 using General;
+using G = Assets.GameData.Scripts.G;
 
 public class AllHeroes : MonoBehaviour
 {
@@ -93,7 +94,7 @@ public class AllHeroes : MonoBehaviour
     private async Task AddAllImageOnContent()
     {
         List<Task> list = new();
-        foreach (HeroBaseEntity heroStats in GlobalFields.ClientGame.GlobalFunctionsProvider.AllHeroes)
+        foreach (HeroBaseEntity heroStats in G.Game.GlobalFunctions.AllHeroes)
         {
             list.Add(LoadHeroByName(heroStats));
         }

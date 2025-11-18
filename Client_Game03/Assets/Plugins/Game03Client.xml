@@ -4,39 +4,54 @@
         <name>Game03Client</name>
     </assembly>
     <members>
+        <member name="M:Game03Client.Collection.CollectionProvider.LoadAllCollectionFromServer">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:Game03Client.Game03">
             <summary>
             Класс содержащий логику и веб взаимодействие игрового клиента.
             </summary>
         </member>
-        <member name="P:Game03Client.Game03.JwtTokenProvider">
+        <member name="P:Game03Client.Game03.JwtToken">
             <summary>
             Провайдер JwtToken.
             </summary>
         </member>
-        <member name="P:Game03Client.Game03.IniFileProvider">
+        <member name="P:Game03Client.Game03.IniFile">
             <summary>
             Провайдер IniFile.
             </summary>
         </member>
-        <member name="P:Game03Client.Game03.HttpRequesterProvider">
+        <member name="P:Game03Client.Game03.HttpRequester">
             <summary>
             Провайдер HttpRequester.
             </summary>
         </member>
-        <member name="P:Game03Client.Game03.LocalizationManagerProvider">
+        <member name="P:Game03Client.Game03.LocalizationManager">
             <summary>
             Провайдер LocalizationManager.
             </summary>
         </member>
-        <member name="P:Game03Client.Game03.WebSocketClientProvider">
+        <member name="P:Game03Client.Game03.WebSocketClient">
             <summary>
             Провайдер LocalizationManager.
             </summary>
         </member>
-        <member name="P:Game03Client.Game03.GlobalFunctionsProvider">
+        <member name="P:Game03Client.Game03.GlobalFunctions">
             <summary>
             Провайдер GlobalFunctions.
+            </summary>
+        </member>
+        <member name="P:Game03Client.Game03.Collection">
+            <summary>
+            Провайдер Collection.
+            </summary>
+        </member>
+        <member name="P:Game03Client.Game03.Logger">
+            <summary>
+            Провайдер Logger.
             </summary>
         </member>
         <member name="M:Game03Client.Game03.DisposeAsync">

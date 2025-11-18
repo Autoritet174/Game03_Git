@@ -10,7 +10,7 @@ namespace Assets.GameData.Scripts
         internal static void Init()
         {
             //HttpRequester.Init();
-            GlobalFields.Init();
+            G.Init();
         }
     }
 }

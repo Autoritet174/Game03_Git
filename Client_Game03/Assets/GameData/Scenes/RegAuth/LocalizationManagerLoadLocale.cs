@@ -7,7 +7,7 @@ public class locManagerLoadLocale : MonoBehaviour
 {
     private void Start()
     {
-        Game03Client.LocalizationManager.ILocalizationManagerProvider locManager = GlobalFields.ClientGame.LocalizationManagerProvider;
+        Game03Client.LocalizationManager.ILocalizationManagerProvider locManager = G.Game.LocalizationManager;
         GameObjectFinder.FindByName<TextMeshProUGUI>("Label_Email (id=ndtil638)").text = locManager.GetValue(L.UI.Label.Email);
         GameObjectFinder.FindByName<TextMeshProUGUI>("Label_Password (id=e319ahd6)").text = locManager.GetValue(L.UI.Label.Password);
         GameObjectFinder.FindByName<TextMeshProUGUI>("Text_ButtonLogin (id=wf6fw0y1)").text = locManager.GetValue(L.UI.Button.Login);

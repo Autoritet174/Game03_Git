@@ -28,8 +28,8 @@
 			"Unavailable" : "Не доступен",
 			"InvalidResponse": "Неверный ответ",
 			"InvalidCredentials" : "Неверные учетные данные",
-			"TooManyRequests" : "Слишком много попыток, попробуйте через {timeRemaining}",
-			"AccountBannedUntil" : "Ваша учётная запись заблокирована. Повторите попытку через {timeRemaining}. Учётная запись будет разблокирована {datetimeExpiration}.",
+			"TooManyRequests" : "Слишком много попыток, попробуйте через {TIME_REMAINING}",
+			"AccountBannedUntil" : "Ваша учётная запись заблокирована. Повторите попытку через {TIME_REMAINING}. Учётная запись будет разблокирована {DATETIME_EXPIRATION}.",
 			"AccountBannedPermanently" : "Ваша учётная запись заблокирована бессрочно.",
 			"NoInternetConnection" : "Возможно, отсутствует подключение к интернету",
 			"OpeningWebSocketFailed" : "Соединение не установлено"

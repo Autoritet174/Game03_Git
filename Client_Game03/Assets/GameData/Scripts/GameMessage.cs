@@ -55,7 +55,7 @@ namespace Assets.GameData.Scripts
         /// </summary>
         public static async Task ShowLocaleAndWaitCloseAsync(string keyLocalization)
         {
-            Show(GlobalFields.ClientGame.LocalizationManagerProvider.GetValue(keyLocalization), true);
+            Show(G.Game.LocalizationManager.GetValue(keyLocalization), true);
             await UniTask.WaitUntil(() => !_opened);
         }
 
@@ -65,7 +65,7 @@ namespace Assets.GameData.Scripts
         public static async Task<bool> ShowLocaleYesNo(string keyLocalization)
         {
             resultYesNo = false;
-            Show(GlobalFields.ClientGame.LocalizationManagerProvider.GetValue(keyLocalization), buttonActiveClose: false, yesNoDialog: true);
+            Show(G.Game.LocalizationManager.GetValue(keyLocalization), buttonActiveClose: false, yesNoDialog: true);
             await UniTask.WaitUntil(() => !_opened);
             return resultYesNo;
         }
@@ -85,7 +85,7 @@ namespace Assets.GameData.Scripts
         /// </summary>
         public static void ShowLocale(string keyLocalization, bool buttonActive)
         {
-            Show(GlobalFields.ClientGame.LocalizationManagerProvider.GetValue(keyLocalization), buttonActive);
+            Show(G.Game.LocalizationManager.GetValue(keyLocalization), buttonActive);
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace Assets.GameData.Scripts
 
                 UnityEngine.UI.Button buttonOk = gameObjectButtonOk.GetComponent<UnityEngine.UI.Button>();
                 TextMeshProUGUI buttonOkText = GameObjectFinder.FindByName<TextMeshProUGUI>("TextButtonOk", buttonOk.transform);
-                buttonOkText.text = GlobalFields.ClientGame.LocalizationManagerProvider.GetValue(L.UI.Button.Ok);
+                buttonOkText.text = G.Game.LocalizationManager.GetValue(L.UI.Button.Ok);
 
                 buttonOk.onClick.RemoveAllListeners();
                 buttonOk.onClick.AddListener(() =>
@@ -201,7 +201,7 @@ namespace Assets.GameData.Scripts
                 gameObjectButtonYes.SetActive(true);
                 UnityEngine.UI.Button buttonYes = gameObjectButtonYes.GetComponent<UnityEngine.UI.Button>();
                 TextMeshProUGUI buttonYesText = GameObjectFinder.FindByName<TextMeshProUGUI>("TextButtonYes", buttonYes.transform);
-                buttonYesText.text = GlobalFields.ClientGame.LocalizationManagerProvider.GetValue(L.UI.Button.Yes);
+                buttonYesText.text = G.Game.LocalizationManager.GetValue(L.UI.Button.Yes);
                 buttonYes.onClick.RemoveAllListeners();
                 buttonYes.onClick.AddListener(() =>
                 {
@@ -214,7 +214,7 @@ namespace Assets.GameData.Scripts
                 gameObjectButtonNo.SetActive(true);
                 UnityEngine.UI.Button buttonNo = gameObjectButtonNo.GetComponent<UnityEngine.UI.Button>();
                 TextMeshProUGUI buttonNoText = GameObjectFinder.FindByName<TextMeshProUGUI>("TextButtonNo", buttonNo.transform);
-                buttonNoText.text = GlobalFields.ClientGame.LocalizationManagerProvider.GetValue(L.UI.Button.No);
+                buttonNoText.text = G.Game.LocalizationManager.GetValue(L.UI.Button.No);
                 buttonNo.onClick.RemoveAllListeners();
                 buttonNo.onClick.AddListener(() =>
                 {

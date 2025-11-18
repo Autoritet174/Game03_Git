@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
+using G = Assets.GameData.Scripts.G;
 
 /// <summary>
 /// Управляет сворачиванием/разворачиванием группы UI-элементов (ячеек)
@@ -40,11 +40,12 @@ public class GroupDivider : MonoBehaviour
         }
 
         // Сортировка
-        listHeroes.Sort((a, b) => {
+        listHeroes.Sort((a, b) =>
+        {
             var a_hero_id = Guid.Parse(a["hero_id"].ToString());
             var b_hero_id = Guid.Parse(b["hero_id"].ToString());
-            HeroBaseEntity a_hero = GlobalFields.ClientGame.GlobalFunctionsProvider.GetHeroById(a_hero_id);
-            HeroBaseEntity b_hero = GlobalFields.ClientGame.GlobalFunctionsProvider.GetHeroById(b_hero_id);
+            HeroBaseEntity a_hero = G.Game.GlobalFunctions.GetHeroById(a_hero_id);
+            HeroBaseEntity b_hero = G.Game.GlobalFunctions.GetHeroById(b_hero_id);
             int sort1 = b_hero.Rarity.CompareTo(a_hero.Rarity);
             if (sort1 != 0)
             {
@@ -79,7 +80,7 @@ public class GroupDivider : MonoBehaviour
             {
                 var hero_id = Guid.Parse(j["hero_id"].ToString());
 
-                General.GameEntities.HeroBaseEntity hero = GlobalFields.ClientGame.GlobalFunctionsProvider.GetHeroById(hero_id);
+                General.GameEntities.HeroBaseEntity hero = G.Game.GlobalFunctions.GetHeroById(hero_id);
                 Transform childText = _prefabIconHero.transform.Find("TextHero");
                 if (childText != null && childText.TryGetComponent(out TextMeshProUGUI textMeshPro))
                 {

@@ -1,9 +1,11 @@
 using Assets.GameData.Scripts;
+using General;
 using Newtonsoft.Json;
 using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using G = Assets.GameData.Scripts.G;
 using L = General.LocalizationKeys;
 
 public class Button_Auth : MonoBehaviour
@@ -25,7 +27,7 @@ public class Button_Auth : MonoBehaviour
                 GameMessage.ShowLocale(L.Error.User.EmailEmpty, true);
                 return;
             }
-            if (!General.GF.IsEmail(emailString))
+            if (!emailString.StringIsEmail())
             {
                 GameMessage.ShowLocale(L.Error.User.NotEmail, true);
                 return;
@@ -64,7 +66,7 @@ public class Button_Auth : MonoBehaviour
 
             string json = JsonConvert.SerializeObject(payload);
 
-            Game03Client.JwtToken.JwtTokenResult jwtTokenResult = await GlobalFields.ClientGame.JwtTokenProvider.GetTokenAsync(json);
+            Game03Client.JwtToken.JwtTokenResult jwtTokenResult = await G.Game.JwtToken.GetTokenAsync(json);
             if (jwtTokenResult == null)
             {
                 GameMessage.ShowLocale(L.Error.Server.InvalidResponse, true);
@@ -72,7 +74,7 @@ public class Button_Auth : MonoBehaviour
             }
             if (jwtTokenResult.Result == null)
             {
-                GameMessage.ShowLocale(GlobalFields.ClientGame.LocalizationManagerProvider.GetTextByJObject(jwtTokenResult.JObject), true);
+                GameMessage.ShowLocale(G.Game.LocalizationManager.GetTextByJObject(jwtTokenResult.JObject), true);
                 return;
             }
 
@@ -83,7 +85,7 @@ public class Button_Auth : MonoBehaviour
             GameMessage.ShowLocale(L.Info.OpeningWebSocket, false);
 
             // Открываем веб сокет
-            Game03Client.WebSocketClient.IWebSocketClientProvider webSocketClient = GlobalFields.ClientGame.WebSocketClientProvider;
+            Game03Client.WebSocketClient.IWebSocketClientProvider webSocketClient = G.Game.WebSocketClient;
             await webSocketClient.ConnectAsync();
             if (!webSocketClient.Connected)
             {
@@ -92,8 +94,8 @@ public class Button_Auth : MonoBehaviour
             }
 
             GameMessage.ShowLocale(L.Info.LoadingData, false);
-            await GlobalFields.ClientGame.GlobalFunctionsProvider.LoadListAllHeroes();
-
+            await G.Game.GlobalFunctions.LoadListAllHeroes();
+            
 
             UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
         }

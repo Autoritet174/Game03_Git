@@ -128,7 +128,7 @@ public class CollectionScene_InitializatorUpdater : MonoBehaviour
             OnResizeWindow();
 
             // Получить коллекцию героев игрока
-            Game03Client.HttpRequester.HttpRequesterResult httpRequesterProviderResult = await GlobalFields.ClientGame.HttpRequesterProvider.GetResponceAsync(General.Url.Inventory.Heroes);
+            Game03Client.HttpRequester.HttpRequesterResult httpRequesterProviderResult = await G.Game.HttpRequester.GetResponceAsync(General.Url.Inventory.Heroes);
             if (httpRequesterProviderResult == null)
             {
                 Debug.Log("httpRequesterProviderResult == null");
@@ -192,11 +192,11 @@ public class CollectionScene_InitializatorUpdater : MonoBehaviour
             List<Task> tasks = new();
             foreach (KeyValuePair<string, List<JToken>> keyValue in heroesByGroups)
             {
-                GameObject groupDivider_GameObject = Instantiate(await Addressables.LoadAssetAsync<GameObject>($"GroupDividerPrefab").Task);
-                groupDivider_GameObject.transform.SetParent(transformCollectionContent, false);
+                GameObject groupDividerGameObject = Instantiate(await Addressables.LoadAssetAsync<GameObject>($"GroupDividerPrefab").Task);
+                groupDividerGameObject.transform.SetParent(transformCollectionContent, false);
                 string group_name = keyValue.Key == guidNoGroupStr ? null : keyValue.Key;
                 GroupDivider groupDivider_NoGroup = new(group_name);
-                Task task = groupDivider_NoGroup.Init(groupDivider_GameObject, keyValue.Value);
+                Task task = groupDivider_NoGroup.Init(groupDividerGameObject, keyValue.Value);
                 tasks.Add(task);
             }
             await Task.WhenAll(tasks);
