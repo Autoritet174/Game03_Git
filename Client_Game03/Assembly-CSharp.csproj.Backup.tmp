@@ -55,6 +55,7 @@
     <Compile Include="Assets\GameData\Scripts\ButtonCloseHelper.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Init_Auth.cs" />
     <Compile Include="Assets\GameData\Scripts\ButtonClose_Click_MoveToMainMenu.cs" />
+    <Compile Include="Assets\GameData\Scripts\InputManager.cs" />
     <Compile Include="Assets\GameData\Scripts\LoggerException.cs" />
     <Compile Include="Assets\GameData\Scripts\GameExitHandler.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Button_Reg.cs" />
@@ -66,7 +67,6 @@
     <Compile Include="Assets\GameData\Scripts\ResetRectOffsets.cs" />
     <Compile Include="Assets\GameData\Scripts\GameMessage.cs" />
     <Compile Include="Assets\GameData\Scripts\InitializatorStartScene.cs" />
-    <Compile Include="Assets\GameData\Scripts\InputManager.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\GroupDivider.cs" />
     <Compile Include="Assets\GameData\Scripts\ImageHeroHandler.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Button_Close.cs" />
@@ -1478,8 +1478,6 @@
       <HintPath>Library\ScriptAssemblies\UniTask.dll</HintPath>
       <Private>False</Private>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
   </ItemGroup>
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
   <ItemGroup>

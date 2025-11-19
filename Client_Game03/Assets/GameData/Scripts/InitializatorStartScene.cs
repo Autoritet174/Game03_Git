@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
 
@@ -17,11 +17,11 @@ namespace Assets.GameData.Scripts
             // Если игра запускается (перед входом в Play Mode)
             if (state == PlayModeStateChange.ExitingEditMode)
             {
-                const string StartScenePath = @"Assets\GameData\Scenes\RegAuth\RegAuth.unity";
+                const string StartScenePath = "Assets/GameData/Scenes/RegAuth/Auth.unity";
 
                 string path = EditorSceneManager.GetActiveScene().path;
                 // Проверяем, не загружена ли уже нужная сцена
-                if (path != StartScenePath && path != "Assets/GameData/Scenes/TEST_01/Test_01.unity")
+                if (path != StartScenePath && path.StartsWith("Assets/GameData/Scenes/TEST_"))
                 {
                     // Сохраняем текущую сцену (если нужно)
                     if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())

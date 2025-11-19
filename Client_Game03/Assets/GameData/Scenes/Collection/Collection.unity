@@ -1263,7 +1263,7 @@ GameObject:
   - component: {fileID: 536585055}
   - component: {fileID: 536585056}
   m_Layer: 0
-  m_Name: Collection script initializator
+  m_Name: _Initializator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

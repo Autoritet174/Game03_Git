@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/GameData/Scenes/RegAuth/RegAuth.unity
+    path: Assets/GameData/Scenes/Auth/Auth.unity
     guid: 064e08e166330e94eaeabfad1989419e
   - enabled: 1
     path: Assets/GameData/Scenes/MainMenu/MainMenu.unity

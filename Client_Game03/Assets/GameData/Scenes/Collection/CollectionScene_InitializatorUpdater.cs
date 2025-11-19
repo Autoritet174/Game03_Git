@@ -15,12 +15,11 @@ using L = General.LocalizationKeys;
 public class CollectionScene_InitializatorUpdater : MonoBehaviour
 {
 
-    public bool Initialized { get; private set; }
+    //public bool Initialized { get; private set; }
     private const int ColorOffButtonRGBValue = 100;
     private static Color ColorOffButton = new(ColorOffButtonRGBValue / 255f, ColorOffButtonRGBValue / 255f, ColorOffButtonRGBValue / 255f);
-    private bool initialized = false;
-    private float _lastHeight;
-    private float _lastWidth;
+    private bool _initialized = false;
+    private float _width, _height;
 
     private class TabButton
     {
@@ -126,7 +125,7 @@ public class CollectionScene_InitializatorUpdater : MonoBehaviour
             transformCollectionContent = GameObjectFinder.FindByName("Content (id=ddmjr9vy)").transform;
 
 
-            initialized = true;
+            _initialized = true;
             OnResizeWindow();
 
             CancellationTokenSource cancellationTokenSource = new(TimeSpan.FromSeconds(30));
@@ -213,7 +212,7 @@ public class CollectionScene_InitializatorUpdater : MonoBehaviour
 
     private void Update()
     {
-        if (initialized && (!Mathf.Approximately(Screen.height, _lastHeight) || !Mathf.Approximately(Screen.width, _lastWidth)))
+        if (_initialized && (!Mathf.Approximately(Screen.height, _height) || !Mathf.Approximately(Screen.width, _width)))
         {
             OnResizeWindow();
         }
@@ -249,23 +248,22 @@ public class CollectionScene_InitializatorUpdater : MonoBehaviour
 
     public void OnResizeWindow()
     {
-        _lastHeight = Screen.height;
-        _lastWidth = Screen.width;
-        float fontSizeCoef = _lastHeight / 1080f;
-        float fontSize = 30f * fontSizeCoef;
+        _height = Screen.height;
+        _width = Screen.width;
+        float coefHeight = _height / 1080f;
+        float fontSize = 30f * coefHeight;
 
         //buttonHeroesTmp.fontSize = 32f * _lastHeight / 1080;
         //buttonItemsTmp.fontSize = 32f * _lastHeight / 1080;
 
         // Изображение заднего фона
-        float coefScreen = _lastWidth / _lastHeight;// 10000/1000 = 10 // 1920 / 1080 = 1,7778
-        imageBackground.rectTransform.sizeDelta = coefScreen > imageBackgroundCoef ? new Vector2(_lastWidth, _lastWidth / imageBackgroundCoef) : new Vector2(_lastHeight * imageBackgroundCoef, _lastHeight);
+        float coefScreen = _width / _height;// 10000/1000 = 10 // 1920 / 1080 = 1,7778
+        imageBackground.rectTransform.sizeDelta = coefScreen > imageBackgroundCoef ? new Vector2(_width, _width / imageBackgroundCoef) : new Vector2(_height * imageBackgroundCoef, _height);
 
 
         // Верхняя панель
         float topPanelHeightPercent = 0.08f;
-        float coefHeight = _lastHeight / 1080f;
-        float panelTopHeight = topPanelHeightPercent * _lastHeight;
+        float panelTopHeight = topPanelHeightPercent * _height;
         Vector2 vector008PercentOfHeight = new(panelTopHeight, panelTopHeight);
 
 
@@ -290,7 +288,7 @@ public class CollectionScene_InitializatorUpdater : MonoBehaviour
         // Выбранный герой. Лабел
         SelectedHeroTop_TextMeshProUGUI.rectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth - panelTopHeight, panelTopHeight);
         SelectedHeroTop_TextMeshProUGUI.rectTransform.anchoredPosition = new Vector2(panelTopHeight, 0);
-        SelectedHeroTop_TextMeshProUGUI.fontSize = 40f * fontSizeCoef;
+        SelectedHeroTop_TextMeshProUGUI.fontSize = 40f * coefHeight;
 
 
         // Внутренние кнопки

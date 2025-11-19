@@ -4,11 +4,6 @@
         <name>Game03Client</name>
     </assembly>
     <members>
-        <member name="M:Game03Client.Collection.CollectionProvider.LoadAllCollectionFromServer">
-            <summary>
-            
-            </summary>
-        </member>
         <member name="T:Game03Client.Game03">
             <summary>
             Класс содержащий логику и веб взаимодействие игрового клиента.
@@ -230,6 +225,11 @@
             </summary>
             <param name="jObject">Объект JSON, содержащий ключ ошибки ("keyError") и дополнительные данные.</param>
             <returns>Локализованная строка ошибки с подставленными данными, или пустая строка, если <paramref name="jObject"/> равен null.</returns>
+        </member>
+        <member name="M:Game03Client.PlayerCollection.PlayerCollectionProvider.LoadAllCollectionFromServer">
+            <summary>
+            
+            </summary>
         </member>
         <member name="M:Game03Client.WebSocketClient.WebSocketClientProvider.ReceiveMessagesAsync">
             <summary>

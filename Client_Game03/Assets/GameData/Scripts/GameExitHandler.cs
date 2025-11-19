@@ -5,8 +5,9 @@ using UnityEngine;
 using L = General.LocalizationKeys;
 
 public static class GameExitHandler {
-    public static async void ExitGame() {
-        bool yesNo = await GameMessage.ShowLocaleYesNo(L.UI.Label.ExitTheGame);
+    public static async void ExitGame()
+    {
+        bool yesNo = await GameMessage.ShowLocaleYesNo(L.UI.Label.ExitGame);
         if (!yesNo) {
             return;
         }

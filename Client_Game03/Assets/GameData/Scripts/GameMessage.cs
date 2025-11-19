@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using General;
 using System;
 using System.Threading.Tasks;
 using TMPro;
@@ -17,25 +18,6 @@ namespace Assets.GameData.Scripts
         private static GameObject _currentInstance;
 
         private static bool resultYesNo = false;
-        private static bool _buttonActiveClose = false;
-
-        //private static GameMessage _instance;
-
-        //public static GameMessage Instance
-        //{
-        //    get
-        //    {
-        //        if (_instance == null)
-        //        {
-        //            GameObject go = new("GameMessageManager");
-        //            _instance = go.AddComponent<GameMessage>();
-        //            DontDestroyOnLoad(go); // Чтобы не уничтожался при загрузке новой сцены
-        //        }
-        //        return _instance;
-        //    }
-        //}
-
-
 
         /// <summary>
         /// Выводит игровое сообщение и ожидает закрытие окна.
@@ -43,11 +25,6 @@ namespace Assets.GameData.Scripts
         public static async Task ShowAndWaitCloseAsync(string message)
         {
             Show(message, true);
-            //while (_opened)
-            //{
-            //    await Task.Delay(10);
-            //}
-
             await UniTask.WaitUntil(() => !_opened);
         }
 
@@ -103,7 +80,7 @@ namespace Assets.GameData.Scripts
         /// </summary>
         public static void Show(string message, bool buttonActiveClose, bool yesNoDialog = false)
         {
-            if (string.IsNullOrEmpty(message))
+            if (message.IsEmpty())
             {
                 Debug.Log("Сообщение не может быть пустым.");
                 message = string.Empty;
@@ -118,36 +95,42 @@ namespace Assets.GameData.Scripts
                 return;
             }
 
+            if (!Application.isPlaying)
+            {
+                return;
+            }
             // Загружаем префаб через Addressables
             AsyncOperationHandle<GameObject> loadHandle = Addressables.LoadAssetAsync<GameObject>(PREFAB_ADDRESS);
-            loadHandle.Completed += handle =>
+            GameObject go = loadHandle.WaitForCompletion();
+            if (loadHandle.Status == AsyncOperationStatus.Succeeded)
             {
-                if (handle.Status == AsyncOperationStatus.Succeeded)
+                if (!Application.isPlaying)
                 {
-                    _currentInstance = UnityEngine.Object.Instantiate(handle.Result);
-                    _currentInstance.name = OBJECT_NAME;
-                    _opened = true;
-
-                    if (!_currentInstance.TryGetComponent(out Canvas canvas))
-                    {
-                        UnityEngine.Object.Destroy(_currentInstance);
-                        throw new Exception("Canvas component not found in the prefab.");
-                    }
-
-                    // Находим камеру и настраиваем Canvas
-                    if (!GameObject.FindWithTag("MainCamera").TryGetComponent(out Camera mainCamera))
-                    {
-                        throw new Exception("MainCamera not found in the scene.");
-                    }
-                    canvas.worldCamera = mainCamera;
-
-                    UpdateMessage(message, buttonActiveClose, yesNoDialog: yesNoDialog);
+                    return;
                 }
-                else
+                _currentInstance = UnityEngine.Object.Instantiate(go);
+                _currentInstance.name = OBJECT_NAME;
+                _opened = true;
+
+                if (!_currentInstance.TryGetComponent(out Canvas canvas))
                 {
-                    Debug.LogError($"Failed to load prefab: {PREFAB_ADDRESS}");
+                    UnityEngine.Object.Destroy(_currentInstance);
+                    throw new Exception("Canvas component not found in the prefab.");
                 }
-            };
+
+                // Находим камеру и настраиваем Canvas
+                if (!GameObject.FindWithTag("MainCamera").TryGetComponent(out Camera mainCamera))
+                {
+                    throw new Exception("MainCamera not found in the scene.");
+                }
+                canvas.worldCamera = mainCamera;
+
+                UpdateMessage(message, buttonActiveClose, yesNoDialog: yesNoDialog);
+            }
+            else
+            {
+                Debug.LogError($"Failed to load prefab: {PREFAB_ADDRESS}");
+            }
         }
 
         /// <summary>
@@ -164,9 +147,7 @@ namespace Assets.GameData.Scripts
                 throw new Exception("TextMeshProUGUI component not found.");
             }
 
-            _buttonActiveClose = buttonActiveClose;
-
-            if (!buttonActiveClose)
+            if (!buttonActiveClose && !yesNoDialog)
             {
                 message += "...";
             }
@@ -189,12 +170,9 @@ namespace Assets.GameData.Scripts
                 buttonOkText.text = G.Game.LocalizationManager.GetValue(L.UI.Button.Ok);
 
                 buttonOk.onClick.RemoveAllListeners();
-                buttonOk.onClick.AddListener(() =>
-                {
-                    UnityEngine.Object.Destroy(_currentInstance);
-                    _currentInstance = null;
-                    _opened = false;
-                });
+                buttonOk.onClick.AddListener(PressOk);
+
+                InputManager.Register(KeyCode.Escape, PressOk, 1000, KeyCode.Return, KeyCode.KeypadEnter);
             }
             else if (yesNoDialog)
             {
@@ -205,25 +183,17 @@ namespace Assets.GameData.Scripts
                 TextMeshProUGUI buttonYesText = GameObjectFinder.FindByName<TextMeshProUGUI>("TextButtonYes", buttonYes.transform);
                 buttonYesText.text = G.Game.LocalizationManager.GetValue(L.UI.Button.Yes);
                 buttonYes.onClick.RemoveAllListeners();
-                buttonYes.onClick.AddListener(() =>
-                {
-                    resultYesNo = true;
-                    UnityEngine.Object.Destroy(_currentInstance);
-                    _currentInstance = null;
-                    _opened = false;
-                });
+                buttonYes.onClick.AddListener(PressYes);
 
                 gameObjectButtonNo.SetActive(true);
                 UnityEngine.UI.Button buttonNo = gameObjectButtonNo.GetComponent<UnityEngine.UI.Button>();
                 TextMeshProUGUI buttonNoText = GameObjectFinder.FindByName<TextMeshProUGUI>("TextButtonNo", buttonNo.transform);
                 buttonNoText.text = G.Game.LocalizationManager.GetValue(L.UI.Button.No);
                 buttonNo.onClick.RemoveAllListeners();
-                buttonNo.onClick.AddListener(() =>
-                {
-                    UnityEngine.Object.Destroy(_currentInstance);
-                    _currentInstance = null;
-                    _opened = false;
-                });
+                buttonNo.onClick.AddListener(PressNo);
+
+                InputManager.Register(KeyCode.Escape, PressNo, 1000);
+                InputManager.Register(KeyCode.Return, PressYes, 1000, KeyCode.KeypadEnter);
             }
             else
             {
@@ -233,13 +203,35 @@ namespace Assets.GameData.Scripts
             }
         }
 
-        public static void Close() {
+        private static void PressYes()
+        {
+            InputManager.Unregister(PressYes);
+            InputManager.Unregister(PressNo);
+            resultYesNo = true;
+            Close();
+        }
+        private static void PressNo()
+        {
+            InputManager.Unregister(PressYes);
+            InputManager.Unregister(PressNo);
+            resultYesNo = false;
+            Close();
+        }
+        private static void PressOk()
+        {
+            InputManager.Unregister(PressOk);
+            Close();
+        }
+
+        public static void Close()
+        {
             UnityEngine.Object.Destroy(_currentInstance);
             _currentInstance = null;
             _opened = false;
         }
 
-        public static void CloseIfNotButton() {
+        public static void CloseIfNotButton()
+        {
             if (!_currentInstance)
             {
                 UnityEngine.Object.Destroy(_currentInstance);
