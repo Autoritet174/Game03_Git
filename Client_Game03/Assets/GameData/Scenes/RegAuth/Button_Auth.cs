@@ -2,6 +2,7 @@ using Assets.GameData.Scripts;
 using General;
 using Newtonsoft.Json;
 using System;
+using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +14,7 @@ public class Button_Auth : MonoBehaviour
 
     public async void ButtonLogin_OnClick()
     {
+        CancellationTokenSource cancellationTokenSource = new(TimeSpan.FromSeconds(30));
         Button buttonLogin = null;
         try
         {
@@ -27,7 +29,7 @@ public class Button_Auth : MonoBehaviour
                 GameMessage.ShowLocale(L.Error.User.EmailEmpty, true);
                 return;
             }
-            if (!emailString.StringIsEmail())
+            if (!emailString.IsEmail())
             {
                 GameMessage.ShowLocale(L.Error.User.NotEmail, true);
                 return;
@@ -66,22 +68,12 @@ public class Button_Auth : MonoBehaviour
 
             string json = JsonConvert.SerializeObject(payload);
 
-            Game03Client.JwtToken.JwtTokenResult jwtTokenResult = await G.Game.JwtToken.GetTokenAsync(json);
-            if (jwtTokenResult == null)
-            {
-                GameMessage.ShowLocale(L.Error.Server.InvalidResponse, true);
-                return;
-            }
-            if (jwtTokenResult.Result == null)
-            {
-                GameMessage.ShowLocale(G.Game.LocalizationManager.GetTextByJObject(jwtTokenResult.JObject), true);
+            string token = await G.Game.JwtToken.GetTokenAsync(json, cancellationTokenSource.Token);
+            if (token.IsEmpty()) {
+                GameMessage.Show(L.Error.Server.InvalidResponse, true);
                 return;
             }
 
-            //await GameMessage.ShowAndWaitCloseAsync($"Success! Token = {GV.Jwt_token}");
-
-            //GameMessage.ShowLocale(L.Info.AuthenticationSuccess, false);
-            //await Task.Delay(100);
             GameMessage.ShowLocale(L.Info.OpeningWebSocket, false);
 
             // Открываем веб сокет
@@ -94,7 +86,8 @@ public class Button_Auth : MonoBehaviour
             }
 
             GameMessage.ShowLocale(L.Info.LoadingData, false);
-            await G.Game.GlobalFunctions.LoadListAllHeroes();
+            cancellationTokenSource = new(TimeSpan.FromSeconds(30));
+            await G.Game.GlobalFunctions.LoadListAllHeroesAsync(cancellationTokenSource.Token);
             
 
             UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
@@ -109,6 +102,7 @@ public class Button_Auth : MonoBehaviour
             {
                 buttonLogin.interactable = true;
             }
+            GameMessage.CloseIfNotButton();
         }
     }
 

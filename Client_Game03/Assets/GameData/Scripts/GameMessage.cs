@@ -17,6 +17,7 @@ namespace Assets.GameData.Scripts
         private static GameObject _currentInstance;
 
         private static bool resultYesNo = false;
+        private static bool _buttonActiveClose = false;
 
         //private static GameMessage _instance;
 
@@ -163,6 +164,7 @@ namespace Assets.GameData.Scripts
                 throw new Exception("TextMeshProUGUI component not found.");
             }
 
+            _buttonActiveClose = buttonActiveClose;
 
             if (!buttonActiveClose)
             {
@@ -235,6 +237,15 @@ namespace Assets.GameData.Scripts
             UnityEngine.Object.Destroy(_currentInstance);
             _currentInstance = null;
             _opened = false;
+        }
+
+        public static void CloseIfNotButton() {
+            if (!_currentInstance)
+            {
+                UnityEngine.Object.Destroy(_currentInstance);
+                _currentInstance = null;
+                _opened = false;
+            }
         }
     }
 }

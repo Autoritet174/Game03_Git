@@ -2,6 +2,7 @@ using Assets.GameData.Scripts;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -9,6 +10,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
+using L = General.LocalizationKeys;
 
 public class CollectionScene_InitializatorUpdater : MonoBehaviour
 {
@@ -127,21 +129,22 @@ public class CollectionScene_InitializatorUpdater : MonoBehaviour
             initialized = true;
             OnResizeWindow();
 
+            CancellationTokenSource cancellationTokenSource = new(TimeSpan.FromSeconds(30));
             // Получить коллекцию героев игрока
-            Game03Client.HttpRequester.HttpRequesterResult httpRequesterProviderResult = await G.Game.HttpRequester.GetResponceAsync(General.Url.Inventory.Heroes);
-            if (httpRequesterProviderResult == null)
-            {
-                Debug.Log("httpRequesterProviderResult == null");
-                return;
-            }
-            JObject jObject = httpRequesterProviderResult.JObject;
+            JObject jObject = await G.Game.HttpRequester.GetJObjectAsync(General.Url.Inventory.Heroes, cancellationTokenSource.Token);
             if (jObject == null)
             {
-                Debug.Log("jObject == null");
+                GameMessage.Show(L.Error.Server.InvalidResponse, true);
                 return;
             }
 
             JToken result = jObject["result"];
+            if (result == null)
+            {
+                Debug.Log("result == null");
+                GameMessage.Show(L.Error.Server.InvalidResponse, true);
+                return;
+            }
 
             // Получить уникальные имена групп
             List<string> group_name_List = new();

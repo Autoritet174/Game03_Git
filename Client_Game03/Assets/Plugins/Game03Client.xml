@@ -116,7 +116,7 @@
             Все языки доступные в игре.
             </summary>
         </member>
-        <member name="M:Game03Client.GlobalFunctions.IGlobalFunctionsProvider.LoadListAllHeroes">
+        <member name="M:Game03Client.GlobalFunctions.IGlobalFunctionsProvider.LoadListAllHeroesAsync(System.Threading.CancellationToken)">
             <summary>
             Загрузить список всех героев.
             </summary>
@@ -135,53 +135,12 @@
             <param name="guid"></param>
             <returns></returns>
         </member>
-        <member name="M:Game03Client.HttpRequester.HttpRequesterProvider.GetResponceAsync(System.String,System.String,System.Boolean)">
-            <summary>
-            Возвращает <see cref="T:Game03Client.HttpRequester.HttpRequesterResult"/> ответ. Если HttpRequesterResult <see cref="P:Game03Client.HttpRequester.HttpRequesterResult.Success"/> true, то  <see cref="P:Game03Client.HttpRequester.HttpRequesterResult.JObject"/> был корректно извлечен из ответа от сервера.
-            </summary>
-            <param name="url"></param>
-            <param name="jsonBody"></param>
-            <param name="useJwtToken"></param>
-            <returns></returns>
-            <exception cref="T:System.ArgumentNullException"></exception>
-        </member>
         <member name="M:Game03Client.HttpRequester.HttpRequesterProvider.GetHeadersAsString(System.Net.Http.HttpResponseMessage)">
             <summary>
             Метод для преобразования заголовков в строку
             </summary>
             <param name="response"></param>
             <returns></returns>
-        </member>
-        <member name="T:Game03Client.HttpRequester.HttpRequesterResult">
-            <summary>
-            Возвращает ответ от HttpRequester. 
-            </summary>
-        </member>
-        <member name="P:Game03Client.HttpRequester.HttpRequesterResult.Success">
-            <summary>
-            Флаг успешно полученного ответа от сервера.
-            </summary>
-        </member>
-        <member name="P:Game03Client.HttpRequester.HttpRequesterResult.JObject">
-            <summary>
-            Результат полученный от сервера, null если результат не получен.
-            </summary>
-        </member>
-        <member name="P:Game03Client.HttpRequester.HttpRequesterResult.KeyError">
-            <summary>
-            Ключ ошибки. Сопоставим с кодами локализации в ini файле.
-            </summary>
-        </member>
-        <member name="P:Game03Client.HttpRequester.HttpRequesterResult.Ex">
-            <summary>
-            Програмная ошибка.
-            </summary>
-        </member>
-        <member name="M:Game03Client.HttpRequester.HttpRequesterResult.#ctor(System.Boolean,Newtonsoft.Json.Linq.JObject,System.String,System.Exception)">
-            <param name="success"></param>
-            <param name="jObject"></param>
-            <param name="keyError"></param>
-            <param name="ex"></param>
         </member>
         <member name="M:Game03Client.InternetChecker.InternetCheckerProvider.CheckInternetConnectionAsync">
             <summary>
@@ -192,25 +151,6 @@
             "2606:4700::64" - IPv6 адрес Cloudflare DNS.
             </remarks>
             <returns>true, если соединение успешно установлено, иначе false.</returns>
-        </member>
-        <member name="T:Game03Client.JwtToken.JwtTokenResult">
-            <summary>
-            Результат при получении токена.
-            </summary>
-        </member>
-        <member name="P:Game03Client.JwtToken.JwtTokenResult.Result">
-            <summary>
-            Jwt токен. null если не получилось извлечь токен.
-            </summary>
-        </member>
-        <member name="P:Game03Client.JwtToken.JwtTokenResult.JObject">
-            <summary>
-            Ключ ошибки если не удалось извлечь токен.
-            </summary>
-        </member>
-        <member name="M:Game03Client.JwtToken.JwtTokenResult.#ctor(System.String,Newtonsoft.Json.Linq.JObject)">
-            <param name="result"></param>
-            <param name="jObject"></param>
         </member>
         <member name="T:Game03Client.LocalizationManager.ILocalizationManagerProvider">
             <summary>
