@@ -8,7 +8,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
-using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 using L = General.LocalizationKeys;
 
@@ -16,8 +15,8 @@ public class CollectionScene_InitializatorUpdater : MonoBehaviour
 {
 
     //public bool Initialized { get; private set; }
-    private const int ColorOffButtonRGBValue = 100;
-    private static Color ColorOffButton = new(ColorOffButtonRGBValue / 255f, ColorOffButtonRGBValue / 255f, ColorOffButtonRGBValue / 255f);
+    private const int COLOR_OFF_BUTTON_RGB_VALUE = 100;
+    private static Color ColorOffButton = new(COLOR_OFF_BUTTON_RGB_VALUE / 255f, COLOR_OFF_BUTTON_RGB_VALUE / 255f, COLOR_OFF_BUTTON_RGB_VALUE / 255f);
     private bool _initialized = false;
     private float _width, _height;
 
@@ -203,7 +202,8 @@ public class CollectionScene_InitializatorUpdater : MonoBehaviour
             }
             await Task.WhenAll(tasks);
         }
-        finally {
+        finally
+        {
             GameMessage.Close();
         }
 

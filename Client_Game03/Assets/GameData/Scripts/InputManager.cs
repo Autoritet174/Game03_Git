@@ -55,9 +55,12 @@ namespace Assets.GameData.Scripts
         /// <param name="key3">Дополнительная клавиша</param>
         public static void Register(KeyCode key1, Handler handler, int priority = 0, KeyCode key2 = KeyCode.None, KeyCode key3 = KeyCode.None)
         {
-            if (isApplicationQuitting || handler == null) return;
+            if (isApplicationQuitting || handler == null)
+            {
+                return;
+            }
 
-            var instance = Instance;
+            InputManager instance = Instance;
             if (instance != null)
             {
                 var wrapper = new DelegateHandler(key1, key2, key3, handler, priority);
@@ -69,12 +72,15 @@ namespace Assets.GameData.Scripts
         // Дерегистрация обработчика через делегат
         public static void Unregister(Handler handler)
         {
-            if (isApplicationQuitting || handler == null) return;
+            if (isApplicationQuitting || handler == null)
+            {
+                return;
+            }
 
-            var instance = Instance;
+            InputManager instance = Instance;
             if (instance != null)
             {
-                instance.handlers.RemoveAll(h => h.Handler == handler);
+                _ = instance.handlers.RemoveAll(h => h.Handler == handler);
             }
         }
 
@@ -115,9 +121,14 @@ namespace Assets.GameData.Scripts
             for (int i = handlers.Count - 1; i > -1; i--)
             {
                 DelegateHandler handler = handlers[i];
+                if (GameMessage.Exists && handler.Priority < 1000)
+                {
+                    continue;
+                }
+
                 if (Input.GetKeyDown(handler.Key1)
-                    || (handler.Key2 != KeyCode.None && Input.GetKeyDown(handler.Key2))
-                    || (handler.Key3 != KeyCode.None && Input.GetKeyDown(handler.Key3)))
+                || (handler.Key2 != KeyCode.None && Input.GetKeyDown(handler.Key2))
+                || (handler.Key3 != KeyCode.None && Input.GetKeyDown(handler.Key3)))
                 {
                     handler.OnKeyPressed();
                     break;

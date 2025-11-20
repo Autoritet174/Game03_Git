@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_InBattle.cs" />
+    <Compile Include="Assets\GameData\Scripts\CancelToken.cs" />
     <Compile Include="Assets\GameData\Scenes\AllHeroes\AllHeroesConsts.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_AllHeroes.cs" />
     <Compile Include="Assets\GameData\Prefabs\L1\Buttons\Button_01_Init.cs" />

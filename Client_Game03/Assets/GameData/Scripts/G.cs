@@ -1,4 +1,5 @@
 using Game03Client;
+using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -12,13 +13,28 @@ namespace Assets.GameData.Scripts
     /// </summary>
     public static class G
     {
+        /// <summary>
+        /// Флаг, указывающий на то, что приложение находится в процессе завершения работы.
+        /// Должен быть установлен извне.
+        /// </summary>
+        public static bool IsApplicationQuitting { get; private set; } = false;
+        static G()
+        {
+            // Мониторим состояние через AppDomain
+            AppDomain.CurrentDomain.DomainUnload += (s, e) => IsApplicationQuitting = true;
+        }
+        private class AppStateMonitor : MonoBehaviour
+        {
+            private void OnApplicationQuit()
+            {
+                IsApplicationQuitting = true;
+            }
+        }
+
         public static Game03 Game { get; private set; }
 
-        /// <summary>
-        /// Процедура выполняется сразу после компиляции.
-        /// </summary>
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        private static void Init()
+        private static void Initialize_BeforeSceneLoad()
         {
             LoadCursorTexture();
 
@@ -33,6 +49,13 @@ namespace Assets.GameData.Scripts
 
             Game = Game03.Create(Path.Combine(UnityEngine.Application.dataPath, @"GameData\Config\Main.ini"), capsule, lang);
             Game.Logger.OnLog += Game_OnLog;
+        }
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        private static void Initialize_AfterSceneLoad()
+        {
+            AppStateMonitor monitor = new GameObject(nameof(AppStateMonitor)).AddComponent<AppStateMonitor>();
+            GameObject.DontDestroyOnLoad(monitor.gameObject);
         }
 
         private static void Game_OnLog(object message)
@@ -52,6 +75,7 @@ namespace Assets.GameData.Scripts
 
             Cursor.SetCursor(operationHandle.Result, Vector2.zero, CursorMode.Auto);
         }
+
     }
 
 }

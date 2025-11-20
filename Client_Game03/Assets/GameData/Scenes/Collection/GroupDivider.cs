@@ -210,6 +210,9 @@ public class GroupDivider : MonoBehaviour
     /// </summary>
     private void OnDestroy()
     {
+        if (!destroying) {
+            // позже удалить
+        }
         destroying = true;
         //cancellationTokenSource?.Cancel();
         //cancellationTokenSource?.Dispose();

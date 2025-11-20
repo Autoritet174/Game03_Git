@@ -17,6 +17,8 @@ namespace Assets.GameData.Scripts
         private static bool _opened = false;
         private static GameObject _currentInstance;
 
+        public static bool Exists => _currentInstance != null;
+
         private static bool resultYesNo = false;
 
         /// <summary>

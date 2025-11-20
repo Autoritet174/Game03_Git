@@ -17,7 +17,6 @@ namespace Assets.GameData.Scenes.Auth
 
         public async void ButtonLogin_OnClick()
         {
-            CancellationTokenSource cancellationTokenSource = new(TimeSpan.FromSeconds(30));
             Button buttonLogin = null;
             try
             {
@@ -74,7 +73,7 @@ namespace Assets.GameData.Scenes.Auth
 
                 string json = JsonConvert.SerializeObject(payload);
 
-                string token = await G.Game.JwtToken.GetTokenAsync(json, cancellationTokenSource.Token);
+                string token = await G.Game.JwtToken.GetTokenAsync(json, CancelToken.Create("G.Game.JwtToken.GetTokenAsync"));
                 if (token.IsEmpty())
                 {
                     GameMessage.Show(L.Error.Server.InvalidResponse, true);
@@ -85,8 +84,7 @@ namespace Assets.GameData.Scenes.Auth
 
 
                 // Открываем веб сокет
-                cancellationTokenSource = new(TimeSpan.FromSeconds(30));
-                await G.Game.WebSocketClient.ConnectAsync(cancellationTokenSource.Token);
+                await G.Game.WebSocketClient.ConnectAsync(CancelToken.Create("G.Game.WebSocketClient.ConnectAsync"));
                 if (!G.Game.WebSocketClient.Connected)
                 {
                     GameMessage.ShowLocale(L.Error.Server.OpeningWebSocketFailed, true);
@@ -95,8 +93,7 @@ namespace Assets.GameData.Scenes.Auth
 
 
                 GameMessage.ShowLocale(L.Info.LoadingData, false);
-                cancellationTokenSource = new(TimeSpan.FromSeconds(30));
-                await G.Game.GlobalFunctions.LoadListAllHeroesAsync(cancellationTokenSource.Token);
+                await G.Game.GlobalFunctions.LoadListAllHeroesAsync(CancelToken.Create("G.Game.GlobalFunctions.LoadListAllHeroesAsync"));
 
 
                 UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");

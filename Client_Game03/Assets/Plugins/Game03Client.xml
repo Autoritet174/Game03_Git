@@ -137,7 +137,7 @@
             <param name="response"></param>
             <returns></returns>
         </member>
-        <member name="M:Game03Client.InternetChecker.InternetCheckerProvider.CheckInternetConnectionAsync">
+        <member name="M:Game03Client.InternetChecker.InternetCheckerProvider.CheckInternetConnectionAsync(System.Threading.CancellationToken)">
             <summary>
             Асинхронно проверяет наличие интернет-соединения, пингуя известные DNS-сервера.
             </summary>
@@ -226,7 +226,7 @@
             <param name="jObject">Объект JSON, содержащий ключ ошибки ("keyError") и дополнительные данные.</param>
             <returns>Локализованная строка ошибки с подставленными данными, или пустая строка, если <paramref name="jObject"/> равен null.</returns>
         </member>
-        <member name="M:Game03Client.PlayerCollection.PlayerCollectionProvider.LoadAllCollectionFromServer">
+        <member name="M:Game03Client.PlayerCollection.PlayerCollectionProvider.LoadAllCollectionFromServer(System.Threading.CancellationToken)">
             <summary>
             
             </summary>
