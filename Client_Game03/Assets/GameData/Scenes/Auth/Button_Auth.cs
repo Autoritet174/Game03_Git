@@ -3,6 +3,7 @@ using General;
 using Newtonsoft.Json;
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -82,15 +83,16 @@ namespace Assets.GameData.Scenes.Auth
 
                 GameMessage.ShowLocale(L.Info.OpeningWebSocket, false);
 
+
                 // Открываем веб сокет
-                Game03Client.WebSocketClient.IWebSocketClientProvider webSocketClient = G.Game.WebSocketClient;
                 cancellationTokenSource = new(TimeSpan.FromSeconds(30));
-                await webSocketClient.ConnectAsync(cancellationTokenSource.Token);
-                if (!webSocketClient.Connected)
+                await G.Game.WebSocketClient.ConnectAsync(cancellationTokenSource.Token);
+                if (!G.Game.WebSocketClient.Connected)
                 {
                     GameMessage.ShowLocale(L.Error.Server.OpeningWebSocketFailed, true);
                     return;
                 }
+
 
                 GameMessage.ShowLocale(L.Info.LoadingData, false);
                 cancellationTokenSource = new(TimeSpan.FromSeconds(30));

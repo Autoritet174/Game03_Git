@@ -11,7 +11,7 @@ public static class GameExitHandler {
         if (!yesNo) {
             return;
         }
-
+        await G.Game.WebSocketClient.DisconnectAsync();
         // Сохраняем данные перед выходом
         //SaveSystem.SaveGame();
 

@@ -46,6 +46,11 @@ public class GroupDivider : MonoBehaviour
             var b_hero_id = Guid.Parse(b["hero_id"].ToString());
             HeroBaseEntity a_hero = G.Game.GlobalFunctions.GetHeroById(a_hero_id);
             HeroBaseEntity b_hero = G.Game.GlobalFunctions.GetHeroById(b_hero_id);
+            if (a_hero == null || b_hero==null)
+            {
+                return 0;
+            }
+
             int sort1 = b_hero.Rarity.CompareTo(a_hero.Rarity);
             if (sort1 != 0)
             {
@@ -62,8 +67,15 @@ public class GroupDivider : MonoBehaviour
         for (int i = 0; i < listHeroes.Count; i++)
         {
             JToken j = listHeroes[i];
+            var hero_id = Guid.Parse(j["hero_id"].ToString());
+            General.GameEntities.HeroBaseEntity hero = G.Game.GlobalFunctions.GetHeroById(hero_id);
+            if (hero == null)
+            {
+                continue;
+            }
+
             GameObject gameObject = await Addressables.LoadAssetAsync<GameObject>("IconHero").Task;
-            GameObject _prefabIconHero = Instantiate(gameObject);
+            GameObject _prefabIconHero = gameObject.SafeInstant();   
             _prefabIconHero.transform.SetParent(transformCellsContainer);
 
             RectTransform _prefabIconHero_Transform = _prefabIconHero.GetComponent<RectTransform>();
@@ -78,9 +90,7 @@ public class GroupDivider : MonoBehaviour
             Transform childImageRarity = childImageMaskRarity.Find("ImageRarity");
             if (childImageHero != null && childImageHero.TryGetComponent(out Image imageHero) && childImageRarity != null && childImageRarity.TryGetComponent(out Image imageRarity))
             {
-                var hero_id = Guid.Parse(j["hero_id"].ToString());
-
-                General.GameEntities.HeroBaseEntity hero = G.Game.GlobalFunctions.GetHeroById(hero_id);
+                
                 Transform childText = _prefabIconHero.transform.Find("TextHero");
                 if (childText != null && childText.TryGetComponent(out TextMeshProUGUI textMeshPro))
                 {

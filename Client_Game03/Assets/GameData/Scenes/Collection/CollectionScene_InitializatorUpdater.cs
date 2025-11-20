@@ -194,7 +194,7 @@ public class CollectionScene_InitializatorUpdater : MonoBehaviour
             List<Task> tasks = new();
             foreach (KeyValuePair<string, List<JToken>> keyValue in heroesByGroups)
             {
-                GameObject groupDividerGameObject = Instantiate(await Addressables.LoadAssetAsync<GameObject>($"GroupDividerPrefab").Task);
+                GameObject groupDividerGameObject = (await Addressables.LoadAssetAsync<GameObject>($"GroupDividerPrefab").Task).SafeInstant();
                 groupDividerGameObject.transform.SetParent(transformCollectionContent, false);
                 string group_name = keyValue.Key == guidNoGroupStr ? null : keyValue.Key;
                 GroupDivider groupDivider_NoGroup = new(group_name);

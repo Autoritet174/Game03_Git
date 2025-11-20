@@ -104,7 +104,7 @@ public class AllHeroes : MonoBehaviour
 
     private async Task LoadHeroByName(HeroBaseEntity hero)
     {
-        GameObject _prefabIconHero = Instantiate(prefabIconHero);
+        GameObject _prefabIconHero = prefabIconHero.SafeInstant();
         string heroName = hero.Name;
         _prefabIconHero.name = heroName;
 
@@ -277,7 +277,7 @@ public class AllHeroes : MonoBehaviour
         AsyncOperationHandle<GameObject> prefabHeroViewer_handle = Addressables.LoadAssetAsync<GameObject>(addressableKey);
         _ = await prefabHeroViewer_handle.Task;
         prefabHeroViewer = prefabHeroViewer_handle.Status == AsyncOperationStatus.Succeeded
-            ? Instantiate(prefabHeroViewer_handle.Result)
+            ? prefabHeroViewer_handle.Result.SafeInstant()
             : throw new Exception($"{nameof(prefabHeroViewer)} не загружен");
         prefabHeroViewer.name = $"IconHero_{hero.Name}";
 

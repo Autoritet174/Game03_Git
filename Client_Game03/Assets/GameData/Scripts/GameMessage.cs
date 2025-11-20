@@ -95,20 +95,24 @@ namespace Assets.GameData.Scripts
                 return;
             }
 
-            if (!Application.isPlaying)
-            {
-                return;
-            }
+            //if (!Application.isPlaying)
+            //{
+            //    return;
+            //}
             // Загружаем префаб через Addressables
             AsyncOperationHandle<GameObject> loadHandle = Addressables.LoadAssetAsync<GameObject>(PREFAB_ADDRESS);
             GameObject go = loadHandle.WaitForCompletion();
             if (loadHandle.Status == AsyncOperationStatus.Succeeded)
             {
-                if (!Application.isPlaying)
+                //if (!Application.isPlaying)
+                //{
+                //    return;
+                //}
+                _currentInstance = go.SafeInstant();
+                if (_currentInstance == null)
                 {
                     return;
                 }
-                _currentInstance = UnityEngine.Object.Instantiate(go);
                 _currentInstance.name = OBJECT_NAME;
                 _opened = true;
 
