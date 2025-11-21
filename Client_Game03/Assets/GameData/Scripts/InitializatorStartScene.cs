@@ -17,11 +17,11 @@ namespace Assets.GameData.Scripts
             // Если игра запускается (перед входом в Play Mode)
             if (state == PlayModeStateChange.ExitingEditMode)
             {
-                const string StartScenePath = "Assets/GameData/Scenes/RegAuth/Auth.unity";
+                const string StartScenePath = "Assets/GameData/Scenes/Auth/Auth.unity";
 
                 string path = EditorSceneManager.GetActiveScene().path;
                 // Проверяем, не загружена ли уже нужная сцена
-                if (path != StartScenePath && path.StartsWith("Assets/GameData/Scenes/TEST_"))
+                if (path != StartScenePath && !path.StartsWith("Assets/GameData/Scenes/TEST_"))
                 {
                     // Сохраняем текущую сцену (если нужно)
                     if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())

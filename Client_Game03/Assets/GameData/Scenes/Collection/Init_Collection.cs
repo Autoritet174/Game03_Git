@@ -11,7 +11,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using L = General.LocalizationKeys;
 
-public class CollectionScene_InitializatorUpdater : MonoBehaviour
+public class Init_Collection : MonoBehaviour
 {
 
     //public bool Initialized { get; private set; }
@@ -129,27 +129,27 @@ public class CollectionScene_InitializatorUpdater : MonoBehaviour
 
             CancellationTokenSource cancellationTokenSource = new(TimeSpan.FromSeconds(30));
             // Получить коллекцию героев игрока
-            JObject jObject = await G.Game.HttpRequester.GetJObjectAsync(General.Url.Inventory.Heroes, cancellationTokenSource.Token);
+            JObject jObject = await G.Game.HttpRequester.GetJObjectAsync(General.Url.Collection.Heroes, cancellationTokenSource.Token);
             if (jObject == null)
             {
                 GameMessage.Show(L.Error.Server.InvalidResponse, true);
                 return;
             }
 
-            JToken result = jObject["result"];
-            if (result == null)
+            JToken heroes = jObject["heroes"];
+            if (heroes == null)
             {
-                Debug.Log("result == null");
+                Debug.Log("heroes == null");
                 GameMessage.Show(L.Error.Server.InvalidResponse, true);
                 return;
             }
 
             // Получить уникальные имена групп
             List<string> group_name_List = new();
-            foreach (JToken j in result)
+            foreach (JToken hero in heroes)
             {
                 //Debug.Log($"_id={j["_id"]}; owner_id={j["owner_id"]}; hero_id={j["hero_id"]}; health={j["health"]}; attack={j["attack"]}; speed={j["speed"]}; strength={j["strength"]}; agility={j["agility"]}; intelligence={j["intelligence"]}");
-                string group_name = j["group_name"]?.ToString()?.Trim() ?? string.Empty;
+                string group_name = hero["group_name"]?.ToString()?.Trim() ?? string.Empty;
                 if (group_name != string.Empty && !group_name_List.Contains(group_name))
                 {
                     group_name_List.Add(group_name);
@@ -161,7 +161,7 @@ public class CollectionScene_InitializatorUpdater : MonoBehaviour
 
             // Добавить всех героев в список, для легкого удаления потом.
             List<JToken> allHeroesJToken = new();
-            foreach (JToken j in result)
+            foreach (JToken j in heroes)
             {
                 allHeroesJToken.Add(j);
             }

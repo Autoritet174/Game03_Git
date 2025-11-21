@@ -55,15 +55,16 @@
     <Compile Include="Assets\GameData\Prefabs\L1\Buttons\Button_01_Init.cs" />
     <Compile Include="Assets\GameData\Scripts\ButtonCloseHelper.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Init_Auth.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\Init_Collection.cs" />
     <Compile Include="Assets\GameData\Scripts\ButtonClose_Click_MoveToMainMenu.cs" />
     <Compile Include="Assets\GameData\Scripts\LoggerException.cs" />
     <Compile Include="Assets\GameData\Scripts\GameExitHandler.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Button_Reg.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_Collection.cs" />
     <Compile Include="Assets\GameData\Prefabs\L1\InputFields\InputField.cs" />
-    <Compile Include="Assets\GameData\AddressableAssets\Prefabs\L3\GameMessage\GameMessageButtonClose.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\CollectionHero.cs" />
     <Compile Include="Assets\GameData\Scripts\UnityMainThreadDispatcher.cs" />
+    <Compile Include="Assets\GameData\AddressableAssets\Prefabs\L3\GameMessage\Init_PrefabGameMessage.cs" />
     <Compile Include="Assets\GameData\Scripts\ResetRectOffsets.cs" />
     <Compile Include="Assets\GameData\Scripts\GameMessage.cs" />
     <Compile Include="Assets\GameData\Scripts\InitializatorStartScene.cs" />
@@ -74,7 +75,6 @@
     <Compile Include="Assets\GameData\Scripts\GameObjectExtensions.cs" />
     <Compile Include="Assets\GameData\Scripts\Spawner.cs" />
     <Compile Include="Assets\GameData\Scripts\HardwareIdentifier.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\CollectionScene_InitializatorUpdater.cs" />
     <Compile Include="Assets\GameData\Scripts\GameObjectFinder.cs" />
     <Compile Include="Assets\GameData\Scenes\TEST_01\TestScript.cs" />
     <Compile Include="Assets\GameData\Scenes\AllHeroes\AllHeroes.cs" />

@@ -231,8 +231,17 @@ namespace Assets.GameData.Scripts
 
         public static void Close()
         {
-            UnityEngine.Object.Destroy(_currentInstance);
-            _currentInstance = null;
+            try
+            {
+                if (_currentInstance != null)
+                {
+                    UnityEngine.Object.Destroy(_currentInstance);
+                    _currentInstance = null;
+                }
+            }
+            catch (Exception ex){
+                Debug.LogError(ex);
+            }
             _opened = false;
         }
 

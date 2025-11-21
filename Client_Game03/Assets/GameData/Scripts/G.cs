@@ -49,6 +49,8 @@ namespace Assets.GameData.Scripts
 
             Game = Game03.Create(Path.Combine(UnityEngine.Application.dataPath, @"GameData\Config\Main.ini"), capsule, lang);
             Game.Logger.OnLog += Game_OnLog;
+
+            Application.targetFrameRate = 60;
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
