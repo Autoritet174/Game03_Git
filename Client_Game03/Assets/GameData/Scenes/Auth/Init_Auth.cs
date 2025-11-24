@@ -42,6 +42,8 @@ namespace Assets.GameData.Scenes.Auth
 
             InputManager.Register(KeyCode.Escape, GameExitHandler.ExitGame);
             InputManager.Register(KeyCode.Return, PressLogin, key2: KeyCode.KeypadEnter);
+
+            //GameMessage.Show("", true);
         }
         private void OnDestroy()
         {

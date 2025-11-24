@@ -145,7 +145,7 @@ namespace Assets.GameData.Scripts
         private static void UpdateMessage(string message, bool buttonActiveClose, bool yesNoDialog = false)
         {
             Canvas canvas = _currentInstance.GetComponent<Canvas>();
-            Transform windowsImageTransform = canvas.transform.Find("Window-Image");
+            Transform windowsImageTransform = canvas.transform.Find("Frame");
             GameObject mainTextLabel = windowsImageTransform.Find("MainText-Label").gameObject;
 
             if (!mainTextLabel.TryGetComponent(out TextMeshProUGUI tmpText))

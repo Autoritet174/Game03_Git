@@ -76,7 +76,7 @@ namespace Assets.GameData.Scenes.Auth
                 string token = await G.Game.JwtToken.GetTokenAsync(json, CancelToken.Create("G.Game.JwtToken.GetTokenAsync"));
                 if (token.IsEmpty())
                 {
-                    GameMessage.Show(L.Error.Server.InvalidResponse, true);
+                    GameMessage.ShowLocale(L.Error.Server.InvalidResponse, true);
                     return;
                 }
 

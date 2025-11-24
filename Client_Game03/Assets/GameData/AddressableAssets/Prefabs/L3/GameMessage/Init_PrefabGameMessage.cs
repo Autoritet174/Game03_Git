@@ -27,11 +27,13 @@ public class Init_PrefabGameMessage : MonoBehaviour
     private RectTransform mainTextLabel_RectTransform;
     [SerializeField]
     private TextMeshProUGUI mainTextLabel_TextMeshProUGUI;
-
-    string mainTextLabel_LastText = string.Empty;
+    private float _mainTextLabel_height;
+    private string mainTextLabel_LastText = string.Empty;
 
     private void Start()
     {
+        _initialized = true;
+        OnResizeWindow();
     }
 
     private void Update()
@@ -40,12 +42,17 @@ public class Init_PrefabGameMessage : MonoBehaviour
             return;
         }
 
+        if (_mainTextLabel_height != mainTextLabel_RectTransform.rect.height)
+        {
+            _mainTextLabel_height = mainTextLabel_RectTransform.rect.height;
+        }
+
         bool onResizeWindow = false;
         if (!Mathf.Approximately(Screen.height, _height) || !Mathf.Approximately(Screen.width, _width))
         {
             onResizeWindow = true;
         }
-        if (mainTextLabel_LastText!=mainTextLabel_TextMeshProUGUI.text)
+        if (!onResizeWindow && mainTextLabel_LastText !=mainTextLabel_TextMeshProUGUI.text)
         {
             mainTextLabel_LastText = mainTextLabel_TextMeshProUGUI.text;
             onResizeWindow = true;
@@ -64,25 +71,28 @@ public class Init_PrefabGameMessage : MonoBehaviour
         float coefHeight = _height / 1080f;
 
         // 1. Установка ширины фрейма
-        float frame_width = 1240 * coefHeight;
-        if (frame_width > _width)
+        float frameWidth = 1240 * coefHeight;
+        if (frameWidth > _width)
         {
-            frame_width = _width;
+            frameWidth = _width;
         }
 
-        // 2. Установка ширины лабела
-        mainTextLabel_RectTransform.sizeDelta = new Vector2(1192f * coefHeight, 0);//высота на авто
+        // 2. Установка ширины и top лабела
+        mainTextLabel_RectTransform.sizeDelta = new Vector2(1192f/ 1240f * frameWidth, 0);//высота на авто
+        float labelTop = (7f * coefHeight) + 13f;
+        mainTextLabel_RectTransform.anchoredPosition = new Vector2(0, -labelTop);
 
         // 3. Размеры и позиция всех кнопок
+        float buttonHeight = 74f * coefHeight;
         buttonNo_RectTransform.sizeDelta
             = buttonYes_RectTransform.sizeDelta
             = buttonOk_RectTransform.sizeDelta
-            = new Vector2(248f * coefHeight, 74f * coefHeight);
+            = new Vector2(248f * coefHeight, buttonHeight);
 
-        float buttonHeight = 10f * coefHeight;
-        buttonOk_RectTransform.anchoredPosition = new Vector2(0, buttonHeight);
-        buttonYes_RectTransform.anchoredPosition = new Vector2(-183f * coefHeight, buttonHeight);
-        buttonNo_RectTransform.anchoredPosition = new Vector2(183f * coefHeight, buttonHeight);
+        float buttonBottom = (7f * coefHeight) + 13f;//13 количество неизменяемых пикселей в рамке
+        buttonOk_RectTransform.anchoredPosition = new Vector2(0, buttonBottom);
+        buttonYes_RectTransform.anchoredPosition = new Vector2(-183f * coefHeight, buttonBottom);
+        buttonNo_RectTransform.anchoredPosition = new Vector2(183f * coefHeight, buttonBottom);
 
         // 4. Размеры шрифтов
         float buttonFontSize = 24.75f * coefHeight;
@@ -92,9 +102,11 @@ public class Init_PrefabGameMessage : MonoBehaviour
         mainTextLabel_TextMeshProUGUI.fontSize = 36f * coefHeight;
 
 
-        float emptyRowHeight = (220-20-40.22f-74-20) * coefHeight;
+        float emptyRowHeight = (220 - 20f - 40.22f- 74f - 20f) * coefHeight;
 
+        float frameHeight = emptyRowHeight + labelTop + _mainTextLabel_height + buttonHeight + buttonBottom;
 
-        frame_RectTransform.sizeDelta = new Vector2(frame_width, 0);
+        Debug.Log(_mainTextLabel_height);
+        frame_RectTransform.sizeDelta = new Vector2(frameWidth, frameHeight);
     }
 }

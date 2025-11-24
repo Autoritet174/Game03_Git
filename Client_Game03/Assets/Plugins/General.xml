@@ -4,56 +4,182 @@
         <name>General</name>
     </assembly>
     <members>
+        <member name="T:General.Enums">
+            <summary>
+            Статический класс-контейнер для всех перечислений, используемых в общих данных игры.
+            </summary>
+        </member>
+        <member name="T:General.Enums.RarityLevel">
+            <summary>
+            Определяет уровень редкости игрового объекта или сущности.
+            </summary>
+        </member>
+        <member name="F:General.Enums.RarityLevel.Common">
+            <summary>
+            Обычный уровень редкости (самый низкий).
+            </summary>
+        </member>
+        <member name="F:General.Enums.RarityLevel.Uncommon">
+            <summary>
+            Необычный уровень редкости.
+            </summary>
+        </member>
+        <member name="F:General.Enums.RarityLevel.Rare">
+            <summary>
+            Редкий уровень редкости.
+            </summary>
+        </member>
+        <member name="F:General.Enums.RarityLevel.Epic">
+            <summary>
+            Эпический уровень редкости.
+            </summary>
+        </member>
+        <member name="F:General.Enums.RarityLevel.Legendary">
+            <summary>
+            Легендарный уровень редкости.
+            </summary>
+        </member>
+        <member name="F:General.Enums.RarityLevel.Mythic">
+            <summary>
+            Мифический уровень редкости (самый высокий).
+            </summary>
+        </member>
         <member name="T:General.G">
             <summary>
-            Глобальные статические поля, константы и функции.
+            Глобальный статический класс, содержащий константы и вспомогательные функции,
+            которые должны быть легко доступны из любого места приложения.
             </summary>
         </member>
         <member name="F:General.G.APPLICATION_JSON">
             <summary>
-            Значение для mediaType StringContent.
+            Константа для типа медиа "application/json", часто используемого в HTTP-запросах.
             </summary>
         </member>
         <member name="M:General.G.SecondsToTimeStr(System.Int64)">
             <summary>
-            
+            Преобразует общее количество секунд в удобочитаемую строку,
+            форматируя их в дни, часы, минуты и секунды (d hh mm s).
             </summary>
-            <param name="sec"></param>
-            <returns></returns>
+            <param name="sec">Общее количество секунд (<see cref="T:System.Int64"/>), которое необходимо преобразовать.</param>
+            <returns>
+            Строка, представляющая время в формате "dd hh mm s".
+            Пример: "05m 10s", "01h 05m 10s", "1d 01h 05m 10s".
+            </returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Выбрасывается, если <paramref name="sec"/> меньше нуля.</exception>
+        </member>
+        <member name="T:General.GameEntities.HeroBaseEntity">
+            <summary>
+            Представляет базовую сущность игрового героя с основными характеристиками.
+            Использует синтаксис первичного конструктора (Primary Constructor) C# 12/13.
+            </summary>
+            <param name="id">Уникальный идентификатор героя.</param>
+            <param name="name">Имя героя (на английском).</param>
+            <param name="rarity">Уровень редкости героя, определяемый перечислением <see cref="T:General.Enums.RarityLevel"/>.</param>
+            <param name="baseHealth">Базовое значение здоровья героя.</param>
+            <param name="baseAttack">Базовое значение атаки героя.</param>
+        </member>
+        <member name="M:General.GameEntities.HeroBaseEntity.#ctor(System.Guid,System.String,General.Enums.RarityLevel,System.Single,System.Single)">
+            <summary>
+            Представляет базовую сущность игрового героя с основными характеристиками.
+            Использует синтаксис первичного конструктора (Primary Constructor) C# 12/13.
+            </summary>
+            <param name="id">Уникальный идентификатор героя.</param>
+            <param name="name">Имя героя (на английском).</param>
+            <param name="rarity">Уровень редкости героя, определяемый перечислением <see cref="T:General.Enums.RarityLevel"/>.</param>
+            <param name="baseHealth">Базовое значение здоровья героя.</param>
+            <param name="baseAttack">Базовое значение атаки героя.</param>
         </member>
         <member name="P:General.GameEntities.HeroBaseEntity.Id">
             <summary>
-            Id героя.
+            Уникальный идентификатор героя.
             </summary>
         </member>
         <member name="P:General.GameEntities.HeroBaseEntity.Name">
             <summary>
-            Имя героя на англ.
+            Имя героя на английском языке.
             </summary>
         </member>
         <member name="P:General.GameEntities.HeroBaseEntity.Rarity">
             <summary>
-            Редкость героя.
+            Уровень редкости героя.
             </summary>
         </member>
         <member name="P:General.GameEntities.HeroBaseEntity.BaseHealth">
             <summary>
-            Здоровье.
+            Базовое значение здоровья героя.
             </summary>
         </member>
         <member name="P:General.GameEntities.HeroBaseEntity.BaseAttack">
             <summary>
-            Атака.
+            Базовое значение атаки героя.
             </summary>
         </member>
         <member name="T:General.LocalizationKeys">
             <summary>
-            Коды для получения текстовых ошибок из json файлов локализации.
+            Статический класс, содержащий строковые ключи для доступа к текстовым ресурсам
+            из файлов локализации (например, JSON).
+            Ключи сгруппированы по контексту: UI, Ошибки, Информация.
+            </summary>
+        </member>
+        <member name="T:General.LocalizationKeys.UI">
+            <summary>
+            Группа ключей, относящихся к элементам пользовательского интерфейса (UI).
+            </summary>
+        </member>
+        <member name="T:General.LocalizationKeys.UI.Button">
+            <summary>
+            Ключи для текста, отображаемого на кнопках.
+            </summary>
+        </member>
+        <member name="T:General.LocalizationKeys.UI.Label">
+            <summary>
+            Ключи для текста, отображаемого на метках (Label) или заголовках.
+            </summary>
+        </member>
+        <member name="T:General.LocalizationKeys.Error">
+            <summary>
+            Группа ключей, относящихся к сообщениям об ошибках.
+            </summary>
+        </member>
+        <member name="T:General.LocalizationKeys.Error.Server">
+            <summary>
+            Ключи для ошибок, связанных с взаимодействием с сервером.
+            </summary>
+        </member>
+        <member name="T:General.LocalizationKeys.Error.User">
+            <summary>
+            Ключи для ошибок, связанных с некорректным вводом данных пользователем.
+            </summary>
+        </member>
+        <member name="T:General.LocalizationKeys.Info">
+            <summary>
+            Группа ключей, относящихся к информационным сообщениям (например, о статусе).
             </summary>
         </member>
         <member name="F:General.LocalizationKeys.KEY_LOCALIZATION">
             <summary>
-            Константа для отметки строк как те что можно считать из локализции.
+            Специальный ключ-маркер для автоматического определения строк,
+            которые должны быть получены из системы локализации.
+            </summary>
+        </member>
+        <member name="F:General.LocalizationKeys.DATE_TIME_EXPIRES_AT">
+            <summary>
+            Ключ-заполнитель для указания даты и времени истечения срока действия.
+            </summary>
+        </member>
+        <member name="F:General.LocalizationKeys.DATETIME_EXPIRATION">
+            <summary>
+            Ключ-заполнитель для указания даты и времени истечения срока.
+            </summary>
+        </member>
+        <member name="F:General.LocalizationKeys.TIME_REMAINING">
+            <summary>
+            Ключ-заполнитель для указания оставшегося времени (в формате времени).
+            </summary>
+        </member>
+        <member name="F:General.LocalizationKeys.SECONDS_REMAINING">
+            <summary>
+            Ключ-заполнитель для указания оставшегося времени (в секундах).
             </summary>
         </member>
         <member name="T:General.ModelHttp.Authorization">
@@ -202,37 +328,60 @@
         </member>
         <member name="T:General.StringCapsule">
             <summary>
-            Класс капсула для переменной string. Можно передавать строку не копируя её.
+            Класс-оболочка (капсула) для хранения строкового значения.
+            Может использоваться для передачи строковой переменной по ссылке или в контекстах,
+            где требуется изменяемый (mutable) объект для хранения строки.
             </summary>
         </member>
         <member name="M:General.StringCapsule.#ctor">
             <summary>
-            Класс капсула для переменной string. Можно передавать строку не копируя её.
+            Класс-оболочка (капсула) для хранения строкового значения.
+            Может использоваться для передачи строковой переменной по ссылке или в контекстах,
+            где требуется изменяемый (mutable) объект для хранения строки.
+            </summary>
+        </member>
+        <member name="F:General.StringCapsule.Value">
+            <summary>
+            Фактическое строковое значение, хранимое в капсуле.
+            Инициализировано пустой строкой.
             </summary>
         </member>
         <member name="T:General.StringExtension">
             <summary>
-            Класс-расширение для string.
+            Статический класс-расширение, предоставляющий полезные методы для работы со строками (<see cref="T:System.String"/>).
             </summary>
         </member>
         <member name="M:General.StringExtension.IsEmpty(System.String)">
             <summary>
-            True если IsNullOrWhiteSpace.
+            Проверяет, является ли строка <see langword="null"/>, пустой (<see cref="F:System.String.Empty"/>) или содержит только пробельные символы.
+            Является оберткой для <see cref="M:System.String.IsNullOrWhiteSpace(System.String)"/>.
             </summary>
-            <param name="s"></param>
-            <returns></returns>
+            <param name="s">Строка для проверки.</param>
+            <returns>
+            <see langword="true"/>, если строка является <see langword="null"/>, пустой или состоит только из пробельных символов;
+            в противном случае — <see langword="false"/>.
+            </returns>
         </member>
         <member name="M:General.StringExtension.ToUpper1Char(System.String)">
             <summary>
-            Если возможно, преобразуем первый символ в верхний регистр, остальные без изменений.
+            Преобразует первый символ строки в верхний регистр, оставляя остальные символы без изменений.
+            Если строка <see langword="null"/> или пуста, возвращается исходная строка.
             </summary>
-            <param name="s"></param>
-            <returns></returns>
+            <param name="s">Исходная строка.</param>
+            <returns>
+            Строка с первым символом в верхнем регистре.
+            </returns>
         </member>
         <member name="M:General.StringExtension.IsEmail(System.String)">
             <summary>
-            Пытается создать объект MailAddress из строки. Возвращает значение результата.
+            Проверяет, является ли строка корректным адресом электронной почты,
+            пытаясь создать объект <see cref="T:System.Net.Mail.MailAddress"/>.
             </summary>
+            <param name="s">Строка, содержащая адрес электронной почты для проверки.</param>
+            <returns>
+            <see langword="true"/>, если строка является действительным адресом электронной почты;
+            <see langword="false"/> в противном случае.
+            </returns>
         </member>
         <member name="T:General.Url">
             <summary>

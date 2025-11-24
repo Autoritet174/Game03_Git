@@ -47,8 +47,7 @@ namespace Assets.GameData.Scripts
                 Value = jsonFile.text,
             };
 
-            Game = Game03.Create(Path.Combine(UnityEngine.Application.dataPath, @"GameData\Config\Main.ini"), capsule, lang);
-            Game.Logger.OnLog += Game_OnLog;
+            Game = Game03.Create(Path.Combine(UnityEngine.Application.dataPath, @"GameData\Config\Main.ini"), capsule, lang, Game_OnLog);
 
             Application.targetFrameRate = 60;
         }
