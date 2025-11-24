@@ -218,18 +218,16 @@ public class Init_Collection : MonoBehaviour
         }
     }
 
-    public void OnClickHeroes()
+    private void OnClickHeroes()
     {
         OnClickTabButton(tabButtonHeroes);
         tabButtonHeroes.image.color = Color.white;
 
     }
 
-    public void OnClickItems()
+    private void OnClickItems()
     {
         OnClickTabButton(tabButtonItem);
-
-
     }
 
     private void OnClickTabButton(TabButton tabButtonPressed)
@@ -246,7 +244,7 @@ public class Init_Collection : MonoBehaviour
         }
     }
 
-    public void OnResizeWindow()
+    private void OnResizeWindow()
     {
         _height = Screen.height;
         _width = Screen.width;
