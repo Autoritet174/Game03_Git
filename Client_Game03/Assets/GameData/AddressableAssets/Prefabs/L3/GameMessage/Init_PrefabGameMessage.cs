@@ -42,12 +42,13 @@ public class Init_PrefabGameMessage : MonoBehaviour
             return;
         }
 
+        bool onResizeWindow = false;
         if (_mainTextLabel_height != mainTextLabel_RectTransform.rect.height)
         {
             _mainTextLabel_height = mainTextLabel_RectTransform.rect.height;
+            onResizeWindow = true;
         }
 
-        bool onResizeWindow = false;
         if (!Mathf.Approximately(Screen.height, _height) || !Mathf.Approximately(Screen.width, _width))
         {
             onResizeWindow = true;
@@ -102,11 +103,10 @@ public class Init_PrefabGameMessage : MonoBehaviour
         mainTextLabel_TextMeshProUGUI.fontSize = 36f * coefHeight;
 
 
-        float emptyRowHeight = (220 - 20f - 40.22f- 74f - 20f) * coefHeight;
+        float emptyRowHeight = 65.78f * coefHeight;//220 - 20f - 40.22f- 74f - 20f
 
         float frameHeight = emptyRowHeight + labelTop + _mainTextLabel_height + buttonHeight + buttonBottom;
 
-        Debug.Log(_mainTextLabel_height);
         frame_RectTransform.sizeDelta = new Vector2(frameWidth, frameHeight);
     }
 }

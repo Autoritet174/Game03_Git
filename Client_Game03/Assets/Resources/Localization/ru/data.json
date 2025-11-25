@@ -24,9 +24,9 @@
 			"PasswordEmpty" : "Не введен пароль"
 		},
 		"Server": {
-			"Timeout" : "Время ожидания ответа истекло",
-			"Unavailable" : "Не доступен",
-			"InvalidResponse": "Неверный ответ",
+			"Timeout" : "Время ожидания ответа от сервера истекло",
+			"Unavailable" : "Сервер не доступен",
+			"InvalidResponse": "Неверный ответ от сервера",
 			"InvalidCredentials" : "Неверные учетные данные",
 			"TooManyRequests" : "Слишком много попыток, попробуйте через {TIME_REMAINING}",
 			"AccountBannedUntil" : "Ваша учётная запись заблокирована. Повторите попытку через {TIME_REMAINING}. Учётная запись будет разблокирована {DATETIME_EXPIRATION}.",

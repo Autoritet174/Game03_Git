@@ -2,8 +2,6 @@ using Assets.GameData.Scripts;
 using General;
 using Newtonsoft.Json;
 using System;
-using System.Threading;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,6 +15,13 @@ namespace Assets.GameData.Scenes.Auth
 
         public async void ButtonLogin_OnClick()
         {
+            bool serverAvailable = await GameServerPinger.Ping();
+            if (!serverAvailable)
+            {
+                GameMessage.ShowLocale(L.Error.Server.Unavailable, true);
+                return;
+            }
+
             Button buttonLogin = null;
             try
             {

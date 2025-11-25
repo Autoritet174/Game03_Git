@@ -61,7 +61,19 @@ namespace Assets.GameData.Scripts
 
         private static void Game_OnLog(object message)
         {
-            UnityEngine.Debug.Log($"[Library: {nameof(Game03Client)}] {message}");
+            string m = message.ToString();
+            UnityEngine.Debug.LogError($"[Library: {nameof(Game03Client)}] {m}");
+            int index = m.IndexOf(General.LocalizationKeys.KEY_LOCALIZATION);
+            if (index > 0)
+            {
+                int index1 = m.IndexOf('<', index)+1;
+                int index2 = m.IndexOf('>', index);
+                if (index1 > index && index2 > index1)
+                {
+                    string keyLocale = m[index1..index2];
+                    GameMessage.ShowLocale(keyLocale, true);
+                }
+            }
         }
 
         private static void LoadCursorTexture(string address = "cursor_var2_green_64x64")
