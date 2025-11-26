@@ -1,15 +1,16 @@
 using Assets.GameData.Scripts;
-using Newtonsoft.Json.Linq;
+using Game03Client.PlayerCollection;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TMPro;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using L = General.LocalizationKeys;
 
 public class Init_Collection : MonoBehaviour
 {
@@ -128,76 +129,86 @@ public class Init_Collection : MonoBehaviour
             OnResizeWindow();
 
             CancellationTokenSource cancellationTokenSource = new(TimeSpan.FromSeconds(30));
-            // Получить коллекцию героев игрока
-            JObject jObject = await G.Game.HttpRequester.GetJObjectAsync(General.Url.Collection.Heroes, cancellationTokenSource.Token);
-            if (jObject == null)
-            {
-                GameMessage.Show(L.Error.Server.InvalidResponse, true);
-                return;
-            }
+            //// Получить коллекцию героев игрока
+            //JObject jObject = await G.Game.HttpRequester.GetJObjectAsync(General.Url.Collection.Heroes, cancellationTokenSource.Token);
+            //if (jObject == null)
+            //{
+            //    GameMessage.Show(L.Error.Server.InvalidResponse, true);
+            //    return;
+            //}
 
-            JToken heroes = jObject["heroes"];
-            if (heroes == null)
-            {
-                Debug.Log("heroes == null");
-                GameMessage.Show(L.Error.Server.InvalidResponse, true);
-                return;
-            }
+            //JToken heroes = jObject["heroes"];
+            //if (heroes == null)
+            //{
+            //    Debug.Log("heroes == null");
+            //    GameMessage.Show(L.Error.Server.InvalidResponse, true);
+            //    return;
+            //}
 
-            // Получить уникальные имена групп
-            List<string> group_name_List = new();
-            foreach (JToken hero in heroes)
-            {
-                //Debug.Log($"_id={j["_id"]}; owner_id={j["owner_id"]}; hero_id={j["hero_id"]}; health={j["health"]}; attack={j["attack"]}; speed={j["speed"]}; strength={j["strength"]}; agility={j["agility"]}; intelligence={j["intelligence"]}");
-                string group_name = hero["group_name"]?.ToString()?.Trim() ?? string.Empty;
-                if (group_name != string.Empty && !group_name_List.Contains(group_name))
-                {
-                    group_name_List.Add(group_name);
-                }
-            }
+            //// Получить уникальные имена групп
+            //List<string> group_name_List = new();
+            //foreach (JToken hero in heroes)
+            //{
+            //    //Debug.Log($"_id={j["_id"]}; owner_id={j["owner_id"]}; hero_id={j["hero_id"]}; health={j["health"]}; attack={j["attack"]}; speed={j["speed"]}; strength={j["strength"]}; agility={j["agility"]}; intelligence={j["intelligence"]}");
+            //    string group_name = hero["group_name"]?.ToString()?.Trim() ?? string.Empty;
+            //    if (group_name != string.Empty && !group_name_List.Contains(group_name))
+            //    {
+            //        group_name_List.Add(group_name);
+            //    }
+            //}
 
-            string guidNoGroupStr = Guid.NewGuid().ToString();
-            group_name_List.Add(guidNoGroupStr);
+            //string guidNoGroupStr = Guid.NewGuid().ToString();
+            //group_name_List.Add(guidNoGroupStr);
 
-            // Добавить всех героев в список, для легкого удаления потом.
-            List<JToken> allHeroesJToken = new();
-            foreach (JToken j in heroes)
-            {
-                allHeroesJToken.Add(j);
-            }
+            //// Добавить всех героев в список, для легкого удаления потом.
+            //List<JToken> allHeroesJToken = new();
+            //foreach (JToken j in heroes)
+            //{
+            //    allHeroesJToken.Add(j);
+            //}
 
-            Dictionary<string, List<JToken>> heroesByGroups = new();
-            foreach (string group_name_L in group_name_List)
-            {
-                List<JToken> list = new();
-                heroesByGroups.Add(group_name_L, list);
+            //Dictionary<string, List<JToken>> heroesByGroups = new();
+            //foreach (string group_name_L in group_name_List)
+            //{
+            //    List<JToken> list = new();
+            //    heroesByGroups.Add(group_name_L, list);
 
-                if (group_name_L == guidNoGroupStr)
-                {
-                    list.AddRange(allHeroesJToken);
-                    break;
-                }
+            //    if (group_name_L == guidNoGroupStr)
+            //    {
+            //        list.AddRange(allHeroesJToken);
+            //        break;
+            //    }
 
-                for (int i = allHeroesJToken.Count - 1; i >= 0; i--)
-                {
-                    JToken j = allHeroesJToken[i];
-                    string group_name = j["group_name"]?.ToString()?.Trim() ?? string.Empty;
-                    if (group_name == group_name_L)
-                    {
-                        list.Add(j);
-                        _ = allHeroesJToken.Remove(j);
-                    }
-                }
-            }
+            //    for (int i = allHeroesJToken.Count - 1; i >= 0; i--)
+            //    {
+            //        JToken j = allHeroesJToken[i];
+            //        string group_name = j["group_name"]?.ToString()?.Trim() ?? string.Empty;
+            //        if (group_name == group_name_L)
+            //        {
+            //            list.Add(j);
+            //            _ = allHeroesJToken.Remove(j);
+            //        }
+            //    }
+            //}
+
+            //
+            //foreach (KeyValuePair<string, List<JToken>> keyValue in heroesByGroups)
+            //{
+            //    
+            //    
+            //    string group_name = keyValue.Key == guidNoGroupStr ? null : keyValue.Key;
+            //    
+            //    Task task = groupDivider_NoGroup.Init(groupDividerGameObject, keyValue.Value);
+            //    tasks.Add(task);
+            //}
 
             List<Task> tasks = new();
-            foreach (KeyValuePair<string, List<JToken>> keyValue in heroesByGroups)
+            foreach (GroupHeroes item in G.Game.Collection.GetCollectionHeroesGroupByGroups().OrderByDescending(static a => a.Priority))
             {
                 GameObject groupDividerGameObject = (await Addressables.LoadAssetAsync<GameObject>($"GroupDividerPrefab").Task).SafeInstant();
                 groupDividerGameObject.transform.SetParent(transformCollectionContent, false);
-                string group_name = keyValue.Key == guidNoGroupStr ? null : keyValue.Key;
-                GroupDivider groupDivider_NoGroup = new(group_name);
-                Task task = groupDivider_NoGroup.Init(groupDividerGameObject, keyValue.Value);
+                GroupDivider groupDivider = new(item.Name);
+                Task task = groupDivider.Init(groupDividerGameObject, item.List);
                 tasks.Add(task);
             }
             await Task.WhenAll(tasks);
@@ -212,7 +223,12 @@ public class Init_Collection : MonoBehaviour
 
     private void Update()
     {
-        if (_initialized && (!Mathf.Approximately(Screen.height, _height) || !Mathf.Approximately(Screen.width, _width)))
+        if (!_initialized)
+        {
+            return;
+        }
+
+        if (!Mathf.Approximately(Screen.height, _height) || !Mathf.Approximately(Screen.width, _width))
         {
             OnResizeWindow();
         }

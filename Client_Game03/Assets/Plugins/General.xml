@@ -67,7 +67,7 @@
             </returns>
             <exception cref="T:System.ArgumentOutOfRangeException">Выбрасывается, если <paramref name="sec"/> меньше нуля.</exception>
         </member>
-        <member name="T:General.GameEntities.HeroBaseEntity">
+        <member name="T:General.GameEntities.HeroBase">
             <summary>
             Представляет базовую сущность игрового героя с основными характеристиками.
             Использует синтаксис первичного конструктора (Primary Constructor) C# 12/13.
@@ -78,7 +78,7 @@
             <param name="baseHealth">Базовое значение здоровья героя.</param>
             <param name="baseAttack">Базовое значение атаки героя.</param>
         </member>
-        <member name="M:General.GameEntities.HeroBaseEntity.#ctor(System.Guid,System.String,General.Enums.RarityLevel,System.Single,System.Single)">
+        <member name="M:General.GameEntities.HeroBase.#ctor(System.Guid,System.String,General.Enums.RarityLevel,System.Single,System.Single)">
             <summary>
             Представляет базовую сущность игрового героя с основными характеристиками.
             Использует синтаксис первичного конструктора (Primary Constructor) C# 12/13.
@@ -89,27 +89,27 @@
             <param name="baseHealth">Базовое значение здоровья героя.</param>
             <param name="baseAttack">Базовое значение атаки героя.</param>
         </member>
-        <member name="P:General.GameEntities.HeroBaseEntity.Id">
+        <member name="P:General.GameEntities.HeroBase.Id">
             <summary>
             Уникальный идентификатор героя.
             </summary>
         </member>
-        <member name="P:General.GameEntities.HeroBaseEntity.Name">
+        <member name="P:General.GameEntities.HeroBase.Name">
             <summary>
             Имя героя на английском языке.
             </summary>
         </member>
-        <member name="P:General.GameEntities.HeroBaseEntity.Rarity">
+        <member name="P:General.GameEntities.HeroBase.Rarity">
             <summary>
             Уровень редкости героя.
             </summary>
         </member>
-        <member name="P:General.GameEntities.HeroBaseEntity.BaseHealth">
+        <member name="P:General.GameEntities.HeroBase.BaseHealth">
             <summary>
             Базовое значение здоровья героя.
             </summary>
         </member>
-        <member name="P:General.GameEntities.HeroBaseEntity.BaseAttack">
+        <member name="P:General.GameEntities.HeroBase.BaseAttack">
             <summary>
             Базовое значение атаки героя.
             </summary>
@@ -118,7 +118,7 @@
             <summary>
             Статический класс, содержащий строковые ключи для доступа к текстовым ресурсам
             из файлов локализации (например, JSON).
-            Ключи сгруппированы по контексту: UI, Ошибки, Информация.
+            Ключи сгруппированы по контексту.
             </summary>
         </member>
         <member name="T:General.LocalizationKeys.UI">

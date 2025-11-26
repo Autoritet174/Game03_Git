@@ -94,7 +94,7 @@ public class AllHeroes : MonoBehaviour
     private async Task AddAllImageOnContent()
     {
         List<Task> list = new();
-        foreach (HeroBaseEntity heroStats in G.Game.GlobalFunctions.AllHeroes)
+        foreach (HeroBase heroStats in G.Game.GameData.AllHeroes)
         {
             list.Add(LoadHeroByName(heroStats));
         }
@@ -102,7 +102,7 @@ public class AllHeroes : MonoBehaviour
         await Task.WhenAll(list);
     }
 
-    private async Task LoadHeroByName(HeroBaseEntity hero)
+    private async Task LoadHeroByName(HeroBase hero)
     {
         GameObject _prefabIconHero = prefabIconHero.SafeInstant();
         string heroName = hero.Name;
@@ -268,7 +268,7 @@ public class AllHeroes : MonoBehaviour
 
     }
 
-    public async Task HeroView(HeroBaseEntity hero)
+    public async Task HeroView(HeroBase hero)
     {
 
         GameObject prefabHeroViewer;

@@ -6,9 +6,21 @@ using System.Threading.Tasks;
 
 namespace Assets.GameData.Scripts
 {
+    /// <summary>
+    /// Статический класс, предназначенный для отправки запросов серверу игры с целью проверки его доступности ("Ping").
+    /// </summary>
     internal static class GameServerPinger
     {
+        /// <summary>
+        /// Внутренний статический экземпляр HTTP-клиента для взаимодействия с удалённым сервером.
+        /// </summary>
         private static readonly HttpClient _httpClient = new();
+
+        /// <summary>
+        /// Асинхронный метод, отправляющий GET-запрос серверу и проверяющий наличие отклика 'pong'.
+        /// Возвращает true, если отклик соответствует ожиданиям, иначе возвращает false.
+        /// </summary>
+        /// <returns>True, если сервер ответил "pong"; False в противном случае.</returns>
         internal static async Task<bool> Ping()
         {
             using HttpRequestMessage request = new(HttpMethod.Get, Url.Ping);

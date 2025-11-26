@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 public class ImageHeroHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-    private HeroBaseEntity hero;
+    private HeroBase hero;
     private Sprite normalSprite;
     private Sprite hoverSprite;
-    private System.Func<HeroBaseEntity, Task> clickCallback;
+    private System.Func<HeroBase, Task> clickCallback;
     private Image imageComponent;
 
-    public void Initialize(HeroBaseEntity hero, Sprite normal, Sprite hover, System.Func<HeroBaseEntity, Task> callback, Image imageComponent)
+    public void Initialize(HeroBase hero, Sprite normal, Sprite hover, System.Func<HeroBase, Task> callback, Image imageComponent)
     {
         this.hero = hero;
         normalSprite = normal;
@@ -75,7 +75,7 @@ public class ImageHeroHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
         }
     }
 
-    public void UpdateParameter(HeroBaseEntity hero)
+    public void UpdateParameter(HeroBase hero)
     {
         this.hero = hero;
     }

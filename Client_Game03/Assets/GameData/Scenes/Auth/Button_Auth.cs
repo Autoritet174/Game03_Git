@@ -96,9 +96,18 @@ namespace Assets.GameData.Scenes.Auth
                     return;
                 }
 
-
+                // Загрузка игровых данных не связанных с конкретным пользователем
                 GameMessage.ShowLocale(L.Info.LoadingData, false);
-                await G.Game.GlobalFunctions.LoadListAllHeroesAsync(CancelToken.Create("G.Game.GlobalFunctions.LoadListAllHeroesAsync"));
+                await G.Game.GameData.LoadListAllHeroesAsync(CancelToken.Create("G.Game.GameData.LoadListAllHeroesAsync"));
+
+                // Загрузка коллекции пользователя
+                GameMessage.ShowLocale(L.Info.LoadingCollection, false);
+                bool loaded = await G.Game.Collection.LoadAllCollectionFromServer(CancelToken.Create("G.Game.GlobalFunctions.LoadListAllHeroesAsync"));
+                if (!loaded)
+                {
+                    GameMessage.ShowLocale(L.Error.Server.LoadingCollectionFailed, false);
+                    return;
+                }
 
 
                 UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");

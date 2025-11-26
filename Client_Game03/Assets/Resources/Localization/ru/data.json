@@ -8,12 +8,12 @@
 			"No": "Нет",
 			"Login": "Вход",
 			"Reg": "Регистрация",
-			"ExitGame": "Выйти из игры"
+			"ExitGame": "Выйти из игры",
 		},
 		"Label": {
 			"ExitGame": "Выйти из игры?",
 			"Email": "Электронная почта",
-			"Password": "Пароль"
+			"Password": "Пароль",
 		}
 	},
 	"Error": {
@@ -21,7 +21,7 @@
 		"User": {
 			"NotEmail" : "Введённый текст не емаил",
 			"EmailEmpty" : "Не введен email",
-			"PasswordEmpty" : "Не введен пароль"
+			"PasswordEmpty" : "Не введен пароль",
 		},
 		"Server": {
 			"Timeout" : "Время ожидания ответа от сервера истекло",
@@ -32,7 +32,8 @@
 			"AccountBannedUntil" : "Ваша учётная запись заблокирована. Повторите попытку через {TIME_REMAINING}. Учётная запись будет разблокирована {DATETIME_EXPIRATION}.",
 			"AccountBannedPermanently" : "Ваша учётная запись заблокирована бессрочно.",
 			"NoInternetConnection" : "Возможно, отсутствует подключение к интернету",
-			"OpeningWebSocketFailed" : "Соединение не установлено"
+			"OpeningWebSocketFailed" : "Соединение не установлено",
+			"LoadingCollectionFailed" : "Ошибка при загрузке коллекции",
 		}
 	},
 	
@@ -41,5 +42,6 @@
 		"AuthenticationSuccess" : "Авторизация успешна",
 		"OpeningWebSocket" : "Установка соединения",
 		"LoadingData" : "Загрузка данных",
+		"LoadingCollection" : "Загрузка коллекции",
 	}
 }

@@ -1,4 +1,5 @@
 using Assets.GameData.Scripts;
+using Game03Client.PlayerCollection;
 using General;
 using General.GameEntities;
 using Newtonsoft.Json.Linq;
@@ -23,13 +24,13 @@ public class GroupDivider : MonoBehaviour
     {
         this.group_name = group_name;
     }
-    public async Task Init(GameObject gameObjectGroupDivider, List<JToken> listHeroes)
+    public async Task Init(GameObject gameObjectGroupDivider, IEnumerable<General.GameEntities.CollectionHero> listHeroes)
     {
         //DividerButton
         GameObject gameObjectDividerButton = GameObjectFinder.FindByName("DividerButton", gameObjectGroupDivider.transform);
         TextMeshProUGUI textMeshProUGUIDividerButton = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", gameObjectDividerButton.transform);
         Transform transformCellsContainer = GameObjectFinder.FindByName<Transform>("CellsContainer", gameObjectGroupDivider.transform);
-        if (group_name == null)
+        if (group_name.IsEmpty())
         {
             textMeshProUGUIDividerButton.text = "---No Group---";
             textMeshProUGUIDividerButton.fontStyle = FontStyles.Italic;
@@ -39,43 +40,14 @@ public class GroupDivider : MonoBehaviour
             textMeshProUGUIDividerButton.text = group_name;
         }
 
-        // Сортировка
-        listHeroes.Sort((a, b) =>
-        {
-            var a_hero_id = Guid.Parse(a["hero_id"].ToString());
-            var b_hero_id = Guid.Parse(b["hero_id"].ToString());
-            HeroBaseEntity a_hero = G.Game.GlobalFunctions.GetHeroById(a_hero_id);
-            HeroBaseEntity b_hero = G.Game.GlobalFunctions.GetHeroById(b_hero_id);
-            if (a_hero == null || b_hero==null)
-            {
-                return 0;
-            }
-
-            int sort1 = b_hero.Rarity.CompareTo(a_hero.Rarity);
-            if (sort1 != 0)
-            {
-                return sort1;
-            }
-
-            int sort2 = a_hero.Name.CompareTo(b_hero.Name);
-            return sort2;
-        });
-
 
         Sprite raritySelectedSprite = await Addressables.LoadAssetAsync<Sprite>($"raritySelected").Task;
 
-        for (int i = 0; i < listHeroes.Count; i++)
+        foreach (General.GameEntities.CollectionHero groupHero in listHeroes)
         {
-            JToken j = listHeroes[i];
-            var hero_id = Guid.Parse(j["hero_id"].ToString());
-            General.GameEntities.HeroBaseEntity hero = G.Game.GlobalFunctions.GetHeroById(hero_id);
-            if (hero == null)
-            {
-                continue;
-            }
-
+            var heroBase = groupHero.HeroBase;
             GameObject gameObject = await Addressables.LoadAssetAsync<GameObject>("IconHero").Task;
-            GameObject _prefabIconHero = gameObject.SafeInstant();   
+            GameObject _prefabIconHero = gameObject.SafeInstant();
             _prefabIconHero.transform.SetParent(transformCellsContainer);
 
             RectTransform _prefabIconHero_Transform = _prefabIconHero.GetComponent<RectTransform>();
@@ -94,26 +66,26 @@ public class GroupDivider : MonoBehaviour
                 Transform childText = _prefabIconHero.transform.Find("TextHero");
                 if (childText != null && childText.TryGetComponent(out TextMeshProUGUI textMeshPro))
                 {
-                    textMeshPro.text = hero.Name.ToUpper1Char();
+                    textMeshPro.text = heroBase.Name.ToUpper1Char();
                     textMeshPro.fontSize = 12;
                 }
 
-                imageRarity.sprite = await Addressables.LoadAssetAsync<Sprite>($"rarity{(int)hero.Rarity}").Task;
+                imageRarity.sprite = await Addressables.LoadAssetAsync<Sprite>($"rarity{(int)heroBase.Rarity}").Task;
                 imageRarity.preserveAspect = true; // Сохраняет пропорции изображения
                 imageRarity.type = Image.Type.Simple; // Режим без растягивания;
 
-                string addressableKey = $"hero-image-{hero.Name.ToLower()}_face";
+                string addressableKey = $"hero-image-{heroBase.Name.ToLower()}_face";
                 imageHero.sprite = await Addressables.LoadAssetAsync<Sprite>(addressableKey).Task;
                 imageHero.preserveAspect = true; // Сохраняет пропорции изображения
                 imageHero.type = Image.Type.Simple; // Режим без растягивания;
 
                 ImageHeroHandler clickHandler = _prefabIconHero.AddComponent<ImageHeroHandler>();
-                clickHandler.Initialize(hero, imageRarity.sprite, raritySelectedSprite, HeroView, imageRarity);
+                clickHandler.Initialize(heroBase, imageRarity.sprite, raritySelectedSprite, HeroView, imageRarity);
             }
         }
     }
 
-    private async Task HeroView(HeroBaseEntity entity)
+    private async Task HeroView(HeroBase entity)
     {
         Debug.Log(entity.Name);
         //throw new NotImplementedException();

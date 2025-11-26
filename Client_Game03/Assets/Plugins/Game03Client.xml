@@ -34,9 +34,9 @@
             Провайдер LocalizationManager.
             </summary>
         </member>
-        <member name="P:Game03Client.Game03.GlobalFunctions">
+        <member name="P:Game03Client.Game03.GameData">
             <summary>
-            Провайдер GlobalFunctions.
+            Провайдер GameData.
             </summary>
         </member>
         <member name="P:Game03Client.Game03.Collection">
@@ -65,6 +65,72 @@
             <param name="loggerCallback"></param>
             <param name="configure"></param>
             <returns></returns>
+        </member>
+        <member name="T:Game03Client.GameData.GameDataCache">
+            <summary>
+            Класс для кэширования глобальных данных, используемых поставщиком функций.
+            </summary>
+        </member>
+        <member name="F:Game03Client.GameData.GameDataCache._allHeroes">
+            <summary>
+            Коллекция, хранящая кэшированный список всех базовых сущностей героев.
+            Инициализируется пустым списком.
+            </summary>
+        </member>
+        <member name="T:Game03Client.GameData.GameDataProvider">
+            <summary>
+            Реализация <see cref="T:Game03Client.GameData.IGameData"/>, предоставляющая функциональность для
+            загрузки и доступа к глобальным игровым данным, таким как список героев.
+            </summary>
+            <param name="httpRequesterProvider">Провайдер для выполнения HTTP-запросов.</param>
+            <param name="globalFunctionsProviderCache">Кэш для хранения глобальных данных.</param>
+            <param name="logger">Провайдер для ведения журнала.</param>
+        </member>
+        <member name="M:Game03Client.GameData.GameDataProvider.#ctor(Game03Client.HttpRequester.IHttpRequester,Game03Client.GameData.GameDataCache,Game03Client.Logger.ILogger)">
+            <summary>
+            Реализация <see cref="T:Game03Client.GameData.IGameData"/>, предоставляющая функциональность для
+            загрузки и доступа к глобальным игровым данным, таким как список героев.
+            </summary>
+            <param name="httpRequesterProvider">Провайдер для выполнения HTTP-запросов.</param>
+            <param name="globalFunctionsProviderCache">Кэш для хранения глобальных данных.</param>
+            <param name="logger">Провайдер для ведения журнала.</param>
+        </member>
+        <member name="P:Game03Client.GameData.GameDataProvider.AllHeroes">
+            <inheritdoc/>
+        </member>
+        <member name="M:Game03Client.GameData.GameDataProvider.LoadListAllHeroesAsync(System.Threading.CancellationToken)">
+            <inheritdoc/>
+            <exception cref="T:System.InvalidOperationException">Выбрасывается, если произошла ошибка при конвертации данных (например, неверный формат).</exception>
+        </member>
+        <member name="M:Game03Client.GameData.GameDataProvider.GetHeroById(System.Guid)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Game03Client.GameData.IGameData">
+            <summary>
+            Определяет интерфейс для поставщика глобальных функций,
+            предоставляющих доступ к данным, таким как список всех героев.
+            </summary>
+        </member>
+        <member name="M:Game03Client.GameData.IGameData.LoadListAllHeroesAsync(System.Threading.CancellationToken)">
+            <summary>
+            Асинхронно загружает список всех героев из внешнего источника.
+            </summary>
+            <param name="cancellationToken">Токен отмены для прерывания операции.</param>
+            <returns>Задача, представляющая операцию загрузки.</returns>
+        </member>
+        <member name="P:Game03Client.GameData.IGameData.AllHeroes">
+            <summary>
+            Получает доступный список всех загруженных базовых сущностей героев.
+            </summary>
+            <returns>Коллекция, содержащая все доступные базовые сущности героев.</returns>
+        </member>
+        <member name="M:Game03Client.GameData.IGameData.GetHeroById(System.Guid)">
+            <summary>
+            Находит и возвращает базовую сущность героя по его уникальному идентификатору.
+            </summary>
+            <param name="guid">Уникальный идентификатор (GUID) искомого героя.</param>
+            <returns>Базовая сущность героя (<see cref="T:General.GameEntities.HeroBase"/>) с указанным <paramref name="guid"/>,
+            или <c>null</c> (если поддерживается типом), если герой не найден.</returns>
         </member>
         <member name="T:Game03Client.GameLanguage">
             <summary>
@@ -112,72 +178,6 @@
             Все языки доступные в игре.
             </summary>
         </member>
-        <member name="T:Game03Client.GlobalFunctions.GlobalFunctionsProvider">
-            <summary>
-            Реализация <see cref="T:Game03Client.GlobalFunctions.IGlobalFunctionsProvider"/>, предоставляющая функциональность для
-            загрузки и доступа к глобальным игровым данным, таким как список героев.
-            </summary>
-            <param name="httpRequesterProvider">Провайдер для выполнения HTTP-запросов.</param>
-            <param name="globalFunctionsProviderCache">Кэш для хранения глобальных данных.</param>
-            <param name="logger">Провайдер для ведения журнала.</param>
-        </member>
-        <member name="M:Game03Client.GlobalFunctions.GlobalFunctionsProvider.#ctor(Game03Client.HttpRequester.IHttpRequesterProvider,Game03Client.GlobalFunctions.GlobalFunctionsProviderCache,Game03Client.Logger.ILoggerProvider)">
-            <summary>
-            Реализация <see cref="T:Game03Client.GlobalFunctions.IGlobalFunctionsProvider"/>, предоставляющая функциональность для
-            загрузки и доступа к глобальным игровым данным, таким как список героев.
-            </summary>
-            <param name="httpRequesterProvider">Провайдер для выполнения HTTP-запросов.</param>
-            <param name="globalFunctionsProviderCache">Кэш для хранения глобальных данных.</param>
-            <param name="logger">Провайдер для ведения журнала.</param>
-        </member>
-        <member name="P:Game03Client.GlobalFunctions.GlobalFunctionsProvider.AllHeroes">
-            <inheritdoc/>
-        </member>
-        <member name="M:Game03Client.GlobalFunctions.GlobalFunctionsProvider.LoadListAllHeroesAsync(System.Threading.CancellationToken)">
-            <inheritdoc/>
-            <exception cref="T:System.InvalidOperationException">Выбрасывается, если произошла ошибка при конвертации данных (например, неверный формат).</exception>
-        </member>
-        <member name="M:Game03Client.GlobalFunctions.GlobalFunctionsProvider.GetHeroById(System.Guid)">
-            <inheritdoc/>
-        </member>
-        <member name="T:Game03Client.GlobalFunctions.GlobalFunctionsProviderCache">
-            <summary>
-            Класс для кэширования глобальных данных, используемых поставщиком функций.
-            </summary>
-        </member>
-        <member name="F:Game03Client.GlobalFunctions.GlobalFunctionsProviderCache._allHeroes">
-            <summary>
-            Коллекция, хранящая кэшированный список всех базовых сущностей героев.
-            Инициализируется пустым списком.
-            </summary>
-        </member>
-        <member name="T:Game03Client.GlobalFunctions.IGlobalFunctionsProvider">
-            <summary>
-            Определяет интерфейс для поставщика глобальных функций,
-            предоставляющих доступ к данным, таким как список всех героев.
-            </summary>
-        </member>
-        <member name="M:Game03Client.GlobalFunctions.IGlobalFunctionsProvider.LoadListAllHeroesAsync(System.Threading.CancellationToken)">
-            <summary>
-            Асинхронно загружает список всех героев из внешнего источника.
-            </summary>
-            <param name="cancellationToken">Токен отмены для прерывания операции.</param>
-            <returns>Задача, представляющая операцию загрузки.</returns>
-        </member>
-        <member name="P:Game03Client.GlobalFunctions.IGlobalFunctionsProvider.AllHeroes">
-            <summary>
-            Получает доступный список всех загруженных базовых сущностей героев.
-            </summary>
-            <returns>Коллекция, содержащая все доступные базовые сущности героев.</returns>
-        </member>
-        <member name="M:Game03Client.GlobalFunctions.IGlobalFunctionsProvider.GetHeroById(System.Guid)">
-            <summary>
-            Находит и возвращает базовую сущность героя по его уникальному идентификатору.
-            </summary>
-            <param name="guid">Уникальный идентификатор (GUID) искомого героя.</param>
-            <returns>Базовая сущность героя (<see cref="T:General.GameEntities.HeroBaseEntity"/>) с указанным <paramref name="guid"/>,
-            или <c>null</c> (если поддерживается типом), если герой не найден.</returns>
-        </member>
         <member name="M:Game03Client.HttpRequester.HttpRequesterProvider.GetHeadersAsString(System.Net.Http.HttpResponseMessage)">
             <summary>
             Метод для преобразования заголовков в строку
@@ -195,19 +195,19 @@
             </remarks>
             <returns>true, если соединение успешно установлено, иначе false.</returns>
         </member>
-        <member name="T:Game03Client.LocalizationManager.ILocalizationManagerProvider">
+        <member name="T:Game03Client.LocalizationManager.ILocalizationManager">
             <summary>
             Определяет контракт для провайдеров, управляющих получением локализованных строк.
             </summary>
         </member>
-        <member name="M:Game03Client.LocalizationManager.ILocalizationManagerProvider.GetTextByJObject(Newtonsoft.Json.Linq.JObject)">
+        <member name="M:Game03Client.LocalizationManager.ILocalizationManager.GetTextByJObject(Newtonsoft.Json.Linq.JObject)">
             <summary>
             Получает локализованную строку текста ошибки на основе данных из JSON-объекта.
             </summary>
             <param name="jObject">Объект JSON, содержащий данные для локализации ошибки (например, "keyError").</param>
             <returns>Локализованная строка ошибки с подставленными данными, если применимо.</returns>
         </member>
-        <member name="M:Game03Client.LocalizationManager.ILocalizationManagerProvider.GetValue(System.String)">
+        <member name="M:Game03Client.LocalizationManager.ILocalizationManager.GetValue(System.String)">
             <summary>
             Получает локализованное строковое значение по заданному ключу.
             </summary>
@@ -248,7 +248,7 @@
             Опции, содержащие данные локализации в формате JSON.
             </summary>
         </member>
-        <member name="M:Game03Client.LocalizationManager.LocalizationManagerProvider.#ctor(Game03Client.LocalizationManager.LocalizationManagerOptions,Game03Client.Logger.ILoggerProvider)">
+        <member name="M:Game03Client.LocalizationManager.LocalizationManagerProvider.#ctor(Game03Client.LocalizationManager.LocalizationManagerOptions,Game03Client.Logger.ILogger)">
             <summary>
             Инициализирует новый экземпляр класса <see cref="T:Game03Client.LocalizationManager.LocalizationManagerProvider"/>.
             </summary>
@@ -275,10 +275,26 @@
             <param name="jObject">Объект JSON, содержащий ключ ошибки ("keyError") и дополнительные данные.</param>
             <returns>Локализованная строка ошибки с подставленными данными, или пустая строка, если <paramref name="jObject"/> равен null.</returns>
         </member>
+        <member name="T:Game03Client.PlayerCollection.GroupHeroes">
+            <summary>
+            Группа героев.
+            </summary>
+        </member>
+        <member name="M:Game03Client.PlayerCollection.GroupHeroes.#ctor(System.String,System.Collections.Generic.IEnumerable{General.GameEntities.CollectionHero})">
+            <summary>
+            Группа героев.
+            </summary>
+        </member>
         <member name="M:Game03Client.PlayerCollection.PlayerCollectionProvider.LoadAllCollectionFromServer(System.Threading.CancellationToken)">
             <summary>
             
             </summary>
+        </member>
+        <member name="M:Game03Client.PlayerCollection.PlayerCollectionProvider.GetCollectionHeroesGroupByGroups">
+            <summary>
+            Получить коллекцию героев сгруппированную по именам групп.
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:Game03Client.WebSocketClient.WebSocketClientProvider.ReceiveMessagesAsync">
             <summary>
