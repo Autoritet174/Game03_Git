@@ -313,8 +313,8 @@ public class Init_Collection : MonoBehaviour
             panelSelectedHeroWidth = 0;
         }
 
-            // Внутренние кнопки
-            internalPanelHeroes.Refresh(coefHeight, vector008PercentOfHeight, 10);
+        // Внутренние кнопки
+        internalPanelHeroes.Refresh(coefHeight, vector008PercentOfHeight, 10);
         internalPanelItems.Refresh(coefHeight, vector008PercentOfHeight, 10);
         internalPanelFilter.Refresh(coefHeight, vector008PercentOfHeight, 150);
         internalPanelGroup.Refresh(coefHeight, vector008PercentOfHeight, 256);
