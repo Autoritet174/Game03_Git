@@ -206,10 +206,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1025962083}
     m_Modifications:
-    - target: {fileID: 2326109674623847390, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
-      propertyPath: m_CullTransparentMesh
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2883646782141063761, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_Name
       value: Button_Reg (id=4flrrger)
@@ -308,10 +304,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4587221065149263836, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4587221065149263836, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
-      propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6821236939949249097, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
@@ -1536,7 +1528,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 617763950}
   - {fileID: 434498846}
+  - {fileID: 2032354757}
   - {fileID: 1025962083}
   - {fileID: 1228003612}
   - {fileID: 1833226925}
-  - {fileID: 2032354757}

@@ -21,6 +21,16 @@ namespace Assets.GameData.Scripts
 
         private static bool resultYesNo = false;
 
+
+        private static string textYes = G.Game.LocalizationManager.GetValue(L.UI.Button.Yes);
+        private static string textYesHover = $"{textYes} [Enter]";
+
+        private static string textNo = G.Game.LocalizationManager.GetValue(L.UI.Button.No);
+        private static string textNoHover = $"{textNo} [Escape]";
+
+        private static string textOk = G.Game.LocalizationManager.GetValue(L.UI.Button.Ok);
+        private static string textOkHover = $"{textOk} [Enter/Escape]";
+
         /// <summary>
         /// Выводит игровое сообщение и ожидает закрытие окна.
         /// </summary>
@@ -170,13 +180,19 @@ namespace Assets.GameData.Scripts
                 gameObjectButtonYes.SetActive(false);
                 gameObjectButtonNo.SetActive(false);
 
-
                 UnityEngine.UI.Button buttonOk = gameObjectButtonOk.GetComponent<UnityEngine.UI.Button>();
                 TextMeshProUGUI buttonOkText = GameObjectFinder.FindByName<TextMeshProUGUI>("TextButtonOk", buttonOk.transform);
-                buttonOkText.text = G.Game.LocalizationManager.GetValue(L.UI.Button.Ok);
 
                 buttonOk.onClick.RemoveAllListeners();
                 buttonOk.onClick.AddListener(PressOk);
+
+                buttonOkText.text = textOk;
+                if (G.WorkingOnDesktop())
+                {
+                    buttonOk.AddHoverEvents(
+                    () => buttonOkText.text = textOkHover,
+                    () => buttonOkText.text = textOk);
+                }
 
                 InputManager.Register(KeyCode.Escape, PressOk, 1000, KeyCode.Return, KeyCode.KeypadEnter);
             }
@@ -187,19 +203,30 @@ namespace Assets.GameData.Scripts
                 gameObjectButtonYes.SetActive(true);
                 UnityEngine.UI.Button buttonYes = gameObjectButtonYes.GetComponent<UnityEngine.UI.Button>();
                 TextMeshProUGUI buttonYesText = GameObjectFinder.FindByName<TextMeshProUGUI>("TextButtonYes", buttonYes.transform);
-                buttonYesText.text = G.Game.LocalizationManager.GetValue(L.UI.Button.Yes);
                 buttonYes.onClick.RemoveAllListeners();
                 buttonYes.onClick.AddListener(PressYes);
 
                 gameObjectButtonNo.SetActive(true);
                 UnityEngine.UI.Button buttonNo = gameObjectButtonNo.GetComponent<UnityEngine.UI.Button>();
                 TextMeshProUGUI buttonNoText = GameObjectFinder.FindByName<TextMeshProUGUI>("TextButtonNo", buttonNo.transform);
-                buttonNoText.text = G.Game.LocalizationManager.GetValue(L.UI.Button.No);
                 buttonNo.onClick.RemoveAllListeners();
                 buttonNo.onClick.AddListener(PressNo);
 
                 InputManager.Register(KeyCode.Escape, PressNo, 1000);
                 InputManager.Register(KeyCode.Return, PressYes, 1000, KeyCode.KeypadEnter);
+
+                buttonYesText.text = textYes;
+                buttonNoText.text = textNo;
+                if (G.WorkingOnDesktop())
+                {
+                    buttonYes.AddHoverEvents(
+                    () => buttonYesText.text = textYesHover,
+                    () => buttonYesText.text = textYes);
+
+                    buttonNo.AddHoverEvents(
+                    () => buttonNoText.text = textNoHover,
+                    () => buttonNoText.text = textNo);
+                }
             }
             else
             {
@@ -239,7 +266,8 @@ namespace Assets.GameData.Scripts
                     _currentInstance = null;
                 }
             }
-            catch (Exception ex){
+            catch (Exception ex)
+            {
                 Debug.LogError(ex);
             }
             _opened = false;

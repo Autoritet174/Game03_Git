@@ -43,5 +43,6 @@
 		"OpeningWebSocket" : "Установка соединения",
 		"LoadingData" : "Загрузка данных",
 		"LoadingCollection" : "Загрузка коллекции",
+		"CheckingServerAvailability" : "Проверка доступности сервера",
 	}
 }

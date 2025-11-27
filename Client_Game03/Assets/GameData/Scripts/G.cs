@@ -66,7 +66,7 @@ namespace Assets.GameData.Scripts
             int index = m.IndexOf(General.LocalizationKeys.KEY_LOCALIZATION);
             if (index > 0)
             {
-                int index1 = m.IndexOf('<', index)+1;
+                int index1 = m.IndexOf('<', index) + 1;
                 int index2 = m.IndexOf('>', index);
                 if (index1 > index && index2 > index1)
                 {
@@ -89,6 +89,20 @@ namespace Assets.GameData.Scripts
             Cursor.SetCursor(operationHandle.Result, Vector2.zero, CursorMode.Auto);
         }
 
+        /// <summary>
+        /// Возвращает True если запущена в десктопной операционной системе (Windows, Mac, Linux).
+        /// </summary>
+        /// <returns></returns>
+        public static bool WorkingOnDesktop()
+        {
+            //return Application.platform switch
+            //{
+            //    RuntimePlatform.WindowsPlayer or RuntimePlatform.OSXPlayer or RuntimePlatform.LinuxPlayer => true,
+            //    RuntimePlatform.Android or RuntimePlatform.IPhonePlayer => false,
+            //    _ => false,
+            //};
+            return Application.platform is RuntimePlatform.WindowsPlayer or RuntimePlatform.OSXPlayer or RuntimePlatform.LinuxPlayer or RuntimePlatform.WindowsEditor;
+        }
     }
 
 }

@@ -23,22 +23,25 @@ namespace Assets.GameData.Scripts
         /// <returns>True, если сервер ответил "pong"; False в противном случае.</returns>
         internal static async Task<bool> Ping()
         {
-            using HttpRequestMessage request = new(HttpMethod.Get, Url.Ping);
-            using HttpResponseMessage response = await _httpClient.SendAsync(request, CancelToken.Create("ping", 2));
-            string responseContent = await response.Content.ReadAsStringAsync();
-            if (!responseContent.IsEmpty())
+            try
             {
-                try
+                using HttpRequestMessage request = new(HttpMethod.Get, Url.Ping);
+                using HttpResponseMessage response = await _httpClient.SendAsync(request, CancelToken.Create("ping", 2));
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (!responseContent.IsEmpty())
                 {
+
                     var jObject = JObject.Parse(responseContent);
                     if (jObject is not null)
                     {
                         JToken m = jObject["message"];
                         return m != null && string.Compare(m.ToString(), "pong", StringComparison.InvariantCultureIgnoreCase) == 0;
                     }
+
                 }
-                catch { }
             }
+            catch { }
+
             return false;
         }
     }

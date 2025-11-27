@@ -1,5 +1,4 @@
 using Assets.GameData.Scripts;
-using Game03Client.PlayerCollection;
 using General;
 using General.GameEntities;
 using Newtonsoft.Json.Linq;
@@ -10,7 +9,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
-using G = Assets.GameData.Scripts.G;
 
 /// <summary>
 /// Управляет сворачиванием/разворачиванием группы UI-элементов (ячеек)
@@ -24,31 +22,31 @@ public class GroupDivider : MonoBehaviour
     {
         this.group_name = group_name;
     }
-    public async Task Init(GameObject gameObjectGroupDivider, IEnumerable<General.GameEntities.CollectionHero> listHeroes)
+    public async Task Init(GameObject groupDivider_GameObject, IEnumerable<General.GameEntities.CollectionHero> listHeroes)
     {
         //DividerButton
-        GameObject gameObjectDividerButton = GameObjectFinder.FindByName("DividerButton", gameObjectGroupDivider.transform);
-        TextMeshProUGUI textMeshProUGUIDividerButton = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", gameObjectDividerButton.transform);
-        Transform transformCellsContainer = GameObjectFinder.FindByName<Transform>("CellsContainer", gameObjectGroupDivider.transform);
+        GameObject dividerButton_GameObject = GameObjectFinder.FindByName("DividerButton", groupDivider_GameObject.transform);
+        TextMeshProUGUI dividerButton_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", dividerButton_GameObject.transform);
+        Transform cellsContainer_Transform = GameObjectFinder.FindByName<Transform>("CellsContainer", groupDivider_GameObject.transform);
         if (group_name.IsEmpty())
         {
-            textMeshProUGUIDividerButton.text = "---No Group---";
-            textMeshProUGUIDividerButton.fontStyle = FontStyles.Italic;
+            dividerButton_TextMeshProUGUI.text = "---No Group---";
+            dividerButton_TextMeshProUGUI.fontStyle = FontStyles.Italic;
         }
         else
         {
-            textMeshProUGUIDividerButton.text = group_name;
+            dividerButton_TextMeshProUGUI.text = group_name;
         }
 
 
-        Sprite raritySelectedSprite = await Addressables.LoadAssetAsync<Sprite>($"raritySelected").Task;
+        Sprite raritySelected_Sprite = await Addressables.LoadAssetAsync<Sprite>($"raritySelected").Task;
 
         foreach (General.GameEntities.CollectionHero groupHero in listHeroes)
         {
-            var heroBase = groupHero.HeroBase;
+            HeroBase heroBase = groupHero.HeroBase;
             GameObject gameObject = await Addressables.LoadAssetAsync<GameObject>("IconHero").Task;
             GameObject _prefabIconHero = gameObject.SafeInstant();
-            _prefabIconHero.transform.SetParent(transformCellsContainer);
+            _prefabIconHero.transform.SetParent(cellsContainer_Transform);
 
             RectTransform _prefabIconHero_Transform = _prefabIconHero.GetComponent<RectTransform>();
             _prefabIconHero_Transform.anchoredPosition3D = Vector3.zero;
@@ -62,7 +60,7 @@ public class GroupDivider : MonoBehaviour
             Transform childImageRarity = childImageMaskRarity.Find("ImageRarity");
             if (childImageHero != null && childImageHero.TryGetComponent(out Image imageHero) && childImageRarity != null && childImageRarity.TryGetComponent(out Image imageRarity))
             {
-                
+
                 Transform childText = _prefabIconHero.transform.Find("TextHero");
                 if (childText != null && childText.TryGetComponent(out TextMeshProUGUI textMeshPro))
                 {
@@ -80,7 +78,7 @@ public class GroupDivider : MonoBehaviour
                 imageHero.type = Image.Type.Simple; // Режим без растягивания;
 
                 ImageHeroHandler clickHandler = _prefabIconHero.AddComponent<ImageHeroHandler>();
-                clickHandler.Initialize(heroBase, imageRarity.sprite, raritySelectedSprite, HeroView, imageRarity);
+                clickHandler.Initialize(heroBase, imageRarity.sprite, raritySelected_Sprite, HeroView, imageRarity);
             }
         }
     }
@@ -182,7 +180,8 @@ public class GroupDivider : MonoBehaviour
     /// </summary>
     private void OnDestroy()
     {
-        if (!destroying) {
+        if (!destroying)
+        {
             // позже удалить
         }
         destroying = true;

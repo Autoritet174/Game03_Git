@@ -15,6 +15,7 @@ namespace Assets.GameData.Scenes.Auth
 
         public async void ButtonLogin_OnClick()
         {
+            GameMessage.ShowLocale(L.Info.CheckingServerAvailability, false);
             bool serverAvailable = await GameServerPinger.Ping();
             if (!serverAvailable)
             {

@@ -11,6 +11,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using L = General.LocalizationKeys;
 
 public class Init_Collection : MonoBehaviour
 {
@@ -91,7 +92,7 @@ public class Init_Collection : MonoBehaviour
 
     private async void Start()
     {
-        GameMessage.Show("Loading collection", false);
+        GameMessage.ShowLocale(L.Info.LoadingCollection, false);
         try
         {
             tabButtonHeroes = new("ButtonHeroes (id=40jhb51a)", "Text (TMP) (id=wl92ls1m)", OnClickHeroes);
@@ -294,19 +295,26 @@ public class Init_Collection : MonoBehaviour
         rectTransformButtonCloseSelectedHero.sizeDelta = vector008PercentOfHeight;
 
 
-        // Панель выбранного героя. Верхняя панель
-        float panelSelectedHeroWidth = rectTransformPanelSelectedHero.rect.width;
-        rectTransformPanelSelectedHeroTop.sizeDelta = new Vector2(panelSelectedHeroWidth, panelTopHeight);
+        // Панель выбранного героя. Правая панель
+        bool panelSelectedHeroActive = rectTransformPanelSelectedHero.gameObject.activeInHierarchy;
+        float panelSelectedHeroWidth;
+        if (panelSelectedHeroActive)
+        {
+            panelSelectedHeroWidth = ;
+            rectTransformPanelSelectedHeroTop.sizeDelta = new Vector2(panelSelectedHeroWidth, panelTopHeight);
 
 
-        // Выбранный герой. Лабел
-        SelectedHeroTop_TextMeshProUGUI.rectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth - panelTopHeight, panelTopHeight);
-        SelectedHeroTop_TextMeshProUGUI.rectTransform.anchoredPosition = new Vector2(panelTopHeight, 0);
-        SelectedHeroTop_TextMeshProUGUI.fontSize = 40f * coefHeight;
+            // Выбранный герой. Лабел
+            SelectedHeroTop_TextMeshProUGUI.rectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth - panelTopHeight, panelTopHeight);
+            SelectedHeroTop_TextMeshProUGUI.rectTransform.anchoredPosition = new Vector2(panelTopHeight, 0);
+            SelectedHeroTop_TextMeshProUGUI.fontSize = 40f * coefHeight;
+        }
+        else {
+            panelSelectedHeroWidth = 0;
+        }
 
-
-        // Внутренние кнопки
-        internalPanelHeroes.Refresh(coefHeight, vector008PercentOfHeight, 10);
+            // Внутренние кнопки
+            internalPanelHeroes.Refresh(coefHeight, vector008PercentOfHeight, 10);
         internalPanelItems.Refresh(coefHeight, vector008PercentOfHeight, 10);
         internalPanelFilter.Refresh(coefHeight, vector008PercentOfHeight, 150);
         internalPanelGroup.Refresh(coefHeight, vector008PercentOfHeight, 256);
