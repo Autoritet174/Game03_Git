@@ -3,10 +3,8 @@ using Game03Client.PlayerCollection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using TMPro;
-using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
@@ -20,6 +18,7 @@ public class Init_Collection : MonoBehaviour
     private const int COLOR_OFF_BUTTON_RGB_VALUE = 100;
     private static Color ColorOffButton = new(COLOR_OFF_BUTTON_RGB_VALUE / 255f, COLOR_OFF_BUTTON_RGB_VALUE / 255f, COLOR_OFF_BUTTON_RGB_VALUE / 255f);
     private bool _initialized = false;
+    private bool _ScrollbarVertical_Active = false;
     private float _width, _height;
 
     private class TabButton
@@ -45,11 +44,16 @@ public class Init_Collection : MonoBehaviour
     private Image imageBackground;
     private float imageBackgroundCoef = 1;
 
-    private RectTransform rectTransformPanelTop;
-    private RectTransform rectTransformButtonClose;
-    private RectTransform rectTransformButtonCloseSelectedHero;
-    private RectTransform rectTransformPanelSelectedHero;
-    private RectTransform rectTransformPanelSelectedHeroTop;
+    private RectTransform panelTop_RectTransform;
+    private RectTransform buttonClose_RectTransform;
+    private RectTransform buttonCloseSelectedHero_RectTransform;
+    private RectTransform panelSelectedHero_RectTransform;
+    private RectTransform panelSelectedHeroTop_RectTransform;
+    private RectTransform panelCollection_RectTransform;
+    private RectTransform panelCollectionTopButtons_RectTransform;
+    private RectTransform scrollViewCollection_RectTransform;
+    private RectTransform scrollbarVertical_RectTransform;
+    private GameObject scrollViewCollection_GameObject;
     private TextMeshProUGUI SelectedHeroTop_TextMeshProUGUI;
 
     private readonly CollectionHero collectionHero = new();
@@ -89,6 +93,7 @@ public class Init_Collection : MonoBehaviour
 
     private Transform transformCollectionContent;
 
+    private readonly List<GroupDivider> groupDividers = new();
 
     private async void Start()
     {
@@ -106,13 +111,16 @@ public class Init_Collection : MonoBehaviour
                 Texture2D texture = imageBackground.sprite.texture;
                 imageBackgroundCoef = texture.width / (float)texture.height;
             }
-            rectTransformPanelTop = GameObjectFinder.FindByName<RectTransform>("PanelTop (id=ibal8ya0)");
-            rectTransformButtonClose = GameObjectFinder.FindByName<RectTransform>("ButtonClose (id=4nretdab)");
-            rectTransformButtonCloseSelectedHero = GameObjectFinder.FindByName<RectTransform>("ButtonClose (id=0ursxw0e)");
-            rectTransformPanelSelectedHero = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHero (id=vs2gi8c6)");
-            rectTransformPanelSelectedHeroTop = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHeroTop (id=0y6mrhc2)");
+            panelTop_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelTop (id=ibal8ya0)");
+            buttonClose_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose (id=4nretdab)");
+            buttonCloseSelectedHero_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose (id=0ursxw0e)");
+            panelSelectedHero_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHero (id=vs2gi8c6)");
+            panelSelectedHeroTop_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHeroTop (id=0y6mrhc2)");
             SelectedHeroTop_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label_SelectedHero (id=ahrtgg43)");
 
+            // Панель для внутренних кнопок
+            panelCollection_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelCollection (id=jcxwa01g)");
+            panelCollectionTopButtons_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelCollectionTopButtons (id=gmzb0h9f)");
 
             // Внутренние кнопки
             internalPanelHeroes = new("ImageButtonHeroes (id=pakco5ud)");
@@ -121,6 +129,10 @@ public class Init_Collection : MonoBehaviour
             internalPanelGroup = new("ImageButtonGroup (id=hbsaogwl)");
             internalPanelSort = new("ImageButtonSort (id=6nvcsrdm)");
 
+            // Scroll View для коллекции героев
+            scrollViewCollection_RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollViewCollection (id=ph1oh7dk)");
+            scrollbarVertical_RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollbarVertical (id=ti32ix3l)");
+            scrollViewCollection_GameObject = scrollViewCollection_RectTransform.gameObject;
 
             // Коллекция контент
             transformCollectionContent = GameObjectFinder.FindByName("Content (id=ddmjr9vy)").transform;
@@ -129,97 +141,25 @@ public class Init_Collection : MonoBehaviour
             _initialized = true;
             OnResizeWindow();
 
-            CancellationTokenSource cancellationTokenSource = new(TimeSpan.FromSeconds(30));
-            //// Получить коллекцию героев игрока
-            //JObject jObject = await G.Game.HttpRequester.GetJObjectAsync(General.Url.Collection.Heroes, cancellationTokenSource.Token);
-            //if (jObject == null)
-            //{
-            //    GameMessage.Show(L.Error.Server.InvalidResponse, true);
-            //    return;
-            //}
-
-            //JToken heroes = jObject["heroes"];
-            //if (heroes == null)
-            //{
-            //    Debug.Log("heroes == null");
-            //    GameMessage.Show(L.Error.Server.InvalidResponse, true);
-            //    return;
-            //}
-
-            //// Получить уникальные имена групп
-            //List<string> group_name_List = new();
-            //foreach (JToken hero in heroes)
-            //{
-            //    //Debug.Log($"_id={j["_id"]}; owner_id={j["owner_id"]}; hero_id={j["hero_id"]}; health={j["health"]}; attack={j["attack"]}; speed={j["speed"]}; strength={j["strength"]}; agility={j["agility"]}; intelligence={j["intelligence"]}");
-            //    string group_name = hero["group_name"]?.ToString()?.Trim() ?? string.Empty;
-            //    if (group_name != string.Empty && !group_name_List.Contains(group_name))
-            //    {
-            //        group_name_List.Add(group_name);
-            //    }
-            //}
-
-            //string guidNoGroupStr = Guid.NewGuid().ToString();
-            //group_name_List.Add(guidNoGroupStr);
-
-            //// Добавить всех героев в список, для легкого удаления потом.
-            //List<JToken> allHeroesJToken = new();
-            //foreach (JToken j in heroes)
-            //{
-            //    allHeroesJToken.Add(j);
-            //}
-
-            //Dictionary<string, List<JToken>> heroesByGroups = new();
-            //foreach (string group_name_L in group_name_List)
-            //{
-            //    List<JToken> list = new();
-            //    heroesByGroups.Add(group_name_L, list);
-
-            //    if (group_name_L == guidNoGroupStr)
-            //    {
-            //        list.AddRange(allHeroesJToken);
-            //        break;
-            //    }
-
-            //    for (int i = allHeroesJToken.Count - 1; i >= 0; i--)
-            //    {
-            //        JToken j = allHeroesJToken[i];
-            //        string group_name = j["group_name"]?.ToString()?.Trim() ?? string.Empty;
-            //        if (group_name == group_name_L)
-            //        {
-            //            list.Add(j);
-            //            _ = allHeroesJToken.Remove(j);
-            //        }
-            //    }
-            //}
-
-            //
-            //foreach (KeyValuePair<string, List<JToken>> keyValue in heroesByGroups)
-            //{
-            //    
-            //    
-            //    string group_name = keyValue.Key == guidNoGroupStr ? null : keyValue.Key;
-            //    
-            //    Task task = groupDivider_NoGroup.Init(groupDividerGameObject, keyValue.Value);
-            //    tasks.Add(task);
-            //}
-
+            groupDividers.Clear();
             List<Task> tasks = new();
             foreach (GroupHeroes item in G.Game.Collection.GetCollectionHeroesGroupByGroups().OrderByDescending(static a => a.Priority))
             {
                 GameObject groupDividerGameObject = (await Addressables.LoadAssetAsync<GameObject>($"GroupDividerPrefab").Task).SafeInstant();
                 groupDividerGameObject.transform.SetParent(transformCollectionContent, false);
-                GroupDivider groupDivider = new(item.Name);
-                Task task = groupDivider.Init(groupDividerGameObject, item.List);
+                GroupDivider groupDivider = new(item.Name, groupDividerGameObject);
+                groupDividers.Add(groupDivider);
+                Task task = groupDivider.Init(item.List);
                 tasks.Add(task);
             }
             await Task.WhenAll(tasks);
+
+            OnResizeWindow();
         }
         finally
         {
             GameMessage.Close();
         }
-
-        //string s = jObject["token"]?.ToString() ?? string.Empty;
     }
 
     private void Update()
@@ -228,8 +168,18 @@ public class Init_Collection : MonoBehaviour
         {
             return;
         }
+        bool resize = false;
+        if (_ScrollbarVertical_Active != scrollViewCollection_GameObject.activeInHierarchy)
+        {
+            _ScrollbarVertical_Active = scrollViewCollection_GameObject.activeInHierarchy;
+            resize = false;
+        }
+        if (!resize && (!Mathf.Approximately(Screen.height, _height) || !Mathf.Approximately(Screen.width, _width)))
+        {
+            resize = true;
+        }
 
-        if (!Mathf.Approximately(Screen.height, _height) || !Mathf.Approximately(Screen.width, _width))
+        if (resize)
         {
             OnResizeWindow();
         }
@@ -278,8 +228,9 @@ public class Init_Collection : MonoBehaviour
 
         // Верхняя панель
         float topPanelHeightPercent = 0.08f;
-        float panelTopHeight = topPanelHeightPercent * _height;
+        float panelTopHeight = topPanelHeightPercent * _height; // 86.4
         Vector2 vector008PercentOfHeight = new(panelTopHeight, panelTopHeight);
+        panelTop_RectTransform.sizeDelta = new Vector2(_width, panelTopHeight);
 
 
         // Кнопки вкладок
@@ -291,27 +242,39 @@ public class Init_Collection : MonoBehaviour
 
 
         // Кнопки "Закрыть"
-        rectTransformButtonClose.sizeDelta = vector008PercentOfHeight;
-        rectTransformButtonCloseSelectedHero.sizeDelta = vector008PercentOfHeight;
+        buttonClose_RectTransform.sizeDelta = vector008PercentOfHeight;
+        buttonCloseSelectedHero_RectTransform.sizeDelta = vector008PercentOfHeight;
 
 
-        // Панель выбранного героя. Правая панель
-        bool panelSelectedHeroActive = rectTransformPanelSelectedHero.gameObject.activeInHierarchy;
+        // Панель выбранного героя
+        bool panelSelectedHeroActive = panelSelectedHero_RectTransform.gameObject.activeInHierarchy;
         float panelSelectedHeroWidth;
         if (panelSelectedHeroActive)
         {
-            panelSelectedHeroWidth = ;
-            rectTransformPanelSelectedHeroTop.sizeDelta = new Vector2(panelSelectedHeroWidth, panelTopHeight);
+            panelSelectedHeroWidth = 576 * coefHeight;
 
+            // Панель выбранного героя
+            panelSelectedHero_RectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth, 994 * coefHeight);
+
+            // Панель выбранного героя. Верхняя панель где написано имя героя
+            panelSelectedHeroTop_RectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth, panelTopHeight);
 
             // Выбранный герой. Лабел
             SelectedHeroTop_TextMeshProUGUI.rectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth - panelTopHeight, panelTopHeight);
-            SelectedHeroTop_TextMeshProUGUI.rectTransform.anchoredPosition = new Vector2(panelTopHeight, 0);
+            //SelectedHeroTop_TextMeshProUGUI.rectTransform.anchoredPosition = new Vector2(panelTopHeight, 0);
             SelectedHeroTop_TextMeshProUGUI.fontSize = 40f * coefHeight;
         }
-        else {
+        else
+        {
             panelSelectedHeroWidth = 0;
         }
+
+        // Панель коллекции
+        float panelCollection_Width = _width - panelSelectedHeroWidth;
+        panelCollection_RectTransform.sizeDelta = new Vector2(panelCollection_Width, _height - panelTopHeight);
+
+        // Панель верхних кнопок
+        panelCollectionTopButtons_RectTransform.sizeDelta = new Vector2(panelCollection_Width, 113f * coefHeight);
 
         // Внутренние кнопки
         internalPanelHeroes.Refresh(coefHeight, vector008PercentOfHeight, 10);
@@ -319,6 +282,18 @@ public class Init_Collection : MonoBehaviour
         internalPanelFilter.Refresh(coefHeight, vector008PercentOfHeight, 150);
         internalPanelGroup.Refresh(coefHeight, vector008PercentOfHeight, 256);
         internalPanelSort.Refresh(coefHeight, vector008PercentOfHeight, 362);
+
+        // Scroll View для коллекции героев
+        scrollViewCollection_RectTransform.sizeDelta = new Vector2(panelCollection_Width, panelCollection_RectTransform.sizeDelta.y - panelCollectionTopButtons_RectTransform.sizeDelta.y);
+
+        // ScrollbarVertical для коллекции героев
+        scrollbarVertical_RectTransform.sizeDelta = new Vector2(32f * coefHeight, scrollViewCollection_RectTransform.sizeDelta.y);
+
+        // groupDividers
+        if (groupDividers.Count > 0)
+        {
+            groupDividers.ForEach(a => a.Resize(panelCollection_Width, coefHeight));
+        }
 
     }
 }

@@ -18,16 +18,30 @@ public class GroupDivider : MonoBehaviour
 {
     private readonly string group_name;
 
-    public GroupDivider(string group_name)
+    private readonly GameObject _GameObject;
+    private readonly RectTransform _RectTransform;
+
+    private readonly GameObject _DividerButton_GameObject;
+    private readonly RectTransform _DividerButton_RectTransform;
+
+    private readonly GameObject _CellsContainer_GameObject;
+    private readonly RectTransform _CellsContainer_RectTransform;
+
+    public GroupDivider(string group_name, GameObject gameObject)
     {
         this.group_name = group_name;
+        _GameObject = gameObject;
+        _RectTransform = gameObject.GetComponent<RectTransform>();
+        _DividerButton_GameObject = GameObjectFinder.FindByName("DividerButton", _GameObject.transform);
+        _DividerButton_RectTransform = _DividerButton_GameObject.GetComponent<RectTransform>();
+        _CellsContainer_GameObject = GameObjectFinder.FindByName("CellsContainer", _GameObject.transform);
+        _CellsContainer_RectTransform = _CellsContainer_GameObject.GetComponent<RectTransform>();
     }
-    public async Task Init(GameObject groupDivider_GameObject, IEnumerable<General.GameEntities.CollectionHero> listHeroes)
+    public async Task Init(IEnumerable<General.GameEntities.CollectionHero> listHeroes)
     {
         //DividerButton
-        GameObject dividerButton_GameObject = GameObjectFinder.FindByName("DividerButton", groupDivider_GameObject.transform);
-        TextMeshProUGUI dividerButton_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", dividerButton_GameObject.transform);
-        Transform cellsContainer_Transform = GameObjectFinder.FindByName<Transform>("CellsContainer", groupDivider_GameObject.transform);
+        TextMeshProUGUI dividerButton_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _DividerButton_GameObject.transform);
+        Transform cellsContainer_Transform = _CellsContainer_GameObject.transform;
         if (group_name.IsEmpty())
         {
             dividerButton_TextMeshProUGUI.text = "---No Group---";
@@ -87,6 +101,12 @@ public class GroupDivider : MonoBehaviour
     {
         Debug.Log(entity.Name);
         //throw new NotImplementedException();
+    }
+    public void Resize(float width, float coefHeight)
+    {
+        _RectTransform.sizeDelta = new Vector2(width, 500);
+        _DividerButton_RectTransform.sizeDelta = new Vector2(width, 45f * coefHeight);
+        _CellsContainer_RectTransform.sizeDelta = new Vector2(width, 450f);// в зависимости от героев и отступов
     }
 
 

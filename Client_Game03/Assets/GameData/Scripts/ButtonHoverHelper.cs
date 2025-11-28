@@ -11,9 +11,7 @@ public static class ButtonHoverHelper
     /// <param name="button"></param>
     /// <param name="onPointerEnter"></param>
     /// <param name="onPointerExit"></param>
-    public static void AddHoverEvents(this Button button,
-        Action onPointerEnter,
-        Action onPointerExit)
+    public static void AddHoverEvents(this Button button, Action onPointerEnter, Action onPointerExit)
     {
         if (button == null)
         {
@@ -32,9 +30,7 @@ public static class ButtonHoverHelper
     }
 
     // Перегруженный метод для использования UnityEvent
-    public static void AddHoverEvents(Button button,
-        UnityEngine.Events.UnityEvent onPointerEnter,
-        UnityEngine.Events.UnityEvent onPointerExit)
+    public static void AddHoverEvents(Button button, UnityEngine.Events.UnityEvent onPointerEnter, UnityEngine.Events.UnityEvent onPointerExit)
     {
         if (button == null)
         {
