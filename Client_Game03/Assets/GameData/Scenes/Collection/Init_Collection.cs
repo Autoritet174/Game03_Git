@@ -140,19 +140,27 @@ public class Init_Collection : MonoBehaviour
 
             _initialized = true;
             OnResizeWindow();
+            await Task.Yield();
 
             groupDividers.Clear();
-            List<Task> tasks = new();
+            //List<Task> tasks = new();
             foreach (GroupHeroes item in G.Game.Collection.GetCollectionHeroesGroupByGroups().OrderByDescending(static a => a.Priority))
             {
-                GameObject groupDividerGameObject = (await Addressables.LoadAssetAsync<GameObject>($"GroupDividerPrefab").Task).SafeInstant();
-                groupDividerGameObject.transform.SetParent(transformCollectionContent, false);
-                GroupDivider groupDivider = new(item.Name, groupDividerGameObject);
-                groupDividers.Add(groupDivider);
-                Task task = groupDivider.Init(item.List);
-                tasks.Add(task);
+                if (item.List.Count() > 0)
+                {
+                    GameObject groupDividerGameObject = (await Addressables.LoadAssetAsync<GameObject>($"GroupDividerPrefab").Task).SafeInstant();
+                    groupDividerGameObject.transform.SetParent(transformCollectionContent, false);
+                    GroupDivider groupDivider = new(item.Name, groupDividerGameObject, item.List);
+                    groupDividers.Add(groupDivider);
+
+                    OnResizeWindow();
+                    //await Task.Yield();
+
+                    await groupDivider.Init();
+                }
+                //tasks.Add(task);
             }
-            await Task.WhenAll(tasks);
+            //await Task.WhenAll(tasks);
 
             OnResizeWindow();
         }

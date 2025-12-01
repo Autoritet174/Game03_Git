@@ -4,6 +4,7 @@ using General.GameEntities;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -26,8 +27,10 @@ public class GroupDivider : MonoBehaviour
 
     private readonly GameObject _CellsContainer_GameObject;
     private readonly RectTransform _CellsContainer_RectTransform;
+    private readonly GridLayoutGroup _CellsContainer_GridLayoutGroup;
+    private readonly IEnumerable<General.GameEntities.CollectionHero> _listHeroes;
 
-    public GroupDivider(string group_name, GameObject gameObject)
+    public GroupDivider(string group_name, GameObject gameObject, IEnumerable<General.GameEntities.CollectionHero> listHeroes)
     {
         this.group_name = group_name;
         _GameObject = gameObject;
@@ -36,8 +39,10 @@ public class GroupDivider : MonoBehaviour
         _DividerButton_RectTransform = _DividerButton_GameObject.GetComponent<RectTransform>();
         _CellsContainer_GameObject = GameObjectFinder.FindByName("CellsContainer", _GameObject.transform);
         _CellsContainer_RectTransform = _CellsContainer_GameObject.GetComponent<RectTransform>();
+        _CellsContainer_GridLayoutGroup = _CellsContainer_GameObject.GetComponent<GridLayoutGroup>();
+        _listHeroes = listHeroes;
     }
-    public async Task Init(IEnumerable<General.GameEntities.CollectionHero> listHeroes)
+    public async Task Init()
     {
         //DividerButton
         TextMeshProUGUI dividerButton_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _DividerButton_GameObject.transform);
@@ -55,7 +60,7 @@ public class GroupDivider : MonoBehaviour
 
         Sprite raritySelected_Sprite = await Addressables.LoadAssetAsync<Sprite>($"raritySelected").Task;
 
-        foreach (General.GameEntities.CollectionHero groupHero in listHeroes)
+        foreach (General.GameEntities.CollectionHero groupHero in _listHeroes)
         {
             HeroBase heroBase = groupHero.HeroBase;
             GameObject gameObject = await Addressables.LoadAssetAsync<GameObject>("IconHero").Task;
@@ -104,9 +109,41 @@ public class GroupDivider : MonoBehaviour
     }
     public void Resize(float width, float coefHeight)
     {
-        _RectTransform.sizeDelta = new Vector2(width, 500);
-        _DividerButton_RectTransform.sizeDelta = new Vector2(width, 45f * coefHeight);
-        _CellsContainer_RectTransform.sizeDelta = new Vector2(width, 450f);// в зависимости от героев и отступов
+        float cellSize1080 = 106f;
+        float spacing1080 = 10f;
+        int paddingR = (int)(40f * coefHeight);
+        float spacing = spacing1080 * coefHeight;
+        float cellSize = cellSize1080 * coefHeight;
+        //расчитываем сколько при этих параметрах войдет ячеек
+        float widthWithoutPadding = width - (paddingR + spacing);
+        int countCellInRow = (int)(widthWithoutPadding / cellSize);
+        float spacingDelta = widthWithoutPadding / ((countCellInRow * (cellSize1080 / spacing1080)) + (countCellInRow - 1));
+        float cellSizeDelta = spacingDelta * cellSize1080 / spacing1080;
+
+
+        _CellsContainer_GridLayoutGroup.padding.left = (int)spacingDelta;
+        _CellsContainer_GridLayoutGroup.padding.right = paddingR;
+        _CellsContainer_GridLayoutGroup.padding.top = (int)spacingDelta;
+        _CellsContainer_GridLayoutGroup.padding.bottom = (int)spacingDelta;
+        _CellsContainer_GridLayoutGroup.spacing = new Vector2(spacingDelta, spacingDelta);
+        _CellsContainer_GridLayoutGroup.cellSize = new Vector2(cellSizeDelta, cellSizeDelta);
+
+        // вычисляем количество строк
+        int countHeroes = _listHeroes.Count();
+        int countRows = (countHeroes / countCellInRow) + (countHeroes % countCellInRow == 0 ? 0 : 1);
+        if (countRows < 1)
+        {
+            countRows = 1;
+        }
+        
+        float heightContainer = (countRows * cellSizeDelta) + ((countRows+1) * spacingDelta);
+
+        float heightButton = 45f * coefHeight;
+        _DividerButton_RectTransform.sizeDelta = new Vector2(width, heightButton);
+        _CellsContainer_RectTransform.sizeDelta = new Vector2(width, heightContainer);// в зависимости от героев и отступов
+        _RectTransform.sizeDelta = new Vector2(width, heightButton + heightContainer);
+
+        _CellsContainer_RectTransform.anchoredPosition = new Vector2(0, -45f * coefHeight);
     }
 
 
