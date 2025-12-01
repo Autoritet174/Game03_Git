@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6845946891980642128}
   - component: {fileID: 7796328983127805152}
   - component: {fileID: 1529568800190862296}
-  - component: {fileID: 4527368065168189234}
   m_Layer: 5
   m_Name: PanelTop
   m_TagString: Untagged
@@ -77,20 +76,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &4527368065168189234
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 897619211837132204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3789e43d856fd643a21973de7e88d58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PanelTopInitializator
-  rectTransformPanelTop: {fileID: 6845946891980642128}
-  rectTransformButtonClose: {fileID: 2629187236987724646}
 --- !u!1001 &5785839555440770375
 PrefabInstance:
   m_ObjectHideFlags: 0

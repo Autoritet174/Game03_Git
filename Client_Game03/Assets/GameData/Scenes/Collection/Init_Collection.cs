@@ -148,15 +148,14 @@ public class Init_Collection : MonoBehaviour
             {
                 if (item.List.Count() > 0)
                 {
-                    GameObject groupDividerGameObject = (await Addressables.LoadAssetAsync<GameObject>($"GroupDividerPrefab").Task).SafeInstant();
-                    groupDividerGameObject.transform.SetParent(transformCollectionContent, false);
-                    GroupDivider groupDivider = new(item.Name, groupDividerGameObject, item.List);
+                    GameObject groupDividerPrefab = await Addressables.LoadAssetAsync<GameObject>("GroupDividerPrefab").Task;
+                    GameObject obj = groupDividerPrefab.SafeInstant();
+                    GroupDivider groupDivider = obj.AddComponent<GroupDivider>();
+                    obj.transform.SetParent(transformCollectionContent, false);
                     groupDividers.Add(groupDivider);
-
+                    groupDivider.Init1(item.Name, obj, item.List, panelCollection_RectTransform);
                     OnResizeWindow();
-                    //await Task.Yield();
-
-                    await groupDivider.Init();
+                    await groupDivider.Init2();
                 }
                 //tasks.Add(task);
             }
@@ -297,10 +296,12 @@ public class Init_Collection : MonoBehaviour
         // ScrollbarVertical для коллекции героев
         scrollbarVertical_RectTransform.sizeDelta = new Vector2(32f * coefHeight, scrollViewCollection_RectTransform.sizeDelta.y);
 
+        transformCollectionContent.GetComponent<VerticalLayoutGroup>().spacing = 5f * coefHeight;
+
         // groupDividers
         if (groupDividers.Count > 0)
         {
-            groupDividers.ForEach(a => a.Resize(panelCollection_Width, coefHeight));
+            groupDividers.ForEach(a => a.Resize());
         }
 
     }

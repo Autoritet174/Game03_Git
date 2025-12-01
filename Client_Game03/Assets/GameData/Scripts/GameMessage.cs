@@ -22,14 +22,14 @@ namespace Assets.GameData.Scripts
         private static bool resultYesNo = false;
 
 
-        private static string textYes = G.Game.LocalizationManager.GetValue(L.UI.Button.Yes);
-        private static string textYesHover = $"{textYes} [Enter]";
+        private static readonly string textYes = G.Game.LocalizationManager.GetValue(L.UI.Button.Yes);
+        private static readonly string textYesHover = $"{textYes} [Enter]";
 
-        private static string textNo = G.Game.LocalizationManager.GetValue(L.UI.Button.No);
-        private static string textNoHover = $"{textNo} [Escape]";
+        private static readonly string textNo = G.Game.LocalizationManager.GetValue(L.UI.Button.No);
+        private static readonly string textNoHover = $"{textNo} [Escape]";
 
-        private static string textOk = G.Game.LocalizationManager.GetValue(L.UI.Button.Ok);
-        private static string textOkHover = $"{textOk} [Enter/Escape]";
+        private static readonly string textOk = G.Game.LocalizationManager.GetValue(L.UI.Button.Ok);
+        private static readonly string textOkHover = $"{textOk} [Enter/Escape]";
 
         /// <summary>
         /// Выводит игровое сообщение и ожидает закрытие окна.
