@@ -1,14 +1,14 @@
 {
 	"UI" : {
 		"Button": {
-			"Heroes_Count": "Герои ({count})",
-			"Items_Count": "Предметы ({count})",
 			"Ok": "Ок",
 			"Yes": "Да",
 			"No": "Нет",
 			"Login": "Вход",
 			"Reg": "Регистрация",
 			"ExitGame": "Выйти из игры",
+			"Heroes": "Герои",
+			"Equipment": "Экипировка",
 		},
 		"Label": {
 			"ExitGame": "Выйти из игры?",

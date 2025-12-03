@@ -38,9 +38,12 @@ public class Init_Collection : MonoBehaviour
             textMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>(nameText);
             button.onClick.AddListener(action);
         }
+        public void SetText(string text) {
+            textMeshProUGUI.text = text;
+        }
     }
 
-    private TabButton tabButtonHeroes, tabButtonItem;
+    private TabButton tabButtonHeroes, tabButtonEquipment;
     private Image imageBackground;
     private float imageBackgroundCoef = 1;
 
@@ -55,8 +58,6 @@ public class Init_Collection : MonoBehaviour
     private RectTransform scrollbarVertical_RectTransform;
     private GameObject scrollViewCollection_GameObject;
     private TextMeshProUGUI SelectedHeroTop_TextMeshProUGUI;
-
-    private readonly CollectionHero collectionHero = new();
 
     /// <summary>
     /// Внутренняя панель, кнопки.
@@ -101,8 +102,9 @@ public class Init_Collection : MonoBehaviour
         try
         {
             tabButtonHeroes = new("ButtonHeroes (id=40jhb51a)", "Text (TMP) (id=wl92ls1m)", OnClickHeroes);
-            tabButtonItem = new("ButtonItems (id=k5hqeyat)", "Text (TMP) (id=cklw2id1)", OnClickItems);
-
+            tabButtonEquipment = new("ButtonItems (id=k5hqeyat)", "Text (TMP) (id=cklw2id1)", OnClickItems);
+            tabButtonHeroes.SetText($"{G.Game.LocalizationManager.GetValue(L.UI.Button.Heroes)} ({G.Game.Collection.GetCountHeroes()})");
+            tabButtonEquipment.SetText($"{G.Game.LocalizationManager.GetValue(L.UI.Button.Equipment)} ({-99999})");
 
             // Изображение заднего фона
             imageBackground = GameObjectFinder.FindByName<Image>("Image_Background (id=688x18dt)");
@@ -196,12 +198,11 @@ public class Init_Collection : MonoBehaviour
     {
         OnClickTabButton(tabButtonHeroes);
         tabButtonHeroes.image.color = Color.white;
-
     }
 
     private void OnClickItems()
     {
-        OnClickTabButton(tabButtonItem);
+        OnClickTabButton(tabButtonEquipment);
     }
 
     private void OnClickTabButton(TabButton tabButtonPressed)
@@ -209,12 +210,12 @@ public class Init_Collection : MonoBehaviour
         if (tabButtonPressed.name == tabButtonHeroes.name)
         {
             tabButtonHeroes.image.color = Color.white;
-            tabButtonItem.image.color = ColorOffButton;
+            tabButtonEquipment.image.color = ColorOffButton;
         }
         else
         {
             tabButtonHeroes.image.color = ColorOffButton;
-            tabButtonItem.image.color = Color.white;
+            tabButtonEquipment.image.color = Color.white;
         }
     }
 
@@ -223,7 +224,7 @@ public class Init_Collection : MonoBehaviour
         _height = Screen.height;
         _width = Screen.width;
         float coefHeight = _height / 1080f;
-        float fontSize = 30f * coefHeight;
+        float fontSize = 25f * coefHeight;
 
         //buttonHeroesTmp.fontSize = 32f * _lastHeight / 1080;
         //buttonItemsTmp.fontSize = 32f * _lastHeight / 1080;
@@ -242,10 +243,10 @@ public class Init_Collection : MonoBehaviour
 
         // Кнопки вкладок
         float tabButtonWidth = panelTopHeight * 3.777777f; // = (0,17 * 1920) / (0,08 * 1080)
-        tabButtonItem.rectTransform.sizeDelta = tabButtonHeroes.rectTransform.sizeDelta = new Vector2(tabButtonWidth, panelTopHeight);
-        tabButtonItem.rectTransform.anchoredPosition = new Vector2(tabButtonWidth, 0);
+        tabButtonEquipment.rectTransform.sizeDelta = tabButtonHeroes.rectTransform.sizeDelta = new Vector2(tabButtonWidth, panelTopHeight);
+        tabButtonEquipment.rectTransform.anchoredPosition = new Vector2(tabButtonWidth, 0);
         tabButtonHeroes.textMeshProUGUI.fontSize = fontSize;
-        tabButtonItem.textMeshProUGUI.fontSize = fontSize;
+        tabButtonEquipment.textMeshProUGUI.fontSize = fontSize;
 
 
         // Кнопки "Закрыть"

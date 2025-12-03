@@ -909,15 +909,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_text
-      value: Items (-99999)
+      value: Equipment (-99999)
       objectReference: {fileID: 0}
     - target: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_fontSize
-      value: 32
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_fontSizeBase
-      value: 32
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_HorizontalAlignment
@@ -1208,7 +1208,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_fontSize
-      value: 30
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_fontStyle
@@ -1228,7 +1228,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_fontSizeBase
-      value: 30
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_fontColor32.rgba
@@ -3779,10 +3779,10 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6845946891980642128, guid: 77e7fb991689726469402cabb744d15a, type: 3}
       insertIndex: 0
-      addedObject: {fileID: 418720634}
+      addedObject: {fileID: 532213215}
     - targetCorrespondingSourceObject: {fileID: 6845946891980642128, guid: 77e7fb991689726469402cabb744d15a, type: 3}
       insertIndex: 1
-      addedObject: {fileID: 532213215}
+      addedObject: {fileID: 418720634}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 77e7fb991689726469402cabb744d15a, type: 3}
 --- !u!1660057539 &9223372036854775807
