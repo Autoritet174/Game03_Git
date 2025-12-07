@@ -106,7 +106,7 @@ namespace Assets.GameData.Scenes.Auth
                 bool loaded = await G.Game.Collection.LoadAllCollectionFromServer(CancelToken.Create("G.Game.GlobalFunctions.LoadListAllHeroesAsync"));
                 if (!loaded)
                 {
-                    GameMessage.ShowLocale(L.Error.Server.LoadingCollectionFailed, false);
+                    GameMessage.ShowLocale(L.Error.Server.LoadingCollectionFailed, true);
                     return;
                 }
 

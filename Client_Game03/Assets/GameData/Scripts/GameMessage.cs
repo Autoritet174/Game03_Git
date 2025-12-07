@@ -83,7 +83,8 @@ namespace Assets.GameData.Scripts
         /// </summary>
         public static void ShowError(Exception ex)
         {
-            Show("APP_EXCEPTION: An exception has occurred, see log file.", true);
+            Show($"APP_EXCEPTION: An exception has occurred, see log file.", true);
+            Debug.LogError(ex);
             LoggerException.LogException(ex);
         }
 
@@ -187,14 +188,14 @@ namespace Assets.GameData.Scripts
                 buttonOk.onClick.AddListener(PressOk);
 
                 buttonOkText.text = textOk;
-                if (G.WorkingOnDesktop())
-                {
-                    buttonOk.AddHoverEvents(
-                    () => buttonOkText.text = textOkHover,
-                    () => buttonOkText.text = textOk);
-                }
+                //if (G.WorkingOnDesktop())
+                //{
+                //    buttonOk.AddHoverEvents(
+                //    () => buttonOkText.text = textOkHover,
+                //    () => buttonOkText.text = textOk);
+                //}
 
-                InputManager.Register(KeyCode.Escape, PressOk, 1000, KeyCode.Return, KeyCode.KeypadEnter);
+                //InputManager.Register(KeyCode.Escape, PressOk, 1000, KeyCode.Return, KeyCode.KeypadEnter);
             }
             else if (yesNoDialog)
             {
@@ -212,21 +213,21 @@ namespace Assets.GameData.Scripts
                 buttonNo.onClick.RemoveAllListeners();
                 buttonNo.onClick.AddListener(PressNo);
 
-                InputManager.Register(KeyCode.Escape, PressNo, 1000);
-                InputManager.Register(KeyCode.Return, PressYes, 1000, KeyCode.KeypadEnter);
+                //InputManager.Register(KeyCode.Escape, PressNo, 1000);//работает
+                //InputManager.Register(KeyCode.Return, PressYes, 1000, KeyCode.KeypadEnter);// не работает
 
                 buttonYesText.text = textYes;
                 buttonNoText.text = textNo;
-                if (G.WorkingOnDesktop())
-                {
-                    buttonYes.AddHoverEvents(
-                    () => buttonYesText.text = textYesHover,
-                    () => buttonYesText.text = textYes);
+                //if (G.WorkingOnDesktop())
+                //{
+                //    buttonYes.AddHoverEvents(
+                //    () => buttonYesText.text = textYesHover,
+                //    () => buttonYesText.text = textYes);
 
-                    buttonNo.AddHoverEvents(
-                    () => buttonNoText.text = textNoHover,
-                    () => buttonNoText.text = textNo);
-                }
+                //    buttonNo.AddHoverEvents(
+                //    () => buttonNoText.text = textNoHover,
+                //    () => buttonNoText.text = textNo);
+                //}
             }
             else
             {
@@ -238,21 +239,21 @@ namespace Assets.GameData.Scripts
 
         private static void PressYes()
         {
-            InputManager.Unregister(PressYes);
-            InputManager.Unregister(PressNo);
+            //InputManager.Unregister(PressYes);
+            //InputManager.Unregister(PressNo);
             resultYesNo = true;
             Close();
         }
         private static void PressNo()
         {
-            InputManager.Unregister(PressYes);
-            InputManager.Unregister(PressNo);
+            //InputManager.Unregister(PressYes);
+            //InputManager.Unregister(PressNo);
             resultYesNo = false;
             Close();
         }
         private static void PressOk()
         {
-            InputManager.Unregister(PressOk);
+            //InputManager.Unregister(PressOk);
             Close();
         }
 

@@ -40,16 +40,16 @@ namespace Assets.GameData.Scenes.Auth
             _initialized = true;
             OnResizeWindow();
 
-            InputManager.Register(KeyCode.Escape, GameExitHandler.ExitGame);
-            InputManager.Register(KeyCode.Return, PressLogin, key2: KeyCode.KeypadEnter);
+            //InputManager.Register(KeyCode.Escape, GameExitHandler.ExitGame);
+            //InputManager.Register(KeyCode.Return, PressLogin, key2: KeyCode.KeypadEnter);
 
             //GameMessage.Show("", true);
         }
-        private void OnDestroy()
-        {
-            InputManager.Unregister(GameExitHandler.ExitGame);
-            InputManager.Unregister(PressLogin);
-        }
+        //private void OnDestroy()
+        //{
+        //    InputManager.Unregister(GameExitHandler.ExitGame);
+        //    InputManager.Unregister(PressLogin);
+        //}
 
         private void Update()
         {

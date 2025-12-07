@@ -102,7 +102,7 @@
             <inheritdoc/>
             <exception cref="T:System.InvalidOperationException">Выбрасывается, если произошла ошибка при конвертации данных (например, неверный формат).</exception>
         </member>
-        <member name="M:Game03Client.GameData.GameDataProvider.GetHeroById(System.Guid)">
+        <member name="M:Game03Client.GameData.GameDataProvider.GetHeroById(System.Int32)">
             <inheritdoc/>
         </member>
         <member name="T:Game03Client.GameData.IGameData">
@@ -124,12 +124,12 @@
             </summary>
             <returns>Коллекция, содержащая все доступные базовые сущности героев.</returns>
         </member>
-        <member name="M:Game03Client.GameData.IGameData.GetHeroById(System.Guid)">
+        <member name="M:Game03Client.GameData.IGameData.GetHeroById(System.Int32)">
             <summary>
             Находит и возвращает базовую сущность героя по его уникальному идентификатору.
             </summary>
-            <param name="guid">Уникальный идентификатор (GUID) искомого героя.</param>
-            <returns>Базовая сущность героя (<see cref="T:General.GameEntities.HeroBase"/>) с указанным <paramref name="guid"/>,
+            <param name="id">Уникальный идентификатор (int) искомого героя.</param>
+            <returns>Базовая сущность героя (<see cref="T:General.GameEntities.HeroBase"/>) с указанным <paramref name="id"/>,
             или <c>null</c> (если поддерживается типом), если герой не найден.</returns>
         </member>
         <member name="T:Game03Client.GameLanguage">
