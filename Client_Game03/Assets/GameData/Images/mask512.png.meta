@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 2a44617b38138404595827501fbf6083
+guid: 2973355bef6e11b4da46bbd3b5e7c56f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1504909034587979103
-    second: rogue_0
+      213: -1500434286138515679
+    second: mask_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -76,7 +76,7 @@ TextureImporter:
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
-    compressionQuality: 50
+    compressionQuality: 100
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: rogue_0
+      name: mask_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1024
-        height: 1024
+        width: 512
+        height: 512
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 113, y: 113, z: 113, w: 113}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f5d74e92bc282e410800000000000000
-      internalID: 1504909034587979103
+      spriteID: 12f95e567f26d2be0800000000000000
+      internalID: -1500434286138515679
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: c650b2e32a87017409b5cb935dad1d81
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      rogue_0: 1504909034587979103
+      mask_0: -1500434286138515679
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

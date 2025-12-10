@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 2a44617b38138404595827501fbf6083
+guid: 309cb79ad0589b94a8b1722aba6e696c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1504909034587979103
-    second: rogue_0
+      213: 8527887744168338935
+    second: mask2048_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -72,7 +72,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 1024
+    maxTextureSize: 512
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: rogue_0
+      name: mask2048_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1024
-        height: 1024
+        width: 2048
+        height: 2048
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 454, y: 454, z: 454, w: 454}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f5d74e92bc282e410800000000000000
-      internalID: 1504909034587979103
+      spriteID: 7f5af8b78b4295670800000000000000
+      internalID: 8527887744168338935
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: a16eac99b14bff74486fbf999e257864
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      rogue_0: 1504909034587979103
+      mask2048_0: 8527887744168338935
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

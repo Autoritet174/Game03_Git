@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 2a44617b38138404595827501fbf6083
+guid: f0a8821927d7c094ebf7886502754189
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1504909034587979103
-    second: rogue_0
+      213: 3389332634987487348
+    second: empty_slot_1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -72,12 +72,12 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 1024
+    maxTextureSize: 512
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
+    textureCompression: 1
+    compressionQuality: 100
+    crunchedCompression: 1
     allowsAlphaSplitting: 0
     overridden: 0
     ignorePlatformSupport: 0
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: rogue_0
+      name: empty_slot_1_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1024
-        height: 1024
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f5d74e92bc282e410800000000000000
-      internalID: 1504909034587979103
+      spriteID: 4706116f214590f20800000000000000
+      internalID: 3389332634987487348
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      rogue_0: 1504909034587979103
+      empty_slot_1_0: 3389332634987487348
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
