@@ -143,7 +143,10 @@ public class Init_Collection : MonoBehaviour
     }
     private readonly List<Slot> _Slots = new();
 
-
+    /// <summary>
+    /// 1 - герои, 2 - экипировка
+    /// </summary>
+    public static int Mode { get; private set; } = 1;
 
     private async void Start()
     {
@@ -320,6 +323,7 @@ public class Init_Collection : MonoBehaviour
     /// </summary>
     private void OnClickHeroes()
     {
+        Mode = 1;
         OnClickTabButton(_TabButtonHeroes);
         _TabButtonHeroes.image.color = Color.white;
     }
@@ -329,6 +333,7 @@ public class Init_Collection : MonoBehaviour
     /// </summary>
     private void OnClickEquipment()
     {
+        Mode = 2;
         OnClickTabButton(_TabButtonEquipment);
     }
 
