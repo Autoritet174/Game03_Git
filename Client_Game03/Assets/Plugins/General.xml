@@ -360,12 +360,12 @@
             Инициализировано пустой строкой.
             </summary>
         </member>
-        <member name="T:General.StringExtension">
+        <member name="T:General.StringExt">
             <summary>
             Статический класс-расширение, предоставляющий полезные методы для работы со строками (<see cref="T:System.String"/>).
             </summary>
         </member>
-        <member name="M:General.StringExtension.IsEmpty(System.String)">
+        <member name="M:General.StringExt.IsEmpty(System.String)">
             <summary>
             Проверяет, является ли строка <see langword="null"/>, пустой (<see cref="F:System.String.Empty"/>) или содержит только пробельные символы.
             Является оберткой для <see cref="M:System.String.IsNullOrWhiteSpace(System.String)"/>.
@@ -376,7 +376,7 @@
             в противном случае — <see langword="false"/>.
             </returns>
         </member>
-        <member name="M:General.StringExtension.ToUpper1Char(System.String)">
+        <member name="M:General.StringExt.ToUpper1Char(System.String)">
             <summary>
             Преобразует первый символ строки в верхний регистр, оставляя остальные символы без изменений.
             Если строка <see langword="null"/> или пуста, возвращается исходная строка.
@@ -386,7 +386,7 @@
             Строка с первым символом в верхнем регистре.
             </returns>
         </member>
-        <member name="M:General.StringExtension.IsEmail(System.String)">
+        <member name="M:General.StringExt.IsEmail(System.String)">
             <summary>
             Проверяет, является ли строка корректным адресом электронной почты,
             пытаясь создать объект <see cref="T:System.Net.Mail.MailAddress"/>.
@@ -396,6 +396,202 @@
             <see langword="true"/>, если строка является действительным адресом электронной почты;
             <see langword="false"/> в противном случае.
             </returns>
+        </member>
+        <member name="F:General.StringExt.SnakeCaseRegex">
+            <summary>
+            Регулярное выражение для преобразования строки в snake_case.
+            Ищет заглавные буквы, которые следуют после строчных букв.
+            </summary>
+        </member>
+        <member name="F:General.StringExt.WordSplitWithUnderscoresRegex">
+            <summary>
+            Регулярное выражение для разделения строк на слова при преобразовании в PascalCase/camelCase.
+            Сохраняет символы подчеркивания как часть итогового имени.
+            </summary>
+        </member>
+        <member name="F:General.StringExt.WordSplitRegex">
+            <summary>
+            Регулярное выражение для разделения строк на слова при полном разбиении.
+            </summary>
+        </member>
+        <member name="M:General.StringExt.ToSnakeCase(System.String)">
+            <summary>
+            Преобразует строку в формат snake_case.
+            </summary>
+            <param name="input">Входная строка для преобразования.</param>
+            <returns>
+            Строка в формате snake_case, где слова разделены символами подчеркивания,
+            а все буквы приведены к нижнему регистру.
+            Возвращает исходную строку, если она является null или пустой.
+            </returns>
+            <example>
+            <code>
+            string result = "CamelCaseString".ToSnakeCase(); // "camel_case_string"
+            string result2 = "UserName".ToSnakeCase(); // "user_name"
+            string result3 = "XMLParser".ToSnakeCase(); // "xmlparser"
+            </code>
+            </example>
+            <remarks>
+            Метод преобразует CamelCase строки в snake_case, вставляя символ подчеркивания
+            перед каждой заглавной буквой, которая следует за строчной буквой,
+            а затем приводит всю строку к нижнему регистру.
+            </remarks>
+        </member>
+        <member name="M:General.StringExt.ToPascalCase(System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Преобразует строку в формат PascalCase (UpperCamelCase).
+            </summary>
+            <param name="input">Входная строка для преобразования.</param>
+            <param name="keepOriginalAcronyms">Если true, сохраняет оригинальный регистр акронимов (например, "XML" останется "XML").</param>
+            <param name="preserveUnderscores">Если true, сохраняет символы подчеркивания в результате (по умолчанию true).</param>
+            <returns>
+            Строка в формате PascalCase, где каждое слово начинается с заглавной буквы.
+            Если preserveUnderscores = true, символы подчеркивания сохраняются.
+            Возвращает пустую строку, если входная строка является null или пустой.
+            </returns>
+            <example>
+            <code>
+            // С сохранением подчеркиваний (по умолчанию)
+            string result1 = "X_EquipmentType_DamageType_EquipmentTypeId_idx".ToPascalCase(); 
+            // "X_EquipmentType_DamageType_EquipmentTypeId_idx"
+            
+            // Без сохранения подчеркиваний
+            string result2 = "X_EquipmentType_DamageType_EquipmentTypeId_idx".ToPascalCase(preserveUnderscores: false); 
+            // "XEquipmentTypeDamageTypeEquipmentTypeIdIdx"
+            
+            string result3 = "user_name".ToPascalCase(); // "User_Name"
+            string result4 = "user_name".ToPascalCase(preserveUnderscores: false); // "UserName"
+            </code>
+            </example>
+        </member>
+        <member name="M:General.StringExt.ToCamelCase(System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Преобразует строку в формат camelCase (lowerCamelCase).
+            </summary>
+            <param name="input">Входная строка для преобразования.</param>
+            <param name="keepOriginalAcronyms">Если true, сохраняет оригинальный регистр акронимов (например, "XML" останется "XML").</param>
+            <param name="preserveUnderscores">Если true, сохраняет символы подчеркивания в результате (по умолчанию true).</param>
+            <returns>
+            Строка в формате camelCase.
+            </returns>
+        </member>
+        <member name="M:General.StringExt.ToKebabCase(System.String,System.Boolean)">
+            <summary>
+            Преобразует строку в формат kebab-case (spinal-case).
+            </summary>
+            <param name="input">Входная строка для преобразования.</param>
+            <param name="screaming">Если true, возвращает SCREAMING-KEBAB-CASE.</param>
+            <returns>
+            Строка в формате kebab-case, где слова разделены дефисами.
+            Возвращает пустую строку, если входная строка является null или пустой.
+            </returns>
+            <example>
+            <code>
+            string result = "user_name".ToKebabCase(); // "user-name"
+            string result2 = "HelloWorld".ToKebabCase(); // "hello-world"
+            string result3 = "XML Parser".ToKebabCase(); // "xml-parser"
+            string result4 = "user name".ToKebabCase(true); // "USER-NAME"
+            </code>
+            </example>
+        </member>
+        <member name="M:General.StringExt.ToScreamingSnakeCase(System.String)">
+            <summary>
+            Преобразует строку в формат SCREAMING_SNAKE_CASE.
+            </summary>
+            <param name="input">Входная строка для преобразования.</param>
+            <returns>
+            Строка в формате SCREAMING_SNAKE_CASE.
+            Возвращает пустую строку, если входная строка является null или пустой.
+            </returns>
+            <example>
+            <code>
+            string result = "user_name".ToScreamingSnakeCase(); // "USER_NAME"
+            string result2 = "HelloWorld".ToScreamingSnakeCase(); // "HELLO_WORLD"
+            string result3 = "xml-parser".ToScreamingSnakeCase(); // "XML_PARSER"
+            </code>
+            </example>
+        </member>
+        <member name="M:General.StringExt.ToPascalCaseWithoutUnderscores(System.String,System.Boolean)">
+            <summary>
+            Альтернативная версия ToPascalCase без сохранения подчеркиваний (старое поведение).
+            </summary>
+        </member>
+        <member name="M:General.StringExt.ToCamelCaseWithoutUnderscores(System.String,System.Boolean)">
+            <summary>
+            Альтернативная версия ToCamelCase без сохранения подчеркиваний (старое поведение).
+            </summary>
+        </member>
+        <member name="M:General.StringExt.IsSeparator(System.String)">
+            <summary>
+            Проверяет, является ли строка разделителем.
+            </summary>
+        </member>
+        <member name="M:General.StringExt.IsAllUpper(System.String)">
+            <summary>
+            Проверяет, состоит ли строка только из заглавных букв.
+            </summary>
+        </member>
+        <member name="M:General.StringExt.DetectNamingStyle(System.String)">
+            <summary>
+            Определяет стиль наименования строки.
+            </summary>
+            <param name="input">Входная строка для анализа.</param>
+            <returns>
+            <see cref="T:General.StringExt.NamingStyle"/> - стиль наименования строки.
+            </returns>
+        </member>
+        <member name="M:General.StringExt.ConvertNamingStyle(System.String,General.StringExt.NamingStyle)">
+            <summary>
+            Конвертирует строку из одного стиля наименования в другой.
+            </summary>
+            <param name="input">Входная строка.</param>
+            <param name="targetStyle">Целевой стиль наименования.</param>
+            <returns>Строка в целевом стиле наименования.</returns>
+        </member>
+        <member name="T:General.StringExt.NamingStyle">
+            <summary>
+            Стили наименования.
+            </summary>
+        </member>
+        <member name="F:General.StringExt.NamingStyle.Unknown">
+            <summary>
+            Неизвестный стиль.
+            </summary>
+        </member>
+        <member name="F:General.StringExt.NamingStyle.SnakeCase">
+            <summary>
+            snake_case
+            </summary>
+        </member>
+        <member name="F:General.StringExt.NamingStyle.PascalCase">
+            <summary>
+            PascalCase (UpperCamelCase)
+            </summary>
+        </member>
+        <member name="F:General.StringExt.NamingStyle.CamelCase">
+            <summary>
+            camelCase (lowerCamelCase)
+            </summary>
+        </member>
+        <member name="F:General.StringExt.NamingStyle.KebabCase">
+            <summary>
+            kebab-case (spinal-case)
+            </summary>
+        </member>
+        <member name="F:General.StringExt.NamingStyle.ScreamingSnakeCase">
+            <summary>
+            SCREAMING_SNAKE_CASE
+            </summary>
+        </member>
+        <member name="F:General.StringExt.NamingStyle.ScreamingKebabCase">
+            <summary>
+            SCREAMING-KEBAB-CASE
+            </summary>
+        </member>
+        <member name="F:General.StringExt.NamingStyle.SingleWord">
+            <summary>
+            Одно слово без разделителей.
+            </summary>
         </member>
         <member name="T:General.Url">
             <summary>
