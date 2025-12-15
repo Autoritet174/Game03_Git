@@ -263,6 +263,7 @@ public class Init_Collection : MonoBehaviour
 
             _GroupDividers.Clear();
             //List<Task> tasks = new();
+            int completed = 0;
             foreach (GroupHeroes item in G.Game.Collection.GetCollectionHeroesGroupByGroups().OrderByDescending(static a => a.Priority))
             {
                 if (item.List.Count() > 0)
@@ -275,6 +276,11 @@ public class Init_Collection : MonoBehaviour
                     groupDivider.Init1(item.Name, obj, item.List, _PanelCollection_RectTransform, _PanelSelectedHero_RectTransform.gameObject, _SelectedHeroTop_TextMeshProUGUI, _SelectedHero_Image);
                     OnResizeWindow();
                     await groupDivider.Init2();
+                    completed++;
+                    if (completed % 100 == 0)
+                    {
+                        Debug.Log(completed);
+                    }
                 }
                 //tasks.Add(task);
             }
