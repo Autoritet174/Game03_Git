@@ -285,9 +285,19 @@
             Группа героев.
             </summary>
         </member>
-        <member name="M:Game03Client.PlayerCollection.PlayerCollectionProvider.LoadAllCollectionFromServer(System.Threading.CancellationToken)">
+        <member name="P:Game03Client.PlayerCollection.GroupHeroes.Name">
             <summary>
-            
+            Возвращает имя группы героев.
+            </summary>
+        </member>
+        <member name="P:Game03Client.PlayerCollection.GroupHeroes.List">
+            <summary>
+            Получает коллекцию героев, содержащихся в этом экземпляре.
+            </summary>
+        </member>
+        <member name="P:Game03Client.PlayerCollection.GroupHeroes.Priority">
+            <summary>
+            Возвращает или устанавливает уровень приоритета группы героев.
             </summary>
         </member>
         <member name="M:Game03Client.PlayerCollection.PlayerCollectionProvider.GetCollectionHeroesGroupByGroups">

@@ -67,6 +67,103 @@
             </returns>
             <exception cref="T:System.ArgumentOutOfRangeException">Выбрасывается, если <paramref name="sec"/> меньше нуля.</exception>
         </member>
+        <member name="T:General.GameEntities.CollectionEquipment">
+            <summary>
+            Предмет экипировки из коллекции игрока. (MongoDb).
+            </summary>
+            <param name="id"></param>
+            <param name="owner_id"></param>
+            <param name="equipBase"></param>
+            <param name="groupName"></param>
+            <param name="health"></param>
+            <param name="attack"></param>
+            <param name="strength"></param>
+            <param name="agility"></param>
+            <param name="intelligence"></param>
+            <param name="haste"></param>
+            <param name="level"></param>
+        </member>
+        <member name="M:General.GameEntities.CollectionEquipment.#ctor(System.String,System.Guid,General.GameEntities.EquipBase,System.String,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int32)">
+            <summary>
+            Предмет экипировки из коллекции игрока. (MongoDb).
+            </summary>
+            <param name="id"></param>
+            <param name="owner_id"></param>
+            <param name="equipBase"></param>
+            <param name="groupName"></param>
+            <param name="health"></param>
+            <param name="attack"></param>
+            <param name="strength"></param>
+            <param name="agility"></param>
+            <param name="intelligence"></param>
+            <param name="haste"></param>
+            <param name="level"></param>
+        </member>
+        <member name="T:General.GameEntities.CollectionHero">
+            <summary>
+            Герой из коллекции игрока. (MongoDb).
+            </summary>
+            <param name="id"></param>
+            <param name="owner_id"></param>
+            <param name="heroBase"></param>
+            <param name="groupName"></param>
+            <param name="health"></param>
+            <param name="attack"></param>
+            <param name="strength"></param>
+            <param name="agility"></param>
+            <param name="intelligence"></param>
+            <param name="haste"></param>
+            <param name="level"></param>
+        </member>
+        <member name="M:General.GameEntities.CollectionHero.#ctor(System.String,System.Guid,General.GameEntities.HeroBase,System.String,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int32)">
+            <summary>
+            Герой из коллекции игрока. (MongoDb).
+            </summary>
+            <param name="id"></param>
+            <param name="owner_id"></param>
+            <param name="heroBase"></param>
+            <param name="groupName"></param>
+            <param name="health"></param>
+            <param name="attack"></param>
+            <param name="strength"></param>
+            <param name="agility"></param>
+            <param name="intelligence"></param>
+            <param name="haste"></param>
+            <param name="level"></param>
+        </member>
+        <member name="T:General.GameEntities.EquipBase">
+            <summary>
+            Представляет базовую сущность игрового героя с основными характеристиками.
+            Использует синтаксис первичного конструктора (Primary Constructor) C# 12/13.
+            </summary>
+            <param name="id">Уникальный идентификатор героя.</param>
+            <param name="name">Имя героя (на английском).</param>
+            <param name="rarity">Уровень редкости героя, определяемый перечислением <see cref="T:General.Enums.RarityLevel"/>.</param>
+        </member>
+        <member name="M:General.GameEntities.EquipBase.#ctor(System.Int32,System.String,General.Enums.RarityLevel,System.Int32,System.Int32,System.Boolean,System.Boolean,System.String)">
+            <summary>
+            Представляет базовую сущность игрового героя с основными характеристиками.
+            Использует синтаксис первичного конструктора (Primary Constructor) C# 12/13.
+            </summary>
+            <param name="id">Уникальный идентификатор героя.</param>
+            <param name="name">Имя героя (на английском).</param>
+            <param name="rarity">Уровень редкости героя, определяемый перечислением <see cref="T:General.Enums.RarityLevel"/>.</param>
+        </member>
+        <member name="P:General.GameEntities.EquipBase.Id">
+            <summary>
+            Уникальный идентификатор.
+            </summary>
+        </member>
+        <member name="P:General.GameEntities.EquipBase.Name">
+            <summary>
+            Наименование на английском языке.
+            </summary>
+        </member>
+        <member name="P:General.GameEntities.EquipBase.Rarity">
+            <summary>
+            Уровень редкости.
+            </summary>
+        </member>
         <member name="T:General.GameEntities.HeroBase">
             <summary>
             Представляет базовую сущность игрового героя с основными характеристиками.
