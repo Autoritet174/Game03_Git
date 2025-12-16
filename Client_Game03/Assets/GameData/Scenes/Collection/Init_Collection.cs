@@ -56,12 +56,18 @@ public class Init_Collection : MonoBehaviour
     private bool _PanelSelectedHero_isActive = false;
     private RectTransform _PanelSelectedHeroTop_RectTransform;
     private RectTransform _PanelSelectedHeroBottom_RectTransform;
+    private RectTransform _PanelSelectedHeroBottomTabButton1_RectTransform;
+    private RectTransform _PanelSelectedHeroBottomTabButton2_RectTransform;
+    private TextMeshProUGUI _PanelSelectedHeroBottomTabButton1_TextMeshProUGUI;
+    private TextMeshProUGUI _PanelSelectedHeroBottomTabButton2_TextMeshProUGUI;
+    private RectTransform _PanelSelectedHeroBottomTab1_RectTransform;
     private RectTransform _PanelCollection_RectTransform;
     private RectTransform _PanelCollectionTopButtons_RectTransform;
     private RectTransform _ScrollViewCollection_RectTransform;
     private RectTransform _ScrollbarVertical_RectTransform;
     private GameObject _ScrollViewCollection_GameObject;
     private TextMeshProUGUI _SelectedHeroTop_TextMeshProUGUI;
+    private RectTransform _SelectedHeroImageContainer_RectTransform;
     private Image _SelectedHero_Image;
 
     /// <summary>
@@ -169,7 +175,8 @@ public class Init_Collection : MonoBehaviour
         _PanelSelectedHero_GameObject = _PanelSelectedHero_RectTransform.gameObject;
         _PanelSelectedHero_isActive = _PanelSelectedHero_GameObject.activeInHierarchy;
 
-        _SelectedHero_Image = GameObjectFinder.FindByName<Image>("ImageHeroFull (id=m5kn2f6p)"); ;
+        _SelectedHero_Image = GameObjectFinder.FindByName<Image>("ImageHeroFull (id=m5kn2f6p)");
+        _SelectedHeroImageContainer_RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Container (id=1l6gscif)");
 
         _ButtonCloseSelectedHero_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose (id=0ursxw0e)");
         _ButtonCloseSelectedHero_RectTransform.gameObject.GetComponent<Button>().onClick.AddListener(() =>
@@ -180,6 +187,16 @@ public class Init_Collection : MonoBehaviour
 
         _PanelSelectedHeroTop_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHeroTop (id=0y6mrhc2)");
         _PanelSelectedHeroBottom_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHeroBottom (id=wejn6493)");
+
+        _PanelSelectedHeroBottomTabButton1_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonTab1 (id=uiufd2wv)");
+        _PanelSelectedHeroBottomTabButton1_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonTab1Text (id=lf8q2aas)");
+        _PanelSelectedHeroBottomTabButton1_TextMeshProUGUI.SetText(G.Game.LocalizationManager.GetValue(L.UI.Button.Equipment));
+
+        _PanelSelectedHeroBottomTabButton2_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonTab2 (id=kzury0kd)");
+        _PanelSelectedHeroBottomTabButton2_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonTab2Text (id=6bjw6hi4)");
+        _PanelSelectedHeroBottomTabButton2_TextMeshProUGUI.SetText("{Tab2}");
+
+        _PanelSelectedHeroBottomTab1_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHeroBottomTab1 (id=kn3yl79k)");
         _SelectedHeroTop_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label_SelectedHero (id=ahrtgg43)");
 
         // Панель для внутренних кнопок
@@ -210,21 +227,25 @@ public class Init_Collection : MonoBehaviour
         _Slots.Add(new Slot("Feet", 6, 1, _PanelSelectedHeroBottom_RectTransform));
         _Slots.Add(new Slot("Waist", 7, 1, _PanelSelectedHeroBottom_RectTransform));
         _Slots.Add(new Slot("Wrist", 8, 1, _PanelSelectedHeroBottom_RectTransform));
-        _Slots.Add(new Slot("Back", 9, 1, _PanelSelectedHeroBottom_RectTransform));
-        _Slots.Add(new Slot("Bracelet", 10, 1, _PanelSelectedHeroBottom_RectTransform, "1"));
-        _Slots.Add(new Slot("Bracelet", 11, 1, _PanelSelectedHeroBottom_RectTransform, "2"));
 
-        _Slots.Add(new Slot("LeftHand", 1, 2, _PanelSelectedHeroBottom_RectTransform));
-        _Slots.Add(new Slot("RightHand", 2, 2, _PanelSelectedHeroBottom_RectTransform));
-        _Slots.Add(new Slot("Neck", 3, 2, _PanelSelectedHeroBottom_RectTransform));
-        _Slots.Add(new Slot("Ring", 4, 2, _PanelSelectedHeroBottom_RectTransform, "1"));
-        _Slots.Add(new Slot("Ring", 5, 2, _PanelSelectedHeroBottom_RectTransform, "2"));
-        _Slots.Add(new Slot("Ring", 6, 2, _PanelSelectedHeroBottom_RectTransform, "3"));
-        _Slots.Add(new Slot("Ring", 7, 2, _PanelSelectedHeroBottom_RectTransform, "4"));
-        _Slots.Add(new Slot("Earring", 8, 2, _PanelSelectedHeroBottom_RectTransform, "1"));
-        _Slots.Add(new Slot("Earring", 9, 2, _PanelSelectedHeroBottom_RectTransform, "2"));
-        _Slots.Add(new Slot("Trinket", 10, 2, _PanelSelectedHeroBottom_RectTransform, "1"));
-        _Slots.Add(new Slot("Trinket", 11, 2, _PanelSelectedHeroBottom_RectTransform, "2"));
+        _Slots.Add(new Slot("Ring", 1, 2, _PanelSelectedHeroBottom_RectTransform, "1"));
+        _Slots.Add(new Slot("Ring", 2, 2, _PanelSelectedHeroBottom_RectTransform, "2"));
+        _Slots.Add(new Slot("Ring", 3, 2, _PanelSelectedHeroBottom_RectTransform, "3"));
+        _Slots.Add(new Slot("Ring", 4, 2, _PanelSelectedHeroBottom_RectTransform, "4"));
+        _Slots.Add(new Slot("Trinket", 5, 2, _PanelSelectedHeroBottom_RectTransform, "1"));
+        _Slots.Add(new Slot("Trinket", 6, 2, _PanelSelectedHeroBottom_RectTransform, "2"));
+        _Slots.Add(new Slot("Trinket", 7, 2, _PanelSelectedHeroBottom_RectTransform, "3"));
+        _Slots.Add(new Slot("Trinket", 8, 2, _PanelSelectedHeroBottom_RectTransform, "4"));
+
+        _Slots.Add(new Slot("LeftHand", 1, 3, _PanelSelectedHeroBottom_RectTransform));
+        _Slots.Add(new Slot("RightHand", 2, 3, _PanelSelectedHeroBottom_RectTransform));
+        _Slots.Add(new Slot("Back", 3, 3, _PanelSelectedHeroBottom_RectTransform));
+        _Slots.Add(new Slot("Neck", 4, 3, _PanelSelectedHeroBottom_RectTransform));
+        _Slots.Add(new Slot("Bracelet", 5, 3, _PanelSelectedHeroBottom_RectTransform, "1"));
+        _Slots.Add(new Slot("Bracelet", 6, 3, _PanelSelectedHeroBottom_RectTransform, "2"));
+        _Slots.Add(new Slot("Earring", 7, 3, _PanelSelectedHeroBottom_RectTransform, "1"));
+        _Slots.Add(new Slot("Earring", 8, 3, _PanelSelectedHeroBottom_RectTransform, "2"));
+
         /*
         Голова (Head) 1
         Наплечники (Shoulders) 2
@@ -251,7 +272,7 @@ public class Init_Collection : MonoBehaviour
          */
         _initialized = true;
 
-        await LoadCollection();
+        await LoadCollectionAsync();
     }
 
     private void Update()
@@ -260,11 +281,12 @@ public class Init_Collection : MonoBehaviour
         {
             return;
         }
+
         bool resize = false;
         if (_ScrollbarVertical_Active != _ScrollViewCollection_GameObject.activeInHierarchy)
         {
             _ScrollbarVertical_Active = _ScrollViewCollection_GameObject.activeInHierarchy;
-            resize = false;
+            resize = true;
         }
         if (!resize && (!Mathf.Approximately(Screen.height, _height) || !Mathf.Approximately(Screen.width, _width)))
         {
@@ -285,7 +307,7 @@ public class Init_Collection : MonoBehaviour
     }
 
 
-    private async Task LoadCollection()
+    private async Task LoadCollectionAsync()
     {
         GameMessage.ShowLocale(L.Info.LoadingCollection, false);
         try
@@ -406,7 +428,7 @@ public class Init_Collection : MonoBehaviour
         float panelSelectedHeroWidth;
         if (panelSelectedHeroActive)
         {
-            float panelSelectedHeroWidthBase = 970f; // при разрешении 1920x1080
+            float panelSelectedHeroWidthBase = 700.9088f; // при разрешении 1920x1080
             panelSelectedHeroWidth = panelSelectedHeroWidthBase * coefHeight;
 
             // Панель выбранного героя
@@ -416,12 +438,26 @@ public class Init_Collection : MonoBehaviour
             _PanelSelectedHeroTop_RectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth, panelTopHeight);
 
             // Панель выбранного героя. Нижняя панель с характеристиками героя
-            _PanelSelectedHeroBottom_RectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth, _PanelSelectedHero_RectTransform.sizeDelta.y - _PanelSelectedHeroTop_RectTransform.sizeDelta.y);
+            _PanelSelectedHeroBottom_RectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth, 908 * coefHeight);
+
+            // Кнопки вкладок
+            _PanelSelectedHeroBottomTabButton1_RectTransform.sizeDelta = new Vector2(150 * coefHeight, 50 * coefHeight);
+            _PanelSelectedHeroBottomTabButton2_RectTransform.sizeDelta = _PanelSelectedHeroBottomTabButton1_RectTransform.sizeDelta;
+            _PanelSelectedHeroBottomTabButton1_RectTransform.anchoredPosition = new Vector2(5f * coefHeight, -5f * coefHeight);
+            _PanelSelectedHeroBottomTabButton2_RectTransform.anchoredPosition = new Vector2(160f * coefHeight, -5f * coefHeight);
+            _PanelSelectedHeroBottomTabButton1_TextMeshProUGUI.fontSize = 15f * coefHeight;
+            _PanelSelectedHeroBottomTabButton2_TextMeshProUGUI.fontSize = 15f * coefHeight;
+
+            // Вкладка 1. Экипировка
+            _PanelSelectedHeroBottomTab1_RectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth, 848 * coefHeight); ;
 
             // Выбранный герой. Лабел
             _SelectedHeroTop_TextMeshProUGUI.rectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth - panelTopHeight, panelTopHeight);
             //SelectedHeroTop_TextMeshProUGUI.rectTransform.anchoredPosition = new Vector2(panelTopHeight, 0);
             _SelectedHeroTop_TextMeshProUGUI.fontSize = 40f * coefHeight;
+
+            _SelectedHeroImageContainer_RectTransform.sizeDelta = new Vector2(282.8571f * coefHeight, 495 * coefHeight);
+            _SelectedHeroImageContainer_RectTransform.anchoredPosition = new Vector2(-10f * coefHeight, 10f * coefHeight); 
 
             _Slots.ForEach(a => a.Resize(coefHeight));
         }

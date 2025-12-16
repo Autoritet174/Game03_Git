@@ -42,14 +42,16 @@ public class GroupDivider : MonoBehaviour
     private RectTransform _CellsContainer_RectTransform;
     private GridLayoutGroup _CellsContainer_GridLayoutGroup;
     private IEnumerable<General.GameEntities.CollectionHero> _listHeroes;
-    Image _SelectedHero_Image;
+    private Image _SelectedHero_Image;
 
-    class HeroData {
+    private class HeroData
+    {
         public GameObject gameObject;
         public General.GameEntities.CollectionHero collectionHero;
         public TextMeshProUGUI textMeshPro;
+        public bool Selected = false;
     }
-    List<HeroData> heroDataList = new();
+    private readonly List<HeroData> heroDataList = new();
 
     private GameObject _PanelSelectedHero_GameObject;
     private TextMeshProUGUI _SelectedHeroTop_TextMeshProUGUI;
@@ -147,7 +149,7 @@ public class GroupDivider : MonoBehaviour
                 {
                     heroDataList.Add(new HeroData() { gameObject = gameObject, collectionHero = groupHero, textMeshPro = textMeshPro });
                     textMeshPro.text = heroBase.Name.ToUpper1Char();
-                    textMeshPro.fontSize = 12;
+                    textMeshPro.fontSize = 14;
                 }
 
                 imageRarity.sprite = await Addressables.LoadAssetAsync<Sprite>($"rarity{(int)heroBase.Rarity}").Task;
@@ -222,6 +224,10 @@ public class GroupDivider : MonoBehaviour
             //расчитываем сколько при этих параметрах войдет ячеек
             float widthWithoutPadding = width - (paddingR + spacing);
             int countCellInRow = (int)(widthWithoutPadding / cellSize);
+            if (countCellInRow <= 0)
+            {
+                countCellInRow = 1;
+            }
             float spacingDelta = widthWithoutPadding / ((countCellInRow * (cellSize1080 / spacing1080)) + (countCellInRow - 1));
             float cellSizeDelta = spacingDelta * cellSize1080 / spacing1080;
 
@@ -233,9 +239,11 @@ public class GroupDivider : MonoBehaviour
             _CellsContainer_GridLayoutGroup.spacing = new Vector2(spacingDelta, spacingDelta);
             _CellsContainer_GridLayoutGroup.cellSize = new Vector2(cellSizeDelta, cellSizeDelta);
 
+
+
             // вычисляем количество строк
             int countHeroes = _listHeroes.Count();
-            int countRows = (countCellInRow > 0 ? countHeroes / countCellInRow : 0) + (countHeroes % countCellInRow == 0 ? 0 : 1);
+            int countRows = (countHeroes / countCellInRow) + (countHeroes % countCellInRow == 0 ? 0 : 1);
             if (countRows < 1)
             {
                 countRows = 1;
@@ -250,8 +258,9 @@ public class GroupDivider : MonoBehaviour
             _CellsContainer_RectTransform.anchoredPosition = new Vector2(0, -45f * coefHeight);
 
 
-            foreach (HeroData item in heroDataList) {
-                item.textMeshPro.fontSize = 15f * coefHeight;
+            foreach (HeroData item in heroDataList)
+            {
+                item.textMeshPro.fontSize = 14f * coefHeight;
             }
         }
         _RectTransform.sizeDelta = new Vector2(width, height);
