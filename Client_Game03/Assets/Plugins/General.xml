@@ -4,46 +4,6 @@
         <name>General</name>
     </assembly>
     <members>
-        <member name="T:General.Enums">
-            <summary>
-            Статический класс-контейнер для всех перечислений, используемых в общих данных игры.
-            </summary>
-        </member>
-        <member name="T:General.Enums.RarityLevel">
-            <summary>
-            Определяет уровень редкости игрового объекта или сущности.
-            </summary>
-        </member>
-        <member name="F:General.Enums.RarityLevel.Common">
-            <summary>
-            Обычный уровень редкости (самый низкий).
-            </summary>
-        </member>
-        <member name="F:General.Enums.RarityLevel.Uncommon">
-            <summary>
-            Необычный уровень редкости.
-            </summary>
-        </member>
-        <member name="F:General.Enums.RarityLevel.Rare">
-            <summary>
-            Редкий уровень редкости.
-            </summary>
-        </member>
-        <member name="F:General.Enums.RarityLevel.Epic">
-            <summary>
-            Эпический уровень редкости.
-            </summary>
-        </member>
-        <member name="F:General.Enums.RarityLevel.Legendary">
-            <summary>
-            Легендарный уровень редкости.
-            </summary>
-        </member>
-        <member name="F:General.Enums.RarityLevel.Mythic">
-            <summary>
-            Мифический уровень редкости (самый высокий).
-            </summary>
-        </member>
         <member name="T:General.G">
             <summary>
             Глобальный статический класс, содержащий константы и вспомогательные функции,
@@ -138,16 +98,26 @@
             </summary>
             <param name="id">Уникальный идентификатор героя.</param>
             <param name="name">Имя героя (на английском).</param>
-            <param name="rarity">Уровень редкости героя, определяемый перечислением <see cref="T:General.Enums.RarityLevel"/>.</param>
+            <param name="rarity">Уровень редкости героя.</param>
+            <param name="mass"></param>
+            <param name="slotTypeId"></param>
+            <param name="canCraftJewelcrafting"></param>
+            <param name="canCraftSmithing"></param>
+            <param name="attack"></param>
         </member>
-        <member name="M:General.GameEntities.EquipBase.#ctor(System.Int32,System.String,General.Enums.RarityLevel,System.Int32,System.Int32,System.Boolean,System.Boolean,System.String)">
+        <member name="M:General.GameEntities.EquipBase.#ctor(System.Int32,System.String,System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean,System.String)">
             <summary>
             Представляет базовую сущность игрового героя с основными характеристиками.
             Использует синтаксис первичного конструктора (Primary Constructor) C# 12/13.
             </summary>
             <param name="id">Уникальный идентификатор героя.</param>
             <param name="name">Имя героя (на английском).</param>
-            <param name="rarity">Уровень редкости героя, определяемый перечислением <see cref="T:General.Enums.RarityLevel"/>.</param>
+            <param name="rarity">Уровень редкости героя.</param>
+            <param name="mass"></param>
+            <param name="slotTypeId"></param>
+            <param name="canCraftJewelcrafting"></param>
+            <param name="canCraftSmithing"></param>
+            <param name="attack"></param>
         </member>
         <member name="P:General.GameEntities.EquipBase.Id">
             <summary>
@@ -171,24 +141,24 @@
             </summary>
             <param name="id">Уникальный идентификатор героя.</param>
             <param name="name">Имя героя (на английском).</param>
-            <param name="rarity">Уровень редкости героя, определяемый перечислением <see cref="T:General.Enums.RarityLevel"/>.</param>
+            <param name="rarity">Уровень редкости героя, определяемый перечислением <see cref="!:RarityLevel"/>.</param>
             <param name="baseHealth">Базовое значение здоровья героя.</param>
             <param name="baseAttack">Базовое значение атаки героя.</param>
         </member>
-        <member name="M:General.GameEntities.HeroBase.#ctor(System.Int32,System.String,General.Enums.RarityLevel,System.Single,System.Single)">
+        <member name="M:General.GameEntities.HeroBase.#ctor(System.Int32,System.String,System.Int32,System.Single,System.Single)">
             <summary>
             Представляет базовую сущность игрового героя с основными характеристиками.
             Использует синтаксис первичного конструктора (Primary Constructor) C# 12/13.
             </summary>
             <param name="id">Уникальный идентификатор героя.</param>
             <param name="name">Имя героя (на английском).</param>
-            <param name="rarity">Уровень редкости героя, определяемый перечислением <see cref="T:General.Enums.RarityLevel"/>.</param>
+            <param name="rarity">Уровень редкости героя, определяемый перечислением <see cref="!:RarityLevel"/>.</param>
             <param name="baseHealth">Базовое значение здоровья героя.</param>
             <param name="baseAttack">Базовое значение атаки героя.</param>
         </member>
         <member name="P:General.GameEntities.HeroBase.Id">
             <summary>
-            Уникальный идентификатор героя.
+            Уникальный идентификатор.
             </summary>
         </member>
         <member name="P:General.GameEntities.HeroBase.Name">
