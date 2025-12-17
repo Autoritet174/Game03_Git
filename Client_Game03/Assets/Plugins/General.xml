@@ -690,6 +690,21 @@
             Одно слово без разделителей.
             </summary>
         </member>
+        <member name="T:General.ThrowHelper">
+            <summary>
+            Оборотка исключений для ошибок в процессе взаимодействия с базой данных.
+            </summary>
+        </member>
+        <member name="M:General.ThrowHelper.ThrowIfRecordNotExists(System.Boolean)">
+            <summary>
+            Выбрасывает InvalidOperationException если exists равен false.
+            </summary>
+        </member>
+        <member name="M:General.ThrowHelper.ThrowIfGuidEmpty(System.Guid)">
+            <summary>
+            Выбрасывает ArgumentException если guid равен Guid.Empty.
+            </summary>
+        </member>
         <member name="T:General.Url">
             <summary>
             Класс предоставляющий ссылки на api сервера.

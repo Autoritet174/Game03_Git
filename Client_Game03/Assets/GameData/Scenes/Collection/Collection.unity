@@ -6664,7 +6664,7 @@ GameObject:
   - component: {fileID: 1988245373}
   - component: {fileID: 1988245372}
   m_Layer: 5
-  m_Name: ImageRarity
+  m_Name: ImageRarity (id=xami3s9q)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

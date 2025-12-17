@@ -13,6 +13,7 @@ using L = General.LocalizationKeys;
 
 public class Init_Collection : MonoBehaviour
 {
+    public static readonly Vector3 Vector3Selected = new(1.15f, 1.15f, 1);
 
     //public bool Initialized { get; private set; }
     private const int COLOR_OFF_BUTTON_RGB_VALUE = 100;
@@ -69,6 +70,7 @@ public class Init_Collection : MonoBehaviour
     private TextMeshProUGUI _SelectedHeroTop_TextMeshProUGUI;
     private RectTransform _SelectedHeroImageContainer_RectTransform;
     private Image _SelectedHero_Image;
+    private Image _SelectedHeroRarity_Image;
 
     /// <summary>
     /// Внутренняя панель, кнопки.
@@ -152,6 +154,7 @@ public class Init_Collection : MonoBehaviour
     /// 1 - герои, 2 - экипировка
     /// </summary>
     public static int CollectionMode { get; private set; } = 1;
+    public static Sprite[] Rarityes = new Sprite[0];
 
     private async void Start()
     {
@@ -175,13 +178,43 @@ public class Init_Collection : MonoBehaviour
         _PanelSelectedHero_GameObject = _PanelSelectedHero_RectTransform.gameObject;
         _PanelSelectedHero_isActive = _PanelSelectedHero_GameObject.activeInHierarchy;
 
+        Rarityes = new Sprite[]{
+            await Addressables.LoadAssetAsync<Sprite>($"raritySelected").Task,
+            await Addressables.LoadAssetAsync<Sprite>($"rarity1").Task,
+            await Addressables.LoadAssetAsync<Sprite>($"rarity2").Task,
+            await Addressables.LoadAssetAsync<Sprite>($"rarity3").Task,
+            await Addressables.LoadAssetAsync<Sprite>($"rarity4").Task,
+            await Addressables.LoadAssetAsync<Sprite>($"rarity5").Task,
+            await Addressables.LoadAssetAsync<Sprite>($"rarity6").Task,
+        };
+
         _SelectedHero_Image = GameObjectFinder.FindByName<Image>("ImageHeroFull (id=m5kn2f6p)");
+        _SelectedHeroRarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity (id=xami3s9q)");
         _SelectedHeroImageContainer_RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Container (id=1l6gscif)");
 
         _ButtonCloseSelectedHero_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose (id=0ursxw0e)");
         _ButtonCloseSelectedHero_RectTransform.gameObject.GetComponent<Button>().onClick.AddListener(() =>
         {
             _PanelSelectedHero_GameObject.SetActive(false);
+            foreach (GroupDivider a in _GroupDividers)
+            {
+                bool founded = false;
+                foreach (GroupDivider.HeroData b in a.HeroDataList)
+                {
+                    if (b.Selected)
+                    {
+                        b.rectTransform.localScale = Vector3.one;
+                        //b.imageRarity.sprite = Rarityes[(int)b.collectionHero.HeroBase.Rarity];
+                        founded = true;
+                        break;
+                    }
+                }
+                if (founded)
+                {
+                    break;
+                }
+            }
+
             OnResizeWindow();
         });
 
@@ -329,7 +362,7 @@ public class Init_Collection : MonoBehaviour
                         GroupDivider groupDivider = obj.AddComponent<GroupDivider>();
                         obj.transform.SetParent(_CollectionContent_Transform, false);
                         _GroupDividers.Add(groupDivider);
-                        groupDivider.Init1(item.Name, obj, item.List, _PanelCollection_RectTransform, _PanelSelectedHero_RectTransform.gameObject, _SelectedHeroTop_TextMeshProUGUI, _SelectedHero_Image);
+                        groupDivider.Init1(item.Name, obj, item.List, _PanelCollection_RectTransform, _PanelSelectedHero_RectTransform.gameObject, _SelectedHeroTop_TextMeshProUGUI, _SelectedHero_Image, _SelectedHeroRarity_Image);
                         OnResizeWindow();
                         await groupDivider.Init2();
                         completed++;
@@ -457,7 +490,7 @@ public class Init_Collection : MonoBehaviour
             _SelectedHeroTop_TextMeshProUGUI.fontSize = 40f * coefHeight;
 
             _SelectedHeroImageContainer_RectTransform.sizeDelta = new Vector2(282.8571f * coefHeight, 495 * coefHeight);
-            _SelectedHeroImageContainer_RectTransform.anchoredPosition = new Vector2(-10f * coefHeight, 10f * coefHeight); 
+            _SelectedHeroImageContainer_RectTransform.anchoredPosition = new Vector2(-10f * coefHeight, 10f * coefHeight);
 
             _Slots.ForEach(a => a.Resize(coefHeight));
         }
