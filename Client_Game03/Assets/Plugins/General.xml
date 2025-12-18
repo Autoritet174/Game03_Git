@@ -163,7 +163,7 @@
         </member>
         <member name="P:General.GameEntities.HeroBase.Name">
             <summary>
-            Имя героя на английском языке.
+            Наименование на английском языке.
             </summary>
         </member>
         <member name="P:General.GameEntities.HeroBase.Rarity">
