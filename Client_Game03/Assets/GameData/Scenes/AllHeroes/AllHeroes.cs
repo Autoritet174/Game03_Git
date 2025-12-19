@@ -14,7 +14,6 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 using L = General.LocalizationKeys;
 
-using static General.Enums;
 using General;
 using G = Assets.GameData.Scripts.G;
 
