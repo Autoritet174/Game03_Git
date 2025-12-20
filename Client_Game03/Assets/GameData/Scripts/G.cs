@@ -1,4 +1,5 @@
 using Game03Client;
+using Game03Client.PlayerCollection;
 using System;
 using System.IO;
 using UnityEngine;
@@ -104,5 +105,4 @@ namespace Assets.GameData.Scripts
             return Application.platform is RuntimePlatform.WindowsPlayer or RuntimePlatform.OSXPlayer or RuntimePlatform.LinuxPlayer or RuntimePlatform.WindowsEditor;
         }
     }
-
 }

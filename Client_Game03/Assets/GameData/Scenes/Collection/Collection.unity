@@ -2189,6 +2189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9447eded0db9c747b54113d3fa086d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Collection
+  Rarityes: []
 --- !u!1 &537206475
 GameObject:
   m_ObjectHideFlags: 0

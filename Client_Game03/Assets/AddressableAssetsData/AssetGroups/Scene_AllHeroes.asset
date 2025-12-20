@@ -16,7 +16,7 @@ MonoBehaviour:
   m_GUID: 7fabef21e1f1e474c86895de81fe273c
   m_SerializeEntries:
   - m_GUID: c35939273b3873b48ad1c399aca7154a
-    m_Address: IconHero
+    m_Address: IconCollectionElement
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

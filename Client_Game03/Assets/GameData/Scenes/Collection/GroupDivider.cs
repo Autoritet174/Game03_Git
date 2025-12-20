@@ -1,6 +1,6 @@
 using Assets.GameData.Scripts;
+using Game03Client.PlayerCollection;
 using General;
-using General.GameEntities;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -18,11 +18,7 @@ using static UnityEngine.EventSystems.EventTrigger;
 /// </summary>
 public class GroupDivider : MonoBehaviour
 {
-
-    /// <summary>
-    /// Родитель
-    /// </summary>
-    private RectTransform _panelCollection_RectTransform;
+    Init_Collection _Init_Collection;
 
     private string group_name;
 
@@ -44,22 +40,22 @@ public class GroupDivider : MonoBehaviour
     private RectTransform _CellsContainer_RectTransform;
     private GridLayoutGroup _CellsContainer_GridLayoutGroup;
 
-    private IEnumerable<General.GameEntities.CollectionHero> _listHeroes;
-    private Image _SelectedHero_Image;
-    private Image _SelectedHeroRarity_Image;
+    private IEnumerable<CollectionElement> _listCollectionElement;
+    private Image _SelectedCollectionElement_Image;
+    private Image _SelectedCollectionElementRarity_Image;
 
-    public class HeroData
+    public class DataCollectionElement
     {
         public GameObject gameObject;
-        public General.GameEntities.CollectionHero collectionHero;
+        public CollectionElement collectionCollectionElement;
         public TextMeshProUGUI textMeshPro;
         public bool Selected = false;
         public Image imageRarity;
         public RectTransform rectTransform;
     }
-    public readonly List<HeroData> HeroDataList = new();
+    public readonly List<DataCollectionElement> ListDataCollectionElement = new();
 
-    private GameObject _PanelSelectedHero_GameObject;
+    //private GameObject _PanelSelectedHero_GameObject;
     private TextMeshProUGUI _SelectedHeroTop_TextMeshProUGUI;
 
     /// <summary>
@@ -94,14 +90,14 @@ public class GroupDivider : MonoBehaviour
         //UpdateDividerVisual(isExpanded);
     }
 
-    public void Init1(string group_name, GameObject gameObjectInput, IEnumerable<General.GameEntities.CollectionHero> listHeroes, RectTransform panelCollection_RectTransform, GameObject panelSelectedHero_GameObject, TextMeshProUGUI SelectedHeroTop_TextMeshProUGUI, Image SelectedHero_Image, Image SelectedHeroRarity_Image)
+    public void Init1(string group_name, Init_Collection init_Collection, GameObject gameObjectInput, IEnumerable<CollectionElement> listCollectionElement, TextMeshProUGUI SelectedHeroTop_TextMeshProUGUI, Image SelectedHero_Image, Image SelectedHeroRarity_Image)
     {
+        _Init_Collection = init_Collection;
         this.group_name = group_name;
         _GameObject = gameObjectInput;
-        _PanelSelectedHero_GameObject = panelSelectedHero_GameObject;
         _SelectedHeroTop_TextMeshProUGUI = SelectedHeroTop_TextMeshProUGUI;
-        _SelectedHero_Image = SelectedHero_Image;
-        _SelectedHeroRarity_Image = SelectedHeroRarity_Image;
+        _SelectedCollectionElement_Image = SelectedHero_Image;
+        _SelectedCollectionElementRarity_Image = SelectedHeroRarity_Image;
         _RectTransform = gameObjectInput.GetComponent<RectTransform>();
         _DividerButton_GameObject = GameObjectFinder.FindByName("DividerButton", _GameObject.transform);
         _DividerButton_RectTransform = _DividerButton_GameObject.GetComponent<RectTransform>();
@@ -109,8 +105,7 @@ public class GroupDivider : MonoBehaviour
         _CellsContainer_RectTransform = _CellsContainer_GameObject.GetComponent<RectTransform>();
         _CellsContainer_GridLayoutGroup = _CellsContainer_GameObject.GetComponent<GridLayoutGroup>();
         _DividerButton_Button = _DividerButton_GameObject.GetComponent<Button>();
-        _listHeroes = listHeroes;
-        _panelCollection_RectTransform = panelCollection_RectTransform;
+        _listCollectionElement = listCollectionElement;
     }
 
     public async Task Init2()
@@ -129,69 +124,68 @@ public class GroupDivider : MonoBehaviour
         }
 
 
-        HeroDataList.Clear();
-        foreach (General.GameEntities.CollectionHero groupHero in _listHeroes)
+        ListDataCollectionElement.Clear();
+        foreach (CollectionElement groupCollectionElement in _listCollectionElement)
         {
-            HeroBase heroBase = groupHero.HeroBase;
-            GameObject gameObject = await Addressables.LoadAssetAsync<GameObject>("IconHero").Task;
+            GameObject gameObject = await Addressables.LoadAssetAsync<GameObject>("IconCollectionElement").Task;
 
-            GameObject _prefabIconHero = gameObject.SafeInstant();
-            _prefabIconHero.transform.SetParent(cellsContainer_Transform);
+            GameObject _prefabIconCollectionElement = gameObject.SafeInstant();
+            _prefabIconCollectionElement.transform.SetParent(cellsContainer_Transform);
 
-            RectTransform _prefabIconHero_Transform = _prefabIconHero.GetComponent<RectTransform>();
-            _prefabIconHero_Transform.anchoredPosition3D = Vector3.zero;
-            _prefabIconHero_Transform.localScale = Vector3.one;
-
+            RectTransform _prefabIconCollectionElement_Transform = _prefabIconCollectionElement.GetComponent<RectTransform>();
+            _prefabIconCollectionElement_Transform.anchoredPosition3D = Vector3.zero;
+            _prefabIconCollectionElement_Transform.localScale = Vector3.one;
 
 
-            Transform childImageMaskHero = _prefabIconHero.transform.Find("ImageMaskHero");
-            Transform childImageMaskRarity = _prefabIconHero.transform.Find("ImageMaskRarity");
-            Transform childImageHero = childImageMaskHero.Find("ImageHero");
+
+            Transform childImageMaskCollectionElement = _prefabIconCollectionElement.transform.Find("ImageMaskCollectionElement");
+            Transform childImageMaskRarity = _prefabIconCollectionElement.transform.Find("ImageMaskRarity");
+            Transform childImageCollectionElement = childImageMaskCollectionElement.Find("ImageCollectionElement");
             Transform childImageRarity = childImageMaskRarity.Find("ImageRarity");
-            if (childImageHero != null && childImageHero.TryGetComponent(out Image imageHero) && childImageRarity != null && childImageRarity.TryGetComponent(out Image imageRarity))
+            if (childImageCollectionElement != null && childImageCollectionElement.TryGetComponent(out Image imageCollectionElement)
+                && childImageRarity != null && childImageRarity.TryGetComponent(out Image imageRarity))
             {
-                Transform childText = _prefabIconHero.transform.Find("TextHero");
+                Transform childText = _prefabIconCollectionElement.transform.Find("TextCollectionElement");
                 if (childText != null && childText.TryGetComponent(out TextMeshProUGUI textMeshPro))
                 {
-                    HeroData heroData = new()
+                    DataCollectionElement dataCollectionElement = new()
                     {
-                        gameObject = _prefabIconHero,
-                        collectionHero = groupHero,
+                        gameObject = _prefabIconCollectionElement,
+                        collectionCollectionElement = groupCollectionElement,
                         textMeshPro = textMeshPro,
                         imageRarity = imageRarity,
-                        rectTransform = _prefabIconHero_Transform
+                        rectTransform = _prefabIconCollectionElement_Transform
                     };
 
-                    HeroDataList.Add(heroData);
-                    textMeshPro.text = heroBase.Name.ToUpper1Char();
+                    ListDataCollectionElement.Add(dataCollectionElement);
+                    textMeshPro.text = groupCollectionElement.Name.ToUpper1Char();
                     textMeshPro.fontSize = 14;
 
-                    imageRarity.sprite = await Addressables.LoadAssetAsync<Sprite>($"rarity{(int)heroBase.Rarity}").Task;
+                    imageRarity.sprite = await Addressables.LoadAssetAsync<Sprite>($"rarity{groupCollectionElement.Rarity}").Task;
                     imageRarity.preserveAspect = true; // Сохраняет пропорции изображения
                     imageRarity.type = Image.Type.Simple; // Режим без растягивания;
 
-                    string addressableKey = $"hero-image-{heroBase.Name.ToLower()}_face";
-                    imageHero.sprite = await Addressables.LoadAssetAsync<Sprite>(addressableKey).Task;
-                    imageHero.preserveAspect = true; // Сохраняет пропорции изображения
-                    imageHero.type = Image.Type.Simple; // Режим без растягивания;
+                    string addressableKey = $"{groupCollectionElement.Type}-image-{groupCollectionElement.Name.ToLower()}_face";
+                    imageCollectionElement.sprite = await Addressables.LoadAssetAsync<Sprite>(addressableKey).Task;
+                    imageCollectionElement.preserveAspect = true; // Сохраняет пропорции изображения
+                    imageCollectionElement.type = Image.Type.Simple; // Режим без растягивания;
 
                     async Task OnClick()
                     {
-                        HeroDataList.ForEach(a => a.Selected = false);
-                        heroData.Selected = true;
+                        ListDataCollectionElement.ForEach(a => a.Selected = false);
+                        dataCollectionElement.Selected = true;
 
-                        _PanelSelectedHero_GameObject.SetActive(true);
-                        string name = heroData.collectionHero.HeroBase.Name;
+                        _Init_Collection.PanelSelectedHero_GameObject.SetActive(true);
+                        string name = dataCollectionElement.collectionCollectionElement.Name;
                         _SelectedHeroTop_TextMeshProUGUI.text = name.ToUpper1Char();
 
-                        string addressableKey = $"hero-image-{name.ToLower()}";
-                        _SelectedHero_Image.sprite = await Addressables.LoadAssetAsync<Sprite>(addressableKey).Task;
-                        _SelectedHero_Image.preserveAspect = true; // Сохраняет пропорции изображения
-                        //_SelectedHero_Image.type = Image.Type.; // Режим без растягивания;
+                        string addressableKey = $"{dataCollectionElement.collectionCollectionElement.Type}-image-{name.ToLower()}";
+                        _SelectedCollectionElement_Image.sprite = await Addressables.LoadAssetAsync<Sprite>(addressableKey).Task;
+                        _SelectedCollectionElement_Image.preserveAspect = true; // Сохраняет пропорции изображения
 
-                        _SelectedHeroRarity_Image.sprite = await Addressables.LoadAssetAsync<Sprite>($"rarity{(int)heroData.collectionHero.HeroBase.Rarity}").Task;
+                        _SelectedCollectionElementRarity_Image.sprite = await Addressables.LoadAssetAsync<Sprite>($"rarity{dataCollectionElement.collectionCollectionElement.Rarity}").Task;
 
-                        HeroDataList.ForEach(a =>
+                        ListDataCollectionElement.ForEach(a =>
                         {
                             if (a.Selected)
                             {
@@ -208,14 +202,14 @@ public class GroupDivider : MonoBehaviour
                     }
                     void OnPointerEnter()
                     {
-                        imageRarity.sprite = Init_Collection.Rarityes[0];
+                        imageRarity.sprite = _Init_Collection.Rarityes[0];
                     }
                     void OnPointerExit()
                     {
-                        imageRarity.sprite = Init_Collection.Rarityes[(int)heroData.collectionHero.HeroBase.Rarity];
+                        imageRarity.sprite = _Init_Collection.Rarityes[dataCollectionElement.collectionCollectionElement.Rarity];
                     }
-                    EventHelper.AddClickEvent(_prefabIconHero, OnClick, false);
-                    EventHelper.AddHoverEvents(_prefabIconHero, OnPointerEnter, OnPointerExit);
+                    EventHelper.AddClickEvent(_prefabIconCollectionElement, OnClick, false);
+                    EventHelper.AddHoverEvents(_prefabIconCollectionElement, OnPointerEnter, OnPointerExit);
 
                 }
             }
@@ -251,7 +245,7 @@ public class GroupDivider : MonoBehaviour
 
     public void Resize()
     {
-        float width = _panelCollection_RectTransform.sizeDelta.x;
+        float width = _Init_Collection.PanelCollection_RectTransform.sizeDelta.x;
         float coefHeight = Screen.height / 1080f;
         float heightButton = 45f * coefHeight;
         float height = heightButton;
@@ -283,8 +277,8 @@ public class GroupDivider : MonoBehaviour
 
 
             // вычисляем количество строк
-            int countHeroes = _listHeroes.Count();
-            int countRows = (countHeroes / countCellInRow) + (countHeroes % countCellInRow == 0 ? 0 : 1);
+            int countCollectionElement = _listCollectionElement.Count();
+            int countRows = (countCollectionElement / countCellInRow) + (countCollectionElement % countCellInRow == 0 ? 0 : 1);
             if (countRows < 1)
             {
                 countRows = 1;
@@ -299,7 +293,7 @@ public class GroupDivider : MonoBehaviour
             _CellsContainer_RectTransform.anchoredPosition = new Vector2(0, -45f * coefHeight);
 
 
-            foreach (HeroData item in HeroDataList)
+            foreach (DataCollectionElement item in ListDataCollectionElement)
             {
                 item.textMeshPro.fontSize = 14f * coefHeight;
             }

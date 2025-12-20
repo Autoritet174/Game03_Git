@@ -1,10 +1,16 @@
 using Assets.GameData.Scripts;
 using General;
+using General.GameEntities;
 using Newtonsoft.Json;
+using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
+using static GroupDivider;
 using G = Assets.GameData.Scripts.G;
 using L = General.LocalizationKeys;
 
@@ -101,8 +107,24 @@ namespace Assets.GameData.Scenes.Auth
                 GameMessage.ShowLocale(L.Info.LoadingData, false);
                 await G.Game.GameData.LoadListAllHeroesAsync(CancelToken.Create("G.Game.GameData.LoadListAllHeroesAsync"));
 
+                // Предзагрузка AdressableAssets героев и редкости
+                List<Task> preloadAdressableAssets = new();
+                foreach (HeroBase hero in G.Game.GameData.AllHeroes)
+                {
+                    string _name = hero.Name.ToLower();
+                    preloadAdressableAssets.Add(Addressables.LoadAssetAsync<Sprite>($"hero-image-{_name}").Task);
+                    preloadAdressableAssets.Add(Addressables.LoadAssetAsync<Sprite>($"hero-image-{_name}_face").Task);
+                }
+
+                for (int i = 1; i <= 6; i++)
+                {
+                    preloadAdressableAssets.Add(Addressables.LoadAssetAsync<Sprite>($"rarity{i}").Task);
+                }
+
                 // Загрузка коллекции пользователя
                 GameMessage.ShowLocale(L.Info.LoadingCollection, false);
+
+
                 bool loaded = await G.Game.Collection.LoadAllCollectionFromServer(CancelToken.Create("G.Game.GlobalFunctions.LoadListAllHeroesAsync"));
                 if (!loaded)
                 {
@@ -110,6 +132,7 @@ namespace Assets.GameData.Scenes.Auth
                     return;
                 }
 
+                await Task.WhenAll(preloadAdressableAssets);
 
                 UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
             }

@@ -53,7 +53,7 @@ public class Init_Collection : MonoBehaviour
     private RectTransform _ButtonClose_RectTransform;
     private RectTransform _ButtonCloseSelectedHero_RectTransform;
     private RectTransform _PanelSelectedHero_RectTransform;
-    private GameObject _PanelSelectedHero_GameObject;
+    internal GameObject PanelSelectedHero_GameObject { get; private set; }
     private bool _PanelSelectedHero_isActive = false;
     private RectTransform _PanelSelectedHeroTop_RectTransform;
     private RectTransform _PanelSelectedHeroBottom_RectTransform;
@@ -62,7 +62,7 @@ public class Init_Collection : MonoBehaviour
     private TextMeshProUGUI _PanelSelectedHeroBottomTabButton1_TextMeshProUGUI;
     private TextMeshProUGUI _PanelSelectedHeroBottomTabButton2_TextMeshProUGUI;
     private RectTransform _PanelSelectedHeroBottomTab1_RectTransform;
-    private RectTransform _PanelCollection_RectTransform;
+    internal RectTransform PanelCollection_RectTransform { get; private set; }
     private RectTransform _PanelCollectionTopButtons_RectTransform;
     private RectTransform _ScrollViewCollection_RectTransform;
     private RectTransform _ScrollbarVertical_RectTransform;
@@ -109,6 +109,8 @@ public class Init_Collection : MonoBehaviour
 
     private readonly List<GroupDivider> _GroupDividers = new();
 
+
+
     private class Slot
     {
         private readonly string name;
@@ -153,8 +155,8 @@ public class Init_Collection : MonoBehaviour
     /// <summary>
     /// 1 - герои, 2 - экипировка
     /// </summary>
-    public static int CollectionMode { get; private set; } = 1;
-    public static Sprite[] Rarityes = new Sprite[0];
+    public int CollectionMode { get; private set; } = 1;
+    public Sprite[] Rarityes = new Sprite[0];
 
     private async void Start()
     {
@@ -175,8 +177,8 @@ public class Init_Collection : MonoBehaviour
         _ButtonClose_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose (id=4nretdab)");
 
         _PanelSelectedHero_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHero (id=vs2gi8c6)");
-        _PanelSelectedHero_GameObject = _PanelSelectedHero_RectTransform.gameObject;
-        _PanelSelectedHero_isActive = _PanelSelectedHero_GameObject.activeInHierarchy;
+        PanelSelectedHero_GameObject = _PanelSelectedHero_RectTransform.gameObject;
+        _PanelSelectedHero_isActive = PanelSelectedHero_GameObject.activeInHierarchy;
 
         Rarityes = new Sprite[]{
             await Addressables.LoadAssetAsync<Sprite>($"raritySelected").Task,
@@ -195,11 +197,11 @@ public class Init_Collection : MonoBehaviour
         _ButtonCloseSelectedHero_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose (id=0ursxw0e)");
         _ButtonCloseSelectedHero_RectTransform.gameObject.GetComponent<Button>().onClick.AddListener(() =>
         {
-            _PanelSelectedHero_GameObject.SetActive(false);
+            PanelSelectedHero_GameObject.SetActive(false);
             foreach (GroupDivider a in _GroupDividers)
             {
                 bool founded = false;
-                foreach (GroupDivider.HeroData b in a.HeroDataList)
+                foreach (GroupDivider.DataCollectionElement b in a.ListDataCollectionElement)
                 {
                     if (b.Selected)
                     {
@@ -233,7 +235,7 @@ public class Init_Collection : MonoBehaviour
         _SelectedHeroTop_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label_SelectedHero (id=ahrtgg43)");
 
         // Панель для внутренних кнопок
-        _PanelCollection_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelCollection (id=jcxwa01g)");
+        PanelCollection_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelCollection (id=jcxwa01g)");
         _PanelCollectionTopButtons_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelCollectionTopButtons (id=gmzb0h9f)");
 
         // Внутренние кнопки
@@ -279,31 +281,9 @@ public class Init_Collection : MonoBehaviour
         _Slots.Add(new Slot("Earring", 7, 3, _PanelSelectedHeroBottom_RectTransform, "1"));
         _Slots.Add(new Slot("Earring", 8, 3, _PanelSelectedHeroBottom_RectTransform, "2"));
 
-        /*
-        Голова (Head) 1
-        Наплечники (Shoulders) 2
-        Нагрудник (Chest) 3
-        Руки (Hands) 4
-        Поножи (Legs) 5
-        Ступни (Feet) 6
-        Пояс (Waist) 7
-        Запястья (Wrist) 8
-        Спина (Back) 9
-        Браслет 1 (Bracelet1) 10
-        Браслет 2 (Bracelet2) 11
-        Левая рука (LeftHand) 12
-        Правая рука (RightHand) 13
-        Шея (Neck) 14
-        Кольцо 1 (Ring1) 15
-        Кольцо 2 (Ring2) 16
-        Кольцо 3 (Ring3) 17
-        Кольцо 4 (Ring4) 18
-        Серьга 1 (Earring1) 19
-        Серьга 2 (Earring2) 20
-        Аксессуар 1 (Trinket1) 21
-        Аксессуар 2 (Trinket2) 22
-         */
         _initialized = true;
+
+        GameMessage.ShowLocale(L.Info.LoadingCollection, false);
 
         await LoadCollectionAsync();
     }
@@ -326,9 +306,9 @@ public class Init_Collection : MonoBehaviour
             resize = true;
         }
 
-        if (_PanelSelectedHero_isActive != _PanelSelectedHero_GameObject.activeInHierarchy)
+        if (_PanelSelectedHero_isActive != PanelSelectedHero_GameObject.activeInHierarchy)
         {
-            _PanelSelectedHero_isActive = _PanelSelectedHero_GameObject.activeInHierarchy;
+            _PanelSelectedHero_isActive = PanelSelectedHero_GameObject.activeInHierarchy;
             resize = true;
         }
 
@@ -342,18 +322,26 @@ public class Init_Collection : MonoBehaviour
 
     private async Task LoadCollectionAsync()
     {
-        GameMessage.ShowLocale(L.Info.LoadingCollection, false);
         try
         {
+            if (_GroupDividers.Count > 0)
+            {
+                foreach (GroupDivider item in _GroupDividers)
+                {
+                    UnityEngine.Object.Destroy(item.gameObject);
+                }
+            }
+
             OnResizeWindow();
             await Task.Yield();
+
 
             _GroupDividers.Clear();
             //List<Task> tasks = new();
             int completed = 0;
             if (CollectionMode == 1)
             {
-                foreach (GroupHeroes item in G.Game.Collection.GetCollectionHeroesGroupByGroups().OrderByDescending(static a => a.Priority))
+                foreach (GroupCollectionElement item in G.Game.Collection.GetCollectionHeroesGroupedByGroupNames().OrderByDescending(static a => a.Priority))
                 {
                     if (item.List.Count() > 0)
                     {
@@ -362,7 +350,7 @@ public class Init_Collection : MonoBehaviour
                         GroupDivider groupDivider = obj.AddComponent<GroupDivider>();
                         obj.transform.SetParent(_CollectionContent_Transform, false);
                         _GroupDividers.Add(groupDivider);
-                        groupDivider.Init1(item.Name, obj, item.List, _PanelCollection_RectTransform, _PanelSelectedHero_RectTransform.gameObject, _SelectedHeroTop_TextMeshProUGUI, _SelectedHero_Image, _SelectedHeroRarity_Image);
+                        groupDivider.Init1(item.Name, this, obj, item.List, _SelectedHeroTop_TextMeshProUGUI, _SelectedHero_Image, _SelectedHeroRarity_Image);
                         OnResizeWindow();
                         await groupDivider.Init2();
                         completed++;
@@ -371,9 +359,7 @@ public class Init_Collection : MonoBehaviour
                             Debug.Log(completed);
                         }
                     }
-                    //tasks.Add(task);
                 }
-                //await Task.WhenAll(tasks);
             }
             else if (CollectionMode == 2)
             {
@@ -393,9 +379,14 @@ public class Init_Collection : MonoBehaviour
     /// </summary>
     private void OnClickHeroes()
     {
+        if (CollectionMode == 1)
+        {
+            return;
+        }
         CollectionMode = 1;
         OnClickTabButton(_TabButtonHeroes);
-        _TabButtonHeroes.image.color = Color.white;
+        //_TabButtonHeroes.image.color = Color.white;
+        _ = LoadCollectionAsync();
     }
 
     /// <summary>
@@ -403,8 +394,13 @@ public class Init_Collection : MonoBehaviour
     /// </summary>
     private void OnClickEquipment()
     {
+        if (CollectionMode == 2)
+        {
+            return;
+        }
         CollectionMode = 2;
         OnClickTabButton(_TabButtonEquipment);
+        _ = LoadCollectionAsync();
     }
 
     private void OnClickTabButton(TabButton tabButtonPressed)
@@ -501,7 +497,7 @@ public class Init_Collection : MonoBehaviour
 
         // Панель коллекции
         float panelCollection_Width = _width - panelSelectedHeroWidth;
-        _PanelCollection_RectTransform.sizeDelta = new Vector2(panelCollection_Width, _height - panelTopHeight);
+        PanelCollection_RectTransform.sizeDelta = new Vector2(panelCollection_Width, _height - panelTopHeight);
 
         // Панель верхних кнопок
         _PanelCollectionTopButtons_RectTransform.sizeDelta = new Vector2(panelCollection_Width, 113f * coefHeight);
@@ -514,7 +510,7 @@ public class Init_Collection : MonoBehaviour
         _InternalPanelSort.Refresh(coefHeight, vector008PercentOfHeight, 362);
 
         // Scroll View для коллекции героев
-        _ScrollViewCollection_RectTransform.sizeDelta = new Vector2(panelCollection_Width, _PanelCollection_RectTransform.sizeDelta.y - _PanelCollectionTopButtons_RectTransform.sizeDelta.y);
+        _ScrollViewCollection_RectTransform.sizeDelta = new Vector2(panelCollection_Width, PanelCollection_RectTransform.sizeDelta.y - _PanelCollectionTopButtons_RectTransform.sizeDelta.y);
 
         // ScrollbarVertical для коллекции героев
         _ScrollbarVertical_RectTransform.sizeDelta = new Vector2(32f * coefHeight, _ScrollViewCollection_RectTransform.sizeDelta.y);

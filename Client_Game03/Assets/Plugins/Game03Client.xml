@@ -275,32 +275,32 @@
             <param name="jObject">Объект JSON, содержащий ключ ошибки ("keyError") и дополнительные данные.</param>
             <returns>Локализованная строка ошибки с подставленными данными, или пустая строка, если <paramref name="jObject"/> равен null.</returns>
         </member>
-        <member name="T:Game03Client.PlayerCollection.GroupHeroes">
+        <member name="T:Game03Client.PlayerCollection.GroupCollectionElement">
             <summary>
-            Группа героев.
+            Группа элемента коллекции.
             </summary>
         </member>
-        <member name="M:Game03Client.PlayerCollection.GroupHeroes.#ctor(System.String,System.Collections.Generic.IEnumerable{General.GameEntities.CollectionHero})">
+        <member name="M:Game03Client.PlayerCollection.GroupCollectionElement.#ctor(System.String,System.Collections.Generic.IEnumerable{Game03Client.PlayerCollection.CollectionElement})">
             <summary>
-            Группа героев.
+            Группа элемента коллекции.
             </summary>
         </member>
-        <member name="P:Game03Client.PlayerCollection.GroupHeroes.Name">
+        <member name="P:Game03Client.PlayerCollection.GroupCollectionElement.Name">
             <summary>
-            Возвращает имя группы героев.
+            Возвращает имя группы элемента коллекции.
             </summary>
         </member>
-        <member name="P:Game03Client.PlayerCollection.GroupHeroes.List">
+        <member name="P:Game03Client.PlayerCollection.GroupCollectionElement.List">
             <summary>
-            Получает коллекцию героев, содержащихся в этом экземпляре.
+            Получает коллекцию, содержащихся в этом экземпляре.
             </summary>
         </member>
-        <member name="P:Game03Client.PlayerCollection.GroupHeroes.Priority">
+        <member name="P:Game03Client.PlayerCollection.GroupCollectionElement.Priority">
             <summary>
-            Возвращает или устанавливает уровень приоритета группы героев.
+            Возвращает или устанавливает уровень приоритета группы.
             </summary>
         </member>
-        <member name="M:Game03Client.PlayerCollection.PlayerCollectionProvider.GetCollectionHeroesGroupByGroups">
+        <member name="M:Game03Client.PlayerCollection.PlayerCollectionProvider.GetCollectionHeroesGroupedByGroupNames">
             <summary>
             Получить коллекцию героев сгруппированную по именам групп.
             </summary>
