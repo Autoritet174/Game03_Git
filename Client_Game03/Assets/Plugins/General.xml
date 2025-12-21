@@ -10,37 +10,25 @@
             </summary>
         </member>
         <member name="P:General.DTO.Dice.Count">
-            <summary> Количество бросаемых кубиков. </summary>
+            <summary> Count. Количество бросаемых кубиков. </summary>
         </member>
-        <member name="P:General.DTO.Dice.Sizes">
-            <summary> Размер кубика (число граней). </summary>
+        <member name="P:General.DTO.Dice.Sides">
+            <summary> Sides. Размер кубика (число граней). </summary>
         </member>
         <member name="P:General.DTO.Dice.Modificator">
-            <summary> Модификатор к броску кубиков. </summary>
-        </member>
-        <member name="M:General.DTO.Dice.#ctor(System.Int32,System.Int32,System.Nullable{System.Int32})">
-            <param name="count">Количество бросаемых кубиков.</param>
-            <param name="sizes">Размер кубика (число граней).</param>
-            <param name="modificator">Модификатор к броску кубиков.</param>
-        </member>
-        <member name="M:General.DTO.Dice.#ctor(System.String)">
-            <summary>
-            Примеры строк: "2d6_10+3", "20d358_123+9999".
-            </summary>
-            <param name="diceStr"></param>
-            <exception cref="T:System.FormatException"></exception>
+            <summary> Modificator. Модификатор к броску кубиков. </summary>
         </member>
         <member name="T:General.DTO.DtoBaseEquipment">
             <summary> Представляет базовую сущность предмета. </summary>
         </member>
-        <member name="M:General.DTO.DtoBaseEquipment.#ctor(System.Int32,System.String,System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean,System.String)">
+        <member name="M:General.DTO.DtoBaseEquipment.#ctor(System.Int32,System.String,System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean,General.DTO.Dice,General.DTO.Dice)">
             <summary> Представляет базовую сущность предмета. </summary>
         </member>
         <member name="T:General.DTO.DtoBaseHero">
-            <summary> Представляет базовую сущность игрового героя с основными характеристиками. </summary>
+            <summary> Data Transfer Object. Представляет базовую сущность игрового героя с основными характеристиками. </summary>
         </member>
         <member name="M:General.DTO.DtoBaseHero.#ctor(System.Int32,System.String,System.Int32,General.DTO.Dice,General.DTO.Dice)">
-            <summary> Представляет базовую сущность игрового героя с основными характеристиками. </summary>
+            <summary> Data Transfer Object. Представляет базовую сущность игрового героя с основными характеристиками. </summary>
         </member>
         <member name="T:General.DTO.DtoCollectionEquipment">
             <summary>
@@ -64,13 +52,27 @@
         </member>
         <member name="T:General.DTO.DtoGameDataContainer">
             <summary>
-            Корневой контейнер для данных.
+            Data Transfer Object. Корневой контейнер для данных.
             </summary>
         </member>
         <member name="M:General.DTO.DtoGameDataContainer.#ctor(System.Collections.Generic.List{General.DTO.DtoBaseHero},System.Collections.Generic.List{General.DTO.DtoSlotType})">
             <summary>
-            Корневой контейнер для данных.
+            Data Transfer Object. Корневой контейнер для данных.
             </summary>
+        </member>
+        <member name="T:General.DTO.DtoSlotType">
+            <summary>
+            Data Transfer Object. SlotType.
+            </summary>
+            <param name="id"></param>
+            <param name="name"></param>
+        </member>
+        <member name="M:General.DTO.DtoSlotType.#ctor(System.Int32,System.String)">
+            <summary>
+            Data Transfer Object. SlotType.
+            </summary>
+            <param name="id"></param>
+            <param name="name"></param>
         </member>
         <member name="T:General.G">
             <summary>
