@@ -18,30 +18,30 @@
         <member name="P:General.DTO.Dice.Modificator1000">
             <summary> Modificator. Модификатор к броску кубиков. Первые три знака, тысячные доли от единицы видимой игроку. </summary>
         </member>
-        <member name="T:General.DTO.Entities.Collection.DtoCollectionEquipment">
+        <member name="T:General.DTO.Entities.Collection.DtoEquipment">
             <summary>
             Предмет экипировки из коллекции игрока. (MongoDb).
             </summary>
         </member>
-        <member name="M:General.DTO.Entities.Collection.DtoCollectionEquipment.#ctor">
+        <member name="M:General.DTO.Entities.Collection.DtoEquipment.#ctor">
             <summary>
             Предмет экипировки из коллекции игрока. (MongoDb).
             </summary>
         </member>
-        <member name="T:General.DTO.Entities.Collection.DtoCollectionHero">
+        <member name="T:General.DTO.Entities.Collection.DtoHero">
             <summary>
             Герой из коллекции игрока.
             </summary>
         </member>
-        <member name="M:General.DTO.Entities.Collection.DtoCollectionHero.#ctor">
+        <member name="M:General.DTO.Entities.Collection.DtoHero.#ctor">
             <summary>
             Герой из коллекции игрока.
             </summary>
         </member>
-        <member name="P:General.DTO.Entities.Collection.DtoCollectionHero.ResistDamagePhysical">
+        <member name="P:General.DTO.Entities.Collection.DtoHero.ResistDamagePhysical">
             <summary> Сопротивление физическому урону. Выражается числом которое преобразовывается в проценты. </summary>
         </member>
-        <member name="P:General.DTO.Entities.Collection.DtoCollectionHero.ResistDamageMagical">
+        <member name="P:General.DTO.Entities.Collection.DtoHero.ResistDamageMagical">
             <summary> Сопротивление магическому урону. Выражается числом которое преобразовывается в проценты. </summary>
         </member>
         <member name="T:General.DTO.Entities.DtoContainerCollection">

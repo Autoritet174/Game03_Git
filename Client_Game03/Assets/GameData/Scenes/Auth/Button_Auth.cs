@@ -106,7 +106,7 @@ namespace Assets.GameData.Scenes.Auth
 
                 // Предзагрузка AdressableAssets героев и редкости
                 List<Task> preloadAdressableAssets = new();
-                foreach (var hero in G.Game.GameData.BaseHeroes)
+                foreach (var hero in G.Game.GameData.GetDtoContainer().DtoBaseHeroes)
                 {
                     string _name = hero.Name.ToLower();
                     preloadAdressableAssets.Add(Addressables.LoadAssetAsync<Sprite>($"hero-image-{_name}").Task);
@@ -122,7 +122,7 @@ namespace Assets.GameData.Scenes.Auth
                 GameMessage.ShowLocale(L.Info.LoadingCollection, false);
 
 
-                bool loaded = await G.Game.Collection.LoadAllCollectionFromServer(CancelToken.Create("G.Game.GlobalFunctions.LoadListAllHeroesAsync"));
+                bool loaded = await G.Game.Collection.LoadAllCollectionFromServerAsync(CancelToken.Create("G.Game.Collection.LoadAllCollectionFromServerAsync"));
                 if (!loaded)
                 {
                     GameMessage.ShowLocale(L.Error.Server.LoadingCollectionFailed, true);
