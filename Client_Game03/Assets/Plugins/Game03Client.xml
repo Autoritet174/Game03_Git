@@ -71,12 +71,6 @@
             Класс для кэширования глобальных данных, используемых поставщиком функций.
             </summary>
         </member>
-        <member name="F:Game03Client.GameData.GameDataCache._allHeroes">
-            <summary>
-            Коллекция, хранящая кэшированный список всех базовых сущностей героев.
-            Инициализируется пустым списком.
-            </summary>
-        </member>
         <member name="T:Game03Client.GameData.GameDataProvider">
             <summary>
             Реализация <see cref="T:Game03Client.GameData.IGameData"/>, предоставляющая функциональность для
@@ -95,42 +89,14 @@
             <param name="globalFunctionsProviderCache">Кэш для хранения глобальных данных.</param>
             <param name="logger">Провайдер для ведения журнала.</param>
         </member>
-        <member name="P:Game03Client.GameData.GameDataProvider.AllHeroes">
-            <inheritdoc/>
-        </member>
-        <member name="M:Game03Client.GameData.GameDataProvider.LoadListAllHeroesAsync(System.Threading.CancellationToken)">
-            <inheritdoc/>
-            <exception cref="T:System.InvalidOperationException">Выбрасывается, если произошла ошибка при конвертации данных (например, неверный формат).</exception>
-        </member>
-        <member name="M:Game03Client.GameData.GameDataProvider.GetHeroById(System.Int32)">
+        <member name="M:Game03Client.GameData.GameDataProvider.LoadGameData(System.Threading.CancellationToken)">
             <inheritdoc/>
         </member>
         <member name="T:Game03Client.GameData.IGameData">
-            <summary>
-            Определяет интерфейс для поставщика глобальных функций,
-            предоставляющих доступ к данным, таким как список всех героев.
-            </summary>
+            <summary> Определяет интерфейс для поставщика глобальных функций. </summary>
         </member>
-        <member name="M:Game03Client.GameData.IGameData.LoadListAllHeroesAsync(System.Threading.CancellationToken)">
-            <summary>
-            Асинхронно загружает список всех героев из внешнего источника.
-            </summary>
-            <param name="cancellationToken">Токен отмены для прерывания операции.</param>
-            <returns>Задача, представляющая операцию загрузки.</returns>
-        </member>
-        <member name="P:Game03Client.GameData.IGameData.AllHeroes">
-            <summary>
-            Получает доступный список всех загруженных базовых сущностей героев.
-            </summary>
-            <returns>Коллекция, содержащая все доступные базовые сущности героев.</returns>
-        </member>
-        <member name="M:Game03Client.GameData.IGameData.GetHeroById(System.Int32)">
-            <summary>
-            Находит и возвращает базовую сущность героя по его уникальному идентификатору.
-            </summary>
-            <param name="id">Уникальный идентификатор (int) искомого героя.</param>
-            <returns>Базовая сущность героя (<see cref="T:General.GameEntities.HeroBase"/>) с указанным <paramref name="id"/>,
-            или <c>null</c> (если поддерживается типом), если герой не найден.</returns>
+        <member name="M:Game03Client.GameData.IGameData.LoadGameData(System.Threading.CancellationToken)">
+            <summary> Асинхронно загружает все константные игровые данные. </summary>
         </member>
         <member name="T:Game03Client.GameLanguage">
             <summary>

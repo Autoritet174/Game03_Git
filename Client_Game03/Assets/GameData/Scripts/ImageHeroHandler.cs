@@ -1,18 +1,19 @@
-using General.GameEntities;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Threading.Tasks;
+using General.DTO;
+using General.DTO.Entities.GameData;
 
 public class ImageHeroHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-    private HeroBase hero;
+    private DtoBaseHero hero;
     private Sprite normalSprite;
     private Sprite hoverSprite;
-    private System.Func<HeroBase, Task> clickCallback;
+    private System.Func<DtoBaseHero, Task> clickCallback;
     private Image imageComponent;
 
-    public void Initialize(HeroBase hero, Sprite normal, Sprite hover, System.Func<HeroBase, Task> callback, Image imageComponent)
+    public void Initialize(DtoBaseHero hero, Sprite normal, Sprite hover, System.Func<DtoBaseHero, Task> callback, Image imageComponent)
     {
         this.hero = hero;
         normalSprite = normal;
@@ -75,7 +76,7 @@ public class ImageHeroHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
         }
     }
 
-    public void UpdateParameter(HeroBase hero)
+    public void UpdateParameter(DtoBaseHero hero)
     {
         this.hero = hero;
     }

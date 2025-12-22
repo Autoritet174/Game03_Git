@@ -15,64 +15,66 @@
         <member name="P:General.DTO.Dice.Sides">
             <summary> Sides. Размер кубика (число граней). </summary>
         </member>
-        <member name="P:General.DTO.Dice.Modificator">
-            <summary> Modificator. Модификатор к броску кубиков. </summary>
+        <member name="P:General.DTO.Dice.Modificator1000">
+            <summary> Modificator. Модификатор к броску кубиков. Первые три знака, тысячные доли от единицы видимой игроку. </summary>
         </member>
-        <member name="T:General.DTO.DtoBaseEquipment">
-            <summary> Представляет базовую сущность предмета. </summary>
-        </member>
-        <member name="M:General.DTO.DtoBaseEquipment.#ctor(System.Int32,System.String,System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean,General.DTO.Dice,General.DTO.Dice)">
-            <summary> Представляет базовую сущность предмета. </summary>
-        </member>
-        <member name="T:General.DTO.DtoBaseHero">
-            <summary> Data Transfer Object. Представляет базовую сущность игрового героя с основными характеристиками. </summary>
-        </member>
-        <member name="M:General.DTO.DtoBaseHero.#ctor(System.Int32,System.String,System.Int32,General.DTO.Dice,General.DTO.Dice)">
-            <summary> Data Transfer Object. Представляет базовую сущность игрового героя с основными характеристиками. </summary>
-        </member>
-        <member name="T:General.DTO.DtoCollectionEquipment">
+        <member name="T:General.DTO.Entities.Collection.DtoCollectionEquipment">
             <summary>
             Предмет экипировки из коллекции игрока. (MongoDb).
             </summary>
         </member>
-        <member name="M:General.DTO.DtoCollectionEquipment.#ctor(System.String,System.Guid,General.DTO.DtoBaseEquipment,System.String,System.Int64,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+        <member name="M:General.DTO.Entities.Collection.DtoCollectionEquipment.#ctor">
             <summary>
             Предмет экипировки из коллекции игрока. (MongoDb).
             </summary>
         </member>
-        <member name="T:General.DTO.DtoCollectionHero">
+        <member name="T:General.DTO.Entities.Collection.DtoCollectionHero">
             <summary>
             Герой из коллекции игрока.
             </summary>
         </member>
-        <member name="M:General.DTO.DtoCollectionHero.#ctor(System.Guid,System.Guid,General.DTO.DtoBaseHero,System.String,System.Int32,System.Int64,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int64)">
+        <member name="M:General.DTO.Entities.Collection.DtoCollectionHero.#ctor">
             <summary>
             Герой из коллекции игрока.
             </summary>
         </member>
-        <member name="T:General.DTO.DtoGameDataContainer">
+        <member name="P:General.DTO.Entities.Collection.DtoCollectionHero.ResistDamagePhysical">
+            <summary> Сопротивление физическому урону. Выражается числом которое преобразовывается в проценты. </summary>
+        </member>
+        <member name="P:General.DTO.Entities.Collection.DtoCollectionHero.ResistDamageMagical">
+            <summary> Сопротивление магическому урону. Выражается числом которое преобразовывается в проценты. </summary>
+        </member>
+        <member name="T:General.DTO.Entities.DtoContainerCollection">
             <summary>
             Data Transfer Object. Корневой контейнер для данных.
             </summary>
         </member>
-        <member name="M:General.DTO.DtoGameDataContainer.#ctor(System.Collections.Generic.List{General.DTO.DtoBaseHero},System.Collections.Generic.List{General.DTO.DtoSlotType})">
+        <member name="M:General.DTO.Entities.DtoContainerCollection.#ctor">
             <summary>
             Data Transfer Object. Корневой контейнер для данных.
             </summary>
         </member>
-        <member name="T:General.DTO.DtoSlotType">
+        <member name="T:General.DTO.Entities.DtoContainerGameData">
             <summary>
-            Data Transfer Object. SlotType.
+            Data Transfer Object. Корневой контейнер для данных.
             </summary>
-            <param name="id"></param>
-            <param name="name"></param>
         </member>
-        <member name="M:General.DTO.DtoSlotType.#ctor(System.Int32,System.String)">
+        <member name="M:General.DTO.Entities.DtoContainerGameData.#ctor">
             <summary>
-            Data Transfer Object. SlotType.
+            Data Transfer Object. Корневой контейнер для данных.
             </summary>
-            <param name="id"></param>
-            <param name="name"></param>
+        </member>
+        <member name="T:General.DTO.Entities.GameData.DtoBaseEquipment">
+            <summary> Представляет базовую сущность предмета. </summary>
+        </member>
+        <member name="M:General.DTO.Entities.GameData.DtoBaseEquipment.#ctor(System.Int32,System.String,System.Int32,System.Boolean,System.Int32,General.DTO.Stats)">
+            <summary> Представляет базовую сущность предмета. </summary>
+        </member>
+        <member name="T:General.DTO.Entities.GameData.DtoBaseHero">
+            <summary> Data Transfer Object. Представляет базовую сущность игрового героя с основными характеристиками. </summary>
+        </member>
+        <member name="M:General.DTO.Entities.GameData.DtoBaseHero.#ctor(System.Int32,System.String,System.Int32,System.Boolean,System.Int32,General.DTO.Stats)">
+            <summary> Data Transfer Object. Представляет базовую сущность игрового героя с основными характеристиками. </summary>
         </member>
         <member name="T:General.G">
             <summary>

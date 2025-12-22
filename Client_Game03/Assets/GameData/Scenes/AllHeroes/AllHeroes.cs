@@ -1,6 +1,8 @@
 using Assets.GameData.Scenes.AllHeroes;
 using Assets.GameData.Scripts;
-using General.GameEntities;
+using General;
+using General.DTO;
+using General.DTO.Entities.GameData;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
@@ -12,10 +14,8 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
-using L = General.LocalizationKeys;
-
-using General;
 using G = Assets.GameData.Scripts.G;
+using L = General.LocalizationKeys;
 
 public class AllHeroes : MonoBehaviour
 {
@@ -93,7 +93,7 @@ public class AllHeroes : MonoBehaviour
     private async Task AddAllImageOnContent()
     {
         List<Task> list = new();
-        foreach (HeroBase heroStats in G.Game.GameData.AllHeroes)
+        foreach (DtoBaseHero heroStats in G.Game.GameData.BaseHeroes)
         {
             list.Add(LoadHeroByName(heroStats));
         }
@@ -101,7 +101,7 @@ public class AllHeroes : MonoBehaviour
         await Task.WhenAll(list);
     }
 
-    private async Task LoadHeroByName(HeroBase hero)
+    private async Task LoadHeroByName(DtoBaseHero hero)
     {
         GameObject _prefabIconHero = prefabIconHero.SafeInstant();
         string heroName = hero.Name;
@@ -267,7 +267,7 @@ public class AllHeroes : MonoBehaviour
 
     }
 
-    public async Task HeroView(HeroBase hero)
+    public async Task HeroView(DtoBaseHero hero)
     {
 
         GameObject prefabHeroViewer;

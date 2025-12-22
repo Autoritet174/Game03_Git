@@ -1,8 +1,6 @@
 using Assets.GameData.Scripts;
 using General;
-using General.GameEntities;
 using Newtonsoft.Json;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,7 +8,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
-using static GroupDivider;
 using G = Assets.GameData.Scripts.G;
 using L = General.LocalizationKeys;
 
@@ -105,11 +102,11 @@ namespace Assets.GameData.Scenes.Auth
 
                 // Загрузка игровых данных не связанных с конкретным пользователем
                 GameMessage.ShowLocale(L.Info.LoadingData, false);
-                await G.Game.GameData.LoadListAllHeroesAsync(CancelToken.Create("G.Game.GameData.LoadListAllHeroesAsync"));
+                await G.Game.GameData.LoadGameData(CancelToken.Create("G.Game.GameData.LoadListAllHeroesAsync"));
 
                 // Предзагрузка AdressableAssets героев и редкости
                 List<Task> preloadAdressableAssets = new();
-                foreach (HeroBase hero in G.Game.GameData.AllHeroes)
+                foreach (var hero in G.Game.GameData.BaseHeroes)
                 {
                     string _name = hero.Name.ToLower();
                     preloadAdressableAssets.Add(Addressables.LoadAssetAsync<Sprite>($"hero-image-{_name}").Task);
