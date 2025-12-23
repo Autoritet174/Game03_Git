@@ -46,7 +46,7 @@ namespace Assets.GameData.Scripts
             {
                 string _name = i.Name.ToLower();
                 string key1 = $"equipment-image-{_name}";
-                string key2 = $"equipment-image-{_name}_icon";
+                string key2 = $"equipment-image-{_name}_128";
                 if (await CheckIfKeyExists(key1))
                 {
                     preloadAdressableAssets.Add(Addressables.LoadAssetAsync<Sprite>(key1).Task);

@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
@@ -154,15 +153,14 @@ public class GroupDivider : MonoBehaviour
                     ListDataCollectionElement.Add(dataCollectionElement);
                     textMeshPro.text = groupCollectionElement.Name.ToUpper1Char();
                     textMeshPro.fontSize = 14;
-
-                    imageRarity.sprite = await Addressables.LoadAssetAsync<Sprite>($"rarity{groupCollectionElement.Rarity}").Task;
+                    imageRarity.sprite = _Init_Collection.Rarityes[groupCollectionElement.Rarity];
                     imageRarity.preserveAspect = true; // Сохраняет пропорции изображения
                     imageRarity.type = Image.Type.Simple; // Режим без растягивания;
 
                     string addressableKey = _Init_Collection.CollectionMode switch
                     {
                         1 => $"hero-image-{groupCollectionElement.Name.ToLower()}_face",
-                        2 => $"equipment-image-{groupCollectionElement.Name.ToLower()}_icon",
+                        2 => $"equipment-image-{groupCollectionElement.Name.ToLower()}_128",
                         _ => throw new Exception("CollectionMode > 2"),
                     };
                     imageCollectionElement.sprite = await Addressables.LoadAssetAsync<Sprite>(addressableKey).Task;
@@ -171,38 +169,33 @@ public class GroupDivider : MonoBehaviour
 
                     async Task OnClick()
                     {
-                        ListDataCollectionElement.ForEach(a => a.Selected = false);
-                        dataCollectionElement.Selected = true;
-
-                        _Init_Collection.PanelSelectedHero_GameObject.SetActive(true);
-                        string name = dataCollectionElement.collectionCollectionElement.Name;
-                        _Init_Collection.SelectedHeroTop_TextMeshProUGUI.text = name.ToUpper1Char();
-
-                        string addressableKey = _Init_Collection.CollectionMode switch
+                        if (_Init_Collection.CollectionMode == 1)
                         {
-                            1 => $"hero-image-{name.ToLower()}",
-                            2 => $"",
-                            _ => throw new Exception("CollectionMode > 2"),
-                        };
-                        _Init_Collection.SelectedHero_Image.sprite = await Addressables.LoadAssetAsync<Sprite>(addressableKey).Task;
-                        _Init_Collection.SelectedHero_Image.preserveAspect = true; // Сохраняет пропорции изображения
-
-                        _Init_Collection.SelectedHeroRarity_Image.sprite = await Addressables.LoadAssetAsync<Sprite>($"rarity{dataCollectionElement.collectionCollectionElement.Rarity}").Task;
-
-                        ListDataCollectionElement.ForEach(a =>
+                            // Heroes
+                            ListDataCollectionElement.ForEach(a => a.Selected = false);
+                            dataCollectionElement.Selected = true;
+                            _Init_Collection.PanelSelectedHero_GameObject.SetActive(true);
+                            string name = dataCollectionElement.collectionCollectionElement.Name;
+                            _Init_Collection.SelectedHeroTop_TextMeshProUGUI.text = name.ToUpper1Char();
+                            _Init_Collection.SelectedHero_Image.sprite = await Addressables.LoadAssetAsync<Sprite>($"hero-image-{name.ToLower()}").Task;
+                            _Init_Collection.SelectedHero_Image.preserveAspect = true; // Сохраняет пропорции изображения
+                            
+                            _Init_Collection.SelectedHeroRarity_Image.sprite = _Init_Collection.Rarityes[dataCollectionElement.collectionCollectionElement.Rarity];
+                            ListDataCollectionElement.ForEach(a => a.rectTransform.localScale = a.Selected ? Init_Collection.Vector3Selected : Vector3.one);
+                        }
+                        else if (_Init_Collection.CollectionMode == 2)
                         {
-                            if (a.Selected)
-                            {
-                                a.rectTransform.localScale = Init_Collection.Vector3Selected;
-                                //a.imageRarity.sprite = Init_Collection.Rarityes[0];
-                            }
-                            else
-                            {
-                                a.rectTransform.localScale = Vector3.one;
-                                //a.imageRarity.sprite = Init_Collection.Rarityes[(int)a.collectionHero.HeroBase.Rarity];
-                            }
-                        });
-
+                            // Equipments
+                            ListDataCollectionElement.ForEach(a => a.Selected = false);
+                            dataCollectionElement.Selected = true;
+                            _Init_Collection.PanelSelectedEquipment_GameObject.SetActive(true);
+                            string name = dataCollectionElement.collectionCollectionElement.Name;
+                            _Init_Collection.SelectedEquipmentTop_TextMeshProUGUI.text = name.ToUpper1Char();
+                            _Init_Collection.SelectedEquipment_Image.sprite = await Addressables.LoadAssetAsync<Sprite>($"equipment-image-{name.ToLower()}").Task;
+                            _Init_Collection.SelectedEquipment_Image.preserveAspect = true; // Сохраняет пропорции изображения
+                            _Init_Collection.SelectedEquipmentRarity_Image.sprite = _Init_Collection.Rarityes[dataCollectionElement.collectionCollectionElement.Rarity];
+                            ListDataCollectionElement.ForEach(a => a.rectTransform.localScale = a.Selected ? Init_Collection.Vector3Selected : Vector3.one);
+                        }
                     }
                     void OnPointerEnter()
                     {
