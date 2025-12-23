@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: EquipmentImages
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: EquipmentImages
+  m_GUID: 7c6178db5c115014e84a0c94c55d2ae3
+  m_SerializeEntries:
+  - m_GUID: b11a70b7f93b1e74da411c46fa671f57
+    m_Address: equipment-image-usually axe_icon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f9e11d18d47e8fc46bb982cbd472e7dd
+    m_Address: equipment-image-usually sword_icon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 3ac335a41d78635408bb61e4d6efbbe7, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 736e7e4ece3ba564ea98a54b435bd260, type: 2}
+    - {fileID: 11400000, guid: 1e44b0c6f7cbb1043befc440bdef91c2, type: 2}

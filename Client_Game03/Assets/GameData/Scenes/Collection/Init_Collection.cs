@@ -67,10 +67,10 @@ public class Init_Collection : MonoBehaviour
     private RectTransform _ScrollViewCollection_RectTransform;
     private RectTransform _ScrollbarVertical_RectTransform;
     private GameObject _ScrollViewCollection_GameObject;
-    private TextMeshProUGUI _SelectedHeroTop_TextMeshProUGUI;
+    public TextMeshProUGUI SelectedHeroTop_TextMeshProUGUI { get; private set; }
     private RectTransform _SelectedHeroImageContainer_RectTransform;
-    private Image _SelectedHero_Image;
-    private Image _SelectedHeroRarity_Image;
+    public Image SelectedHero_Image { get; private set; }
+    public Image SelectedHeroRarity_Image { get; private set; }
 
     /// <summary>
     /// Внутренняя панель, кнопки.
@@ -178,6 +178,9 @@ public class Init_Collection : MonoBehaviour
 
         _PanelSelectedHero_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHero (id=vs2gi8c6)");
         PanelSelectedHero_GameObject = _PanelSelectedHero_RectTransform.gameObject;
+        PanelSelectedHero_GameObject.SetActive(false);
+        _PanelSelectedHero_RectTransform.anchoredPosition = Vector2.zero;
+
         _PanelSelectedHero_isActive = PanelSelectedHero_GameObject.activeInHierarchy;
 
         Rarityes = new Sprite[]{
@@ -190,8 +193,8 @@ public class Init_Collection : MonoBehaviour
             await Addressables.LoadAssetAsync<Sprite>($"rarity6").Task,
         };
 
-        _SelectedHero_Image = GameObjectFinder.FindByName<Image>("ImageHeroFull (id=m5kn2f6p)");
-        _SelectedHeroRarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity (id=xami3s9q)");
+        SelectedHero_Image = GameObjectFinder.FindByName<Image>("ImageHeroFull (id=m5kn2f6p)");
+        SelectedHeroRarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity (id=xami3s9q)");
         _SelectedHeroImageContainer_RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Container (id=1l6gscif)");
 
         _ButtonCloseSelectedHero_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose (id=0ursxw0e)");
@@ -232,7 +235,7 @@ public class Init_Collection : MonoBehaviour
         _PanelSelectedHeroBottomTabButton2_TextMeshProUGUI.SetText("{Tab2}");
 
         _PanelSelectedHeroBottomTab1_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHeroBottomTab1 (id=kn3yl79k)");
-        _SelectedHeroTop_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label_SelectedHero (id=ahrtgg43)");
+        SelectedHeroTop_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label_SelectedHero (id=ahrtgg43)");
 
         // Панель для внутренних кнопок
         PanelCollection_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelCollection (id=jcxwa01g)");
@@ -338,7 +341,6 @@ public class Init_Collection : MonoBehaviour
 
             _GroupDividers.Clear();
             //List<Task> tasks = new();
-            int completed = 0;
             if (CollectionMode == 1)
             {
                 foreach (GroupCollectionElement item in G.Game.Collection.GetCollectionHeroesGroupedByGroupNames().OrderByDescending(static a => a.Priority))
@@ -350,20 +352,24 @@ public class Init_Collection : MonoBehaviour
                         GroupDivider groupDivider = obj.AddComponent<GroupDivider>();
                         obj.transform.SetParent(_CollectionContent_Transform, false);
                         _GroupDividers.Add(groupDivider);
-                        groupDivider.Init1(item.Name, this, obj, item.List, _SelectedHeroTop_TextMeshProUGUI, _SelectedHero_Image, _SelectedHeroRarity_Image);
-                        OnResizeWindow();
-                        await groupDivider.Init2();
-                        completed++;
-                        if (completed % 100 == 0)
-                        {
-                            Debug.Log(completed);
-                        }
+                        await groupDivider.Init(item.Name, this, obj, item.List);
                     }
                 }
             }
             else if (CollectionMode == 2)
             {
-
+                foreach (var item in G.Game.Collection.GetCollectionEquipmentesGroupByGroups().OrderByDescending(static a => a.Priority))
+                {
+                    if (item.List.Count() > 0)
+                    {
+                        GameObject groupDividerPrefab = await Addressables.LoadAssetAsync<GameObject>("GroupDividerPrefab").Task;
+                        GameObject obj = groupDividerPrefab.SafeInstant();
+                        GroupDivider groupDivider = obj.AddComponent<GroupDivider>();
+                        obj.transform.SetParent(_CollectionContent_Transform, false);
+                        _GroupDividers.Add(groupDivider);
+                        await groupDivider.Init(item.Name, this, obj, item.List);
+                    }
+                }
             }
 
             OnResizeWindow();
@@ -417,7 +423,7 @@ public class Init_Collection : MonoBehaviour
         }
     }
 
-    private void OnResizeWindow()
+    public void OnResizeWindow()
     {
         _height = Screen.height;
         _width = Screen.width;
@@ -481,9 +487,9 @@ public class Init_Collection : MonoBehaviour
             _PanelSelectedHeroBottomTab1_RectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth, 848 * coefHeight); ;
 
             // Выбранный герой. Лабел
-            _SelectedHeroTop_TextMeshProUGUI.rectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth - panelTopHeight, panelTopHeight);
+            SelectedHeroTop_TextMeshProUGUI.rectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth - panelTopHeight, panelTopHeight);
             //SelectedHeroTop_TextMeshProUGUI.rectTransform.anchoredPosition = new Vector2(panelTopHeight, 0);
-            _SelectedHeroTop_TextMeshProUGUI.fontSize = 40f * coefHeight;
+            SelectedHeroTop_TextMeshProUGUI.fontSize = 40f * coefHeight;
 
             _SelectedHeroImageContainer_RectTransform.sizeDelta = new Vector2(282.8571f * coefHeight, 495 * coefHeight);
             _SelectedHeroImageContainer_RectTransform.anchoredPosition = new Vector2(-10f * coefHeight, 10f * coefHeight);

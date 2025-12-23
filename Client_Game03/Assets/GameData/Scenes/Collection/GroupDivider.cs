@@ -7,10 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
-using static UnityEngine.EventSystems.EventTrigger;
 
 /// <summary>
 /// Управляет сворачиванием/разворачиванием группы UI-элементов (ячеек)
@@ -18,7 +18,7 @@ using static UnityEngine.EventSystems.EventTrigger;
 /// </summary>
 public class GroupDivider : MonoBehaviour
 {
-    Init_Collection _Init_Collection;
+    private Init_Collection _Init_Collection;
 
     private string group_name;
 
@@ -41,8 +41,6 @@ public class GroupDivider : MonoBehaviour
     private GridLayoutGroup _CellsContainer_GridLayoutGroup;
 
     private IEnumerable<CollectionElement> _listCollectionElement;
-    private Image _SelectedCollectionElement_Image;
-    private Image _SelectedCollectionElementRarity_Image;
 
     public class DataCollectionElement
     {
@@ -55,8 +53,6 @@ public class GroupDivider : MonoBehaviour
     }
     public readonly List<DataCollectionElement> ListDataCollectionElement = new();
 
-    //private GameObject _PanelSelectedHero_GameObject;
-    private TextMeshProUGUI _SelectedHeroTop_TextMeshProUGUI;
 
     /// <summary>
     /// Текущее состояние группы (true - развернута, false - свернута).
@@ -66,7 +62,7 @@ public class GroupDivider : MonoBehaviour
     /// <summary>
     /// Переключает состояние группы и запускает анимацию.
     /// </summary>
-    public void ToggleGroup()
+    public async void ToggleGroup()
     {
         //Debug.Log(1);
         expanded = !expanded;
@@ -76,6 +72,7 @@ public class GroupDivider : MonoBehaviour
             //    // Разворачивание
             //    // Сначала активируем контейнер, чтобы он участвовал в макете, но с высотой 0
             _CellsContainer_GameObject.SetActive(true);
+            _DividerButton_Button.image.sprite = await Addressables.LoadAssetAsync<Sprite>("button_with_arrow_v2").Task;
             //_CellsContainer_RectTransform.sizeDelta = new Vector2();
             //    //await AnimateHeightAsync(0, expandedHeight, token);
         }
@@ -85,19 +82,17 @@ public class GroupDivider : MonoBehaviour
             //    //await AnimateHeightAsync(expandedHeight, 0, token);
             //    // После завершения анимации деактивируем контейнер
             _CellsContainer_GameObject.SetActive(false);
+            _DividerButton_Button.image.sprite = await Addressables.LoadAssetAsync<Sprite>("button_with_arrow_v2_reverse").Task;
         }
         Resize();
         //UpdateDividerVisual(isExpanded);
     }
 
-    public void Init1(string group_name, Init_Collection init_Collection, GameObject gameObjectInput, IEnumerable<CollectionElement> listCollectionElement, TextMeshProUGUI SelectedHeroTop_TextMeshProUGUI, Image SelectedHero_Image, Image SelectedHeroRarity_Image)
+    public async Task Init(string group_name, Init_Collection init_Collection, GameObject gameObjectInput, IEnumerable<CollectionElement> listCollectionElement)
     {
         _Init_Collection = init_Collection;
         this.group_name = group_name;
         _GameObject = gameObjectInput;
-        _SelectedHeroTop_TextMeshProUGUI = SelectedHeroTop_TextMeshProUGUI;
-        _SelectedCollectionElement_Image = SelectedHero_Image;
-        _SelectedCollectionElementRarity_Image = SelectedHeroRarity_Image;
         _RectTransform = gameObjectInput.GetComponent<RectTransform>();
         _DividerButton_GameObject = GameObjectFinder.FindByName("DividerButton", _GameObject.transform);
         _DividerButton_RectTransform = _DividerButton_GameObject.GetComponent<RectTransform>();
@@ -106,10 +101,9 @@ public class GroupDivider : MonoBehaviour
         _CellsContainer_GridLayoutGroup = _CellsContainer_GameObject.GetComponent<GridLayoutGroup>();
         _DividerButton_Button = _DividerButton_GameObject.GetComponent<Button>();
         _listCollectionElement = listCollectionElement;
-    }
 
-    public async Task Init2()
-    {
+        _Init_Collection.OnResizeWindow();
+
         //DividerButton
         TextMeshProUGUI dividerButton_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _DividerButton_GameObject.transform);
         Transform cellsContainer_Transform = _CellsContainer_GameObject.transform;
@@ -165,7 +159,12 @@ public class GroupDivider : MonoBehaviour
                     imageRarity.preserveAspect = true; // Сохраняет пропорции изображения
                     imageRarity.type = Image.Type.Simple; // Режим без растягивания;
 
-                    string addressableKey = $"{groupCollectionElement.Type}-image-{groupCollectionElement.Name.ToLower()}_face";
+                    string addressableKey = _Init_Collection.CollectionMode switch
+                    {
+                        1 => $"hero-image-{groupCollectionElement.Name.ToLower()}_face",
+                        2 => $"equipment-image-{groupCollectionElement.Name.ToLower()}_icon",
+                        _ => throw new Exception("CollectionMode > 2"),
+                    };
                     imageCollectionElement.sprite = await Addressables.LoadAssetAsync<Sprite>(addressableKey).Task;
                     imageCollectionElement.preserveAspect = true; // Сохраняет пропорции изображения
                     imageCollectionElement.type = Image.Type.Simple; // Режим без растягивания;
@@ -177,13 +176,18 @@ public class GroupDivider : MonoBehaviour
 
                         _Init_Collection.PanelSelectedHero_GameObject.SetActive(true);
                         string name = dataCollectionElement.collectionCollectionElement.Name;
-                        _SelectedHeroTop_TextMeshProUGUI.text = name.ToUpper1Char();
+                        _Init_Collection.SelectedHeroTop_TextMeshProUGUI.text = name.ToUpper1Char();
 
-                        string addressableKey = $"{dataCollectionElement.collectionCollectionElement.Type}-image-{name.ToLower()}";
-                        _SelectedCollectionElement_Image.sprite = await Addressables.LoadAssetAsync<Sprite>(addressableKey).Task;
-                        _SelectedCollectionElement_Image.preserveAspect = true; // Сохраняет пропорции изображения
+                        string addressableKey = _Init_Collection.CollectionMode switch
+                        {
+                            1 => $"hero-image-{name.ToLower()}",
+                            2 => $"",
+                            _ => throw new Exception("CollectionMode > 2"),
+                        };
+                        _Init_Collection.SelectedHero_Image.sprite = await Addressables.LoadAssetAsync<Sprite>(addressableKey).Task;
+                        _Init_Collection.SelectedHero_Image.preserveAspect = true; // Сохраняет пропорции изображения
 
-                        _SelectedCollectionElementRarity_Image.sprite = await Addressables.LoadAssetAsync<Sprite>($"rarity{dataCollectionElement.collectionCollectionElement.Rarity}").Task;
+                        _Init_Collection.SelectedHeroRarity_Image.sprite = await Addressables.LoadAssetAsync<Sprite>($"rarity{dataCollectionElement.collectionCollectionElement.Rarity}").Task;
 
                         ListDataCollectionElement.ForEach(a =>
                         {

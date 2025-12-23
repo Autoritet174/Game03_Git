@@ -105,18 +105,7 @@ namespace Assets.GameData.Scenes.Auth
                 await G.Game.GameData.LoadGameData(CancelToken.Create("G.Game.GameData.LoadListAllHeroesAsync"));
 
                 // Предзагрузка AdressableAssets героев и редкости
-                List<Task> preloadAdressableAssets = new();
-                foreach (var hero in G.Game.GameData.GetDtoContainer().DtoBaseHeroes)
-                {
-                    string _name = hero.Name.ToLower();
-                    preloadAdressableAssets.Add(Addressables.LoadAssetAsync<Sprite>($"hero-image-{_name}").Task);
-                    preloadAdressableAssets.Add(Addressables.LoadAssetAsync<Sprite>($"hero-image-{_name}_face").Task);
-                }
-
-                for (int i = 1; i <= 6; i++)
-                {
-                    preloadAdressableAssets.Add(Addressables.LoadAssetAsync<Sprite>($"rarity{i}").Task);
-                }
+                Task taskPreload = AddressableHelper.PreLoadAssets();
 
                 // Загрузка коллекции пользователя
                 GameMessage.ShowLocale(L.Info.LoadingCollection, false);
@@ -129,7 +118,7 @@ namespace Assets.GameData.Scenes.Auth
                     return;
                 }
 
-                await Task.WhenAll(preloadAdressableAssets);
+                await taskPreload;
 
                 UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
             }
