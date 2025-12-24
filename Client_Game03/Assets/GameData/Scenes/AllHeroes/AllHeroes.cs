@@ -1,21 +1,18 @@
 using Assets.GameData.Scenes.AllHeroes;
 using Assets.GameData.Scripts;
+using Cysharp.Threading.Tasks;
 using General;
-using General.DTO;
 using General.DTO.Entities.GameData;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 using G = Assets.GameData.Scripts.G;
-using L = General.LocalizationKeys;
 
 public class AllHeroes : MonoBehaviour
 {
@@ -73,7 +70,7 @@ public class AllHeroes : MonoBehaviour
         gridLayout = scrollRect.content.GetComponent<GridLayoutGroup>();
 
         //ButtonCloseHelper.UpdateSize(_lastWidth, _lastHeight, buttonClose);
-        OnResize();
+        OnResizeWindow();
 
         await AddAllImageOnContent();
 
@@ -86,22 +83,22 @@ public class AllHeroes : MonoBehaviour
     {
         if (inited && (!Mathf.Approximately(Screen.height, _lastHeight) || !Mathf.Approximately(Screen.width, _lastWidth)))
         {
-            OnResize();
+            OnResizeWindow();
         }
     }
 
-    private async Task AddAllImageOnContent()
+    private async UniTask AddAllImageOnContent()
     {
-        List<Task> list = new();
-        foreach (DtoBaseHero heroStats in G.Game.GameData.GetDtoContainer().DtoBaseHeroes)
+        List<UniTask> list = new();
+        foreach (DtoBaseHero heroStats in G.Game.GameData.GetDtoContainer().DtoBaseHeroes.OrderByDescending(a => a.Rarity))
         {
             list.Add(LoadHeroByName(heroStats));
         }
-        OnResize();
-        await Task.WhenAll(list);
+        OnResizeWindow();
+        await UniTask.WhenAll(list);
     }
 
-    private async Task LoadHeroByName(DtoBaseHero hero)
+    private async UniTask LoadHeroByName(DtoBaseHero hero)
     {
         GameObject _prefabIconHero = prefabIconHero.SafeInstant();
         string heroName = hero.Name;
@@ -119,82 +116,55 @@ public class AllHeroes : MonoBehaviour
         }
 
         // Изображение (загружаем через Addressable)
-        Transform childImageMaskHero = _prefabIconHero.transform.Find("ImageMaskHero");
+        Transform childImageMaskHero = _prefabIconHero.transform.Find("ImageMaskCollectionElement");
         Transform childImageMaskRarity = _prefabIconHero.transform.Find("ImageMaskRarity");
-        Transform childImageHero = childImageMaskHero.Find("ImageHero");
+        Transform childImageHero = childImageMaskHero.Find("ImageCollectionElement");
         Transform childImageRarity = childImageMaskRarity.Find("ImageRarity");
-        if (childImageHero != null && childImageHero.TryGetComponent(out UnityEngine.UI.Image imageHero)
-            && childImageRarity != null && childImageRarity.TryGetComponent(out UnityEngine.UI.Image imageRarity)
-            )
+
+        UnityEngine.UI.Image imageHero = childImageHero.GetComponent<Image>();
+        UnityEngine.UI.Image imageRarity = childImageRarity.GetComponent<Image>();
+
+        string addressableKey = $"hero-image-{heroName.ToLower()}_face";
+
+        var heroSprite = await Addressables.LoadAssetAsync<Sprite>(addressableKey).ToUniTask();
+        var raritySprite = await Addressables.LoadAssetAsync<Sprite>($"rarity{hero.Rarity}").ToUniTask();
+        var selectedSprite = await Addressables.LoadAssetAsync<Sprite>($"raritySelected").ToUniTask();
+
+        imageHero.sprite = heroSprite;
+        imageHero.preserveAspect = true; // Сохраняет пропорции изображения
+        imageHero.type = Image.Type.Simple; // Режим без растягивания;
+
+        imageRarity.sprite = raritySprite;
+        imageRarity.preserveAspect = true; // Сохраняет пропорции изображения
+        imageRarity.type = Image.Type.Simple; // Режим без растягивания;
+
+        async UniTask OnClick()
         {
-            string addressableKey = $"hero-image-{heroName.ToLower()}_face";
-
-            try
-            {
-                AsyncOperationHandle<Sprite> handleHero;
-                bool loadNull = true;
-                bool loadColor = true;
-                AsyncOperationHandle<Sprite> handleRarity = Addressables.LoadAssetAsync<Sprite>($"rarity{(int)hero.Rarity}");
-                AsyncOperationHandle<Sprite> handleEntered = Addressables.LoadAssetAsync<Sprite>($"raritySelected");
-                if (await AddressableHelper.CheckIfKeyExists(addressableKey))
-                {
-                    handleHero = Addressables.LoadAssetAsync<Sprite>(addressableKey);
-                    _ = await handleHero.Task;
-                    _ = await handleRarity.Task;
-                    if (handleHero.Status == AsyncOperationStatus.Succeeded && handleHero.Result != null)
-                    {
-                        SetImage(handleHero, imageHero);
-                        SetImage(handleRarity, imageRarity);
-                        loadNull = false;
-                        loadColor = false;
-
-                        // Добавляем компонент для обработки кликов
-                        ImageHeroHandler clickHandler = _prefabIconHero.AddComponent<ImageHeroHandler>();
-                        clickHandler.Initialize(hero, handleRarity.Result, handleEntered.Result, HeroView, imageRarity);
-
-                        //Addressables.Release(handle);
-                    }
-                }
-
-
-                if (loadNull && await AddressableHelper.CheckIfKeyExists(AllHeroesConsts.HERO_IMAGE_NULL))
-                {
-                    handleHero = Addressables.LoadAssetAsync<Sprite>(AllHeroesConsts.HERO_IMAGE_NULL);
-                    _ = await handleHero.Task;
-                    if (handleHero.Status == AsyncOperationStatus.Succeeded && handleHero.Result != null)
-                    {
-                        SetImage(handleHero, imageHero);
-                        SetImage(handleRarity, imageRarity);
-                        loadColor = false;
-                        //Addressables.Release(handle);
-                    }
-                }
-
-
-                if (loadColor)
-                {
-                    Debug.LogError($"Не удалось загрузить изображение {heroName} из Addressable Assets!");
-                    imageHero.color = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
-                    SetImage(handleRarity, imageRarity);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"Ошибка при загрузке изображения {heroName}: {ex.Message}");
-                imageHero.color = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
-            }
+            await HeroView(hero);
         }
+        _prefabIconHero.AddClickEvent(OnClick);
+
+        async UniTask OnPoinerEnter()
+        {
+            imageRarity.sprite = selectedSprite;
+        }
+        async UniTask OnPoinerExit()
+        {
+            imageRarity.sprite = raritySprite;
+        }
+        _prefabIconHero.AddHoverEvents(OnPoinerEnter, OnPoinerExit);
+
+        // Добавляем компонент для обработки кликов
+        //ImageHeroHandler clickHandler = _prefabIconHero.AddComponent<ImageHeroHandler>();
+        //clickHandler.Initialize(hero, raritySprite.Result, selectedSprite.Result, HeroView, imageRarity);
+
+
+
+        //Addressables.Release(handle
     }
 
 
-    private void SetImage(AsyncOperationHandle<Sprite> handle, UnityEngine.UI.Image image)
-    {
-        image.sprite = handle.Result;
-        image.preserveAspect = true; // Сохраняет пропорции изображения
-        image.type = Image.Type.Simple; // Режим без растягивания;
-    }
-
-    private void OnResize()
+    private void OnResizeWindow()
     {
         _lastHeight = Screen.height;
         _lastWidth = Screen.width;
@@ -267,14 +237,14 @@ public class AllHeroes : MonoBehaviour
 
     }
 
-    public async Task HeroView(DtoBaseHero hero)
+    public async UniTask HeroView(DtoBaseHero hero)
     {
 
         GameObject prefabHeroViewer;
 
         string addressableKey = $"HeroViewer";
         AsyncOperationHandle<GameObject> prefabHeroViewer_handle = Addressables.LoadAssetAsync<GameObject>(addressableKey);
-        _ = await prefabHeroViewer_handle.Task;
+        _ = await prefabHeroViewer_handle.ToUniTask();
         prefabHeroViewer = prefabHeroViewer_handle.Status == AsyncOperationStatus.Succeeded
             ? prefabHeroViewer_handle.Result.SafeInstant()
             : throw new Exception($"{nameof(prefabHeroViewer)} не загружен");
@@ -310,17 +280,11 @@ public class AllHeroes : MonoBehaviour
         const string imageHeroFull__Name = "Image_HeroFull (id=6z1ddxml)";
         Image imageHero = GameObjectFinder.FindByName<Image>(imageHeroFull__Name);
         string imageHeroFull__Image = $"hero-image-{hero.Name.ToLower()}";
-        AsyncOperationHandle<Sprite> imageHero_handle = Addressables.LoadAssetAsync<Sprite>(imageHeroFull__Image);
-        _ = await imageHero_handle.Task;
-        if (imageHero_handle.Status == AsyncOperationStatus.Succeeded)
-        {
-            SetImage(imageHero_handle, imageHero);
-        }
-        else
-        {
-            throw new Exception($"{nameof(imageHero_handle)} не загружен");
-        }
+        var heroImage = await Addressables.LoadAssetAsync<Sprite>(imageHeroFull__Image).ToUniTask();
 
+        imageHero.sprite = heroImage;
+        imageHero.preserveAspect = true; // Сохраняет пропорции изображения
+        imageHero.type = Image.Type.Simple; // Режим без растягивания;
 
         //Привязать метод
         _buttonClose.onClick.AddListener(() =>

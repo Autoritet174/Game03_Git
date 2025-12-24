@@ -1,7 +1,6 @@
 using Cysharp.Threading.Tasks;
 using General;
 using System;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -34,7 +33,7 @@ namespace Assets.GameData.Scripts
         /// <summary>
         /// Выводит игровое сообщение и ожидает закрытие окна.
         /// </summary>
-        public static async Task ShowAndWaitCloseAsync(string message)
+        public static async UniTask ShowAndWaitCloseAsync(string message)
         {
             Show(message, true);
             await UniTask.WaitUntil(() => !_opened);
@@ -43,7 +42,7 @@ namespace Assets.GameData.Scripts
         /// <summary>
         /// Выводит игровое сообщение по ключу локализации и ожидает закрытие окна.
         /// </summary>
-        public static async Task ShowLocaleAndWaitCloseAsync(string keyLocalization)
+        public static async UniTask ShowLocaleAndWaitCloseAsync(string keyLocalization)
         {
             Show(G.Game.LocalizationManager.GetValue(keyLocalization), true);
             await UniTask.WaitUntil(() => !_opened);
@@ -52,7 +51,7 @@ namespace Assets.GameData.Scripts
         /// <summary>
         /// Выводит игровое сообщение по ключу локализации и ожидает закрытие окна.
         /// </summary>
-        public static async Task<bool> ShowLocaleYesNo(string keyLocalization)
+        public static async UniTask<bool> ShowLocaleYesNo(string keyLocalization)
         {
             resultYesNo = false;
             Show(G.Game.LocalizationManager.GetValue(keyLocalization), buttonActiveClose: false, yesNoDialog: true);
@@ -63,7 +62,7 @@ namespace Assets.GameData.Scripts
         /// <summary>
         /// Выводит игровое сообщение по ключу локализации и ожидает закрытие окна.
         /// </summary>
-        public static async Task ShowErrorAndWaitCloseAsync(Exception ex)
+        public static async UniTask ShowErrorAndWaitCloseAsync(Exception ex)
         {
             Show("APP_EXCEPTION: An exception has occurred, see log file.", true);
             LoggerException.LogException(ex);

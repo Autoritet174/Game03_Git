@@ -1,7 +1,7 @@
-﻿using System;
+using Cysharp.Threading.Tasks;
+using System;
 using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Profiling;
 using UnityEngine.SceneManagement;
@@ -67,7 +67,7 @@ namespace Assets.GameData.Scripts
                 string logText = PrepareLogText(ex, nowUtc);
 
                 // Асинхронная запись в файл без вызова Unity API
-                _ = Task.Run(() =>
+                UniTask.RunOnThreadPool(() =>
                 {
                     string dir = Path.Combine(Application.dataPath, @"Logs");
                     string fileName = $"{Path.Combine(dir, $"ApplicationException_[{nowUtc:yyyy-MM-dd}].log")}";

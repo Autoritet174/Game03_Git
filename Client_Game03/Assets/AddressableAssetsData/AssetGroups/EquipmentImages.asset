@@ -16,22 +16,42 @@ MonoBehaviour:
   m_GUID: 7c6178db5c115014e84a0c94c55d2ae3
   m_SerializeEntries:
   - m_GUID: 0550a5ce164f5b74ab200b6b71b0c6e1
-    m_Address: equipment-image-usually sword_128
+    m_Address: equipment-image-sword_128
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 17953aa48bff3ab4eac2491bb12dfa88
+    m_Address: equipment-image-thunderfury
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 46ee4408cf893934382b6ac642c55182
+    m_Address: equipment-image-cuirass
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 565b58d0f51c87b4884184177b2859a2
-    m_Address: equipment-image-usually axe_128
+    m_Address: equipment-image-axe_128
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b11a70b7f93b1e74da411c46fa671f57
-    m_Address: equipment-image-usually axe
+    m_Address: equipment-image-axe
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bdd36aaf68c264340aa6eb7ac5a7f466
+    m_Address: equipment-image-cuirass_128
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de396d3ca44dd5746b6cd95376ad0c8e
+    m_Address: equipment-image-thunderfury_128
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f9e11d18d47e8fc46bb982cbd472e7dd
-    m_Address: equipment-image-usually sword
+    m_Address: equipment-image-sword
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

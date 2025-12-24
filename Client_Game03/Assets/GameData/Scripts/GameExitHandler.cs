@@ -4,11 +4,13 @@ using System.Collections;
 using UnityEngine;
 using L = General.LocalizationKeys;
 
-public static class GameExitHandler {
+public static class GameExitHandler
+{
     public static async void ExitGame()
     {
         bool yesNo = await GameMessage.ShowLocaleYesNo(L.UI.Label.ExitGame);
-        if (!yesNo) {
+        if (!yesNo)
+        {
             return;
         }
         CancelToken.CancelAllTokens();
@@ -18,21 +20,25 @@ public static class GameExitHandler {
 
         // Получаем MonoBehaviour для запуска корутины
         MonoBehaviour coroutineHost = GetCoroutineHost();
-        if (coroutineHost != null) {
+        if (coroutineHost != null)
+        {
             _ = coroutineHost.StartCoroutine(ExitRoutine());
         }
-        else {
+        else
+        {
             Debug.LogError("No MonoBehaviour found to start coroutine!");
             ForceQuit();
         }
     }
 
-    private static MonoBehaviour GetCoroutineHost() {
+    private static MonoBehaviour GetCoroutineHost()
+    {
         // Ищем любой активный MonoBehaviour в сцене
         return GameObject.FindFirstObjectByType<MonoBehaviour>();
     }
 
-    private static IEnumerator ExitRoutine() {
+    private static IEnumerator ExitRoutine()
+    {
         // Эффект плавного затемнения (опционально)
         //if (FadeManager.Instance != null) {
         //    yield return FadeManager.Instance.FadeOut(1f);
@@ -40,49 +46,61 @@ public static class GameExitHandler {
         yield return 1;
 
         // Выбираем метод выхода в зависимости от платформы
-        if (IsInEditor()) {
+        if (IsInEditor())
+        {
             QuitInEditor();
         }
-        else if (IsWindowsMacOrLinux()) {
+        else if (IsWindowsMacOrLinux())
+        {
             Application.Quit();
         }
-        else if (IsAndroid()) {
+        else if (IsAndroid())
+        {
             QuitAndroid();
         }
-        else if (IsIOS()) {
+        else if (IsIOS())
+        {
             QuitIOS();
         }
-        else if (IsWebGL()) {
+        else if (IsWebGL())
+        {
             QuitWebGL();
         }
-        else {
+        else
+        {
             Application.Quit(); // По умолчанию
         }
     }
 
-    private static bool IsInEditor() {
+    private static bool IsInEditor()
+    {
         return Application.isEditor;
     }
 
-    private static bool IsWindowsMacOrLinux() {
+    private static bool IsWindowsMacOrLinux()
+    {
         return Application.platform is RuntimePlatform.WindowsPlayer or
                RuntimePlatform.OSXPlayer or
                RuntimePlatform.LinuxPlayer;
     }
 
-    private static bool IsAndroid() {
+    private static bool IsAndroid()
+    {
         return Application.platform == RuntimePlatform.Android;
     }
 
-    private static bool IsIOS() {
+    private static bool IsIOS()
+    {
         return Application.platform == RuntimePlatform.IPhonePlayer;
     }
 
-    private static bool IsWebGL() {
+    private static bool IsWebGL()
+    {
         return Application.platform == RuntimePlatform.WebGLPlayer;
     }
 
-    private static void QuitInEditor() {
+    private static void QuitInEditor()
+    {
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
@@ -90,24 +108,29 @@ public static class GameExitHandler {
 #endif
     }
 
-    private static void QuitAndroid() {
-        try {
+    private static void QuitAndroid()
+    {
+        try
+        {
             AndroidJavaClass unityPlayer = new("com.unity3d.player.UnityPlayer");
             AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
             activity.Call("finishAndRemoveTask");
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             Debug.LogError("Android quit failed: " + e.Message);
             Application.Quit();
         }
     }
 
-    private static void QuitIOS() {
+    private static void QuitIOS()
+    {
         // На iOS Application.Quit() просто сворачивает приложение
         Application.Quit();
     }
 
-    private static void QuitWebGL() {
+    private static void QuitWebGL()
+    {
         // В WebGL нельзя закрыть вкладку, только выйти из полноэкранного режима
         Screen.fullScreen = false;
         // Можно показать сообщение для пользователя
@@ -119,11 +142,14 @@ public static class GameExitHandler {
         UnityEngine.Object.DontDestroyOnLoad(message);
     }
 
-    private static void ForceQuit() {
-        if (IsInEditor()) {
+    private static void ForceQuit()
+    {
+        if (IsInEditor())
+        {
             QuitInEditor();
         }
-        else {
+        else
+        {
             System.Diagnostics.Process.GetCurrentProcess().Kill();
         }
     }

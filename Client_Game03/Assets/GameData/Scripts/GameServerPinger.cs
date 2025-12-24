@@ -1,8 +1,8 @@
+using Cysharp.Threading.Tasks;
 using General;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace Assets.GameData.Scripts
 {
@@ -21,13 +21,13 @@ namespace Assets.GameData.Scripts
         /// Возвращает true, если отклик соответствует ожиданиям, иначе возвращает false.
         /// </summary>
         /// <returns>True, если сервер ответил "pong"; False в противном случае.</returns>
-        internal static async Task<bool> Ping()
+        internal static async UniTask<bool> Ping()
         {
             try
             {
                 using HttpRequestMessage request = new(HttpMethod.Get, Url.Ping);
-                using HttpResponseMessage response = await _httpClient.SendAsync(request, CancelToken.Create("ping", 2));
-                string responseContent = await response.Content.ReadAsStringAsync();
+                using HttpResponseMessage response = await _httpClient.SendAsync(request, CancelToken.Create("ping", 2)).AsUniTask();
+                string responseContent = await response.Content.ReadAsStringAsync().AsUniTask();
                 if (!responseContent.IsEmpty())
                 {
 

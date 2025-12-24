@@ -269,10 +269,10 @@
             </summary>
         </member>
         <member name="M:Game03Client.PlayerCollection.PlayerCollectionProvider.GetCollectionHeroesGroupedByGroupNames">
-            <summary>
-            Получить коллекцию героев сгруппированную по именам групп.
-            </summary>
-            <returns></returns>
+            <summary> Получить коллекцию героев сгруппированную по именам групп. </summary>
+        </member>
+        <member name="M:Game03Client.PlayerCollection.PlayerCollectionProvider.GetCollectionEquipmentesGroupByGroups">
+            <summary> Получить коллекцию экипировки сгруппированную по именам групп. </summary>
         </member>
         <member name="M:Game03Client.WebSocketClient.WebSocketClientProvider.ReceiveMessagesAsync">
             <summary>

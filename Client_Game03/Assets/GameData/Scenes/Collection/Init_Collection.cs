@@ -1,13 +1,12 @@
 using Assets.GameData.Scripts;
+using Cysharp.Threading.Tasks;
 using Game03Client.PlayerCollection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.Events;
 using UnityEngine.UI;
 using L = General.LocalizationKeys;
 
@@ -30,14 +29,14 @@ public class Init_Collection : MonoBehaviour
         public readonly TextMeshProUGUI textMeshProUGUI;
         public readonly Image image;
 
-        public TabButton(string name, string nameText, UnityAction action)
+        public TabButton(string name, string nameText, Func<UniTask> asyncAction)
         {
             this.name = name;
             button = GameObjectFinder.FindByName<Button>(name);
             rectTransform = GameObjectFinder.FindByName<RectTransform>(name);
             image = GameObjectFinder.FindByName<Image>(name);
             textMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>(nameText);
-            button.onClick.AddListener(action);
+            button.onClick.AddListener(() => asyncAction().Forget());
         }
         public void SetText(string text)
         {
@@ -67,13 +66,13 @@ public class Init_Collection : MonoBehaviour
 
     internal GameObject PanelSelectedEquipment_GameObject { get; private set; }
     private RectTransform _PanelSelectedEquipment_RectTransform;
-    RectTransform _PanelSelectedEquipmentTop_RectTransform;
-    RectTransform _PanelSelectedEquipmentBottom_RectTransform;
-    RectTransform _PanelSelectedEquipmentBottomTabButton1_RectTransform;
-    RectTransform _PanelSelectedEquipmentBottomTabButton2_RectTransform;
-    TextMeshProUGUI _PanelSelectedEquipmentBottomTabButton1_TextMeshProUGUI;
-    TextMeshProUGUI _PanelSelectedEquipmentBottomTabButton2_TextMeshProUGUI;
-    RectTransform _PanelSelectedEquipmentBottomTab1_RectTransform;
+    private RectTransform _PanelSelectedEquipmentTop_RectTransform;
+    private RectTransform _PanelSelectedEquipmentBottom_RectTransform;
+    private RectTransform _PanelSelectedEquipmentBottomTabButton1_RectTransform;
+    private RectTransform _PanelSelectedEquipmentBottomTabButton2_RectTransform;
+    private TextMeshProUGUI _PanelSelectedEquipmentBottomTabButton1_TextMeshProUGUI;
+    private TextMeshProUGUI _PanelSelectedEquipmentBottomTabButton2_TextMeshProUGUI;
+    private RectTransform _PanelSelectedEquipmentBottomTab1_RectTransform;
 
     internal RectTransform PanelCollection_RectTransform { get; private set; }
     private RectTransform _PanelCollectionTopButtons_RectTransform;
@@ -98,9 +97,11 @@ public class Init_Collection : MonoBehaviour
         private readonly RectTransform rectTransformButton;
         private readonly RectTransform rectTransformLabel;
         private readonly TextMeshProUGUI textMeshProUGUILabel;
+        private readonly GameObject gameObject;
         public InternalPanelButton(string name)
         {
             rectTransform = GameObjectFinder.FindByName<RectTransform>(name);
+            gameObject = rectTransform.gameObject;
             rectTransformButton = GameObjectFinder.FindByName<RectTransform>("Button", rectTransform.transform);
             rectTransformLabel = GameObjectFinder.FindByName<RectTransform>("Label", rectTransform.transform);
             textMeshProUGUILabel = GameObjectFinder.FindByName<TextMeshProUGUI>("Label", rectTransform.transform);
@@ -114,10 +115,14 @@ public class Init_Collection : MonoBehaviour
             rectTransformLabel.anchoredPosition = new(0, -86 * coefHeight);
             textMeshProUGUILabel.fontSize = 18 * coefHeight;
         }
+        public void SetActive(bool active)
+        {
+            gameObject.SetActive(active);
+        }
     }
 
     private InternalPanelButton _InternalPanelHeroes;
-    private InternalPanelButton _InternalPanelItems;
+    private InternalPanelButton _InternalPanelEquipments;
     private InternalPanelButton _InternalPanelFilter;
     private InternalPanelButton _InternalPanelGroup;
     private InternalPanelButton _InternalPanelSort;
@@ -205,13 +210,13 @@ public class Init_Collection : MonoBehaviour
         _PanelSelectedEquipment_isActive = PanelSelectedEquipment_GameObject.activeInHierarchy;
 
         Rarityes = new Sprite[]{
-            await Addressables.LoadAssetAsync<Sprite>($"raritySelected").Task,
-            await Addressables.LoadAssetAsync<Sprite>($"rarity1").Task,
-            await Addressables.LoadAssetAsync<Sprite>($"rarity2").Task,
-            await Addressables.LoadAssetAsync<Sprite>($"rarity3").Task,
-            await Addressables.LoadAssetAsync<Sprite>($"rarity4").Task,
-            await Addressables.LoadAssetAsync<Sprite>($"rarity5").Task,
-            await Addressables.LoadAssetAsync<Sprite>($"rarity6").Task,
+            await Addressables.LoadAssetAsync<Sprite>("raritySelected").ToUniTask(),
+            await Addressables.LoadAssetAsync<Sprite>("rarity1").ToUniTask(),
+            await Addressables.LoadAssetAsync<Sprite>("rarity2").ToUniTask(),
+            await Addressables.LoadAssetAsync<Sprite>("rarity3").ToUniTask(),
+            await Addressables.LoadAssetAsync<Sprite>("rarity4").ToUniTask(),
+            await Addressables.LoadAssetAsync<Sprite>("rarity5").ToUniTask(),
+            await Addressables.LoadAssetAsync<Sprite>("rarity6").ToUniTask(),
         };
 
         SelectedHero_Image = GameObjectFinder.FindByName<Image>("ImageHeroFull (id=m5kn2f6p)");
@@ -222,6 +227,19 @@ public class Init_Collection : MonoBehaviour
 
         _SelectedHeroImageContainer_RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Container (id=1l6gscif)");
         _SelectedEquipmentImageContainer_RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Container (id=bqxjhczr)");
+
+
+        // Панель для внутренних кнопок
+        PanelCollection_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelCollection (id=jcxwa01g)");
+        _PanelCollectionTopButtons_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelCollectionTopButtons (id=gmzb0h9f)");
+
+        // Внутренние кнопки
+        _InternalPanelHeroes = new("ImageButtonHeroes (id=pakco5ud)");
+        _InternalPanelEquipments = new("ImageButtonEquipments (id=vuhjngaz)");
+        _InternalPanelFilter = new("ImageButtonFilter (id=vjeqfzen)");
+        _InternalPanelGroup = new("ImageButtonGroup (id=hbsaogwl)");
+        _InternalPanelSort = new("ImageButtonSort (id=6nvcsrdm)");
+
 
         _ButtonCloseSelectedHero_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose (id=0ursxw0e)");
         _ButtonCloseSelectedHero_RectTransform.gameObject.GetComponent<Button>().onClick.AddListener(() =>
@@ -298,17 +316,6 @@ public class Init_Collection : MonoBehaviour
 
         _PanelSelectedEquipmentBottomTab1_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedEquipmentBottomTab1 (id=9nwzj7p8)");
         SelectedEquipmentTop_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label_SelectedEquipment (id=004gk90y)");
-
-        // Панель для внутренних кнопок
-        PanelCollection_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelCollection (id=jcxwa01g)");
-        _PanelCollectionTopButtons_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelCollectionTopButtons (id=gmzb0h9f)");
-
-        // Внутренние кнопки
-        _InternalPanelHeroes = new("ImageButtonHeroes (id=pakco5ud)");
-        _InternalPanelItems = new("ImageButtonItems (id=vuhjngaz)");
-        _InternalPanelFilter = new("ImageButtonFilter (id=vjeqfzen)");
-        _InternalPanelGroup = new("ImageButtonGroup (id=hbsaogwl)");
-        _InternalPanelSort = new("ImageButtonSort (id=6nvcsrdm)");
 
         // Scroll View для коллекции героев
         _ScrollViewCollection_RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollViewCollection (id=ph1oh7dk)");
@@ -391,7 +398,7 @@ public class Init_Collection : MonoBehaviour
     }
 
 
-    private async Task LoadCollectionAsync()
+    private async UniTask LoadCollectionAsync()
     {
         try
         {
@@ -404,7 +411,7 @@ public class Init_Collection : MonoBehaviour
             }
 
             OnResizeWindow();
-            await Task.Yield();
+            await UniTask.Yield();
 
 
             _GroupDividers.Clear();
@@ -416,7 +423,7 @@ public class Init_Collection : MonoBehaviour
                 {
                     if (item.List.Count() > 0)
                     {
-                        GameObject groupDividerPrefab = await Addressables.LoadAssetAsync<GameObject>("GroupDividerPrefab").Task;
+                        var groupDividerPrefab = await Addressables.LoadAssetAsync<GameObject>("GroupDividerPrefab").ToUniTask();
                         GameObject obj = groupDividerPrefab.SafeInstant();
                         GroupDivider groupDivider = obj.AddComponent<GroupDivider>();
                         obj.transform.SetParent(_CollectionContent_Transform, false);
@@ -432,7 +439,7 @@ public class Init_Collection : MonoBehaviour
                 {
                     if (item.List.Count() > 0)
                     {
-                        GameObject groupDividerPrefab = await Addressables.LoadAssetAsync<GameObject>("GroupDividerPrefab").Task;
+                        GameObject groupDividerPrefab = await Addressables.LoadAssetAsync<GameObject>("GroupDividerPrefab").ToUniTask();
                         GameObject obj = groupDividerPrefab.SafeInstant();
                         GroupDivider groupDivider = obj.AddComponent<GroupDivider>();
                         obj.transform.SetParent(_CollectionContent_Transform, false);
@@ -450,33 +457,33 @@ public class Init_Collection : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Кнопка "Герои"
-    /// </summary>
-    private void OnClickHeroes()
+    /// <summary> Кнопка "Герои". </summary>
+    private async UniTask OnClickHeroes()
     {
         if (CollectionMode == 1)
         {
             return;
         }
         CollectionMode = 1;
+        _InternalPanelHeroes.SetActive(true);
+        _InternalPanelEquipments.SetActive(false);
         OnClickTabButton(_TabButtonHeroes);
-        //_TabButtonHeroes.image.color = Color.white;
-        _ = LoadCollectionAsync();
+        await LoadCollectionAsync();
     }
 
-    /// <summary>
-    /// Кнопка "Экипировка"
+    /// <summary> Кнопка "Экипировка"
     /// </summary>
-    private void OnClickEquipment()
+    private async UniTask OnClickEquipment()
     {
         if (CollectionMode == 2)
         {
             return;
         }
         CollectionMode = 2;
+        _InternalPanelHeroes.SetActive(false);
+        _InternalPanelEquipments.SetActive(true);
         OnClickTabButton(_TabButtonEquipment);
-        _ = LoadCollectionAsync();
+        await LoadCollectionAsync();
     }
 
     private void OnClickTabButton(TabButton tabButtonPressed)
@@ -615,7 +622,7 @@ public class Init_Collection : MonoBehaviour
 
         // Внутренние кнопки
         _InternalPanelHeroes.Refresh(coefHeight, vector008PercentOfHeight, 10);
-        _InternalPanelItems.Refresh(coefHeight, vector008PercentOfHeight, 10);
+        _InternalPanelEquipments.Refresh(coefHeight, vector008PercentOfHeight, 10);
         _InternalPanelFilter.Refresh(coefHeight, vector008PercentOfHeight, 150);
         _InternalPanelGroup.Refresh(coefHeight, vector008PercentOfHeight, 256);
         _InternalPanelSort.Refresh(coefHeight, vector008PercentOfHeight, 362);

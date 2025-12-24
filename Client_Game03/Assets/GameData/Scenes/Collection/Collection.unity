@@ -4662,7 +4662,7 @@ GameObject:
   - component: {fileID: 1184803256}
   - component: {fileID: 1184803255}
   m_Layer: 5
-  m_Name: ImageButtonItems (id=vuhjngaz)
+  m_Name: ImageButtonEquipments (id=vuhjngaz)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

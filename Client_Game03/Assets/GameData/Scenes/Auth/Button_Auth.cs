@@ -1,12 +1,10 @@
 using Assets.GameData.Scripts;
+using Cysharp.Threading.Tasks;
 using General;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
 using G = Assets.GameData.Scripts.G;
 using L = General.LocalizationKeys;
@@ -15,8 +13,12 @@ namespace Assets.GameData.Scenes.Auth
 {
     public class Button_Auth : MonoBehaviour
     {
-
-        public async void ButtonLogin_OnClick()
+        private void Start()
+        {
+            Button button = GameObjectFinder.FindByName<Button>("Button_Login (id=bf6euydu)");
+            button.onClick.AddListener(() => ButtonLoginOnClick().Forget());
+        }
+        public async UniTask ButtonLoginOnClick()
         {
             GameMessage.ShowLocale(L.Info.CheckingServerAvailability, false);
             bool serverAvailable = await GameServerPinger.Ping();
@@ -105,7 +107,7 @@ namespace Assets.GameData.Scenes.Auth
                 await G.Game.GameData.LoadGameData(CancelToken.Create("G.Game.GameData.LoadListAllHeroesAsync"));
 
                 // Предзагрузка AdressableAssets героев и редкости
-                Task taskPreload = AddressableHelper.PreLoadAssets();
+                UniTask taskPreload = AddressableHelper.PreLoadAssets();
 
                 // Загрузка коллекции пользователя
                 GameMessage.ShowLocale(L.Info.LoadingCollection, false);

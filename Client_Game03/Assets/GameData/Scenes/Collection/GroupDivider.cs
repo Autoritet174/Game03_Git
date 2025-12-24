@@ -1,11 +1,11 @@
 using Assets.GameData.Scripts;
+using Cysharp.Threading.Tasks;
 using Game03Client.PlayerCollection;
 using General;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -71,7 +71,7 @@ public class GroupDivider : MonoBehaviour
             //    // Разворачивание
             //    // Сначала активируем контейнер, чтобы он участвовал в макете, но с высотой 0
             _CellsContainer_GameObject.SetActive(true);
-            _DividerButton_Button.image.sprite = await Addressables.LoadAssetAsync<Sprite>("button_with_arrow_v2").Task;
+            _DividerButton_Button.image.sprite = await Addressables.LoadAssetAsync<Sprite>("button_with_arrow_v2").ToUniTask();
             //_CellsContainer_RectTransform.sizeDelta = new Vector2();
             //    //await AnimateHeightAsync(0, expandedHeight, token);
         }
@@ -81,13 +81,13 @@ public class GroupDivider : MonoBehaviour
             //    //await AnimateHeightAsync(expandedHeight, 0, token);
             //    // После завершения анимации деактивируем контейнер
             _CellsContainer_GameObject.SetActive(false);
-            _DividerButton_Button.image.sprite = await Addressables.LoadAssetAsync<Sprite>("button_with_arrow_v2_reverse").Task;
+            _DividerButton_Button.image.sprite = await Addressables.LoadAssetAsync<Sprite>("button_with_arrow_v2_reverse").ToUniTask();
         }
         Resize();
         //UpdateDividerVisual(isExpanded);
     }
 
-    public async Task Init(string group_name, Init_Collection init_Collection, GameObject gameObjectInput, IEnumerable<CollectionElement> listCollectionElement)
+    public async UniTask Init(string group_name, Init_Collection init_Collection, GameObject gameObjectInput, IEnumerable<CollectionElement> listCollectionElement)
     {
         _Init_Collection = init_Collection;
         this.group_name = group_name;
@@ -120,7 +120,7 @@ public class GroupDivider : MonoBehaviour
         ListDataCollectionElement.Clear();
         foreach (CollectionElement groupCollectionElement in _listCollectionElement)
         {
-            GameObject gameObject = await Addressables.LoadAssetAsync<GameObject>("IconCollectionElement").Task;
+            GameObject gameObject = await Addressables.LoadAssetAsync<GameObject>("IconCollectionElement").ToUniTask();
 
             GameObject _prefabIconCollectionElement = gameObject.SafeInstant();
             _prefabIconCollectionElement.transform.SetParent(cellsContainer_Transform);
@@ -163,11 +163,11 @@ public class GroupDivider : MonoBehaviour
                         2 => $"equipment-image-{groupCollectionElement.Name.ToLower()}_128",
                         _ => throw new Exception("CollectionMode > 2"),
                     };
-                    imageCollectionElement.sprite = await Addressables.LoadAssetAsync<Sprite>(addressableKey).Task;
+                    imageCollectionElement.sprite = await Addressables.LoadAssetAsync<Sprite>(addressableKey).ToUniTask();
                     imageCollectionElement.preserveAspect = true; // Сохраняет пропорции изображения
                     imageCollectionElement.type = Image.Type.Simple; // Режим без растягивания;
 
-                    async Task OnClick()
+                    async UniTask OnClick()
                     {
                         if (_Init_Collection.CollectionMode == 1)
                         {
@@ -197,11 +197,11 @@ public class GroupDivider : MonoBehaviour
                             ListDataCollectionElement.ForEach(a => a.rectTransform.localScale = a.Selected ? Init_Collection.Vector3Selected : Vector3.one);
                         }
                     }
-                    void OnPointerEnter()
+                    async UniTask OnPointerEnter()
                     {
                         imageRarity.sprite = _Init_Collection.Rarityes[0];
                     }
-                    void OnPointerExit()
+                    async UniTask OnPointerExit()
                     {
                         imageRarity.sprite = _Init_Collection.Rarityes[dataCollectionElement.collectionCollectionElement.Rarity];
                     }

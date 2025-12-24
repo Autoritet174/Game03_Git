@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,7 +20,7 @@ namespace Assets.GameData.Scenes.AllHeroes
             colorsAnimation[^1] = Color.white;
         }
 
-        internal static async Task RunAnimationImage(Image image, float milliseconds = 1000)
+        internal static async UniTask RunAnimationImage(Image image, float milliseconds = 1000)
         {
             try
             {
@@ -29,7 +29,7 @@ namespace Assets.GameData.Scenes.AllHeroes
                 for (int i = 0; i < colorsAnimation.Length; i++)
                 {
                     image.color = colorsAnimation[i];
-                    await Task.Delay(delay_ms);
+                    await UniTask.Delay(delay_ms);
                 }
                 image.color = Color.white;
             }
