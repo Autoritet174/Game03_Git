@@ -74,13 +74,13 @@
         <member name="T:General.DTO.Entities.GameData.DtoBaseEquipment">
             <summary> Представляет базовую сущность предмета. </summary>
         </member>
-        <member name="M:General.DTO.Entities.GameData.DtoBaseEquipment.#ctor(System.Int32,System.String,System.Int32,System.Boolean,System.Int32,General.DTO.Stats)">
+        <member name="M:General.DTO.Entities.GameData.DtoBaseEquipment.#ctor(System.Int32,System.String,System.Int32,System.Boolean,System.Int32,General.DTO.Dice,General.DTO.Dice)">
             <summary> Представляет базовую сущность предмета. </summary>
         </member>
         <member name="T:General.DTO.Entities.GameData.DtoBaseHero">
             <summary> Data Transfer Object. Представляет базовую сущность игрового героя с основными характеристиками. </summary>
         </member>
-        <member name="M:General.DTO.Entities.GameData.DtoBaseHero.#ctor(System.Int32,System.String,System.Int32,System.Boolean,System.Int32,General.DTO.Stats)">
+        <member name="M:General.DTO.Entities.GameData.DtoBaseHero.#ctor(System.Int32,System.String,System.Int32,System.Boolean,System.Int32,General.DTO.Dice,General.DTO.Dice)">
             <summary> Data Transfer Object. Представляет базовую сущность игрового героя с основными характеристиками. </summary>
         </member>
         <member name="T:General.G">
