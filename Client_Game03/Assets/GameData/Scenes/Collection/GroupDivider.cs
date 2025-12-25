@@ -200,10 +200,12 @@ public class GroupDivider : MonoBehaviour
                     async UniTask OnPointerEnter()
                     {
                         imageRarity.sprite = _Init_Collection.Rarityes[0];
+                        await UniTask.Yield();
                     }
                     async UniTask OnPointerExit()
                     {
                         imageRarity.sprite = _Init_Collection.Rarityes[dataCollectionElement.collectionCollectionElement.Rarity];
+                        await UniTask.Yield();
                     }
                     EventHelper.AddClickEvent(_prefabIconCollectionElement, OnClick, false);
                     EventHelper.AddHoverEvents(_prefabIconCollectionElement, OnPointerEnter, OnPointerExit);

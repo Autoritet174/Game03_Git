@@ -147,10 +147,12 @@ public class AllHeroes : MonoBehaviour
         async UniTask OnPoinerEnter()
         {
             imageRarity.sprite = selectedSprite;
+            await UniTask.Yield();
         }
         async UniTask OnPoinerExit()
         {
             imageRarity.sprite = raritySprite;
+            await UniTask.Yield();
         }
         _prefabIconHero.AddHoverEvents(OnPoinerEnter, OnPoinerExit);
 
