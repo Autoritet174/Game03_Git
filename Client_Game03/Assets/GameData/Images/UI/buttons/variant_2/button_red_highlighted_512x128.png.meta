@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f0ff8820e8d8a004e9e63afdbfafe82a
+guid: fbaa36eacd74cf84697af7707262d77b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6162640851037935645
-    second: _button_0
+      213: 1461652700775745244
+    second: button_red_highlighted_512x128_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -72,12 +72,12 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 512
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 100
-    crunchedCompression: 1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
     ignorePlatformSupport: 0
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: _button_0
+      name: button_red_highlighted_512x128_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1178
-        height: 735
+        width: 512
+        height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 173, y: 146, z: 173, w: 146}
+      border: {x: 6, y: 6, z: 6, w: 6}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d185d64f339168550800000000000000
-      internalID: 6162640851037935645
+      spriteID: cd68abe1365d84410800000000000000
+      internalID: 1461652700775745244
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5ed46beb1d14d794e98a6dc1f3209b70
+    spriteID: a88dbefd03816ab44b56ecad1910e278
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      _button_0: 6162640851037935645
+      button_red_highlighted_512x128_0: 1461652700775745244
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

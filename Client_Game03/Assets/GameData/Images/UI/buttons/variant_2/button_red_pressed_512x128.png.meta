@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 46ee4408cf893934382b6ac642c55182
+guid: 000553e5f3c3ae14fb70f0a5a1bb0c20
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5710491841017650585
-    second: cuirass_0
+      213: 4521299402699900418
+    second: button_red_pressed_512x128_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -72,7 +72,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 1024
+    maxTextureSize: 512
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 2
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: cuirass_0
+      name: button_red_pressed_512x128_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1024
-        height: 1024
+        width: 512
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 9, y: 9, z: 9, w: 9}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 76260631de140c0b0800000000000000
-      internalID: -5710491841017650585
+      spriteID: 2060d151ad1eebe30800000000000000
+      internalID: 4521299402699900418
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: ebe1ad7c73aca3e43996047798e58d75
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      cuirass_0: -5710491841017650585
+      button_red_pressed_512x128_0: 4521299402699900418
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -4,7 +4,7 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: 5899023246920728891
-    second: button_usually3_512x128_0
+    second: button_usually_512x128_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -77,7 +77,7 @@ TextureImporter:
     textureFormat: -1
     textureCompression: 2
     compressionQuality: 100
-    crunchedCompression: 1
+    crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
     ignorePlatformSupport: 0
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: button_usually3_512x128_0
+      name: button_usually_512x128_0
       rect:
         serializedVersion: 2
         x: 0
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      button_usually3_512x128_0: 5899023246920728891
+      button_usually_512x128_0: 5899023246920728891
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

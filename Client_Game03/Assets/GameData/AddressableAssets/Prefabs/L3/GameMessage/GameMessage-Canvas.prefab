@@ -495,6 +495,14 @@ PrefabInstance:
       value: ButtonYes
       objectReference: {fileID: 0}
     - target: {fileID: 3468390062173969539, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
+      propertyPath: m_SpriteState.m_PressedSprite
+      value: 
+      objectReference: {fileID: 2019401131926973584, guid: 9fdce92eca0278044b9072b11fe6a6eb, type: 3}
+    - target: {fileID: 3468390062173969539, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
+      propertyPath: m_SpriteState.m_HighlightedSprite
+      value: 
+      objectReference: {fileID: 5159057746121662474, guid: 103619f78f5ff0d4696c869b2f5b34b8, type: 3}
+    - target: {fileID: 3468390062173969539, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnClickYes
       objectReference: {fileID: 0}
@@ -506,6 +514,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 3997452176854684527, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4063663887643853332, guid: 49b3736b806bd6f46841293fc832d256, type: 3}
     - target: {fileID: 4587221065149263836, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -799,6 +811,14 @@ PrefabInstance:
       value: ButtonNo
       objectReference: {fileID: 0}
     - target: {fileID: 3468390062173969539, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
+      propertyPath: m_SpriteState.m_PressedSprite
+      value: 
+      objectReference: {fileID: 7424417356971746503, guid: 891367affbd525340863d000497dab7c, type: 3}
+    - target: {fileID: 3468390062173969539, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
+      propertyPath: m_SpriteState.m_HighlightedSprite
+      value: 
+      objectReference: {fileID: 1461652700775745244, guid: fbaa36eacd74cf84697af7707262d77b, type: 3}
+    - target: {fileID: 3468390062173969539, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnClick
       objectReference: {fileID: 0}
@@ -810,6 +830,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 3997452176854684527, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -682003353307577360, guid: 194f267d5a31fe940be2bda16106e1a0, type: 3}
     - target: {fileID: 4587221065149263836, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
