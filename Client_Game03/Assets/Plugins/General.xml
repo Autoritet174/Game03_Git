@@ -357,6 +357,13 @@
             Статический класс-расширение, предоставляющий полезные методы для работы со строками (<see cref="T:System.String"/>).
             </summary>
         </member>
+        <member name="M:General.StringExt.ToDirectSlash(System.String)">
+            <summary>
+            Заменить все символы '\' на '/'
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
         <member name="M:General.StringExt.IsEmpty(System.String)">
             <summary>
             Проверяет, является ли строка <see langword="null"/>, пустой (<see cref="F:System.String.Empty"/>) или содержит только пробельные символы.

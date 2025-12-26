@@ -14,37 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
   m_GroupName: Cursors
   m_GUID: 3b6826b0f200b834ea36cb0ac0e4eb1e
-  m_SerializeEntries:
-  - m_GUID: 07cbfbf0c6902e04580558419a524b5d
-    m_Address: cursor_var2_green_64x64
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2c2ff1008f246a146bf8ae425519af97
-    m_Address: cursor_var2_red_64x64
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 77addb0177093d5419fb29d978bc9405
-    m_Address: cursor_var2_pink_64x64
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c0487f14e6b84314b87e85af66c5a17c
-    m_Address: cursor_var2_yellow_64x64
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c7aa759d8d57f5a47803f8369d115183
-    m_Address: cursor_var2_purple_64x64
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d103f615a362d4246acba5f31edc23e8
-    m_Address: cursor_var2_blue_64x64
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 3ac335a41d78635408bb61e4d6efbbe7, type: 2}
   m_SchemaSet:

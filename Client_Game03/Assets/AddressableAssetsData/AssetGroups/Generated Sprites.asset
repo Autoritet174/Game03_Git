@@ -1,0 +1,473 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Generated Sprites
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Generated Sprites
+  m_GUID: 5b415568068250e4ba360cb75ba480c0
+  m_SerializeEntries:
+  - m_GUID: 00caff6fe4096094682436eb6eddb396
+    m_Address: smithingmaterials-somnir.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0550a5ce164f5b74ab200b6b71b0c6e1
+    m_Address: equipment-iron-sword128.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 07cbfbf0c6902e04580558419a524b5d
+    m_Address: ui-cursors-cursorvar2green64x64.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0c419a587f8dc884d9922386aabc39a1
+    m_Address: equipment-iron-chest
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0c4a70d164dce5340981bb51c4a77913
+    m_Address: smithingmaterials-fulguriteoriginal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0c6c7ccb54e9d63468b64d601b91ae86
+    m_Address: ui-cursors-cursor128x128.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0c76dfcc23100064a8a08e8c93ffdcb6
+    m_Address: equipment-iron-chest-(small)
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 116b25be2250cf74caadfa048a5940e4
+    m_Address: smithingmaterials-acidium.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 11f6154acccf7174c9ca350dc9a175c9
+    m_Address: ui-rarityselected.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 12a4151260f6e2a4c81a019d2dea895e
+    m_Address: equipment-iron-shoulders
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 17953aa48bff3ab4eac2491bb12dfa88
+    m_Address: equipment-unique-thunderfury
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1bbe394f6a327f54ab468eb5b24555bc
+    m_Address: ui-rarity5.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1ffa01b6db2fed04a86449ed31300224
+    m_Address: smithingmaterials-pyroniteoriginal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2c1263790dcc68a4b9dfe87e7c9a3ad5
+    m_Address: equipment-iron-chest128.png-(small)
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2c2ff1008f246a146bf8ae425519af97
+    m_Address: ui-cursors-cursorvar2red64x64.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 31aa152d145797544b7f725593ef33f5
+    m_Address: equipment-iron-shoulders128.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 33fcd83ae1d9b434b8ab8b69b37493bf
+    m_Address: equipment-iron-cuirass128.png-(small)
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 37b258c0912cdb6428f1343fa9f51129
+    m_Address: smithingmaterials-penetron.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3c4652642fbde9c419ba84384bec383e
+    m_Address: equipment-iron-boots
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3c4f2529064f9774ca7c13a57be85b5c
+    m_Address: equipment-iron-helmet-(small)
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 400e49e4baa5e9840984a3b37d76a9d2
+    m_Address: ui-cursors-cursorgreen64x64.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 407746dcf50e3b24da06c85d5113a7bd
+    m_Address: equipment-iron-gloves-(small)
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4165355ef7ff7524e886fbaef0765572
+    m_Address: ui-rarity4.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4206d7027ab08bc4b9d3c5f4eaec23d2
+    m_Address: smithingmaterials-eboniteoriginal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 49f03f6f8d96e6f47ad1034186cd7531
+    m_Address: equipment-iron-gloves128.png-(small)
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4eae2cbddc4a7c043a4eed46e102ce75
+    m_Address: smithingmaterials-mortium.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 50963fae9a535f145aa4a80024d054be
+    m_Address: smithingmaterials-nullite.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 55d0239afc2448e4ebae6a8eb592733c
+    m_Address: smithingmaterials-discord.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 55ef5c96df6758844928eadf0ba5538d
+    m_Address: equipment-iron-greaves128.png-(small)
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 57b126454cd85d64f973a4893e9dcf82
+    m_Address: equipment-iron-shoulders-(small)
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 599a2e4905f72be49af0666d1b3c27c2
+    m_Address: equipment-unique-thunderfury-(small)
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5a985e930d51abd48a63cfe72873544a
+    m_Address: equipment-iron-boots-(small)
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5de5cfb59a0169943ab36f672c3626e7
+    m_Address: equipment-iron-chest128.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5f1b7745b54bd6d4fbc8cd9234c2facf
+    m_Address: smithingmaterials-vermiumoriginal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 627e1a7718afc044ba9cde9fab44edd0
+    m_Address: equipment-iron-shoulders128.png-(small)
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 64982dffceb1e7441a21a760de8230c9
+    m_Address: smithingmaterials-ostenium.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6953a9531c7e69848b8910d5bf0e7a00
+    m_Address: smithingmaterials-mortiumoriginal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 69f052a8e16b3204684b165bd3d7b971
+    m_Address: smithingmaterials-penetronoriginal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6c4d262224430ff4b95168adbe6b1777
+    m_Address: smithingmaterials-volantiroriginal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6e19e95f6a2118443b41622b95fcf9e5
+    m_Address: smithingmaterials-nulliteoriginal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6ebe67dc84f1ff0478766b7e77d9f8af
+    m_Address: equipment-iron-greaves-(small)
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 71a61ebfb24264b479804e4803341f3a
+    m_Address: smithingmaterials-brutalite.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7412a12c4a1b7f84791e148a45f1332e
+    m_Address: ui-rarity3.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7475046caeaacc0449ff2369c7dba1a2
+    m_Address: ui-rarity6.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 74b1cdeb53875644a94442754e5dc00c
+    m_Address: smithingmaterials-iron.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 752acc919be5cd24d9bcf3d6c0936bf3
+    m_Address: ui-buttons-buttonwitharrowv2reverse.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 77addb0177093d5419fb29d978bc9405
+    m_Address: ui-cursors-cursorvar2pink64x64.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a11c02c1041c554f9323ad72a7a5716
+    m_Address: smithingmaterials-somniroriginal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7d10b6cf3b23c534a9ac8c79603446f1
+    m_Address: smithingmaterials-solarium.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 843bea34a00902a41952e9f407bea477
+    m_Address: smithingmaterials-osteniumoriginal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 875eaa3e6b6573e408c51c12248ee36a
+    m_Address: smithingmaterials-pyronite.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 88c6d21946fa9a24e9d83cc211a6c952
+    m_Address: ui-cursors-cursorred64x64.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 90e57df933640f644990d458111210be
+    m_Address: smithingmaterials-cryoniteoriginal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 92d60ff4c2fec6a44873b93385b8d3e4
+    m_Address: ui-cursors-cursor64.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9417a918120759a4da0b27c43be582b7
+    m_Address: equipment-iron-sword-(small)
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 94803d02a2793b64890bde9d71425386
+    m_Address: smithingmaterials-vermium.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 948efda3ade22914fbcf43e66cf0975e
+    m_Address: ui-rarity1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 96839e67bbc3d6b4d937716d68734e46
+    m_Address: ui-rarity2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 98d21dc79eb7c5940aabd87bf50db619
+    m_Address: smithingmaterials-divisoriumoriginal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9d43df5fc5ed73447b3206e7f05d202d
+    m_Address: equipment-iron-greaves128.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9ef3be60aff82de48a15e5b46aad2501
+    m_Address: smithingmaterials-acidiumoriginal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9ff9eaf6ae5ba1440abb2a42d6072689
+    m_Address: equipment-iron-gloves128.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a31d4d542e2f0c548849d9c1c4488e82
+    m_Address: equipment-iron-helmet
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a4838f04704b77440a70996325b4d6e9
+    m_Address: smithingmaterials-divisorium.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a84aaa375a3f5ec428b3965f3d79eb92
+    m_Address: equipment-iron-boots128.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ae9570a38a79e5146af0a08924e6006b
+    m_Address: ui-cursors-cursor64x64.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: afe4a390b9681984e81c11a8bba2ad78
+    m_Address: smithingmaterials-steeloriginal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b0335cb78e02466438dcda0fe5b520e1
+    m_Address: smithingmaterials-fulgurite.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b2a73b31359671e47a5247bf5aa158a7
+    m_Address: equipment-iron-greaves
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b2fcce6eaa0314b48ab1c3e88e345c89
+    m_Address: equipment-iron-sword128.png-(small)
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b59a25938a707bb4fa87959509d1515a
+    m_Address: smithingmaterials-vibraniumoriginal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bd59c9ce6ffe77a46aa172db4bf0bfb8
+    m_Address: smithingmaterials-brutaliteoriginal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bdd36aaf68c264340aa6eb7ac5a7f466
+    m_Address: equipment-iron-cuirass128.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c0487f14e6b84314b87e85af66c5a17c
+    m_Address: ui-cursors-cursorvar2yellow64x64.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c169085e4ca7c624a9de8681c9f22118
+    m_Address: smithingmaterials-discordoriginal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c249526716fd9f14ebda043b9efb2b6e
+    m_Address: equipment-iron-boots128.png-(small)
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c5166e6a2c1cc1142840ba0285d2760a
+    m_Address: smithingmaterials-volantir.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c7aa759d8d57f5a47803f8369d115183
+    m_Address: ui-cursors-cursorvar2purple64x64.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ca2aca19a99f51e4cab3eb0ed3d59e71
+    m_Address: smithingmaterials-cryonite.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d103f615a362d4246acba5f31edc23e8
+    m_Address: ui-cursors-cursorvar2blue64x64.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d66faa5e6a0599047a3ebf2807884436
+    m_Address: smithingmaterials-ironoriginal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d79c6f200e26baf43a596d24a0aaffa1
+    m_Address: equipment-iron-helmet128.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d8d6c85ce498a1647a9262c4b5818551
+    m_Address: smithingmaterials-steel.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dae712d1da02a494baee614636b38bfa
+    m_Address: smithingmaterials-vibranium.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de78f1881e77e7643808258e478db3a2
+    m_Address: smithingmaterials-solariumoriginal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dec63394af032fc47a34f6bde99ef79f
+    m_Address: smithingmaterials-ebonite.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: deea6c4b287548045aa6ba65ad1f25c5
+    m_Address: equipment-iron-gloves
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f276fd12c0d09fc4aadc41d24b83437a
+    m_Address: equipment-iron-helmet128.png-(small)
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f6c4fd6e6a299a84c8165c3f250c55f9
+    m_Address: ui-buttons-buttonwitharrowv2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f9e11d18d47e8fc46bb982cbd472e7dd
+    m_Address: equipment-iron-sword
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 3ac335a41d78635408bb61e4d6efbbe7, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: d485bc929b32bc24a92d26b705c90363, type: 2}
+    - {fileID: 11400000, guid: 068da11e8ed657743a4128b4f16e7427, type: 2}

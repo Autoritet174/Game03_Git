@@ -37,7 +37,6 @@ namespace Assets.GameData.Scripts
         private static void Initialize_BeforeSceneLoad()
         {
             LoadCursorTexture();
-
             GameLanguage lang = GameLanguage.Ru;
 
             string path = $"localization/{lang.NameShort}/data";
