@@ -178,7 +178,6 @@ public class Init_Collection : MonoBehaviour
     /// 1 - герои, 2 - экипировка
     /// </summary>
     public int CollectionMode { get; private set; } = 1;
-    public Sprite[] Rarityes = new Sprite[0];
 
     private async void Start()
     {
@@ -208,16 +207,6 @@ public class Init_Collection : MonoBehaviour
         PanelSelectedEquipment_GameObject.SetActive(false);
         _PanelSelectedEquipment_RectTransform.anchoredPosition = Vector2.zero;
         _PanelSelectedEquipment_isActive = PanelSelectedEquipment_GameObject.activeInHierarchy;
-
-        Rarityes = new Sprite[]{
-            await Addressables.LoadAssetAsync<Sprite>("raritySelected").ToUniTask(),
-            await Addressables.LoadAssetAsync<Sprite>("rarity1").ToUniTask(),
-            await Addressables.LoadAssetAsync<Sprite>("rarity2").ToUniTask(),
-            await Addressables.LoadAssetAsync<Sprite>("rarity3").ToUniTask(),
-            await Addressables.LoadAssetAsync<Sprite>("rarity4").ToUniTask(),
-            await Addressables.LoadAssetAsync<Sprite>("rarity5").ToUniTask(),
-            await Addressables.LoadAssetAsync<Sprite>("rarity6").ToUniTask(),
-        };
 
         SelectedHero_Image = GameObjectFinder.FindByName<Image>("ImageHeroFull (id=m5kn2f6p)");
         SelectedHeroRarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity (id=xami3s9q)");

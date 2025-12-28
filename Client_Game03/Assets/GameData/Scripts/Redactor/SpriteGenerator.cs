@@ -7,7 +7,7 @@ using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEngine;
 
-namespace Assets.GameData.Scripts.Editor
+namespace Assets.GameData.Scripts.Redactor
 {
 
     /// <summary>
@@ -28,6 +28,10 @@ namespace Assets.GameData.Scripts.Editor
         [MenuItem("_Game03/Генерировать спрайты 128x128")]
         private static void CreateSprites()
         {
+            if (string.Empty == "")
+            {
+                return;
+            }
             string[] files = Directory.GetFiles(START_DIR, "*.*", SearchOption.AllDirectories);
             for (int i = 0; i < files.Length; i++)
             {

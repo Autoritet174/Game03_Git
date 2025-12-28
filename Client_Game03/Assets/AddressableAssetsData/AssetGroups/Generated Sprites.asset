@@ -45,11 +45,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 0c76dfcc23100064a8a08e8c93ffdcb6
-    m_Address: equipment-iron-chest-(small)
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 116b25be2250cf74caadfa048a5940e4
     m_Address: smithingmaterials-acidium.png
     m_ReadOnly: 0
@@ -80,11 +75,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2c1263790dcc68a4b9dfe87e7c9a3ad5
-    m_Address: equipment-iron-chest128.png-(small)
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2c2ff1008f246a146bf8ae425519af97
     m_Address: ui-cursors-cursorvar2red64x64.png
     m_ReadOnly: 0
@@ -92,11 +82,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 31aa152d145797544b7f725593ef33f5
     m_Address: equipment-iron-shoulders128.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 33fcd83ae1d9b434b8ab8b69b37493bf
-    m_Address: equipment-iron-cuirass128.png-(small)
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -110,18 +95,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3c4f2529064f9774ca7c13a57be85b5c
-    m_Address: equipment-iron-helmet-(small)
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 400e49e4baa5e9840984a3b37d76a9d2
     m_Address: ui-cursors-cursorgreen64x64.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 407746dcf50e3b24da06c85d5113a7bd
-    m_Address: equipment-iron-gloves-(small)
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -132,11 +107,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4206d7027ab08bc4b9d3c5f4eaec23d2
     m_Address: smithingmaterials-eboniteoriginal
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 49f03f6f8d96e6f47ad1034186cd7531
-    m_Address: equipment-iron-gloves128.png-(small)
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -155,26 +125,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 55ef5c96df6758844928eadf0ba5538d
-    m_Address: equipment-iron-greaves128.png-(small)
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 57b126454cd85d64f973a4893e9dcf82
-    m_Address: equipment-iron-shoulders-(small)
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 599a2e4905f72be49af0666d1b3c27c2
-    m_Address: equipment-unique-thunderfury-(small)
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 5a985e930d51abd48a63cfe72873544a
-    m_Address: equipment-iron-boots-(small)
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5de5cfb59a0169943ab36f672c3626e7
     m_Address: equipment-iron-chest128.png
     m_ReadOnly: 0
@@ -182,11 +132,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5f1b7745b54bd6d4fbc8cd9234c2facf
     m_Address: smithingmaterials-vermiumoriginal
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 627e1a7718afc044ba9cde9fab44edd0
-    m_Address: equipment-iron-shoulders128.png-(small)
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -212,11 +157,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6e19e95f6a2118443b41622b95fcf9e5
     m_Address: smithingmaterials-nulliteoriginal
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 6ebe67dc84f1ff0478766b7e77d9f8af
-    m_Address: equipment-iron-greaves-(small)
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -282,11 +222,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 92d60ff4c2fec6a44873b93385b8d3e4
     m_Address: ui-cursors-cursor64.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9417a918120759a4da0b27c43be582b7
-    m_Address: equipment-iron-sword-(small)
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -360,11 +295,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b2fcce6eaa0314b48ab1c3e88e345c89
-    m_Address: equipment-iron-sword128.png-(small)
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b59a25938a707bb4fa87959509d1515a
     m_Address: smithingmaterials-vibraniumoriginal
     m_ReadOnly: 0
@@ -375,11 +305,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: bdd36aaf68c264340aa6eb7ac5a7f466
-    m_Address: equipment-iron-cuirass128.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c0487f14e6b84314b87e85af66c5a17c
     m_Address: ui-cursors-cursorvar2yellow64x64.png
     m_ReadOnly: 0
@@ -387,11 +312,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c169085e4ca7c624a9de8681c9f22118
     m_Address: smithingmaterials-discordoriginal
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c249526716fd9f14ebda043b9efb2b6e
-    m_Address: equipment-iron-boots128.png-(small)
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -447,11 +367,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: deea6c4b287548045aa6ba65ad1f25c5
     m_Address: equipment-iron-gloves
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: f276fd12c0d09fc4aadc41d24b83437a
-    m_Address: equipment-iron-helmet128.png-(small)
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

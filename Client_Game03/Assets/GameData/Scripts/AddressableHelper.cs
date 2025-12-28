@@ -8,6 +8,46 @@ namespace Assets.GameData.Scripts
 {
     internal static class AddressableHelper
     {
+        public static Sprite Null;
+        public static Sprite UI_button_with_arrow_v2;
+        public static Sprite UI_button_with_arrow_v2_reverse;
+
+        public static Sprite[] Rarityes = new Sprite[7];
+
+        public static Dictionary<string, Sprite> Heroes = new();
+        public static Dictionary<string, Sprite> Equipments = new();
+
+        public static async UniTask PreLoadAssets()
+        {
+            Null = await Addressables.LoadAssetAsync<Sprite>("null").ToUniTask();
+
+            UI_button_with_arrow_v2 = await LoadAsync("button_with_arrow_v2");
+            UI_button_with_arrow_v2_reverse = await LoadAsync("button_with_arrow_v2_reverse");
+
+            foreach (DtoBaseHero i in G.Game.GameData.GetDtoContainer().DtoBaseHeroes)
+            {
+                string _name = i.Name;
+                Heroes.Add(_name, await LoadAsync($"hero-image-{_name}"));
+                Heroes.Add(_name + "_face", await LoadAsync($"hero-image-{_name}_face"));
+            }
+
+            Rarityes[0] = await LoadAsync($"raritySelected");
+            for (int i = 1; i <= 6; i++)
+            {
+                Rarityes[i] = await LoadAsync($"rarity{i}");
+            }
+
+            foreach (DtoBaseEquipment i in G.Game.GameData.GetDtoContainer().DtoBaseEquipments)
+            {
+                string _name = i.Name;
+                string key1 = $"equipment-image-{_name}";
+                string key2 = $"equipment-image-{_name}_128";
+                Equipments.Add(_name, await LoadAsync(key1));
+                Equipments.Add(_name + "_128", await LoadAsync(key2));
+            }
+        }
+
+
         /// <summary>
         /// Проверка существует ли ключ в addressable.
         /// </summary>
@@ -22,41 +62,9 @@ namespace Assets.GameData.Scripts
             return locations.Count > 0;
         }
 
-        public static async UniTask PreLoadAssets()
+        public static async UniTask<Sprite> LoadAsync(string name)
         {
-            List<UniTask> preloadAdressableAssets = new()
-            {
-                Addressables.LoadAssetAsync<Sprite>("button_with_arrow_v2").ToUniTask(),
-                Addressables.LoadAssetAsync<Sprite>("button_with_arrow_v2_reverse").ToUniTask()
-            };
-
-            foreach (DtoBaseHero i in G.Game.GameData.GetDtoContainer().DtoBaseHeroes)
-            {
-                string _name = i.Name.ToLower();
-                preloadAdressableAssets.Add(Addressables.LoadAssetAsync<Sprite>($"hero-image-{_name}").ToUniTask());
-                preloadAdressableAssets.Add(Addressables.LoadAssetAsync<Sprite>($"hero-image-{_name}_face").ToUniTask());
-            }
-
-            for (int i = 1; i <= 6; i++)
-            {
-                preloadAdressableAssets.Add(Addressables.LoadAssetAsync<Sprite>($"rarity{i}").ToUniTask());
-            }
-
-            foreach (DtoBaseEquipment i in G.Game.GameData.GetDtoContainer().DtoBaseEquipments)
-            {
-                string _name = i.Name.ToLower();
-                string key1 = $"equipment-image-{_name}";
-                string key2 = $"equipment-image-{_name}_128";
-                if (await CheckIfKeyExists(key1))
-                {
-                    preloadAdressableAssets.Add(Addressables.LoadAssetAsync<Sprite>(key1).ToUniTask());
-                }
-
-                if (await CheckIfKeyExists(key2))
-                {
-                    preloadAdressableAssets.Add(Addressables.LoadAssetAsync<Sprite>(key2).ToUniTask());
-                }
-            }
+            return await CheckIfKeyExists(name) ? await Addressables.LoadAssetAsync<Sprite>(name).ToUniTask() : Null;
         }
     }
 }
