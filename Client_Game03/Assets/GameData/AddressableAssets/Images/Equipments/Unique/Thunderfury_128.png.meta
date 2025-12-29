@@ -1,15 +1,15 @@
 fileFormatVersion: 2
-guid: deea6c4b287548045aa6ba65ad1f25c5
+guid: ae30cd18f536dfa48881786e1d2bde5a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8197036160006260733
-    second: iron gloves_0
+      213: 2364605116023739926
+    second: thunderfury_128_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
@@ -24,7 +24,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 1
+  isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -72,10 +72,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 1024
+    maxTextureSize: 128
     resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 2
+    textureFormat: 3
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: iron gloves_0
+      name: thunderfury_128_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1024
-        height: 1024
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3087bcfca074e3e80800000000000000
-      internalID: -8197036160006260733
+      spriteID: 6169aa623d3c0d020800000000000000
+      internalID: 2364605116023739926
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      iron gloves_0: -8197036160006260733
+      thunderfury_128_0: 2364605116023739926
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

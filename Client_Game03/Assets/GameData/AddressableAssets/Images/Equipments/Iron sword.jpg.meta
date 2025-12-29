@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 9ff9eaf6ae5ba1440abb2a42d6072689
+guid: f9e11d18d47e8fc46bb982cbd472e7dd
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8633070999002539550
-    second: iron gloves_128_0
+      213: 8356177874499860802
+    second: iron sword_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -74,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 1024
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 3
     textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: iron gloves_128_0
+      name: iron sword_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 128
-        height: 128
+        width: 1024
+        height: 1024
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e16e5486554dec770800000000000000
-      internalID: 8633070999002539550
+      spriteID: 249fa81018b17f370800000000000000
+      internalID: 8356177874499860802
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      iron gloves_128_0: 8633070999002539550
+      iron sword_0: 8356177874499860802
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f9e11d18d47e8fc46bb982cbd472e7dd
+guid: 0c419a587f8dc884d9922386aabc39a1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8356177874499860802
-    second: iron sword_0
+      213: 7554352355269038883
+    second: iron chest_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -74,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 1024
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 3
     textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: iron sword_0
+      name: iron chest_0
       rect:
         serializedVersion: 2
         x: 0
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 249fa81018b17f370800000000000000
-      internalID: 8356177874499860802
+      spriteID: 32352f3417376d860800000000000000
+      internalID: 7554352355269038883
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      iron sword_0: 8356177874499860802
+      iron chest_0: 7554352355269038883
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

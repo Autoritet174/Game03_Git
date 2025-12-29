@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 5de5cfb59a0169943ab36f672c3626e7
+guid: a31d4d542e2f0c548849d9c1c4488e82
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7226687967479831685
-    second: iron chest_128_0
+      213: -4548992743620234918
+    second: helmet_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -74,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 1024
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 3
     textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: iron chest_128_0
+      name: helmet_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 128
-        height: 128
+        width: 1024
+        height: 1024
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b7366cb0595a5bb90800000000000000
-      internalID: -7226687967479831685
+      spriteID: a51bfa6833bbed0c0800000000000000
+      internalID: -4548992743620234918
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      iron chest_128_0: -7226687967479831685
+      helmet_0: -4548992743620234918
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

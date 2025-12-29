@@ -25,7 +25,7 @@ namespace Assets.GameData.Scripts.Redactor
         /// <summary>
         /// Добавляет пункт в верхнее меню Unity
         /// </summary>
-        [MenuItem("_Game03/Генерировать спрайты 128x128")]
+        //[MenuItem("_Game03/Генерировать спрайты 128x128")]
         private static void CreateSprites()
         {
             if (string.Empty == "")
@@ -128,8 +128,8 @@ namespace Assets.GameData.Scripts.Redactor
 
             // 3. Регистрация в Addressables (код прежний)
             string assetAddressableName = assetPathInput.Replace('/', '-').Replace("_", "").ToLower();
-            RegisterInAddressables(assetPath, assetAddressableName, GROUP_NAME_GENERATED_SPRITES);
-            RegisterInAddressables(smallAssetPath, assetAddressableName + suffix, GROUP_NAME_GENERATED_SPRITES);
+            AdressableNamesGenerator.RegisterInAddressables(assetPath, assetAddressableName, GROUP_NAME_GENERATED_SPRITES);
+            AdressableNamesGenerator.RegisterInAddressables(smallAssetPath, assetAddressableName + suffix, GROUP_NAME_GENERATED_SPRITES);
 
             AssetDatabase.SaveAssets();
         }
@@ -248,48 +248,6 @@ namespace Assets.GameData.Scripts.Redactor
             RenderTexture.ReleaseTemporary(rt);
 
             SaveAndImportSmallTexture(smallTexture, targetPath, targetSize);
-        }
-
-        /// <summary>
-        /// Добавляет ассет в систему Addressables в указанную группу и назначает ему адрес.
-        /// </summary>
-        /// <param name="path">Путь к ассету в проекте.</param>
-        /// <param name="address">Уникальный адрес ассета.</param>
-        /// <param name="groupName">Имя группы (например, "EquipmentIcons").</param>
-        /// <exception cref="ArgumentNullException">Генерируется, если критически важные данные отсутствуют.</exception>
-        private static void RegisterInAddressables(string path, string address, string groupName = "Default Local Group")
-        {
-            AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
-
-            // Получаем GUID ассета
-            string guid = AssetDatabase.AssetPathToGUID(path);
-            if (string.IsNullOrEmpty(guid))
-            {
-                throw new FileNotFoundException($"Не удалось получить GUID для ассета по пути: {path}");
-            }
-
-            // Поиск или создание группы
-            AddressableAssetGroup targetGroup = settings.FindGroup(groupName);
-            if (targetGroup == null)
-            {
-                // Создаем новую группу, если она не найдена. 
-                // Используем схемы настроек из стандартной группы для корректного Build/Load Path.
-                targetGroup = settings.CreateGroup(
-                    groupName,
-                    setAsDefaultGroup: false,
-                    readOnly: false,
-                    postEvent: true,
-                    schemasToCopy: settings.DefaultGroup.Schemas);
-            }
-
-            // Создаем запись или перемещаем её в нужную группу
-            AddressableAssetEntry entry = settings.CreateOrMoveEntry(guid, targetGroup);
-
-            // Назначаем адрес, если он отличается
-            if (entry is not null && entry.address != address)
-            {
-                entry.address = address;
-            }
         }
 
         /// <summary>

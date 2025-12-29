@@ -75,7 +75,7 @@ namespace Assets.GameData.Scripts
             }
         }
 
-        private static void LoadCursorTexture(string address = "cursor_var2_green_64x64")
+        private static void LoadCursorTexture(string address = "UI-cursors-cursor_var2_green_64x64")
         {
             AsyncOperationHandle<Texture2D> operationHandle = Addressables.LoadAssetAsync<Texture2D>(address); // Начинаем операцию загрузки
             _ = operationHandle.WaitForCompletion();

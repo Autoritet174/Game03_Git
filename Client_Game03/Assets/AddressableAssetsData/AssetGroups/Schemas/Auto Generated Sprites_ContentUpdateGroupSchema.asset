@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5834b5087d578d24c926ce20cd31e6d6, type: 3}
-  m_Name: Generated Sprites_ContentUpdateGroupSchema
+  m_Name: Auto Generated Sprites_ContentUpdateGroupSchema
   m_EditorClassIdentifier: 
-  m_Group: {fileID: 11400000, guid: 70da74b006dc0e14b92f65794cf82dcd, type: 2}
+  m_Group: {fileID: 11400000, guid: d0c46de180bceb04ea260a1ab54f63d6, type: 2}
   m_StaticContent: 0

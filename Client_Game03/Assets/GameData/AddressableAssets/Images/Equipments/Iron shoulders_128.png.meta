@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d79c6f200e26baf43a596d24a0aaffa1
+guid: 31aa152d145797544b7f725593ef33f5
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6083718813378596429
-    second: helmet_128_0
+      213: -6377121772275541778
+    second: iron shoulders_128_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -72,10 +72,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 1024
+    maxTextureSize: 128
     resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 2
+    textureFormat: 3
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: helmet_128_0
+      name: iron shoulders_128_0
       rect:
         serializedVersion: 2
         x: 0
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3b1353fd8f9429ba0800000000000000
-      internalID: -6083718813378596429
+      spriteID: ee85b1a1989ef77a0800000000000000
+      internalID: -6377121772275541778
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      helmet_128_0: -6083718813378596429
+      iron shoulders_128_0: -6377121772275541778
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

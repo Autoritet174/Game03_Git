@@ -107,7 +107,8 @@ namespace Assets.GameData.Scenes.Auth
                 await G.Game.GameData.LoadGameData(CancelToken.Create("G.Game.GameData.LoadListAllHeroesAsync"));
 
                 // Предзагрузка AdressableAssets героев и редкости
-                UniTask taskPreload = AddressableHelper.PreLoadAssets();
+                //UniTask taskPreload = AddressableCache.PreLoadAssets();
+                await AddressableCache.PreLoadAssets();
 
                 // Загрузка коллекции пользователя
                 GameMessage.ShowLocale(L.Info.LoadingCollection, false);
@@ -120,7 +121,7 @@ namespace Assets.GameData.Scenes.Auth
                     return;
                 }
 
-                await taskPreload;
+                //await taskPreload;
 
                 UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
             }

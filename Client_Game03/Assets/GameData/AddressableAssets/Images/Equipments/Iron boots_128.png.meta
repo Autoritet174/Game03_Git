@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 17953aa48bff3ab4eac2491bb12dfa88
+guid: a84aaa375a3f5ec428b3965f3d79eb92
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1805413574124199833
-    second: thunderfury_0
+      213: 1878689119310609879
+    second: iron boots_128_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -72,10 +72,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 1024
+    maxTextureSize: 128
     resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 2
+    textureFormat: 3
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: thunderfury_0
+      name: iron boots_128_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1024
-        height: 1024
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 99f5756841e1e0910800000000000000
-      internalID: 1805413574124199833
+      spriteID: 7dd76efdcc1721a10800000000000000
+      internalID: 1878689119310609879
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      thunderfury_0: 1805413574124199833
+      iron boots_128_0: 1878689119310609879
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

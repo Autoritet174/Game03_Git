@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
 using L = General.LocalizationKeys;
 
@@ -161,15 +160,15 @@ public class Init_Collection : MonoBehaviour
 
         public void Resize(float coefHeight)
         {
-            const float _TopLeftBase = 10f;
-            const float widthBase = 76.363636f;
-            const float heightBase = widthBase + (_TopLeftBase * 2);
+            const float _TopLeftBase = 20f;
+            const float widthBase = 116f;
+            const float heightBase = widthBase / (1f - 0.154307f);
             _RectTransform.sizeDelta = new Vector2(widthBase * coefHeight, heightBase * coefHeight);
             float x = (((widthBase + _TopLeftBase) * (posX - 1)) + _TopLeftBase) * coefHeight;
             float y = (((heightBase + _TopLeftBase) * (posY - 1)) + _TopLeftBase) * coefHeight;
             _RectTransform.anchoredPosition = new Vector2(x, -y);
 
-            _TextMeshProUGUI.fontSize = 10.5f * coefHeight;
+            _TextMeshProUGUI.fontSize = 15f * coefHeight;
         }
     }
     private readonly List<Slot> _Slots = new();
@@ -316,31 +315,19 @@ public class Init_Collection : MonoBehaviour
 
         _Slots.Clear();
         _Slots.Add(new Slot("Head", 1, 1, _PanelSelectedHeroBottom_RectTransform));
-        _Slots.Add(new Slot("Shoulders", 2, 1, _PanelSelectedHeroBottom_RectTransform));
-        _Slots.Add(new Slot("Chest", 3, 1, _PanelSelectedHeroBottom_RectTransform));
-        _Slots.Add(new Slot("Hands", 4, 1, _PanelSelectedHeroBottom_RectTransform));
-        _Slots.Add(new Slot("Legs", 5, 1, _PanelSelectedHeroBottom_RectTransform));
-        _Slots.Add(new Slot("Feet", 6, 1, _PanelSelectedHeroBottom_RectTransform));
-        _Slots.Add(new Slot("Waist", 7, 1, _PanelSelectedHeroBottom_RectTransform));
-        _Slots.Add(new Slot("Wrist", 8, 1, _PanelSelectedHeroBottom_RectTransform));
+        _Slots.Add(new Slot("Armor", 2, 1, _PanelSelectedHeroBottom_RectTransform));
+        _Slots.Add(new Slot("Hands", 3, 1, _PanelSelectedHeroBottom_RectTransform));
+        _Slots.Add(new Slot("Feet", 4, 1, _PanelSelectedHeroBottom_RectTransform));
+        _Slots.Add(new Slot("Waist", 5, 1, _PanelSelectedHeroBottom_RectTransform));
 
         _Slots.Add(new Slot("Ring", 1, 2, _PanelSelectedHeroBottom_RectTransform, "1"));
         _Slots.Add(new Slot("Ring", 2, 2, _PanelSelectedHeroBottom_RectTransform, "2"));
-        _Slots.Add(new Slot("Ring", 3, 2, _PanelSelectedHeroBottom_RectTransform, "3"));
-        _Slots.Add(new Slot("Ring", 4, 2, _PanelSelectedHeroBottom_RectTransform, "4"));
-        _Slots.Add(new Slot("Trinket", 5, 2, _PanelSelectedHeroBottom_RectTransform, "1"));
-        _Slots.Add(new Slot("Trinket", 6, 2, _PanelSelectedHeroBottom_RectTransform, "2"));
-        _Slots.Add(new Slot("Trinket", 7, 2, _PanelSelectedHeroBottom_RectTransform, "3"));
-        _Slots.Add(new Slot("Trinket", 8, 2, _PanelSelectedHeroBottom_RectTransform, "4"));
+        _Slots.Add(new Slot("Neck", 3, 2, _PanelSelectedHeroBottom_RectTransform));
+        _Slots.Add(new Slot("Trinket", 4, 2, _PanelSelectedHeroBottom_RectTransform, "1"));
+        _Slots.Add(new Slot("Trinket", 5, 2, _PanelSelectedHeroBottom_RectTransform, "2"));
 
-        _Slots.Add(new Slot("LeftHand", 1, 3, _PanelSelectedHeroBottom_RectTransform));
-        _Slots.Add(new Slot("RightHand", 2, 3, _PanelSelectedHeroBottom_RectTransform));
-        _Slots.Add(new Slot("Back", 3, 3, _PanelSelectedHeroBottom_RectTransform));
-        _Slots.Add(new Slot("Neck", 4, 3, _PanelSelectedHeroBottom_RectTransform));
-        _Slots.Add(new Slot("Bracelet", 5, 3, _PanelSelectedHeroBottom_RectTransform, "1"));
-        _Slots.Add(new Slot("Bracelet", 6, 3, _PanelSelectedHeroBottom_RectTransform, "2"));
-        _Slots.Add(new Slot("Earring", 7, 3, _PanelSelectedHeroBottom_RectTransform, "1"));
-        _Slots.Add(new Slot("Earring", 8, 3, _PanelSelectedHeroBottom_RectTransform, "2"));
+        _Slots.Add(new Slot("Weapon", 1, 3, _PanelSelectedHeroBottom_RectTransform));
+        _Slots.Add(new Slot("WeaponShield", 2, 3, _PanelSelectedHeroBottom_RectTransform));
 
         _initialized = true;
 
@@ -412,8 +399,7 @@ public class Init_Collection : MonoBehaviour
                 {
                     if (item.List.Count() > 0)
                     {
-                        var groupDividerPrefab = await Addressables.LoadAssetAsync<GameObject>("GroupDividerPrefab").ToUniTask();
-                        GameObject obj = groupDividerPrefab.SafeInstant();
+                        GameObject obj = AddressableCache.GroupDividerPrefabAddressableGameObject.SafeInstant();
                         GroupDivider groupDivider = obj.AddComponent<GroupDivider>();
                         obj.transform.SetParent(_CollectionContent_Transform, false);
                         _GroupDividers.Add(groupDivider);
@@ -428,7 +414,7 @@ public class Init_Collection : MonoBehaviour
                 {
                     if (item.List.Count() > 0)
                     {
-                        GameObject groupDividerPrefab = await Addressables.LoadAssetAsync<GameObject>("GroupDividerPrefab").ToUniTask();
+                        GameObject groupDividerPrefab = AddressableCache.GroupDividerPrefabAddressableGameObject;
                         GameObject obj = groupDividerPrefab.SafeInstant();
                         GroupDivider groupDivider = obj.AddComponent<GroupDivider>();
                         obj.transform.SetParent(_CollectionContent_Transform, false);
@@ -460,8 +446,7 @@ public class Init_Collection : MonoBehaviour
         await LoadCollectionAsync();
     }
 
-    /// <summary> Кнопка "Экипировка"
-    /// </summary>
+    /// <summary> Кнопка "Экипировка". </summary>
     private async UniTask OnClickEquipment()
     {
         if (CollectionMode == 2)
@@ -530,7 +515,7 @@ public class Init_Collection : MonoBehaviour
         {
             _ButtonCloseSelectedHero_RectTransform.sizeDelta = vector008PercentOfHeight;
 
-            float panelSelectedHeroWidthBase = 700.9088f; // при разрешении 1920x1080
+            float panelSelectedHeroWidthBase = 700f; // при разрешении 1920x1080
             panelSelectedHeroWidth = panelSelectedHeroWidthBase * coefHeight;
 
             // Панель выбранного героя
@@ -559,7 +544,7 @@ public class Init_Collection : MonoBehaviour
             SelectedHeroTop_TextMeshProUGUI.fontSize = 40f * coefHeight;
 
             _SelectedHeroImageContainer_RectTransform.sizeDelta = new Vector2(282.8571f * coefHeight, 495 * coefHeight);
-            _SelectedHeroImageContainer_RectTransform.anchoredPosition = new Vector2(-10f * coefHeight, 10f * coefHeight);
+            _SelectedHeroImageContainer_RectTransform.anchoredPosition = new Vector2(-20f * coefHeight, 20f * coefHeight);
 
             _Slots.ForEach(a => a.Resize(coefHeight));
         }
@@ -570,7 +555,7 @@ public class Init_Collection : MonoBehaviour
         {
             _ButtonCloseSelectedEquipment_RectTransform.sizeDelta = vector008PercentOfHeight;
 
-            float panelSelectedEquipmentWidthBase = 700.9088f; // при разрешении 1920x1080
+            float panelSelectedEquipmentWidthBase = 700f; // при разрешении 1920x1080
             panelSelectedEquipmentWidth = panelSelectedEquipmentWidthBase * coefHeight;
             // Панель выбранной экипировки
             _PanelSelectedEquipment_RectTransform.sizeDelta = new Vector2(panelSelectedEquipmentWidth, 994 * coefHeight);

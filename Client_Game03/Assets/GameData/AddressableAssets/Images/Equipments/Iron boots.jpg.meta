@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: a84aaa375a3f5ec428b3965f3d79eb92
+guid: 3c4652642fbde9c419ba84384bec383e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1878689119310609879
-    second: iron boots_128_0
+      213: 1358422167075634438
+    second: iron boots_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -74,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 1024
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 3
     textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: iron boots_128_0
+      name: iron boots_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 128
-        height: 128
+        width: 1024
+        height: 1024
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7dd76efdcc1721a10800000000000000
-      internalID: 1878689119310609879
+      spriteID: 60d3f8383c51ad210800000000000000
+      internalID: 1358422167075634438
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      iron boots_128_0: 1878689119310609879
+      iron boots_0: 1358422167075634438
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
