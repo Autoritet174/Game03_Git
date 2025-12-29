@@ -58,10 +58,10 @@
     <Compile Include="Assets\GameData\Scenes\Collection\Init_Collection.cs" />
     <Compile Include="Assets\GameData\Scripts\ButtonClose_Click_MoveToMainMenu.cs" />
     <Compile Include="Assets\GameData\Scripts\LoggerException.cs" />
-    <Compile Include="Assets\GameData\Scripts\Redactor\AdressableNamesGenerator.cs" />
     <Compile Include="Assets\GameData\Scripts\GameExitHandler.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Button_Reg.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_Collection.cs" />
+    <Compile Include="Assets\GameData\Scripts\Redactor\AddressableNamesGenerator.cs" />
     <Compile Include="Assets\GameData\Scripts\Redactor\SpriteGenerator.cs" />
     <Compile Include="Assets\GameData\Prefabs\L1\InputFields\InputField.cs" />
     <Compile Include="Assets\GameData\Scripts\UnityMainThreadDispatcher.cs" />

@@ -128,8 +128,8 @@ namespace Assets.GameData.Scripts.Redactor
 
             // 3. Регистрация в Addressables (код прежний)
             string assetAddressableName = assetPathInput.Replace('/', '-').Replace("_", "").ToLower();
-            AdressableNamesGenerator.RegisterInAddressables(assetPath, assetAddressableName, GROUP_NAME_GENERATED_SPRITES);
-            AdressableNamesGenerator.RegisterInAddressables(smallAssetPath, assetAddressableName + suffix, GROUP_NAME_GENERATED_SPRITES);
+            AddressableNamesGenerator.RegisterInAddressables(assetPath, assetAddressableName, GROUP_NAME_GENERATED_SPRITES);
+            AddressableNamesGenerator.RegisterInAddressables(smallAssetPath, assetAddressableName + suffix, GROUP_NAME_GENERATED_SPRITES);
 
             AssetDatabase.SaveAssets();
         }

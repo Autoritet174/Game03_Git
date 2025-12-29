@@ -36,7 +36,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0c419a587f8dc884d9922386aabc39a1
-    m_Address: Equipments-Iron chest
+    m_Address: Equipments-Iron armor
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -62,11 +62,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 11f6154acccf7174c9ca350dc9a175c9
     m_Address: UI-raritySelected
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 12a4151260f6e2a4c81a019d2dea895e
-    m_Address: Equipments-Iron shoulders
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -97,11 +92,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2fb794e92c2a55e40a3d5f32c05e05e0
     m_Address: Heroes-Battle orc
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 31aa152d145797544b7f725593ef33f5
-    m_Address: Equipments-Iron shoulders_128
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -151,7 +141,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5de5cfb59a0169943ab36f672c3626e7
-    m_Address: Equipments-Iron chest_128
+    m_Address: Equipments-Iron armor_128
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -285,11 +275,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9d43df5fc5ed73447b3206e7f05d202d
-    m_Address: Equipments-Iron greaves_128
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9ef3be60aff82de48a15e5b46aad2501
     m_Address: SmithingMaterials-Acidium_original
     m_ReadOnly: 0
@@ -337,11 +322,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b0335cb78e02466438dcda0fe5b520e1
     m_Address: SmithingMaterials-Fulgurite
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b2a73b31359671e47a5247bf5aa158a7
-    m_Address: Equipments-Iron greaves
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

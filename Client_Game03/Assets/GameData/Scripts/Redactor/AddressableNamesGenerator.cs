@@ -9,7 +9,7 @@ using UnityEditor.AddressableAssets.Settings;
 
 namespace Assets.GameData.Scripts.Redactor
 {
-    public static class AdressableNamesGenerator
+    public static class AddressableNamesGenerator
     {
 
         private const string START_DIR = "Assets/GameData/AddressableAssets/Images";
