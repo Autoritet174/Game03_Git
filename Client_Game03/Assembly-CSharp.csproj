@@ -49,7 +49,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_InBattle.cs" />
-    <Compile Include="Assets\GameData\Scripts\CancelToken.cs" />
     <Compile Include="Assets\GameData\Scenes\AllHeroes\AllHeroesConsts.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_AllHeroes.cs" />
     <Compile Include="Assets\GameData\Prefabs\L1\Buttons\Button_01_Init.cs" />
@@ -72,6 +71,7 @@
     <Compile Include="Assets\GameData\Scripts\AddressableCache.cs" />
     <Compile Include="Assets\GameData\Scripts\InputManager.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\GroupDivider.cs" />
+    <Compile Include="Assets\GameData\Scripts\CancellationTokenManager.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Button_Close.cs" />
     <Compile Include="Assets\GameData\Scripts\GameObjectExtensions.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\CollectionElement.cs" />

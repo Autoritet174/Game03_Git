@@ -13,7 +13,7 @@ public static class GameExitHandler
         {
             return;
         }
-        CancelToken.CancelAllTokens();
+        CancellationTokenManager.CancelAllTokens();
         await G.Game.WebSocketClient.DisconnectAsync();
         // Сохраняем данные перед выходом
         //SaveSystem.SaveGame();

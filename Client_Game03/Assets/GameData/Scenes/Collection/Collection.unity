@@ -1363,7 +1363,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4587221065149263836, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 327
+      value: 230.4
       objectReference: {fileID: 0}
     - target: {fileID: 4587221065149263836, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1399,7 +1399,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4587221065149263836, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 326.00012
+      value: 230.4
       objectReference: {fileID: 0}
     - target: {fileID: 4587221065149263836, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1427,7 +1427,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_text
-      value: Equipment (-99999)
+      value: Equipment (9999)
       objectReference: {fileID: 0}
     - target: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_fontSize
@@ -1736,7 +1736,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4587221065149263836, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 326
+      value: 230.4
       objectReference: {fileID: 0}
     - target: {fileID: 4587221065149263836, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1800,7 +1800,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_text
-      value: Heroes (-999)
+      value: Heroes (9999)
       objectReference: {fileID: 0}
     - target: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_fontSize

@@ -8,7 +8,7 @@ namespace Assets.GameData.Scripts
     /// Статический класс для централизованного управления токенами отмены.
     /// Каждый токен связан с глобальной отменой выхода из приложения и таймаутом.
     /// </summary>
-    internal class CancelToken
+    internal class CancellationTokenManager
     {
         // Глобальный источник отмены при выходе из приложения.
         private static readonly CancellationTokenSource _globalQuitCts = new();

@@ -57,7 +57,7 @@ namespace Assets.GameData.Scripts.Redactor
             //CreateDualSprites("Equipment/_Unique/thunderfury.jpg", EQUIPMENT_PREFIX_SMALL);
 
             // Выводим уведомление в центре экрана редактора
-            _ = EditorUtility.DisplayDialog(nameof(SpriteGenerator), "Генерация спрайтов успешно завершена!", "OK");
+            _ = EditorUtility.DisplayDialog(nameof(SpriteGenerator), "AddressableNamesGenerator work complete", "OK");
         }
 
 

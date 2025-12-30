@@ -497,11 +497,11 @@ public class Init_Collection : MonoBehaviour
 
 
         // Кнопки вкладок
-        float tabButtonWidth = panelTopHeight * 3.777777f; // = (0,17 * 1920) / (0,08 * 1080)
+        float tabButtonWidth = 230.4f * coefHeight;
         _TabButtonEquipment.rectTransform.sizeDelta = _TabButtonHeroes.rectTransform.sizeDelta = new Vector2(tabButtonWidth, panelTopHeight);
         _TabButtonEquipment.rectTransform.anchoredPosition = new Vector2(tabButtonWidth, 0);
-        _TabButtonHeroes.textMeshProUGUI.fontSize = fontSize;
-        _TabButtonEquipment.textMeshProUGUI.fontSize = fontSize;
+        _TabButtonHeroes.textMeshProUGUI.fontSize = 22f * coefHeight;
+        _TabButtonEquipment.textMeshProUGUI.fontSize = 22f * coefHeight;
 
 
         // Кнопки "Закрыть"

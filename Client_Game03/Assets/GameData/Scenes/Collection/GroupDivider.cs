@@ -38,6 +38,8 @@ public class GroupDivider : MonoBehaviour
     private RectTransform _CellsContainer_RectTransform;
     private GridLayoutGroup _CellsContainer_GridLayoutGroup;
 
+    TextMeshProUGUI DividerButton_TextMeshProUGUI;
+
     private IEnumerable<CollectionElement> _listCollectionElement;
 
     public class DataCollectionElement
@@ -103,16 +105,16 @@ public class GroupDivider : MonoBehaviour
         _Init_Collection.OnResizeWindow();
 
         //DividerButton
-        TextMeshProUGUI dividerButton_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _DividerButton_GameObject.transform);
+        DividerButton_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _DividerButton_GameObject.transform);
         Transform cellsContainer_Transform = _CellsContainer_GameObject.transform;
         if (group_name.IsEmpty())
         {
-            dividerButton_TextMeshProUGUI.text = "---No Group---";
-            dividerButton_TextMeshProUGUI.fontStyle = FontStyles.Italic;
+            DividerButton_TextMeshProUGUI.text = "---No Group---";
+            DividerButton_TextMeshProUGUI.fontStyle = FontStyles.Italic;
         }
         else
         {
-            dividerButton_TextMeshProUGUI.text = group_name;
+            DividerButton_TextMeshProUGUI.text = group_name;
         }
 
 
@@ -248,9 +250,13 @@ public class GroupDivider : MonoBehaviour
         float coefHeight = Screen.height / 1080f;
         float heightButton = 45f * coefHeight;
         float height = heightButton;
+        if (DividerButton_TextMeshProUGUI != null)
+        {
+            DividerButton_TextMeshProUGUI.fontSize = 24 * coefHeight;
+        }
         if (expanded)
         {
-            float cellSize1080 = 90f;
+            float cellSize1080 = 140f;
             float spacing1080 = 9f;
             int paddingR = (int)(40f * coefHeight);
             float spacing = spacing1080 * coefHeight;
