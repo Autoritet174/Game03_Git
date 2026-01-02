@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using General;
 using Newtonsoft.Json;
 using System;
+using System.Diagnostics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,7 @@ namespace Assets.GameData.Scenes.Auth
         }
         public async UniTask ButtonLoginOnClick()
         {
+           
             GameMessage.ShowLocale(L.Info.CheckingServerAvailability, false);
             bool serverAvailable = await GameServerPinger.Ping();
             if (!serverAvailable)
@@ -56,6 +58,8 @@ namespace Assets.GameData.Scenes.Auth
                     return;
                 }
 
+                passwordString = Game03Client.Password.HashSha512(passwordString);
+
                 // Данные авторизации и характеристики аппаратного устройства
                 General.ModelHttp.Authorization payload = new(
                     emailString,
@@ -80,12 +84,12 @@ namespace Assets.GameData.Scenes.Auth
                 GameMessage.ShowLocale(L.Info.Authentication, false);
 
                 // Занулить токен
-                G.Game.JwtToken.DeleteToken();
+                G.Game.JwtToken.token = null;
 
                 string json = JsonConvert.SerializeObject(payload);
 
-                string token = await G.Game.JwtToken.GetTokenAsync(json, CancellationTokenManager.Create("G.Game.JwtToken.GetTokenAsync"));
-                if (token.IsEmpty())
+                string jwtToken = await G.Game.JwtToken.GetTokenAsync(json, CancellationTokenManager.Create("G.Game.JwtToken.GetTokenAsync"));
+                if (jwtToken.IsEmpty())
                 {
                     GameMessage.ShowLocale(L.Error.Server.InvalidResponse, true);
                     return;
@@ -104,7 +108,7 @@ namespace Assets.GameData.Scenes.Auth
 
                 // Загрузка игровых данных не связанных с конкретным пользователем
                 GameMessage.ShowLocale(L.Info.LoadingData, false);
-                await G.Game.GameData.LoadGameData(CancellationTokenManager.Create("G.Game.GameData.LoadListAllHeroesAsync"));
+                await G.Game.GameData.LoadGameData(CancellationTokenManager.Create("G.Game.GameData.LoadListAllHeroesAsync"), jwtToken);
 
                 // Предзагрузка AdressableAssets героев и редкости
                 //UniTask taskPreload = AddressableCache.PreLoadAssets();
@@ -114,7 +118,8 @@ namespace Assets.GameData.Scenes.Auth
                 GameMessage.ShowLocale(L.Info.LoadingCollection, false);
 
 
-                bool loaded = await G.Game.Collection.LoadAllCollectionFromServerAsync(CancellationTokenManager.Create("G.Game.Collection.LoadAllCollectionFromServerAsync"));
+                bool loaded = await G.Game.Collection.LoadAllCollectionFromServerAsync(
+                    CancellationTokenManager.Create("G.Game.Collection.LoadAllCollectionFromServerAsync"), jwtToken);
                 if (!loaded)
                 {
                     GameMessage.ShowLocale(L.Error.Server.LoadingCollectionFailed, true);

@@ -4,6 +4,26 @@
         <name>General</name>
     </assembly>
     <members>
+        <member name="T:General.CustomRandom">
+            <summary>
+            Сверхвысокопроизводительный генератор псевдослучайных чисел.
+            Оптимизирован для обхода по скорости System.Random в плотных циклах.
+            </summary>
+        </member>
+        <member name="M:General.CustomRandom.#ctor(System.Int32)">
+            <summary>
+            Инициализирует новый экземпляр <see cref="T:General.CustomRandom"/>.
+            </summary>
+            <param name="seed">Начальное зерно.</param>
+        </member>
+        <member name="M:General.CustomRandom.NextInclusive(System.Int32,System.Int32)">
+            <summary>
+            Генерирует случайное число в диапазоне [min, max] включительно.
+            </summary>
+            <remarks>
+            Внимание: проверка min > max отсутствует для достижения максимальной скорости.
+            </remarks>
+        </member>
         <member name="T:General.DTO.Dice">
             <summary>
             Класс, представляющий бросок кубиков в формате "2d3+5",
@@ -357,6 +377,13 @@
             Статический класс-расширение, предоставляющий полезные методы для работы со строками (<see cref="T:System.String"/>).
             </summary>
         </member>
+        <member name="M:General.StringExt.NormalizedValueGame03(System.String)">
+            <summary>
+            Trim and ToUpperInvariant
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
         <member name="M:General.StringExt.ToDirectSlash(System.String)">
             <summary>
             Заменить все символы '\' на '/'
@@ -617,7 +644,7 @@
             URL API старт
             </summary>
         </member>
-        <member name="P:General.Url.General.GameData">
+        <member name="P:General.Url.GameData">
             <summary> URL. Все игровые данные нужные на клиенте игры. </summary>
         </member>
     </members>

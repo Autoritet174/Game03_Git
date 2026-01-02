@@ -90,7 +90,7 @@ public class AllHeroes : MonoBehaviour
     private async UniTask AddAllImageOnContent()
     {
         List<UniTask> list = new();
-        foreach (DtoBaseHero heroStats in G.Game.GameData.GetDtoContainer().DtoBaseHeroes.OrderByDescending(a => a.Rarity))
+        foreach (DtoBaseHero heroStats in G.Game.GameData.DtoContainer.DtoBaseHeroes.OrderByDescending(a => a.Rarity))
         {
             list.Add(LoadHeroByName(heroStats));
         }

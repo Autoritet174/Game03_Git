@@ -38,7 +38,7 @@ public class GroupDivider : MonoBehaviour
     private RectTransform _CellsContainer_RectTransform;
     private GridLayoutGroup _CellsContainer_GridLayoutGroup;
 
-    TextMeshProUGUI DividerButton_TextMeshProUGUI;
+    private TextMeshProUGUI DividerButton_TextMeshProUGUI;
 
     private IEnumerable<CollectionElement> _listCollectionElement;
 
@@ -62,7 +62,7 @@ public class GroupDivider : MonoBehaviour
     /// <summary>
     /// Переключает состояние группы и запускает анимацию.
     /// </summary>
-    public async void ToggleGroup()
+    public void ToggleGroup()
     {
         //Debug.Log(1);
         expanded = !expanded;
@@ -85,6 +85,7 @@ public class GroupDivider : MonoBehaviour
             _DividerButton_Button.image.sprite = AddressableCache.UI_button_with_arrow_v2_reverse;
         }
         Resize();
+        //await UniTask.Delay(1); // Заглушка для асинхронности
         //UpdateDividerVisual(isExpanded);
     }
 
@@ -168,11 +169,12 @@ public class GroupDivider : MonoBehaviour
 
                     async UniTask OnClick()
                     {
+                        _Init_Collection.UnselectAll();
+                        dataCollectionElement.Selected = true;
+                        dataCollectionElement.rectTransform.localScale = Init_Collection.Vector3Selected;
                         if (_Init_Collection.CollectionMode == 1)
                         {
                             // Heroes
-                            ListDataCollectionElement.ForEach(a => a.Selected = false);
-                            dataCollectionElement.Selected = true;
                             _Init_Collection.PanelSelectedHero_GameObject.SetActive(true);
                             string name = dataCollectionElement.collectionCollectionElement.Name;
                             _Init_Collection.SelectedHeroTop_TextMeshProUGUI.text = name.ToUpper1Char();
@@ -180,13 +182,10 @@ public class GroupDivider : MonoBehaviour
                             _Init_Collection.SelectedHero_Image.preserveAspect = true; // Сохраняет пропорции изображения
 
                             _Init_Collection.SelectedHeroRarity_Image.sprite = AddressableCache.Rarityes[dataCollectionElement.collectionCollectionElement.Rarity];
-                            ListDataCollectionElement.ForEach(a => a.rectTransform.localScale = a.Selected ? Init_Collection.Vector3Selected : Vector3.one);
                         }
                         else if (_Init_Collection.CollectionMode == 2)
                         {
                             // Equipments
-                            ListDataCollectionElement.ForEach(a => a.Selected = false);
-                            dataCollectionElement.Selected = true;
                             _Init_Collection.PanelSelectedEquipment_GameObject.SetActive(true);
                             string name = dataCollectionElement.collectionCollectionElement.Name;
                             _Init_Collection.SelectedEquipmentTop_TextMeshProUGUI.text = name.ToUpper1Char();
@@ -196,8 +195,8 @@ public class GroupDivider : MonoBehaviour
 
                             _Init_Collection.SelectedEquipment_Image.preserveAspect = true; // Сохраняет пропорции изображения
                             _Init_Collection.SelectedEquipmentRarity_Image.sprite = AddressableCache.Rarityes[dataCollectionElement.collectionCollectionElement.Rarity];
-                            ListDataCollectionElement.ForEach(a => a.rectTransform.localScale = a.Selected ? Init_Collection.Vector3Selected : Vector3.one);
                         }
+                        await UniTask.Delay(1); // Заглушка для асинхронности
                     }
                     async UniTask OnPointerEnter()
                     {
@@ -214,6 +213,8 @@ public class GroupDivider : MonoBehaviour
 
                 }
             }
+
+
         }
 
         // Привязываем метод ToggleGroup к событию клика
@@ -239,7 +240,7 @@ public class GroupDivider : MonoBehaviour
             //LayoutRebuilder.ForceRebuildLayoutImmediate(_CellsContainer_RectTransform);
             //expandedHeight = _CellsContainer_RectTransform.rect.height;
         }
-
+        await UniTask.Delay(1); // Заглушка для асинхронности
         //_ = Task.Run(AnimateHeight);
         //UpdateDividerVisual(Expanded);
     }
@@ -250,35 +251,45 @@ public class GroupDivider : MonoBehaviour
         float coefHeight = Screen.height / 1080f;
         float heightButton = 45f * coefHeight;
         float height = heightButton;
+
+        int scrollbarWidth = Mathf.FloorToInt(32f * coefHeight);
+
+        float widthWithoutVertBar = width - scrollbarWidth;
+        _DividerButton_RectTransform.sizeDelta = new Vector2(widthWithoutVertBar, heightButton);
+
         if (DividerButton_TextMeshProUGUI != null)
         {
             DividerButton_TextMeshProUGUI.fontSize = 24 * coefHeight;
         }
+
         if (expanded)
         {
-            float cellSize1080 = 140f;
-            float spacing1080 = 9f;
-            int paddingR = (int)(40f * coefHeight);
+            const float cellSize1080 = 140f;
+            const float spacing1080 = 9f;
+            const float padding1080 = 22.5f;
+            //int paddingR = (int)(40f * coefHeight);
             float spacing = spacing1080 * coefHeight;
             float cellSize = cellSize1080 * coefHeight;
+            int padding = (int)(padding1080 * coefHeight);
             //расчитываем сколько при этих параметрах войдет ячеек
-            float widthWithoutPadding = width - (paddingR + spacing);
+            float widthWithoutPadding = widthWithoutVertBar - (padding * 2);
             int countCellInRow = (int)(widthWithoutPadding / cellSize);
             if (countCellInRow <= 0)
             {
                 countCellInRow = 1;
             }
-            float spacingDelta = widthWithoutPadding / ((countCellInRow * (cellSize1080 / spacing1080)) + (countCellInRow - 1));
-            float cellSizeDelta = spacingDelta * cellSize1080 / spacing1080;
 
+            float needWidth = (countCellInRow * cellSize) + ((countCellInRow - 1) * spacing);
+            float coefWidth = widthWithoutPadding / needWidth;
+            spacing = ((int)(spacing * coefWidth * 10f))/10f;
+            cellSize = ((int)(cellSize * coefWidth * 10f)) / 10f;
 
-            _CellsContainer_GridLayoutGroup.padding.left = (int)spacingDelta;
-            _CellsContainer_GridLayoutGroup.padding.right = paddingR;
-            _CellsContainer_GridLayoutGroup.padding.top = (int)spacingDelta;
-            _CellsContainer_GridLayoutGroup.padding.bottom = (int)spacingDelta;
-            _CellsContainer_GridLayoutGroup.spacing = new Vector2(spacingDelta, spacingDelta);
-            _CellsContainer_GridLayoutGroup.cellSize = new Vector2(cellSizeDelta, cellSizeDelta);
-
+            _CellsContainer_GridLayoutGroup.padding.left = padding;
+            _CellsContainer_GridLayoutGroup.padding.right = padding;
+            _CellsContainer_GridLayoutGroup.padding.top = padding;
+            _CellsContainer_GridLayoutGroup.padding.bottom = padding;
+            _CellsContainer_GridLayoutGroup.spacing = new Vector2(spacing, spacing);
+            _CellsContainer_GridLayoutGroup.cellSize = new Vector2(cellSize, cellSize);
 
 
             // вычисляем количество строк
@@ -289,21 +300,19 @@ public class GroupDivider : MonoBehaviour
                 countRows = 1;
             }
 
-            float heightContainer = (countRows * cellSizeDelta) + ((countRows + 1) * spacingDelta);
-
-            _DividerButton_RectTransform.sizeDelta = new Vector2(width, heightButton);
-            _CellsContainer_RectTransform.sizeDelta = new Vector2(width, heightContainer);// в зависимости от героев и отступов
+            float heightContainer = (countRows * cellSize) + ((countRows - 1) * spacing) + (padding * 4);// по сути нужно 2 но чтобы сделать низ длиннее поставил 4
+            _CellsContainer_RectTransform.sizeDelta = new Vector2(widthWithoutVertBar, heightContainer);
             height += heightContainer;
 
             _CellsContainer_RectTransform.anchoredPosition = new Vector2(0, -45f * coefHeight);
-
 
             foreach (DataCollectionElement item in ListDataCollectionElement)
             {
                 item.textMeshPro.fontSize = 14f * coefHeight;
             }
         }
-        _RectTransform.sizeDelta = new Vector2(width, height);
+        _RectTransform.sizeDelta = new Vector2(widthWithoutVertBar, height);
+
     }
 
 

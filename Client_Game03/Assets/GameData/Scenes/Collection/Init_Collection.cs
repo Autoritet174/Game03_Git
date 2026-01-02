@@ -17,7 +17,7 @@ public class Init_Collection : MonoBehaviour
     private const int COLOR_OFF_BUTTON_RGB_VALUE = 100;
     private static Color ColorOffButton = new(COLOR_OFF_BUTTON_RGB_VALUE / 255f, COLOR_OFF_BUTTON_RGB_VALUE / 255f, COLOR_OFF_BUTTON_RGB_VALUE / 255f);
     private bool _initialized = false;
-    private bool _ScrollbarVertical_Active = false;
+    public bool ScrollbarVertical_Active { get; private set; } = false;
     private float _width, _height;
 
     private class TabButton
@@ -76,7 +76,9 @@ public class Init_Collection : MonoBehaviour
     internal RectTransform PanelCollection_RectTransform { get; private set; }
     private RectTransform _PanelCollectionTopButtons_RectTransform;
     private RectTransform _ScrollViewCollection_RectTransform;
-    private RectTransform _ScrollbarVertical_RectTransform;
+    public RectTransform ScrollbarVertical_RectTransform { get; private set; }
+    private GameObject ScrollbarVertical_GameObject;
+
     private GameObject _ScrollViewCollection_GameObject;
     public TextMeshProUGUI SelectedHeroTop_TextMeshProUGUI { get; private set; }
     public TextMeshProUGUI SelectedEquipmentTop_TextMeshProUGUI { get; private set; }
@@ -253,6 +255,7 @@ public class Init_Collection : MonoBehaviour
             OnResizeWindow();
         });
 
+
         _ButtonCloseSelectedEquipment_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose (id=va8d3lsz)");
         _ButtonCloseSelectedEquipment_RectTransform.gameObject.GetComponent<Button>().onClick.AddListener(() =>
         {
@@ -307,7 +310,9 @@ public class Init_Collection : MonoBehaviour
 
         // Scroll View для коллекции героев
         _ScrollViewCollection_RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollViewCollection (id=ph1oh7dk)");
-        _ScrollbarVertical_RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollbarVertical (id=ti32ix3l)");
+        ScrollbarVertical_RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollbarVertical (id=ti32ix3l)");
+        ScrollbarVertical_GameObject = ScrollbarVertical_RectTransform.gameObject;
+
         _ScrollViewCollection_GameObject = _ScrollViewCollection_RectTransform.gameObject;
 
         // Коллекция контент
@@ -344,9 +349,10 @@ public class Init_Collection : MonoBehaviour
         }
 
         bool resize = false;
-        if (_ScrollbarVertical_Active != _ScrollViewCollection_GameObject.activeInHierarchy)
+        if (ScrollbarVertical_Active != ScrollbarVertical_GameObject.activeInHierarchy)
         {
-            _ScrollbarVertical_Active = _ScrollViewCollection_GameObject.activeInHierarchy;
+            ScrollbarVertical_Active = ScrollbarVertical_GameObject.activeInHierarchy;
+
             resize = true;
         }
         if (!resize && (!Mathf.Approximately(Screen.height, _height) || !Mathf.Approximately(Screen.width, _width)))
@@ -386,6 +392,7 @@ public class Init_Collection : MonoBehaviour
                 }
             }
 
+
             OnResizeWindow();
             await UniTask.Yield();
 
@@ -395,7 +402,12 @@ public class Init_Collection : MonoBehaviour
             if (CollectionMode == 1)
             {
                 PanelSelectedEquipment_GameObject.SetActive(false);
-                foreach (GroupCollectionElement item in G.Game.Collection.GetCollectionHeroesGroupedByGroupNames().OrderByDescending(static a => a.Priority))
+
+                var grouped = G.Game.Collection.GetCollectionHeroesGroupedByGroupNames();
+
+                var sorted = grouped.OrderByDescending(static a => a.Priority);
+
+                foreach (GroupCollectionElement item in sorted)
                 {
                     if (item.List.Count() > 0)
                     {
@@ -406,6 +418,7 @@ public class Init_Collection : MonoBehaviour
                         await groupDivider.Init(item.Name, this, obj, item.List);
                     }
                 }
+
             }
             else if (CollectionMode == 2)
             {
@@ -429,6 +442,21 @@ public class Init_Collection : MonoBehaviour
         finally
         {
             GameMessage.Close();
+        }
+    }
+
+    public void UnselectAll()
+    {
+        for (int i = 0; i < _GroupDividers.Count; i++)
+        {
+            GroupDivider g = _GroupDividers[i];
+            for (int j = 0; j < g.ListDataCollectionElement.Count; j++)
+            {
+                GroupDivider.DataCollectionElement el = g.ListDataCollectionElement[j];
+                el.Selected = false;
+                el.rectTransform.localScale = Vector3.one;
+            }
+
         }
     }
 
@@ -605,13 +633,13 @@ public class Init_Collection : MonoBehaviour
         _ScrollViewCollection_RectTransform.sizeDelta = new Vector2(panelCollection_Width, PanelCollection_RectTransform.sizeDelta.y - _PanelCollectionTopButtons_RectTransform.sizeDelta.y);
 
         // ScrollbarVertical для коллекции героев
-        _ScrollbarVertical_RectTransform.sizeDelta = new Vector2(32f * coefHeight, _ScrollViewCollection_RectTransform.sizeDelta.y);
+        ScrollbarVertical_RectTransform.sizeDelta = new Vector2(32f * coefHeight, _ScrollViewCollection_RectTransform.sizeDelta.y);
 
         _CollectionContent_Transform.GetComponent<VerticalLayoutGroup>().spacing = 5f * coefHeight;
 
 
         // groupDividers
-        if (_GroupDividers.Count > 00)
+        if (_GroupDividers.Count > 0)
         {
             _GroupDividers.ForEach(a => a.Resize());
         }

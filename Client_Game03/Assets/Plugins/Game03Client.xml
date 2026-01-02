@@ -97,31 +97,20 @@
             <param name="configure"></param>
             <returns></returns>
         </member>
-        <member name="T:Game03Client.GameData.GameDataCache">
-            <summary>
-            Класс для кэширования глобальных данных, используемых поставщиком функций.
-            </summary>
-        </member>
         <member name="T:Game03Client.GameData.GameDataProvider">
             <summary>
-            Реализация <see cref="T:Game03Client.GameData.IGameData"/>, предоставляющая функциональность для
+            Реализация <see cref="!:IGameData"/>, предоставляющая функциональность для
             загрузки и доступа к глобальным игровым данным, таким как список героев.
             </summary>
         </member>
-        <member name="M:Game03Client.GameData.GameDataProvider.#ctor(Game03Client.HttpRequester.IHttpRequester,Game03Client.GameData.GameDataCache)">
+        <member name="M:Game03Client.GameData.GameDataProvider.#ctor(Game03Client.HttpRequester.HttpRequesterProvider)">
             <summary>
-            Реализация <see cref="T:Game03Client.GameData.IGameData"/>, предоставляющая функциональность для
+            Реализация <see cref="!:IGameData"/>, предоставляющая функциональность для
             загрузки и доступа к глобальным игровым данным, таким как список героев.
             </summary>
         </member>
-        <member name="M:Game03Client.GameData.GameDataProvider.LoadGameData(System.Threading.CancellationToken)">
+        <member name="M:Game03Client.GameData.GameDataProvider.LoadGameData(System.Threading.CancellationToken,System.String)">
             <inheritdoc/>
-        </member>
-        <member name="T:Game03Client.GameData.IGameData">
-            <summary> Определяет интерфейс для поставщика глобальных функций. </summary>
-        </member>
-        <member name="M:Game03Client.GameData.IGameData.LoadGameData(System.Threading.CancellationToken)">
-            <summary> Асинхронно загружает все константные игровые данные. </summary>
         </member>
         <member name="T:Game03Client.GameLanguage">
             <summary>
@@ -186,25 +175,6 @@
             </remarks>
             <returns>true, если соединение успешно установлено, иначе false.</returns>
         </member>
-        <member name="T:Game03Client.LocalizationManager.ILocalizationManager">
-            <summary>
-            Определяет контракт для провайдеров, управляющих получением локализованных строк.
-            </summary>
-        </member>
-        <member name="M:Game03Client.LocalizationManager.ILocalizationManager.GetTextByJObject(Newtonsoft.Json.Linq.JObject)">
-            <summary>
-            Получает локализованную строку текста ошибки на основе данных из JSON-объекта.
-            </summary>
-            <param name="jObject">Объект JSON, содержащий данные для локализации ошибки (например, "keyError").</param>
-            <returns>Локализованная строка ошибки с подставленными данными, если применимо.</returns>
-        </member>
-        <member name="M:Game03Client.LocalizationManager.ILocalizationManager.GetValue(System.String)">
-            <summary>
-            Получает локализованное строковое значение по заданному ключу.
-            </summary>
-            <param name="key">Ключ локализации.</param>
-            <returns>Локализованная строка. Если ключ не найден, возвращается сам ключ.</returns>
-        </member>
         <member name="T:Game03Client.LocalizationManager.LocalizationManagerOptions">
             <summary>
             Предоставляет опции для инициализации провайдера локализации.
@@ -234,12 +204,12 @@
             Реализация провайдера для управления локализацией, загружающая данные из JSON.
             </summary>
         </member>
-        <member name="F:Game03Client.LocalizationManager.LocalizationManagerProvider._localizationManagerOptions">
+        <member name="F:Game03Client.LocalizationManager.LocalizationManagerProvider.localizationManagerOptions">
             <summary>
             Опции, содержащие данные локализации в формате JSON.
             </summary>
         </member>
-        <member name="M:Game03Client.LocalizationManager.LocalizationManagerProvider.#ctor(Game03Client.LocalizationManager.LocalizationManagerOptions,Game03Client.Logger.ILogger{Game03Client.LocalizationManager.LocalizationManagerProvider})">
+        <member name="M:Game03Client.LocalizationManager.LocalizationManagerProvider.#ctor(Game03Client.LocalizationManager.LocalizationManagerOptions,Game03Client.Logger.LoggerProvider{Game03Client.LocalizationManager.LocalizationManagerProvider})">
             <summary>
             Инициализирует новый экземпляр класса <see cref="T:Game03Client.LocalizationManager.LocalizationManagerProvider"/>.
             </summary>
@@ -273,6 +243,11 @@
             <param name="message"></param>
             <param name="keyLocal"></param>
             <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="M:Game03Client.Password.HashSha512(System.String)">
+            <summary>Хэширует пароль SHA512.</summary>
+            <param name="password">Пароль пользователя в plaintext.</param>
+            <returns>Хэш пароля в формате Base64.</returns>
         </member>
         <member name="T:Game03Client.PlayerCollection.GroupCollectionElement">
             <summary>
