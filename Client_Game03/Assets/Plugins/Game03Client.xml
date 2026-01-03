@@ -86,14 +86,15 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Game03Client.Game03.Create(System.String,General.StringCapsule,Game03Client.GameLanguage,Game03Client.Logger.LoggerCallback,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})">
+        <member name="M:Game03Client.Game03.Create(System.String,General.StringCapsule,Game03Client.GameLanguage,Game03Client.Logger.LoggerCallbackError,Game03Client.Logger.LoggerCallbackInfo,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})">
             <summary>
             Фабрика.
             </summary>
             <param name="iniFileFullPath"></param>
             <param name="stringCapsuleJsonFileData"></param>
             <param name="languageGame"></param>
-            <param name="loggerCallback"></param>
+            <param name="loggerCallbackError"></param>
+            <param name="loggerCallbackInfo"></param>
             <param name="configure"></param>
             <returns></returns>
         </member>
@@ -274,10 +275,10 @@
             Возвращает или устанавливает уровень приоритета группы.
             </summary>
         </member>
-        <member name="M:Game03Client.PlayerCollection.PlayerCollectionProvider.GetCollectionHeroesGroupedByGroupNames">
+        <member name="M:Game03Client.PlayerCollection.PlayerCollectionProvider.GetCollectionHeroesGroupedByGroupNames(System.Int32)">
             <summary> Получить коллекцию героев сгруппированную по именам групп. </summary>
         </member>
-        <member name="M:Game03Client.PlayerCollection.PlayerCollectionProvider.GetCollectionEquipmentesGroupByGroups">
+        <member name="M:Game03Client.PlayerCollection.PlayerCollectionProvider.GetCollectionEquipmentesGroupByGroups(System.Int32)">
             <summary> Получить коллекцию экипировки сгруппированную по именам групп. </summary>
         </member>
         <member name="M:Game03Client.WebSocketClient.WebSocketClientProvider.ReceiveMessagesAsync">

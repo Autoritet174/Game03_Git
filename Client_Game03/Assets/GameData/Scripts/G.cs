@@ -46,7 +46,7 @@ namespace Assets.GameData.Scripts
                 Value = jsonFile.text,
             };
 
-            Game = Game03.Create(Path.Combine(UnityEngine.Application.dataPath, @"GameData\Config\Main.ini"), capsule, lang, Game_OnLog);
+            Game = Game03.Create(Path.Combine(UnityEngine.Application.dataPath, @"GameData\Config\Main.ini"), capsule, lang, LogError, LogInfo);
 
             Application.targetFrameRate = 60;
         }
@@ -58,10 +58,20 @@ namespace Assets.GameData.Scripts
             GameObject.DontDestroyOnLoad(monitor.gameObject);
         }
 
-        private static void Game_OnLog(object message)
+        private static void LogError(object message)
         {
             string m = message.ToString();
-            UnityEngine.Debug.LogError($"[Library: {nameof(Game03Client)}] {m}");
+            Debug.LogError($"[Library: {nameof(Game03Client)}] {m}");
+            LogGameMessage(m);
+        }
+        private static void LogInfo(object message)
+        {
+            string m = message.ToString();
+            Debug.Log($"[Library: {nameof(Game03Client)}] {m}");
+            LogGameMessage(m);
+        }
+        private static void LogGameMessage(string m)
+        {
             int index = m.IndexOf(General.LocalizationKeys.KEY_LOCALIZATION);
             if (index > 0)
             {
@@ -74,6 +84,7 @@ namespace Assets.GameData.Scripts
                 }
             }
         }
+
 
         private static void LoadCursorTexture(string address = "UI-cursors-cursor_var2_green_64x64")
         {

@@ -132,6 +132,13 @@ public class Init_Collection : MonoBehaviour
 
     private readonly List<GroupDivider> _GroupDividers = new();
 
+    private RectTransform _RangePanel_RectTransform;
+    private GameObject _RangePanel_GameObject;
+    private RectTransform _ButtonPrevPage_RectTransform;
+    private RectTransform _ButtonNextPage_RectTransform;
+    private RectTransform _LabelRangePage_RectTransform;
+    private TextMeshProUGUI _LabelRangePage_TextMeshProUGUI;
+
 
 
     private class Slot
@@ -334,11 +341,24 @@ public class Init_Collection : MonoBehaviour
         _Slots.Add(new Slot("Weapon", 1, 3, _PanelSelectedHeroBottom_RectTransform));
         _Slots.Add(new Slot("WeaponShield", 2, 3, _PanelSelectedHeroBottom_RectTransform));
 
+
+        // Панель навигации по страницам
+        _RangePanel_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelRange (id=66z5bnzi)");
+        _RangePanel_GameObject = _RangePanel_RectTransform.gameObject;
+        _ButtonPrevPage_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonPrevPage (id=25alql62)");
+        _ButtonNextPage_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonNextPage (id=k5moi57b)");
+        _LabelRangePage_RectTransform = GameObjectFinder.FindByName<RectTransform>("LabelRangePage (id=6jgz12bu)");
+        _LabelRangePage_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("LabelRangePage (id=6jgz12bu)");
+        _ButtonPrevPage_RectTransform.gameObject.AddClickEvent(PagePrev, true);
+        _ButtonNextPage_RectTransform.gameObject.AddClickEvent(PageNext, true);
+        UpdatePageMax();
+
+
         _initialized = true;
 
         GameMessage.ShowLocale(L.Info.LoadingCollection, false);
 
-        await LoadCollectionAsync();
+        await InstantiateCollectionAsync();
     }
 
     private void Update()
@@ -380,7 +400,54 @@ public class Init_Collection : MonoBehaviour
     }
 
 
-    private async UniTask LoadCollectionAsync()
+    private int pageCurrent = 1;
+    private int pageMax = 1;
+
+    private void UpdatePageMax()
+    {
+        int c;
+        if (CollectionMode == 1)
+        {
+            c = G.Game.Collection.GetCountHeroes();
+        }
+        else if (CollectionMode == 2)
+        {
+            c = G.Game.Collection.GetCountEquipments();
+        }
+        else
+        {
+            throw new Exception();
+        }
+        pageMax = (c / PlayerCollectionProvider.PAGE_SIZE) + (c % PlayerCollectionProvider.PAGE_SIZE > 0 ? 1 : 0);
+        if (pageMax < 1)
+        {
+            pageMax = 1;
+        }
+        if (pageCurrent > pageMax)
+        {
+            pageCurrent = pageMax;
+        }
+        _RangePanel_GameObject.SetActive(pageMax > 1);
+    }
+
+    private async UniTask PagePrev()
+    {
+        if (pageCurrent > 1)
+        {
+            pageCurrent--;
+            await InstantiateCollectionAsync();
+        }
+    }
+    private async UniTask PageNext()
+    {
+        if (pageCurrent < pageMax)
+        {
+            pageCurrent++;
+            await InstantiateCollectionAsync();
+        }
+    }
+
+    private async UniTask InstantiateCollectionAsync()
     {
         try
         {
@@ -397,16 +464,19 @@ public class Init_Collection : MonoBehaviour
             await UniTask.Yield();
 
 
+            int max = PlayerCollectionProvider.PAGE_SIZE * pageCurrent;
+
             _GroupDividers.Clear();
-            //List<Task> tasks = new();
             if (CollectionMode == 1)
             {
+                if (pageCurrent == pageMax)
+                {
+                    max = G.Game.Collection.GetCountHeroes();
+                }
                 PanelSelectedEquipment_GameObject.SetActive(false);
 
-                var grouped = G.Game.Collection.GetCollectionHeroesGroupedByGroupNames();
-
-                var sorted = grouped.OrderByDescending(static a => a.Priority);
-
+                IEnumerable<GroupCollectionElement> grouped = G.Game.Collection.GetCollectionHeroesGroupedByGroupNames(pageCurrent);
+                IOrderedEnumerable<GroupCollectionElement> sorted = grouped.OrderByDescending(static a => a.Priority);
                 foreach (GroupCollectionElement item in sorted)
                 {
                     if (item.List.Count() > 0)
@@ -418,12 +488,18 @@ public class Init_Collection : MonoBehaviour
                         await groupDivider.Init(item.Name, this, obj, item.List);
                     }
                 }
-
             }
             else if (CollectionMode == 2)
             {
+                if (pageCurrent == pageMax)
+                {
+                    max = G.Game.Collection.GetCountEquipments();
+                }
                 PanelSelectedHero_GameObject.SetActive(false);
-                foreach (GroupCollectionElement item in G.Game.Collection.GetCollectionEquipmentesGroupByGroups().OrderByDescending(static a => a.Priority))
+
+                IEnumerable<GroupCollectionElement> grouped = G.Game.Collection.GetCollectionEquipmentesGroupByGroups(pageCurrent);
+                IOrderedEnumerable<GroupCollectionElement> sorted = grouped.OrderByDescending(static a => a.Priority);
+                foreach (GroupCollectionElement item in sorted)
                 {
                     if (item.List.Count() > 0)
                     {
@@ -436,6 +512,13 @@ public class Init_Collection : MonoBehaviour
                     }
                 }
             }
+            else
+            {
+                throw new Exception();
+            }
+
+
+            _LabelRangePage_TextMeshProUGUI.text = $"{((pageCurrent - 1) * PlayerCollectionProvider.PAGE_SIZE) + 1} - {max}";
 
             OnResizeWindow();
         }
@@ -471,7 +554,8 @@ public class Init_Collection : MonoBehaviour
         _InternalPanelHeroes.SetActive(true);
         _InternalPanelEquipments.SetActive(false);
         OnClickTabButton(_TabButtonHeroes);
-        await LoadCollectionAsync();
+        UpdatePageMax();
+        await InstantiateCollectionAsync();
     }
 
     /// <summary> Кнопка "Экипировка". </summary>
@@ -485,7 +569,8 @@ public class Init_Collection : MonoBehaviour
         _InternalPanelHeroes.SetActive(false);
         _InternalPanelEquipments.SetActive(true);
         OnClickTabButton(_TabButtonEquipment);
-        await LoadCollectionAsync();
+        UpdatePageMax();
+        await InstantiateCollectionAsync();
     }
 
     private void OnClickTabButton(TabButton tabButtonPressed)
@@ -644,5 +729,11 @@ public class Init_Collection : MonoBehaviour
             _GroupDividers.ForEach(a => a.Resize());
         }
 
+        // Панель навигации по страницам
+        _RangePanel_RectTransform.sizeDelta = new Vector2(230f * coefHeight, 90f * coefHeight);
+        _RangePanel_RectTransform.anchoredPosition = new Vector2(468f * coefHeight, -10f * coefHeight);
+        _ButtonNextPage_RectTransform.sizeDelta = _ButtonPrevPage_RectTransform.sizeDelta = new Vector2(100f * coefHeight, 60f * coefHeight);
+        _LabelRangePage_RectTransform.sizeDelta = new Vector2(230f * coefHeight, 30f * coefHeight);
+        _LabelRangePage_TextMeshProUGUI.fontSize = 18f * coefHeight;
     }
 }

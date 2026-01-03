@@ -106,6 +106,9 @@ namespace Assets.GameData.Scenes.Auth
                     return;
                 }
 
+                await G.Game.WebSocketClient.SendMessageAsync("Да это жёстко!");
+                
+
                 // Загрузка игровых данных не связанных с конкретным пользователем
                 GameMessage.ShowLocale(L.Info.LoadingData, false);
                 await G.Game.GameData.LoadGameData(CancellationTokenManager.Create("G.Game.GameData.LoadListAllHeroesAsync"), jwtToken);
