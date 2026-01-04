@@ -35,7 +35,8 @@ public class Init_Collection : MonoBehaviour
             rectTransform = GameObjectFinder.FindByName<RectTransform>(name);
             image = GameObjectFinder.FindByName<Image>(name);
             textMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>(nameText);
-            button.onClick.AddListener(() => asyncAction().Forget());
+            //button.onClick.AddListener(() => asyncAction().Forget());
+            rectTransform.gameObject.AddClickEvent(asyncAction, true);
         }
         public void SetText(string text)
         {
@@ -43,7 +44,7 @@ public class Init_Collection : MonoBehaviour
         }
     }
 
-    private TabButton _TabButtonHeroes, _TabButtonEquipment;
+    private TabButton _TabButtonHeroes, _TabButtonEquipment, _TabButtonChangingEquipment;
     private Image _Background_Image;
     private float _ImageBackgroundCoef = 1;
 
@@ -53,8 +54,8 @@ public class Init_Collection : MonoBehaviour
     private RectTransform _ButtonCloseSelectedEquipment_RectTransform;
     private RectTransform _PanelSelectedHero_RectTransform;
     internal GameObject PanelSelectedHero_GameObject { get; private set; }
-    private bool _PanelSelectedHero_isActive = false;
-    private bool _PanelSelectedEquipment_isActive = false;
+    public bool PanelSelectedHeroIsActive { get; set; } = false;
+    public bool PanelSelectedEquipmentIsActive { get; set; } = false;
     private RectTransform _PanelSelectedHeroTop_RectTransform;
     private RectTransform _PanelSelectedHeroBottom_RectTransform;
     private RectTransform _PanelSelectedHeroBottomTabButton1_RectTransform;
@@ -169,9 +170,9 @@ public class Init_Collection : MonoBehaviour
 
         public void Resize(float coefHeight)
         {
-            const float _TopLeftBase = 20f;
-            const float widthBase = 116f;
-            const float heightBase = widthBase / (1f - 0.154307f);
+            const float _TopLeftBase = 10f;
+            const float widthBase = 95f;
+            const float heightBase = widthBase / 0.845693f; // (1f - 0.154307f);
             _RectTransform.sizeDelta = new Vector2(widthBase * coefHeight, heightBase * coefHeight);
             float x = (((widthBase + _TopLeftBase) * (posX - 1)) + _TopLeftBase) * coefHeight;
             float y = (((heightBase + _TopLeftBase) * (posY - 1)) + _TopLeftBase) * coefHeight;
@@ -187,12 +188,19 @@ public class Init_Collection : MonoBehaviour
     /// </summary>
     public int CollectionMode { get; private set; } = 1;
 
+    private int pageCurrent = 1;
+    private int pageMax = 1;
+    private readonly int slotIndex = 0;
+
+
     private async void Start()
     {
         _TabButtonHeroes = new("ButtonHeroes (id=40jhb51a)", "Text (TMP) (id=wl92ls1m)", OnClickHeroes);
-        _TabButtonEquipment = new("ButtonItems (id=k5hqeyat)", "Text (TMP) (id=cklw2id1)", OnClickEquipment);
+        _TabButtonEquipment = new("ButtonEquipment (id=k5hqeyat)", "Text (TMP) (id=cklw2id1)", OnClickEquipment);
+        _TabButtonChangingEquipment = new("ButtonChangingEquipment (id=4r13hk1v)", "Text (TMP) (id=nzouq7ws)", OnClickChangingEquipment);
         _TabButtonHeroes.SetText($"{G.Game.LocalizationManager.GetValue(L.UI.Button.Heroes)} ({G.Game.Collection.GetCountHeroes()})");
         _TabButtonEquipment.SetText($"{G.Game.LocalizationManager.GetValue(L.UI.Button.Equipment)} ({G.Game.Collection.GetCountEquipments()})");
+        _TabButtonChangingEquipment.SetText($"{G.Game.LocalizationManager.GetValue(L.UI.Button.ChangingEquipment)}");
 
         // Изображение заднего фона
         _Background_Image = GameObjectFinder.FindByName<Image>("Image_Background (id=688x18dt)");
@@ -208,13 +216,13 @@ public class Init_Collection : MonoBehaviour
         PanelSelectedHero_GameObject = _PanelSelectedHero_RectTransform.gameObject;
         PanelSelectedHero_GameObject.SetActive(false);
         _PanelSelectedHero_RectTransform.anchoredPosition = Vector2.zero;
-        _PanelSelectedHero_isActive = PanelSelectedHero_GameObject.activeInHierarchy;
+        PanelSelectedHeroIsActive = PanelSelectedHero_GameObject.activeInHierarchy;
 
         _PanelSelectedEquipment_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedEquipment (id=ta39338e)");
         PanelSelectedEquipment_GameObject = _PanelSelectedEquipment_RectTransform.gameObject;
         PanelSelectedEquipment_GameObject.SetActive(false);
         _PanelSelectedEquipment_RectTransform.anchoredPosition = Vector2.zero;
-        _PanelSelectedEquipment_isActive = PanelSelectedEquipment_GameObject.activeInHierarchy;
+        PanelSelectedEquipmentIsActive = PanelSelectedEquipment_GameObject.activeInHierarchy;
 
         SelectedHero_Image = GameObjectFinder.FindByName<Image>("ImageHeroFull (id=m5kn2f6p)");
         SelectedHeroRarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity (id=xami3s9q)");
@@ -380,15 +388,15 @@ public class Init_Collection : MonoBehaviour
             resize = true;
         }
 
-        if (_PanelSelectedHero_isActive != PanelSelectedHero_GameObject.activeInHierarchy)
+        if (PanelSelectedHeroIsActive != PanelSelectedHero_GameObject.activeInHierarchy)
         {
-            _PanelSelectedHero_isActive = PanelSelectedHero_GameObject.activeInHierarchy;
+            PanelSelectedHeroIsActive = PanelSelectedHero_GameObject.activeInHierarchy;
             resize = true;
         }
 
-        if (_PanelSelectedEquipment_isActive != PanelSelectedEquipment_GameObject.activeInHierarchy)
+        if (PanelSelectedEquipmentIsActive != PanelSelectedEquipment_GameObject.activeInHierarchy)
         {
-            _PanelSelectedEquipment_isActive = PanelSelectedEquipment_GameObject.activeInHierarchy;
+            PanelSelectedEquipmentIsActive = PanelSelectedEquipment_GameObject.activeInHierarchy;
             resize = true;
         }
 
@@ -399,25 +407,15 @@ public class Init_Collection : MonoBehaviour
         }
     }
 
-
-    private int pageCurrent = 1;
-    private int pageMax = 1;
-
     private void UpdatePageMax()
     {
-        int c;
-        if (CollectionMode == 1)
+        int c = CollectionMode switch
         {
-            c = G.Game.Collection.GetCountHeroes();
-        }
-        else if (CollectionMode == 2)
-        {
-            c = G.Game.Collection.GetCountEquipments();
-        }
-        else
-        {
-            throw new Exception();
-        }
+            1 => G.Game.Collection.GetCountHeroes(),
+            2 => G.Game.Collection.GetCountEquipments(),
+            3 => PanelSelectedHeroIsActive ? G.Game.Collection.GetCountEquipments() : G.Game.Collection.GetCountHeroes(),
+            _ => throw new Exception(),
+        };
         pageMax = (c / PlayerCollectionProvider.PAGE_SIZE) + (c % PlayerCollectionProvider.PAGE_SIZE > 0 ? 1 : 0);
         if (pageMax < 1)
         {
@@ -447,7 +445,7 @@ public class Init_Collection : MonoBehaviour
         }
     }
 
-    private async UniTask InstantiateCollectionAsync()
+    public async UniTask InstantiateCollectionAsync()
     {
         try
         {
@@ -466,14 +464,15 @@ public class Init_Collection : MonoBehaviour
 
             int max = PlayerCollectionProvider.PAGE_SIZE * pageCurrent;
 
+            UpdatePageMax();
             _GroupDividers.Clear();
-            if (CollectionMode == 1)
+
+            async UniTask LoadHeroes()
             {
-                if (pageCurrent == pageMax)
+                if (pageCurrent >= pageMax)
                 {
                     max = G.Game.Collection.GetCountHeroes();
                 }
-                PanelSelectedEquipment_GameObject.SetActive(false);
 
                 IEnumerable<GroupCollectionElement> grouped = G.Game.Collection.GetCollectionHeroesGroupedByGroupNames(pageCurrent);
                 IOrderedEnumerable<GroupCollectionElement> sorted = grouped.OrderByDescending(static a => a.Priority);
@@ -489,13 +488,12 @@ public class Init_Collection : MonoBehaviour
                     }
                 }
             }
-            else if (CollectionMode == 2)
+            async UniTask LoadEquipmentes()
             {
-                if (pageCurrent == pageMax)
+                if (pageCurrent >= pageMax)
                 {
                     max = G.Game.Collection.GetCountEquipments();
                 }
-                PanelSelectedHero_GameObject.SetActive(false);
 
                 IEnumerable<GroupCollectionElement> grouped = G.Game.Collection.GetCollectionEquipmentesGroupByGroups(pageCurrent);
                 IOrderedEnumerable<GroupCollectionElement> sorted = grouped.OrderByDescending(static a => a.Priority);
@@ -512,9 +510,33 @@ public class Init_Collection : MonoBehaviour
                     }
                 }
             }
-            else
+
+
+            switch (CollectionMode)
             {
-                throw new Exception();
+                case 1:
+                    PanelSelectedEquipment_GameObject.SetActive(false);
+                    await LoadHeroes(); break;
+                case 2:
+                    PanelSelectedHero_GameObject.SetActive(false);
+                    await LoadEquipmentes(); break;
+                case 3:
+                    {
+                        if (PanelSelectedHeroIsActive)
+                        {
+                            await LoadEquipmentes();
+                        }
+                        else
+                        {
+                            _InternalPanelEquipments.SetActive(false);
+                            PanelSelectedEquipmentIsActive = false;
+                            await LoadHeroes();
+                        }
+                        break;
+                    }
+
+                default:
+                    throw new Exception();
             }
 
 
@@ -539,7 +561,6 @@ public class Init_Collection : MonoBehaviour
                 el.Selected = false;
                 el.rectTransform.localScale = Vector3.one;
             }
-
         }
     }
 
@@ -554,7 +575,6 @@ public class Init_Collection : MonoBehaviour
         _InternalPanelHeroes.SetActive(true);
         _InternalPanelEquipments.SetActive(false);
         OnClickTabButton(_TabButtonHeroes);
-        UpdatePageMax();
         await InstantiateCollectionAsync();
     }
 
@@ -569,21 +589,27 @@ public class Init_Collection : MonoBehaviour
         _InternalPanelHeroes.SetActive(false);
         _InternalPanelEquipments.SetActive(true);
         OnClickTabButton(_TabButtonEquipment);
-        UpdatePageMax();
+        await InstantiateCollectionAsync();
+    }
+
+    /// <summary> Кнопка "Смена экипировки". </summary>
+    private async UniTask OnClickChangingEquipment()
+    {
+        if (CollectionMode == 3)
+        {
+            return;
+        }
+        CollectionMode = 3;
+        OnClickTabButton(_TabButtonChangingEquipment);
         await InstantiateCollectionAsync();
     }
 
     private void OnClickTabButton(TabButton tabButtonPressed)
     {
-        if (tabButtonPressed.name == _TabButtonHeroes.name)
+        var array = new TabButton[] { _TabButtonHeroes, _TabButtonEquipment, _TabButtonChangingEquipment };
+        foreach (TabButton item in array)
         {
-            _TabButtonHeroes.image.color = Color.white;
-            _TabButtonEquipment.image.color = ColorOffButton;
-        }
-        else
-        {
-            _TabButtonHeroes.image.color = ColorOffButton;
-            _TabButtonEquipment.image.color = Color.white;
+            item.image.color = tabButtonPressed.name == item.name ? Color.white : ColorOffButton;
         }
     }
 
@@ -611,10 +637,18 @@ public class Init_Collection : MonoBehaviour
 
         // Кнопки вкладок
         float tabButtonWidth = 230.4f * coefHeight;
-        _TabButtonEquipment.rectTransform.sizeDelta = _TabButtonHeroes.rectTransform.sizeDelta = new Vector2(tabButtonWidth, panelTopHeight);
+        var v = new Vector2(tabButtonWidth, panelTopHeight);
+        _TabButtonHeroes.rectTransform.sizeDelta = v;
+        _TabButtonEquipment.rectTransform.sizeDelta = v;
+        _TabButtonChangingEquipment.rectTransform.sizeDelta = v;
+
         _TabButtonEquipment.rectTransform.anchoredPosition = new Vector2(tabButtonWidth, 0);
-        _TabButtonHeroes.textMeshProUGUI.fontSize = 22f * coefHeight;
-        _TabButtonEquipment.textMeshProUGUI.fontSize = 22f * coefHeight;
+        _TabButtonChangingEquipment.rectTransform.anchoredPosition = new Vector2(tabButtonWidth * 2, 0);
+
+        float f = 22f * coefHeight;
+        _TabButtonHeroes.textMeshProUGUI.fontSize = f;
+        _TabButtonEquipment.textMeshProUGUI.fontSize = f;
+        _TabButtonChangingEquipment.textMeshProUGUI.fontSize = f;
 
 
         // Кнопки "Закрыть"
@@ -622,55 +656,60 @@ public class Init_Collection : MonoBehaviour
 
 
         // Панель выбранного героя
-        bool panelSelectedHeroActive = _PanelSelectedHero_RectTransform.gameObject.activeInHierarchy;
         float panelSelectedHeroWidth = 0;
-        if (panelSelectedHeroActive)
+        if (PanelSelectedHeroIsActive)
         {
             _ButtonCloseSelectedHero_RectTransform.sizeDelta = vector008PercentOfHeight;
 
-            float panelSelectedHeroWidthBase = 700f; // при разрешении 1920x1080
+            float panelSelectedHeroWidthBase = 535f; // при разрешении 1920x1080
             panelSelectedHeroWidth = panelSelectedHeroWidthBase * coefHeight;
 
             // Панель выбранного героя
-            _PanelSelectedHero_RectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth, 994 * coefHeight);
+            _PanelSelectedHero_RectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth, 994f * coefHeight);
 
             // Панель выбранного героя. Верхняя панель где написано имя героя
             _PanelSelectedHeroTop_RectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth, panelTopHeight);
 
             // Панель выбранного героя. Нижняя панель с характеристиками героя
-            _PanelSelectedHeroBottom_RectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth, 908 * coefHeight);
+            _PanelSelectedHeroBottom_RectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth, 908f * coefHeight);
 
             // Кнопки вкладок
-            _PanelSelectedHeroBottomTabButton1_RectTransform.sizeDelta = new Vector2(150 * coefHeight, 50 * coefHeight);
+            _PanelSelectedHeroBottomTabButton1_RectTransform.sizeDelta = new Vector2(150f * coefHeight, 50f * coefHeight);
             _PanelSelectedHeroBottomTabButton2_RectTransform.sizeDelta = _PanelSelectedHeroBottomTabButton1_RectTransform.sizeDelta;
-            _PanelSelectedHeroBottomTabButton1_RectTransform.anchoredPosition = new Vector2(5f * coefHeight, -5f * coefHeight);
-            _PanelSelectedHeroBottomTabButton2_RectTransform.anchoredPosition = new Vector2(160f * coefHeight, -5f * coefHeight);
-            _PanelSelectedHeroBottomTabButton1_TextMeshProUGUI.fontSize = 15f * coefHeight;
-            _PanelSelectedHeroBottomTabButton2_TextMeshProUGUI.fontSize = 15f * coefHeight;
+            f = 5f * coefHeight;
+            _PanelSelectedHeroBottomTabButton1_RectTransform.anchoredPosition = new Vector2(f, -f);
+            _PanelSelectedHeroBottomTabButton2_RectTransform.anchoredPosition = new Vector2(160f * coefHeight, -f);
+            f = 15f * coefHeight;
+            _PanelSelectedHeroBottomTabButton1_TextMeshProUGUI.fontSize = f;
+            _PanelSelectedHeroBottomTabButton2_TextMeshProUGUI.fontSize = f;
 
             // Вкладка 1. Экипировка
-            _PanelSelectedHeroBottomTab1_RectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth, 848 * coefHeight);
+            _PanelSelectedHeroBottomTab1_RectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth, 848f * coefHeight);
 
             // Выбранный герой. Лабел
+            //SelectedHeroTop_TextMeshProUGUI.rectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth - panelTopHeight, panelTopHeight);
             SelectedHeroTop_TextMeshProUGUI.rectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth - panelTopHeight, panelTopHeight);
             //SelectedHeroTop_TextMeshProUGUI.rectTransform.anchoredPosition = new Vector2(panelTopHeight, 0);
-            SelectedHeroTop_TextMeshProUGUI.fontSize = 40f * coefHeight;
+            SelectedHeroTop_TextMeshProUGUI.fontSize = 30f * coefHeight;
 
-            _SelectedHeroImageContainer_RectTransform.sizeDelta = new Vector2(282.8571f * coefHeight, 495 * coefHeight);
-            _SelectedHeroImageContainer_RectTransform.anchoredPosition = new Vector2(-20f * coefHeight, 20f * coefHeight);
+            f = 460.9983f * coefHeight;
+            _SelectedHeroImageContainer_RectTransform.sizeDelta = new Vector2(f / 1.75f, f);
+            f = 10f * coefHeight;
+            _SelectedHeroImageContainer_RectTransform.anchoredPosition = new Vector2(f, f);
 
             _Slots.ForEach(a => a.Resize(coefHeight));
         }
 
-        bool panelSelectedEquipmentActive = _PanelSelectedEquipment_RectTransform.gameObject.activeInHierarchy;
         float panelSelectedEquipmentWidth = 0;
-        if (panelSelectedEquipmentActive)
+        if (PanelSelectedEquipmentIsActive)
         {
             _ButtonCloseSelectedEquipment_RectTransform.sizeDelta = vector008PercentOfHeight;
 
-            float panelSelectedEquipmentWidthBase = 700f; // при разрешении 1920x1080
+            float panelSelectedEquipmentWidthBase = 535f; // при разрешении 1920x1080
             panelSelectedEquipmentWidth = panelSelectedEquipmentWidthBase * coefHeight;
+
             // Панель выбранной экипировки
+            _PanelSelectedEquipment_RectTransform.anchoredPosition = panelSelectedHeroWidth > 0 ? new Vector2(-panelSelectedHeroWidth, 0) : Vector2.zero;
             _PanelSelectedEquipment_RectTransform.sizeDelta = new Vector2(panelSelectedEquipmentWidth, 994 * coefHeight);
 
             // Панель выбранного героя. Верхняя панель где написано название экипировки
@@ -682,10 +721,12 @@ public class Init_Collection : MonoBehaviour
             // Кнопки вкладок
             _PanelSelectedEquipmentBottomTabButton1_RectTransform.sizeDelta = new Vector2(150 * coefHeight, 50 * coefHeight);
             _PanelSelectedEquipmentBottomTabButton2_RectTransform.sizeDelta = _PanelSelectedEquipmentBottomTabButton1_RectTransform.sizeDelta;
-            _PanelSelectedEquipmentBottomTabButton1_RectTransform.anchoredPosition = new Vector2(5f * coefHeight, -5f * coefHeight);
-            _PanelSelectedEquipmentBottomTabButton2_RectTransform.anchoredPosition = new Vector2(160f * coefHeight, -5f * coefHeight);
-            _PanelSelectedEquipmentBottomTabButton1_TextMeshProUGUI.fontSize = 15f * coefHeight;
-            _PanelSelectedEquipmentBottomTabButton2_TextMeshProUGUI.fontSize = 15f * coefHeight;
+            f = 5f * coefHeight;
+            _PanelSelectedEquipmentBottomTabButton1_RectTransform.anchoredPosition = new Vector2(f, -f);
+            _PanelSelectedEquipmentBottomTabButton2_RectTransform.anchoredPosition = new Vector2(160f * coefHeight, -f);
+            f = 15f * coefHeight;
+            _PanelSelectedEquipmentBottomTabButton1_TextMeshProUGUI.fontSize = f;
+            _PanelSelectedEquipmentBottomTabButton2_TextMeshProUGUI.fontSize = f;
 
             // Вкладка 1. Экипировка
             _PanelSelectedEquipmentBottomTab1_RectTransform.sizeDelta = new Vector2(panelSelectedEquipmentWidth, 848 * coefHeight);
@@ -693,15 +734,17 @@ public class Init_Collection : MonoBehaviour
             // Выбранный герой. Лабел
             SelectedEquipmentTop_TextMeshProUGUI.rectTransform.sizeDelta = new Vector2(panelSelectedEquipmentWidth - panelTopHeight, panelTopHeight);
             //SelectedEquipmentTop_TextMeshProUGUI.rectTransform.anchoredPosition = new Vector2(panelTopHeight, 0);
-            SelectedEquipmentTop_TextMeshProUGUI.fontSize = 40f * coefHeight;
+            SelectedEquipmentTop_TextMeshProUGUI.fontSize = 30f * coefHeight;
 
-            _SelectedEquipmentImageContainer_RectTransform.sizeDelta = new Vector2(345f * coefHeight, 345 * coefHeight);
-            _SelectedEquipmentImageContainer_RectTransform.anchoredPosition = new Vector2(-10f * coefHeight, 10f * coefHeight);
+            f = 252.5f * coefHeight;
+            _SelectedEquipmentImageContainer_RectTransform.sizeDelta = new Vector2(f, f);
+            f = 10f * coefHeight;
+            _SelectedEquipmentImageContainer_RectTransform.anchoredPosition = new Vector2(-f, f);
         }
 
 
         // Панель коллекции
-        float panelCollection_Width = _width - Math.Max(panelSelectedHeroWidth, panelSelectedEquipmentWidth);
+        float panelCollection_Width = _width - (panelSelectedHeroWidth + panelSelectedEquipmentWidth);
         PanelCollection_RectTransform.sizeDelta = new Vector2(panelCollection_Width, _height - panelTopHeight);
 
         // Панель верхних кнопок

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b55f6d3000688a3489404a95907fc614
+guid: e104cefd958661b47b1e57899bff9692
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2648634391590418523
-    second: buttonItems_256x256_0
+      213: -7094778498522076817
+    second: rarity5_v2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -72,9 +72,9 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 256
+    maxTextureSize: 512
     resizeAlgorithm: 0
-    textureFormat: 4
+    textureFormat: 3
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: buttonItems_256x256_0
+      name: rarity5_v2_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 256
-        height: 256
+        width: 909
+        height: 905
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 83, y: 83, z: 83, w: 83}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5a7ce5dcd092e3bd0800000000000000
-      internalID: -2648634391590418523
+      spriteID: f69238b9b884a8d90800000000000000
+      internalID: -7094778498522076817
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 68144be52e541994e97161bb3d79cde1
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      buttonItems_256x256_0: -2648634391590418523
+      rarity5_v2_0: -7094778498522076817
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

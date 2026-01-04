@@ -65,6 +65,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 152cdee88bf3f0e429c46e2f63f91651
+    m_Address: UI-rarity4_v2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 17953aa48bff3ab4eac2491bb12dfa88
     m_Address: Equipments-Unique-Thunderfury
     m_ReadOnly: 0
@@ -305,6 +310,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac9e3da8239d7a243a2b845d601b10ac
+    m_Address: UI-rarity6_v2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ae30cd18f536dfa48881786e1d2bde5a
     m_Address: Equipments-Unique-Thunderfury_128
     m_ReadOnly: 0
@@ -407,6 +417,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: deea6c4b287548045aa6ba65ad1f25c5
     m_Address: Equipments-Iron gloves
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e104cefd958661b47b1e57899bff9692
+    m_Address: UI-rarity5_v2
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

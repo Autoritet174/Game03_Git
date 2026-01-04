@@ -45,7 +45,7 @@ public class GroupDivider : MonoBehaviour
     public class DataCollectionElement
     {
         public GameObject gameObject;
-        public CollectionElement collectionCollectionElement;
+        public CollectionElement collectionElement;
         public TextMeshProUGUI textMeshPro;
         public bool Selected = false;
         public Image imageRarity;
@@ -144,7 +144,7 @@ public class GroupDivider : MonoBehaviour
                     DataCollectionElement dataCollectionElement = new()
                     {
                         gameObject = _prefabIconCollectionElement,
-                        collectionCollectionElement = collectionElement,
+                        collectionElement = collectionElement,
                         textMeshPro = textMeshPro,
                         imageRarity = imageRarity,
                         rectTransform = _prefabIconCollectionElement_Transform
@@ -162,6 +162,7 @@ public class GroupDivider : MonoBehaviour
                     {
                         1 => AddressableCache.Heroes[$"Heroes-{collectionElement.Name}_face"],
                         2 => AddressableCache.Equipments[$"Equipments-{tagUnique}{collectionElement.Name}_128"],
+                        3 => _Init_Collection.PanelSelectedHeroIsActive ? AddressableCache.Equipments[$"Equipments-{tagUnique}{collectionElement.Name}_128"] : AddressableCache.Heroes[$"Heroes-{collectionElement.Name}_face"],
                         _ => throw new Exception("CollectionMode > 2"),
                     };
                     imageCollectionElement.preserveAspect = true; // Сохраняет пропорции изображения
@@ -172,29 +173,65 @@ public class GroupDivider : MonoBehaviour
                         _Init_Collection.UnselectAll();
                         dataCollectionElement.Selected = true;
                         dataCollectionElement.rectTransform.localScale = Init_Collection.Vector3Selected;
-                        if (_Init_Collection.CollectionMode == 1)
+
+                        async UniTask ShowHero()
                         {
-                            // Heroes
                             _Init_Collection.PanelSelectedHero_GameObject.SetActive(true);
-                            string name = dataCollectionElement.collectionCollectionElement.Name;
+                            string name = collectionElement.Name;
                             _Init_Collection.SelectedHeroTop_TextMeshProUGUI.text = name.ToUpper1Char();
                             _Init_Collection.SelectedHero_Image.sprite = AddressableCache.Heroes[$"Heroes-{name}"];
                             _Init_Collection.SelectedHero_Image.preserveAspect = true; // Сохраняет пропорции изображения
 
-                            _Init_Collection.SelectedHeroRarity_Image.sprite = AddressableCache.Rarityes[dataCollectionElement.collectionCollectionElement.Rarity];
+                            _Init_Collection.SelectedHeroRarity_Image.sprite = AddressableCache.Rarityes[collectionElement.Rarity];
                         }
-                        else if (_Init_Collection.CollectionMode == 2)
+                        async UniTask ShowEquipment()
                         {
-                            // Equipments
                             _Init_Collection.PanelSelectedEquipment_GameObject.SetActive(true);
-                            string name = dataCollectionElement.collectionCollectionElement.Name;
+                            string name = collectionElement.Name;
                             _Init_Collection.SelectedEquipmentTop_TextMeshProUGUI.text = name.ToUpper1Char();
 
                             string tagUnique = collectionElement.IsUnique ? "Unique-" : string.Empty;
                             _Init_Collection.SelectedEquipment_Image.sprite = AddressableCache.Equipments[$"Equipments-{tagUnique}{name}"];
 
                             _Init_Collection.SelectedEquipment_Image.preserveAspect = true; // Сохраняет пропорции изображения
-                            _Init_Collection.SelectedEquipmentRarity_Image.sprite = AddressableCache.Rarityes[dataCollectionElement.collectionCollectionElement.Rarity];
+                            _Init_Collection.SelectedEquipmentRarity_Image.sprite = AddressableCache.Rarityes[collectionElement.Rarity];
+                        }
+
+
+                        switch (_Init_Collection.CollectionMode)
+                        {
+                            case 1:
+                                await ShowHero(); break;
+                            case 2:
+                                await ShowEquipment(); break;
+                            case 3:
+                                switch (collectionElement.TypeCollectionElement)
+                                {
+                                    case TypeCollectionElement.Hero:
+                                        _Init_Collection.PanelSelectedHero_GameObject.SetActive(true);
+                                        _Init_Collection.PanelSelectedHeroIsActive = true;
+                                        _Init_Collection.OnResizeWindow();
+                                        await ShowHero();
+                                        await _Init_Collection.InstantiateCollectionAsync();
+                                        //_Init_Collection.OnResizeWindow();
+                                        break;
+                                    case TypeCollectionElement.Equipment:
+                                        if (!_Init_Collection.PanelSelectedEquipmentIsActive)
+                                        {
+                                            _Init_Collection.PanelSelectedEquipment_GameObject.SetActive(true);
+                                            _Init_Collection.PanelSelectedEquipmentIsActive = true;
+                                            _Init_Collection.OnResizeWindow();
+                                            //_Init_Collection.OnResizeWindow();
+                                        }
+                                        await ShowEquipment();
+
+                                        break;
+                                    default:
+                                        throw new Exception();
+                                }
+                                break;
+                            default:
+                                throw new Exception();
                         }
                         await UniTask.Delay(1); // Заглушка для асинхронности
                     }
@@ -205,7 +242,7 @@ public class GroupDivider : MonoBehaviour
                     }
                     async UniTask OnPointerExit()
                     {
-                        imageRarity.sprite = AddressableCache.Rarityes[dataCollectionElement.collectionCollectionElement.Rarity];
+                        imageRarity.sprite = AddressableCache.Rarityes[collectionElement.Rarity];
                         await UniTask.Yield();
                     }
                     EventHelper.AddClickEvent(_prefabIconCollectionElement, OnClick, false);
@@ -281,7 +318,7 @@ public class GroupDivider : MonoBehaviour
 
             float needWidth = (countCellInRow * cellSize) + ((countCellInRow - 1) * spacing);
             float coefWidth = widthWithoutPadding / needWidth;
-            spacing = ((int)(spacing * coefWidth * 10f))/10f;
+            spacing = ((int)(spacing * coefWidth * 10f)) / 10f;
             cellSize = ((int)(cellSize * coefWidth * 10f)) / 10f;
 
             _CellsContainer_GridLayoutGroup.padding.left = padding;

@@ -16,6 +16,7 @@ namespace Assets.GameData.Scripts
         public static Sprite UI_button_with_arrow_v2_reverse;
 
         public static Sprite[] Rarityes = new Sprite[7];
+        //public static Sprite[] Rarityes_v2 = new Sprite[7];
 
         public static Dictionary<string, Sprite> Heroes = new();
         public static Dictionary<string, Sprite> Equipments = new();
@@ -67,6 +68,13 @@ namespace Assets.GameData.Scripts
                 int index = i; // capture index
                 tasks.Add(SafeLoadAsync($"UI-rarity{index}", s => Rarityes[index] = s));
             }
+            //Rarityes_v2[0] = NullSprite;
+            //for (int i = 1; i <= 6; i++)
+            //{
+            //    int index = i; // capture index
+            //    tasks.Add(SafeLoadAsync($"UI-rarity{index}_v2", s => Rarityes_v2[index] = s));
+            //}
+
 
             // Equipments
             foreach (DtoBaseEquipment equipment in dtoContainer.DtoBaseEquipments)
