@@ -90,7 +90,7 @@ public class AllHeroes : MonoBehaviour
     private async UniTask AddAllImageOnContent()
     {
         List<UniTask> list = new();
-        foreach (DtoBaseHero heroStats in G.Game.GameData.DtoContainer.DtoBaseHeroes.OrderByDescending(a => a.Rarity))
+        foreach (DtoBaseHero heroStats in G.Game.GameData.Container.BaseHeroes.OrderByDescending(a => a.Rarity))
         {
             list.Add(LoadHeroByName(heroStats));
         }
@@ -142,7 +142,7 @@ public class AllHeroes : MonoBehaviour
         {
             await HeroView(hero);
         }
-        _prefabIconHero.AddClickEvent(OnClick);
+        _prefabIconHero.SetClickEvent(OnClick, false);
 
         async UniTask OnPoinerEnter()
         {

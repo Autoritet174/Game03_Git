@@ -3,6 +3,7 @@ using General.DTO.Entities;
 using General.DTO.Entities.GameData;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -28,13 +29,13 @@ namespace Assets.GameData.Scripts
         public static async UniTask PreLoadAssets()
         {
             //DateTime start = DateTime.Now;
-            DtoContainerGameData dtoContainer = G.Game.GameData.DtoContainer;
+            DtoContainerGameData dtoContainer = G.Game.GameData.Container;
 
             NullSprite = await Addressables.LoadAssetAsync<Sprite>("Null").ToUniTask();
 
             // 3. Подготовка коллекций (аллокация заранее известного размера)
-            int heroesCount = dtoContainer.DtoBaseHeroes?.Count ?? 0;
-            int equipCount = dtoContainer.DtoBaseEquipments?.Count ?? 0;
+            int heroesCount = dtoContainer.BaseHeroes.Count();
+            int equipCount = dtoContainer.BaseEquipments.Count();
 
             Heroes = new Dictionary<string, Sprite>(heroesCount * 2);
             Equipments = new Dictionary<string, Sprite>(equipCount * 2);
@@ -50,7 +51,7 @@ namespace Assets.GameData.Scripts
             };
 
             // Heroes
-            foreach (DtoBaseHero hero in dtoContainer.DtoBaseHeroes)
+            foreach (DtoBaseHero hero in dtoContainer.BaseHeroes)
             {
                 string name1 = $"Heroes-{hero.Name}";
                 string name2 = $"Heroes-{hero.Name}_face";
@@ -77,7 +78,7 @@ namespace Assets.GameData.Scripts
 
 
             // Equipments
-            foreach (DtoBaseEquipment equipment in dtoContainer.DtoBaseEquipments)
+            foreach (DtoBaseEquipment equipment in dtoContainer.BaseEquipments)
             {
                 string tagUnique = equipment.IsUnique ? "Unique-" : string.Empty;
                 string key1 = $"Equipments-{tagUnique}{equipment.Name}";

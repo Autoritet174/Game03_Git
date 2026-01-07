@@ -50,9 +50,19 @@
             Предмет экипировки из коллекции игрока. (MongoDb).
             </summary>
         </member>
-        <member name="M:General.DTO.Entities.Collection.DtoEquipment.#ctor">
+        <member name="M:General.DTO.Entities.Collection.DtoEquipment.#ctor(System.Guid,System.Guid,System.Int32,System.String,System.Nullable{System.Int32},System.Nullable{System.Guid})">
             <summary>
             Предмет экипировки из коллекции игрока. (MongoDb).
+            </summary>
+        </member>
+        <member name="P:General.DTO.Entities.Collection.DtoEquipment.SlotId">
+            <summary>
+            Слот в который эпипирован предмет.
+            </summary>
+        </member>
+        <member name="P:General.DTO.Entities.Collection.DtoEquipment.HeroId">
+            <summary>
+            Герой на которого экипирован предмет.
             </summary>
         </member>
         <member name="T:General.DTO.Entities.Collection.DtoHero">
@@ -60,7 +70,7 @@
             Герой из коллекции игрока.
             </summary>
         </member>
-        <member name="M:General.DTO.Entities.Collection.DtoHero.#ctor">
+        <member name="M:General.DTO.Entities.Collection.DtoHero.#ctor(System.Guid,System.Guid,System.Int32,System.String,System.Int32,System.Int32,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int64,General.DTO.Dice,System.Int32,System.Int32,General.DTO.Entities.GameData.DtoBaseHero)">
             <summary>
             Герой из коллекции игрока.
             </summary>
@@ -76,7 +86,7 @@
             Data Transfer Object. Корневой контейнер для данных.
             </summary>
         </member>
-        <member name="M:General.DTO.Entities.DtoContainerCollection.#ctor">
+        <member name="M:General.DTO.Entities.DtoContainerCollection.#ctor(System.Collections.Generic.List{General.DTO.Entities.Collection.DtoEquipment},System.Collections.Generic.List{General.DTO.Entities.Collection.DtoHero})">
             <summary>
             Data Transfer Object. Корневой контейнер для данных.
             </summary>
@@ -86,7 +96,7 @@
             Data Transfer Object. Корневой контейнер для данных.
             </summary>
         </member>
-        <member name="M:General.DTO.Entities.DtoContainerGameData.#ctor">
+        <member name="M:General.DTO.Entities.DtoContainerGameData.#ctor(System.Collections.Generic.List{General.DTO.Entities.GameData.DtoBaseEquipment},System.Collections.Generic.List{General.DTO.Entities.GameData.DtoBaseHero},System.Collections.Generic.List{General.DTO.Entities.GameData.DtoCreatureType},System.Collections.Generic.List{General.DTO.Entities.GameData.DtoDamageType},System.Collections.Generic.List{General.DTO.Entities.GameData.DtoEquipmentType},System.Collections.Generic.List{General.DTO.Entities.GameData.DtoMaterialDamagePercent},System.Collections.Generic.List{General.DTO.Entities.GameData.DtoSlotType},System.Collections.Generic.List{General.DTO.Entities.GameData.DtoSmithingMaterial},System.Collections.Generic.List{General.DTO.Entities.GameData.DtoXEquipmentTypeDamageType},System.Collections.Generic.List{General.DTO.Entities.GameData.DtoXHeroCreatureType},System.Collections.Generic.List{General.DTO.Entities.GameData.DtoSlot})">
             <summary>
             Data Transfer Object. Корневой контейнер для данных.
             </summary>
@@ -94,7 +104,7 @@
         <member name="T:General.DTO.Entities.GameData.DtoBaseEquipment">
             <summary> Представляет базовую сущность предмета. </summary>
         </member>
-        <member name="M:General.DTO.Entities.GameData.DtoBaseEquipment.#ctor(System.Int32,System.String,System.Int32,System.Boolean,System.Int32,General.DTO.Dice,General.DTO.Dice)">
+        <member name="M:General.DTO.Entities.GameData.DtoBaseEquipment.#ctor(System.Int32,System.String,System.Int32,System.Boolean,System.Int32,General.DTO.Dice,General.DTO.Dice,General.DTO.Entities.GameData.DtoEquipmentType)">
             <summary> Представляет базовую сущность предмета. </summary>
         </member>
         <member name="T:General.DTO.Entities.GameData.DtoBaseHero">
@@ -103,18 +113,162 @@
         <member name="M:General.DTO.Entities.GameData.DtoBaseHero.#ctor(System.Int32,System.String,System.Int32,System.Boolean,System.Int32,General.DTO.Dice,General.DTO.Dice)">
             <summary> Data Transfer Object. Представляет базовую сущность игрового героя с основными характеристиками. </summary>
         </member>
-        <member name="T:General.G">
+        <member name="T:General.DTO.RestRequest.DtoRequestAuthentication">
+            <summary>
+            Класс, содержащий данные для авторизации пользователя и системную информацию об устройстве.
+            </summary>
+            <remarks>
+            Этот класс использует конструктор с параметрами для инициализации всех свойств.
+            Все поля обязательны для заполнения при создании экземпляра.
+            </remarks>
+            <remarks>
+            Инициализирует новый экземпляр класса <see cref="T:General.DTO.RestRequest.DtoRequestAuthentication"/>.
+            </remarks>
+            <param name="email">Адрес электронной почты пользователя, используемый для входа в систему.</param>
+            <param name="password">Пароль пользователя в открытом виде (должен передаваться по защищённому каналу).</param>
+            <param name="timeZoneInfo_Local_BaseUtcOffset_Minutes">Смещение локального часового пояса пользователя от UTC в минутах.</param>
+            <param name="system_Environment_UserName">Имя пользователя операционной системы, под которым запущено приложение.</param>
+            <param name="deviceModel">Модель устройства (например, 'iPhone 14', 'Samsung Galaxy S23').</param>
+            <param name="deviceType">Тип устройства (например, 'Mobile', 'Desktop', 'Console').</param>
+            <param name="operatingSystem">Операционная система устройства (например, 'Windows 11', 'macOS 14', 'Android 14').</param>
+            <param name="processorType">Архитектура и модель процессора (например, 'x64', 'ARM64').</param>
+            <param name="processorCount">Количество логических процессоров на устройстве.</param>
+            <param name="systemMemorySize">Объём оперативной памяти устройства в мегабайтах (МБ).</param>
+            <param name="graphicsDeviceName">Название графического адаптера (например, 'NVIDIA GeForce RTX 4070').</param>
+            <param name="graphicsMemorySize">Объём видеопамяти в мегабайтах (МБ).</param>
+            <param name="deviceUniqueIdentifier">Уникальный идентификатор устройства, используемый для привязки сессии.</param>
+            <param name="systemInfo_supportsInstancing">Указывает, поддерживает ли графическая система инстансинг (отрисовку множественных копий объектов за один вызов).</param>
+            <param name="systemInfo_npotSupport">Указывает, поддерживает ли графическая карта текстуры с размерами, не являющимися степенью двойки (NPOT).</param>
+        </member>
+        <member name="M:General.DTO.RestRequest.DtoRequestAuthentication.#ctor(System.String,System.String,System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.String,System.Int32,System.Boolean,System.String)">
+            <summary>
+            Класс, содержащий данные для авторизации пользователя и системную информацию об устройстве.
+            </summary>
+            <remarks>
+            Этот класс использует конструктор с параметрами для инициализации всех свойств.
+            Все поля обязательны для заполнения при создании экземпляра.
+            </remarks>
+            <remarks>
+            Инициализирует новый экземпляр класса <see cref="T:General.DTO.RestRequest.DtoRequestAuthentication"/>.
+            </remarks>
+            <param name="email">Адрес электронной почты пользователя, используемый для входа в систему.</param>
+            <param name="password">Пароль пользователя в открытом виде (должен передаваться по защищённому каналу).</param>
+            <param name="timeZoneInfo_Local_BaseUtcOffset_Minutes">Смещение локального часового пояса пользователя от UTC в минутах.</param>
+            <param name="system_Environment_UserName">Имя пользователя операционной системы, под которым запущено приложение.</param>
+            <param name="deviceModel">Модель устройства (например, 'iPhone 14', 'Samsung Galaxy S23').</param>
+            <param name="deviceType">Тип устройства (например, 'Mobile', 'Desktop', 'Console').</param>
+            <param name="operatingSystem">Операционная система устройства (например, 'Windows 11', 'macOS 14', 'Android 14').</param>
+            <param name="processorType">Архитектура и модель процессора (например, 'x64', 'ARM64').</param>
+            <param name="processorCount">Количество логических процессоров на устройстве.</param>
+            <param name="systemMemorySize">Объём оперативной памяти устройства в мегабайтах (МБ).</param>
+            <param name="graphicsDeviceName">Название графического адаптера (например, 'NVIDIA GeForce RTX 4070').</param>
+            <param name="graphicsMemorySize">Объём видеопамяти в мегабайтах (МБ).</param>
+            <param name="deviceUniqueIdentifier">Уникальный идентификатор устройства, используемый для привязки сессии.</param>
+            <param name="systemInfo_supportsInstancing">Указывает, поддерживает ли графическая система инстансинг (отрисовку множественных копий объектов за один вызов).</param>
+            <param name="systemInfo_npotSupport">Указывает, поддерживает ли графическая карта текстуры с размерами, не являющимися степенью двойки (NPOT).</param>
+        </member>
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.Email">
+            <summary>
+            Получает или задаёт адрес электронной почты пользователя.
+            </summary>
+            <value>Строка, содержащая email пользователя.</value>
+        </member>
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.Password">
+            <summary>
+            Получает или задаёт пароль пользователя.
+            </summary>
+            <value>Строка с паролем. Передача должна осуществляться по защищённому соединению.</value>
+        </member>
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.TimeZoneInfo_Local_BaseUtcOffset_Minutes">
+            <summary>
+            Получает или задаёт смещение локального часового пояса от UTC в минутах.
+            </summary>
+            <value>Целое число, представляющее разницу во времени (например, +180 для UTC+3).</value>
+        </member>
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.System_Environment_UserName">
+            <summary>
+            Получает или задаёт имя пользователя операционной системы.
+            </summary>
+            <value>Имя пользователя, под которым запущено приложение (например, 'JohnDoe').</value>
+        </member>
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.DeviceModel">
+            <summary>
+            Получает или задаёт модель устройства.
+            </summary>
+            <value>Описание аппаратной модели устройства.</value>
+        </member>
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.DeviceType">
+            <summary>
+            Получает или задаёт тип устройства.
+            </summary>
+            <value>Категория устройства: мобильное, настольное, игровая консоль и т.д.</value>
+        </member>
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.OperatingSystem">
+            <summary>
+            Получает или задаёт операционную систему устройства.
+            </summary>
+            <value>Название и версия ОС (например, 'Windows 10', 'iOS 17').</value>
+        </member>
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.ProcessorType">
+            <summary>
+            Получает или задаёт тип процессора устройства.
+            </summary>
+            <value>Архитектура и модель процессора (например, 'Intel Core i7', 'Apple M1').</value>
+        </member>
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.ProcessorCount">
+            <summary>
+            Получает или задаёт количество логических ядер процессора.
+            </summary>
+            <value>Число, равное количеству потоков процессора.</value>
+        </member>
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.SystemMemorySize">
+            <summary>
+            Получает или задаёт объём оперативной памяти устройства в мегабайтах.
+            </summary>
+            <value>Размер ОЗУ в мегабайтах (например, 16384 для 16 ГБ).</value>
+        </member>
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.GraphicsDeviceName">
+            <summary>
+            Получает или задаёт название графического устройства.
+            </summary>
+            <value>Модель видеокарты или встроенного GPU.</value>
+        </member>
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.GraphicsMemorySize">
+            <summary>
+            Получает или задаёт объём видеопамяти в мегабайтах.
+            </summary>
+            <value>Размер видеопамяти (VRAM) в МБ.</value>
+        </member>
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.DeviceUniqueIdentifier">
+            <summary>
+            Получает или задаёт уникальный идентификатор устройства.
+            </summary>
+            <value>Уникальная строка, идентифицирующая устройство (например, IMEI, UUID).</value>
+        </member>
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.SystemInfo_supportsInstancing">
+            <summary>
+            Получает или задаёт признак поддержки графической системой инстансинга.
+            </summary>
+            <value><c>true</c>, если поддерживается; иначе <c>false</c>.</value>
+        </member>
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.SystemInfo_npotSupport">
+            <summary>
+            Получает или задаёт информацию о поддержке текстур с размерами, не являющимися степенью двойки (NPOT).
+            </summary>
+            <value>Строка, описывающая уровень поддержки NPOT (например, 'Full', 'Restricted', 'None').</value>
+        </member>
+        <member name="T:General.GlobalHelper">
             <summary>
             Глобальный статический класс, содержащий константы и вспомогательные функции,
             которые должны быть легко доступны из любого места приложения.
             </summary>
         </member>
-        <member name="F:General.G.APPLICATION_JSON">
+        <member name="F:General.GlobalHelper.APPLICATION_JSON">
             <summary>
             Константа для типа медиа "application/json", часто используемого в HTTP-запросах.
             </summary>
         </member>
-        <member name="M:General.G.SecondsToTimeStr(System.Int64)">
+        <member name="M:General.GlobalHelper.SecondsToTimeStr(System.Int64)">
             <summary>
             Преобразует общее количество секунд в удобочитаемую строку,
             форматируя их в дни, часы, минуты и секунды (d hh mm s).
@@ -208,150 +362,6 @@
             Ключ-заполнитель для указания оставшегося времени (в секундах).
             </summary>
         </member>
-        <member name="T:General.ModelHttp.Authorization">
-            <summary>
-            Класс, содержащий данные для авторизации пользователя и системную информацию об устройстве.
-            </summary>
-            <remarks>
-            Этот класс использует конструктор с параметрами для инициализации всех свойств.
-            Все поля обязательны для заполнения при создании экземпляра.
-            </remarks>
-            <remarks>
-            Инициализирует новый экземпляр класса <see cref="T:General.ModelHttp.Authorization"/>.
-            </remarks>
-            <param name="email">Адрес электронной почты пользователя, используемый для входа в систему.</param>
-            <param name="password">Пароль пользователя в открытом виде (должен передаваться по защищённому каналу).</param>
-            <param name="timeZoneInfo_Local_BaseUtcOffset_Minutes">Смещение локального часового пояса пользователя от UTC в минутах.</param>
-            <param name="system_Environment_UserName">Имя пользователя операционной системы, под которым запущено приложение.</param>
-            <param name="deviceModel">Модель устройства (например, 'iPhone 14', 'Samsung Galaxy S23').</param>
-            <param name="deviceType">Тип устройства (например, 'Mobile', 'Desktop', 'Console').</param>
-            <param name="operatingSystem">Операционная система устройства (например, 'Windows 11', 'macOS 14', 'Android 14').</param>
-            <param name="processorType">Архитектура и модель процессора (например, 'x64', 'ARM64').</param>
-            <param name="processorCount">Количество логических процессоров на устройстве.</param>
-            <param name="systemMemorySize">Объём оперативной памяти устройства в мегабайтах (МБ).</param>
-            <param name="graphicsDeviceName">Название графического адаптера (например, 'NVIDIA GeForce RTX 4070').</param>
-            <param name="graphicsMemorySize">Объём видеопамяти в мегабайтах (МБ).</param>
-            <param name="deviceUniqueIdentifier">Уникальный идентификатор устройства, используемый для привязки сессии.</param>
-            <param name="systemInfo_supportsInstancing">Указывает, поддерживает ли графическая система инстансинг (отрисовку множественных копий объектов за один вызов).</param>
-            <param name="systemInfo_npotSupport">Указывает, поддерживает ли графическая карта текстуры с размерами, не являющимися степенью двойки (NPOT).</param>
-        </member>
-        <member name="M:General.ModelHttp.Authorization.#ctor(System.String,System.String,System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.String,System.Int32,System.Boolean,System.String)">
-            <summary>
-            Класс, содержащий данные для авторизации пользователя и системную информацию об устройстве.
-            </summary>
-            <remarks>
-            Этот класс использует конструктор с параметрами для инициализации всех свойств.
-            Все поля обязательны для заполнения при создании экземпляра.
-            </remarks>
-            <remarks>
-            Инициализирует новый экземпляр класса <see cref="T:General.ModelHttp.Authorization"/>.
-            </remarks>
-            <param name="email">Адрес электронной почты пользователя, используемый для входа в систему.</param>
-            <param name="password">Пароль пользователя в открытом виде (должен передаваться по защищённому каналу).</param>
-            <param name="timeZoneInfo_Local_BaseUtcOffset_Minutes">Смещение локального часового пояса пользователя от UTC в минутах.</param>
-            <param name="system_Environment_UserName">Имя пользователя операционной системы, под которым запущено приложение.</param>
-            <param name="deviceModel">Модель устройства (например, 'iPhone 14', 'Samsung Galaxy S23').</param>
-            <param name="deviceType">Тип устройства (например, 'Mobile', 'Desktop', 'Console').</param>
-            <param name="operatingSystem">Операционная система устройства (например, 'Windows 11', 'macOS 14', 'Android 14').</param>
-            <param name="processorType">Архитектура и модель процессора (например, 'x64', 'ARM64').</param>
-            <param name="processorCount">Количество логических процессоров на устройстве.</param>
-            <param name="systemMemorySize">Объём оперативной памяти устройства в мегабайтах (МБ).</param>
-            <param name="graphicsDeviceName">Название графического адаптера (например, 'NVIDIA GeForce RTX 4070').</param>
-            <param name="graphicsMemorySize">Объём видеопамяти в мегабайтах (МБ).</param>
-            <param name="deviceUniqueIdentifier">Уникальный идентификатор устройства, используемый для привязки сессии.</param>
-            <param name="systemInfo_supportsInstancing">Указывает, поддерживает ли графическая система инстансинг (отрисовку множественных копий объектов за один вызов).</param>
-            <param name="systemInfo_npotSupport">Указывает, поддерживает ли графическая карта текстуры с размерами, не являющимися степенью двойки (NPOT).</param>
-        </member>
-        <member name="P:General.ModelHttp.Authorization.Email">
-            <summary>
-            Получает или задаёт адрес электронной почты пользователя.
-            </summary>
-            <value>Строка, содержащая email пользователя.</value>
-        </member>
-        <member name="P:General.ModelHttp.Authorization.Password">
-            <summary>
-            Получает или задаёт пароль пользователя.
-            </summary>
-            <value>Строка с паролем. Передача должна осуществляться по защищённому соединению.</value>
-        </member>
-        <member name="P:General.ModelHttp.Authorization.TimeZoneInfo_Local_BaseUtcOffset_Minutes">
-            <summary>
-            Получает или задаёт смещение локального часового пояса от UTC в минутах.
-            </summary>
-            <value>Целое число, представляющее разницу во времени (например, +180 для UTC+3).</value>
-        </member>
-        <member name="P:General.ModelHttp.Authorization.System_Environment_UserName">
-            <summary>
-            Получает или задаёт имя пользователя операционной системы.
-            </summary>
-            <value>Имя пользователя, под которым запущено приложение (например, 'JohnDoe').</value>
-        </member>
-        <member name="P:General.ModelHttp.Authorization.DeviceModel">
-            <summary>
-            Получает или задаёт модель устройства.
-            </summary>
-            <value>Описание аппаратной модели устройства.</value>
-        </member>
-        <member name="P:General.ModelHttp.Authorization.DeviceType">
-            <summary>
-            Получает или задаёт тип устройства.
-            </summary>
-            <value>Категория устройства: мобильное, настольное, игровая консоль и т.д.</value>
-        </member>
-        <member name="P:General.ModelHttp.Authorization.OperatingSystem">
-            <summary>
-            Получает или задаёт операционную систему устройства.
-            </summary>
-            <value>Название и версия ОС (например, 'Windows 10', 'iOS 17').</value>
-        </member>
-        <member name="P:General.ModelHttp.Authorization.ProcessorType">
-            <summary>
-            Получает или задаёт тип процессора устройства.
-            </summary>
-            <value>Архитектура и модель процессора (например, 'Intel Core i7', 'Apple M1').</value>
-        </member>
-        <member name="P:General.ModelHttp.Authorization.ProcessorCount">
-            <summary>
-            Получает или задаёт количество логических ядер процессора.
-            </summary>
-            <value>Число, равное количеству потоков процессора.</value>
-        </member>
-        <member name="P:General.ModelHttp.Authorization.SystemMemorySize">
-            <summary>
-            Получает или задаёт объём оперативной памяти устройства в мегабайтах.
-            </summary>
-            <value>Размер ОЗУ в мегабайтах (например, 16384 для 16 ГБ).</value>
-        </member>
-        <member name="P:General.ModelHttp.Authorization.GraphicsDeviceName">
-            <summary>
-            Получает или задаёт название графического устройства.
-            </summary>
-            <value>Модель видеокарты или встроенного GPU.</value>
-        </member>
-        <member name="P:General.ModelHttp.Authorization.GraphicsMemorySize">
-            <summary>
-            Получает или задаёт объём видеопамяти в мегабайтах.
-            </summary>
-            <value>Размер видеопамяти (VRAM) в МБ.</value>
-        </member>
-        <member name="P:General.ModelHttp.Authorization.DeviceUniqueIdentifier">
-            <summary>
-            Получает или задаёт уникальный идентификатор устройства.
-            </summary>
-            <value>Уникальная строка, идентифицирующая устройство (например, IMEI, UUID).</value>
-        </member>
-        <member name="P:General.ModelHttp.Authorization.SystemInfo_supportsInstancing">
-            <summary>
-            Получает или задаёт признак поддержки графической системой инстансинга.
-            </summary>
-            <value><c>true</c>, если поддерживается; иначе <c>false</c>.</value>
-        </member>
-        <member name="P:General.ModelHttp.Authorization.SystemInfo_npotSupport">
-            <summary>
-            Получает или задаёт информацию о поддержке текстур с размерами, не являющимися степенью двойки (NPOT).
-            </summary>
-            <value>Строка, описывающая уровень поддержки NPOT (например, 'Full', 'Restricted', 'None').</value>
-        </member>
         <member name="T:General.StringCapsule">
             <summary>
             Класс-оболочка (капсула) для хранения строкового значения.
@@ -390,17 +400,6 @@
             </summary>
             <param name="s"></param>
             <returns></returns>
-        </member>
-        <member name="M:General.StringExt.IsEmpty(System.String)">
-            <summary>
-            Проверяет, является ли строка <see langword="null"/>, пустой (<see cref="F:System.String.Empty"/>) или содержит только пробельные символы.
-            Является оберткой для <see cref="M:System.String.IsNullOrWhiteSpace(System.String)"/>.
-            </summary>
-            <param name="s">Строка для проверки.</param>
-            <returns>
-            <see langword="true"/>, если строка является <see langword="null"/>, пустой или состоит только из пробельных символов;
-            в противном случае — <see langword="false"/>.
-            </returns>
         </member>
         <member name="M:General.StringExt.ToUpper1Char(System.String)">
             <summary>

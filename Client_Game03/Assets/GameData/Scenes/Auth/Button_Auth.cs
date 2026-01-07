@@ -23,8 +23,7 @@ namespace Assets.GameData.Scenes.Auth
         {
            
             GameMessage.ShowLocale(L.Info.CheckingServerAvailability, false);
-            bool serverAvailable = await GameServerPinger.Ping();
-            if (!serverAvailable)
+            if (!await GameServerPinger.PingAsync())
             {
                 GameMessage.ShowLocale(L.Error.Server.Unavailable, true);
                 return;
@@ -89,7 +88,7 @@ namespace Assets.GameData.Scenes.Auth
                 string json = JsonConvert.SerializeObject(payload);
 
                 string jwtToken = await G.Game.JwtToken.GetTokenAsync(json, CancellationTokenManager.Create("G.Game.JwtToken.GetTokenAsync"));
-                if (jwtToken.IsEmpty())
+                if (string.IsNullOrWhiteSpace(jwtToken))
                 {
                     GameMessage.ShowLocale(L.Error.Server.InvalidResponse, true);
                     return;

@@ -92,7 +92,7 @@ namespace Assets.GameData.Scripts
         /// </summary>
         public static void Show(string message, bool buttonActiveClose, bool yesNoDialog = false)
         {
-            if (message.IsEmpty())
+            if (string.IsNullOrWhiteSpace(message))
             {
                 Debug.Log("Сообщение не может быть пустым.");
                 message = string.Empty;

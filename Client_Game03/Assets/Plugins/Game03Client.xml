@@ -4,37 +4,6 @@
         <name>Game03Client</name>
     </assembly>
     <members>
-        <member name="P:Game03Client.DTO.Dice.Count">
-            <summary> Количество бросаемых кубиков. </summary>
-        </member>
-        <member name="P:Game03Client.DTO.Dice.Sizes">
-            <summary> Размер кубика (число граней). </summary>
-        </member>
-        <member name="P:Game03Client.DTO.Dice.Modificator">
-            <summary> Модификатор к броску кубиков. </summary>
-        </member>
-        <member name="T:Game03Client.DTO.DtoBaseEquipment">
-            <summary> Представляет базовую сущность предмета. </summary>
-        </member>
-        <member name="M:Game03Client.DTO.DtoBaseEquipment.#ctor(System.Int32,System.String,System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean,System.String)">
-            <summary> Представляет базовую сущность предмета. </summary>
-        </member>
-        <member name="T:Game03Client.DTO.DtoBaseHero">
-            <summary> Представляет базовую сущность игрового героя с основными характеристиками. </summary>
-        </member>
-        <member name="M:Game03Client.DTO.DtoBaseHero.#ctor(System.Int32,System.String,System.Int32,Game03Client.DTO.Dice,Game03Client.DTO.Dice)">
-            <summary> Представляет базовую сущность игрового героя с основными характеристиками. </summary>
-        </member>
-        <member name="T:Game03Client.DTO.DtoCollectionHero">
-            <summary>
-            Герой из коллекции игрока.
-            </summary>
-        </member>
-        <member name="M:Game03Client.DTO.DtoCollectionHero.#ctor(System.Guid,System.Guid,Game03Client.DTO.DtoBaseHero,System.String,System.Int32,System.Int64,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int64)">
-            <summary>
-            Герой из коллекции игрока.
-            </summary>
-        </member>
         <member name="T:Game03Client.Game03">
             <summary>
             Класс содержащий логику и веб взаимодействие игрового клиента.
@@ -97,21 +66,6 @@
             <param name="loggerCallbackInfo"></param>
             <param name="configure"></param>
             <returns></returns>
-        </member>
-        <member name="T:Game03Client.GameData.GameDataProvider">
-            <summary>
-            Реализация <see cref="!:IGameData"/>, предоставляющая функциональность для
-            загрузки и доступа к глобальным игровым данным, таким как список героев.
-            </summary>
-        </member>
-        <member name="M:Game03Client.GameData.GameDataProvider.#ctor(Game03Client.HttpRequester.HttpRequesterProvider)">
-            <summary>
-            Реализация <see cref="!:IGameData"/>, предоставляющая функциональность для
-            загрузки и доступа к глобальным игровым данным, таким как список героев.
-            </summary>
-        </member>
-        <member name="M:Game03Client.GameData.GameDataProvider.LoadGameData(System.Threading.CancellationToken,System.String)">
-            <inheritdoc/>
         </member>
         <member name="T:Game03Client.GameLanguage">
             <summary>
@@ -294,15 +248,11 @@
             <param name="message"></param>
             <returns></returns>
         </member>
-        <member name="T:General.GameEntities.DtoCollectionEquipment">
+        <member name="M:Game03Client.WebSocketClient.WebSocketClientProvider.DisconnectAsync">
             <summary>
-            Предмет экипировки из коллекции игрока. (MongoDb).
+            Корректно отключает клиента от сервера.
             </summary>
-        </member>
-        <member name="M:General.GameEntities.DtoCollectionEquipment.#ctor(System.String,System.Guid,Game03Client.DTO.DtoBaseEquipment,System.String,System.Int64,System.Int64,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
-            <summary>
-            Предмет экипировки из коллекции игрока. (MongoDb).
-            </summary>
+            <returns>Задача асинхронного отключения.</returns>
         </member>
     </members>
 </doc>

@@ -94,7 +94,7 @@ namespace Assets.GameData.Scripts.Redactor
             }
 
             string extensionFile = Path.GetExtension(assetPath);
-            if (!extensionFile.IsEmpty() && extensionFile.Length < assetPathInput.Length && extensionFile.ToLower() == ".jpg")
+            if (!string.IsNullOrWhiteSpace(extensionFile) && extensionFile.Length < assetPathInput.Length && extensionFile.ToLower() == ".jpg")
             {
                 assetPathInput = assetPathInput[..^extensionFile.Length];
             }

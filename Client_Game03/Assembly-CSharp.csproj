@@ -10,6 +10,7 @@
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
   <ItemGroup>
     <ProjectCapability Include="Unity" />
+    <ProjectCapability Include="EnableOnDemandExcludedFolderLoading" />
   </ItemGroup>
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -35,7 +36,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <UnityProjectGenerator>Package</UnityProjectGenerator>
-    <UnityProjectGeneratorVersion>2.0.25</UnityProjectGeneratorVersion>
+    <UnityProjectGeneratorVersion>2.0.26</UnityProjectGeneratorVersion>
     <UnityProjectGeneratorStyle>SDK</UnityProjectGeneratorStyle>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
@@ -55,6 +56,7 @@
     <Compile Include="Assets\GameData\Scenes\Auth\Init_Auth.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\Init_Collection.cs" />
     <Compile Include="Assets\GameData\Scripts\ButtonClose_Click_MoveToMainMenu.cs" />
+    <Compile Include="Assets\GameData\Scripts\SecureStorageProvider.cs" />
     <Compile Include="Assets\GameData\Prefabs\Buttons\Button_01_Init.cs" />
     <Compile Include="Assets\GameData\Scripts\LoggerException.cs" />
     <Compile Include="Assets\GameData\Prefabs\InputFields\InputField.cs" />
@@ -88,8 +90,10 @@
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
+    <None Include="Assets\Packages\System.Security.Cryptography.ProtectedData.10.0.1\THIRD-PARTY-NOTICES.TXT" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile-2-Pass.shader" />
     <None Include="Assets\Packages\Microsoft.Extensions.DependencyInjection.Abstractions.10.0.0\useSharedDesignerContext.txt" />
+    <None Include="Assets\Packages\System.Security.Cryptography.ProtectedData.10.0.1\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
     <None Include="Assets\Packages\Microsoft.Extensions.DependencyInjection.Abstractions.10.0.0\lib\netstandard2.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
@@ -100,6 +104,7 @@
     <None Include="Assets\TextMesh Pro\Shaders\SDFFunctions.hlsl" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
+    <None Include="Assets\Packages\System.Security.Cryptography.ProtectedData.10.0.1\useSharedDesignerContext.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
@@ -114,6 +119,7 @@
     <None Include="Assets\Packages\Microsoft.Extensions.DependencyInjection.Abstractions.10.0.0\THIRD-PARTY-NOTICES.TXT" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
     <None Include="Assets\Packages\Microsoft.Extensions.DependencyInjection.10.0.0\lib\netstandard2.1\Microsoft.Extensions.DependencyInjection.dll" />
+    <None Include="Assets\Packages\System.Security.Cryptography.ProtectedData.10.0.1\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.xml" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
@@ -723,6 +729,10 @@
     </Reference>
     <Reference Include="Game03Client">
       <HintPath>Assets\Plugins\Game03Client.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.ProtectedData">
+      <HintPath>Assets\Packages\System.Security.Cryptography.ProtectedData.10.0.1\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="netstandard">

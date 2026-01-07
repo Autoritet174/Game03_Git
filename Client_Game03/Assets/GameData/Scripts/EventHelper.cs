@@ -26,9 +26,9 @@ public static class EventHelper
     }
 
     /// <summary>
-    /// Метод для навешивания события клика на GameObject.
+    /// Метод для навешивания события клика на GameObject или его Button компонент. Удаляет все другие Listener.
     /// </summary>
-    public static void AddClickEvent(this GameObject gameObject, Func<UniTask> onClick, bool useButtonComponent = true)
+    public static void SetClickEvent(this GameObject gameObject, Func<UniTask> onClick, bool useButtonComponent)
     {
         if (gameObject == null)
         {
@@ -48,9 +48,9 @@ public static class EventHelper
         }
         else
         {
-            if (!gameObject.TryGetComponent(out ButtonClickHandler clickHandler))
+            if (!gameObject.TryGetComponent(out ButtonClickHandlerCustom clickHandler))
             {
-                clickHandler = gameObject.AddComponent<ButtonClickHandler>();
+                clickHandler = gameObject.AddComponent<ButtonClickHandlerCustom>();
             }
 
             clickHandler.SetupClickEvent(onClick);
@@ -148,7 +148,7 @@ internal class ButtonHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointe
 }
 
 // Класс-обработчик для кликов (используется как альтернатива Button)
-internal class ButtonClickHandler : MonoBehaviour, IPointerClickHandler
+internal class ButtonClickHandlerCustom : MonoBehaviour, IPointerClickHandler
 {
     private Func<UniTask> onClick;
 

@@ -2,6 +2,7 @@ using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using Game03Client.PlayerCollection;
 using General;
+using General.DTO.Entities.Collection;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using L = General.LocalizationKeys;
 
 /// <summary>
 /// Управляет сворачиванием/разворачиванием группы UI-элементов (ячеек)
@@ -108,7 +110,7 @@ public class GroupDivider : MonoBehaviour
         //DividerButton
         DividerButton_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _DividerButton_GameObject.transform);
         Transform cellsContainer_Transform = _CellsContainer_GameObject.transform;
-        if (group_name.IsEmpty())
+        if (string.IsNullOrWhiteSpace(group_name))
         {
             DividerButton_TextMeshProUGUI.text = "---No Group---";
             DividerButton_TextMeshProUGUI.fontStyle = FontStyles.Italic;
@@ -162,7 +164,9 @@ public class GroupDivider : MonoBehaviour
                     {
                         1 => AddressableCache.Heroes[$"Heroes-{collectionElement.Name}_face"],
                         2 => AddressableCache.Equipments[$"Equipments-{tagUnique}{collectionElement.Name}_128"],
-                        3 => _Init_Collection.PanelSelectedHeroIsActive ? AddressableCache.Equipments[$"Equipments-{tagUnique}{collectionElement.Name}_128"] : AddressableCache.Heroes[$"Heroes-{collectionElement.Name}_face"],
+                        3 => _Init_Collection.PanelSelectedHeroIsActive
+                                ? AddressableCache.Equipments[$"Equipments-{tagUnique}{collectionElement.Name}_128"]
+                                : AddressableCache.Heroes[$"Heroes-{collectionElement.Name}_face"],
                         _ => throw new Exception("CollectionMode > 2"),
                     };
                     imageCollectionElement.preserveAspect = true; // Сохраняет пропорции изображения
@@ -176,17 +180,24 @@ public class GroupDivider : MonoBehaviour
 
                         async UniTask ShowHero()
                         {
-                            _Init_Collection.PanelSelectedHero_GameObject.SetActive(true);
+                            if (collectionElement.TypeCollectionElement != TypeCollectionElement.Hero)
+                            {
+                                throw new Exception();
+                            }
+
+                            _Init_Collection.PanelSelectedHeroSetActive(true, false);
                             string name = collectionElement.Name;
                             _Init_Collection.SelectedHeroTop_TextMeshProUGUI.text = name.ToUpper1Char();
                             _Init_Collection.SelectedHero_Image.sprite = AddressableCache.Heroes[$"Heroes-{name}"];
                             _Init_Collection.SelectedHero_Image.preserveAspect = true; // Сохраняет пропорции изображения
 
                             _Init_Collection.SelectedHeroRarity_Image.sprite = AddressableCache.Rarityes[collectionElement.Rarity];
+                            _Init_Collection.SelectedHeroId = collectionElement.Id;
                         }
+
                         async UniTask ShowEquipment()
                         {
-                            _Init_Collection.PanelSelectedEquipment_GameObject.SetActive(true);
+                            _Init_Collection.PanelSelectedEquipmentSetActive(true, false);
                             string name = collectionElement.Name;
                             _Init_Collection.SelectedEquipmentTop_TextMeshProUGUI.text = name.ToUpper1Char();
 
@@ -195,6 +206,82 @@ public class GroupDivider : MonoBehaviour
 
                             _Init_Collection.SelectedEquipment_Image.preserveAspect = true; // Сохраняет пропорции изображения
                             _Init_Collection.SelectedEquipmentRarity_Image.sprite = AddressableCache.Rarityes[collectionElement.Rarity];
+                            _Init_Collection.SelectedEquipmentId = collectionElement.Id;
+
+                            _Init_Collection.ButtonTakeOnOff_RectTransform.gameObject.SetClickEvent(async () =>
+                            {
+                                if (collectionElement.TypeCollectionElement != TypeCollectionElement.Equipment)
+                                {
+                                    throw new Exception();
+                                }
+
+                                IEnumerable<DtoEquipment> equipments = G.Game.Collection.GetCollectionEquipmentsFromCache();
+                                DtoEquipment equipment = equipments.FirstOrDefault(a => a.Id == collectionElement.Id);
+                                if (equipment == null || _Init_Collection.SelectedHeroId == Guid.Empty)
+                                {
+                                    return;
+                                }
+
+                                DtoHero hero = G.Game.Collection.GetCollectionHeroesFromCache().FirstOrDefault(a => a.Id == _Init_Collection.SelectedHeroId);
+                                if (hero == null)
+                                {
+                                    return;
+                                }
+
+                                if (equipment.HeroId != null && equipment.SlotId != null)
+                                {
+                                    _Init_Collection.ButtonTakeOnOff_TextMeshProUGUI.text = G.Game.LocalizationManager.GetValue(L.UI.Button.TakeOff);
+                                }
+                                else if (equipment.HeroId == null && equipment.SlotId == null)
+                                {
+                                    // Предмет ни на кого не одет
+                                    _Init_Collection.ButtonTakeOnOff_TextMeshProUGUI.text = G.Game.LocalizationManager.GetValue(L.UI.Button.TakeOn);
+                                    int slotTypeId = equipment.BaseEquipment.EquipmentType.SlotTypeId;
+                                    switch (slotTypeId)
+                                    {
+                                        case 1://Оружие
+                                            break;
+                                        case 14://Кольцо
+                                            break;
+                                        case 16://Аксессуар
+                                            break;
+                                        default:
+                                            {
+                                                int slotId = G.Game.GameData.Container.Slots.First(a=>a.SlotTypeId == slotTypeId).Id;
+                                                DtoEquipment equipmentOnHero = equipments.FirstOrDefault(a => a.SlotId == slotId && a.HeroId == hero.Id);
+                                                if (equipmentOnHero != null)
+                                                {
+                                                    // слот занят, через вебсокет снимаем
+
+                                                }
+                                                else
+                                                {
+                                                    
+
+                                                }
+                                                // надеваем экипировку на героя
+                                                // через вебсокет команда на сервер, на сервере такая же проверка так как не верим клиенту
+                                                // ждем ответ от сервера с токеном на 3 секунды
+                                                // по ответу ориентируемся одели шмотку или нет
+                                                break;
+                                            }
+                                    }
+
+
+                                }
+                                else
+                                {
+                                    throw new Exception();
+                                }
+
+
+                                string slotName = equipment.BaseEquipment.EquipmentType.SlotType.Name;
+                                if (Init_Collection.Slots1by1.Any(a => string.Compare(slotName, a, StringComparison.InvariantCultureIgnoreCase) == 0))
+                                {
+
+                                }
+
+                            }, true);
                         }
 
 
@@ -208,20 +295,14 @@ public class GroupDivider : MonoBehaviour
                                 switch (collectionElement.TypeCollectionElement)
                                 {
                                     case TypeCollectionElement.Hero:
-                                        _Init_Collection.PanelSelectedHero_GameObject.SetActive(true);
-                                        _Init_Collection.PanelSelectedHeroIsActive = true;
-                                        _Init_Collection.OnResizeWindow();
+                                        _Init_Collection.PanelSelectedHeroSetActive(true, true);
                                         await ShowHero();
                                         await _Init_Collection.InstantiateCollectionAsync();
-                                        //_Init_Collection.OnResizeWindow();
                                         break;
                                     case TypeCollectionElement.Equipment:
                                         if (!_Init_Collection.PanelSelectedEquipmentIsActive)
                                         {
-                                            _Init_Collection.PanelSelectedEquipment_GameObject.SetActive(true);
-                                            _Init_Collection.PanelSelectedEquipmentIsActive = true;
-                                            _Init_Collection.OnResizeWindow();
-                                            //_Init_Collection.OnResizeWindow();
+                                            _Init_Collection.PanelSelectedEquipmentSetActive(true, true);
                                         }
                                         await ShowEquipment();
 
@@ -245,7 +326,7 @@ public class GroupDivider : MonoBehaviour
                         imageRarity.sprite = AddressableCache.Rarityes[collectionElement.Rarity];
                         await UniTask.Yield();
                     }
-                    EventHelper.AddClickEvent(_prefabIconCollectionElement, OnClick, false);
+                    EventHelper.SetClickEvent(_prefabIconCollectionElement, OnClick, false);
                     EventHelper.AddHoverEvents(_prefabIconCollectionElement, OnPointerEnter, OnPointerExit);
 
                 }
