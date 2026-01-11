@@ -1,6 +1,5 @@
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
-using Game03Client.PlayerCollection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,7 +53,7 @@ public class Init_Collection : MonoBehaviour
             _RectTransform = GameObjectFinder.FindByName<RectTransform>($"PanelSlot{name}{suffix}", parent);
             _TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("LabelSlot", _RectTransform);
             string lKey = L.UI.Label.Slot.GetKey(name);
-            string text = G.Game.LocalizationManager.GetValue(lKey);
+            string text = Game03Client.LocalizationManager.GetValue(lKey);
             if (suffix != "")
             {
                 text += " " + suffix;
@@ -213,9 +212,9 @@ public class Init_Collection : MonoBehaviour
         _TabButtonHeroes = new("ButtonHeroes (id=40jhb51a)", "Text (TMP) (id=wl92ls1m)", OnClickHeroes);
         _TabButtonEquipment = new("ButtonEquipment (id=k5hqeyat)", "Text (TMP) (id=cklw2id1)", OnClickEquipment);
         _TabButtonChangingEquipment = new("ButtonChangingEquipment (id=4r13hk1v)", "Text (TMP) (id=nzouq7ws)", OnClickChangingEquipment);
-        _TabButtonHeroes.SetText($"{G.Game.LocalizationManager.GetValue(L.UI.Button.Heroes)} ({G.Game.Collection.GetCountHeroes()})");
-        _TabButtonEquipment.SetText($"{G.Game.LocalizationManager.GetValue(L.UI.Button.Equipment)} ({G.Game.Collection.GetCountEquipments()})");
-        _TabButtonChangingEquipment.SetText($"{G.Game.LocalizationManager.GetValue(L.UI.Button.ChangingEquipment)}");
+        _TabButtonHeroes.SetText($"{Game03Client.LocalizationManager.GetValue(L.UI.Button.Heroes)} ({Game03Client.Collection.CollectionProvider.GetCountHeroes()})");
+        _TabButtonEquipment.SetText($"{Game03Client.LocalizationManager.GetValue(L.UI.Button.Equipment)} ({Game03Client.Collection.CollectionProvider.GetCountEquipments()})");
+        _TabButtonChangingEquipment.SetText($"{Game03Client.LocalizationManager.GetValue(L.UI.Button.ChangingEquipment)}");
 
         // Изображение заднего фона
         _Background_Image = GameObjectFinder.FindByName<Image>("Image_Background (id=688x18dt)");
@@ -243,7 +242,7 @@ public class Init_Collection : MonoBehaviour
         ButtonTakeOnOff_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonTakeOnOffText (id=xfqoucqj)");
         ButtonSell_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonSell (id=sp1vha3z)");
         ButtonSell_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonSellText (id=b68za6o5)");
-        ButtonSell_TextMeshProUGUI.text = G.Game.LocalizationManager.GetValue(L.UI.Button.Sell);
+        ButtonSell_TextMeshProUGUI.text = Game03Client.LocalizationManager.GetValue(L.UI.Button.Sell);
 
         SelectedHero_Image = GameObjectFinder.FindByName<Image>("ImageHeroFull (id=m5kn2f6p)");
         SelectedHeroRarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity (id=xami3s9q)");
@@ -324,11 +323,11 @@ public class Init_Collection : MonoBehaviour
 
         _PanelSelectedHeroBottomTabButton1_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonTab1 (id=uiufd2wv)");
         _PanelSelectedHeroBottomTabButton1_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonTab1Text (id=lf8q2aas)");
-        _PanelSelectedHeroBottomTabButton1_TextMeshProUGUI.SetText(G.Game.LocalizationManager.GetValue(L.UI.Button.Equipment));
+        _PanelSelectedHeroBottomTabButton1_TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(L.UI.Button.Equipment));
 
         _PanelSelectedEquipmentBottomTabButton1_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonTab1 (id=n94o21t8)");
         _PanelSelectedEquipmentBottomTabButton1_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonTab1Text (id=yjb1gqbc)");
-        _PanelSelectedEquipmentBottomTabButton1_TextMeshProUGUI.SetText(G.Game.LocalizationManager.GetValue(L.UI.Button.Item));
+        _PanelSelectedEquipmentBottomTabButton1_TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(L.UI.Button.Item));
 
         _PanelSelectedHeroBottomTabButton2_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonTab2 (id=kzury0kd)");
         _PanelSelectedHeroBottomTabButton2_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonTab2Text (id=6bjw6hi4)");
@@ -430,12 +429,12 @@ public class Init_Collection : MonoBehaviour
     {
         int c = CollectionMode switch
         {
-            1 => G.Game.Collection.GetCountHeroes(),
-            2 => G.Game.Collection.GetCountEquipments(),
-            3 => PanelSelectedHeroIsActive ? G.Game.Collection.GetCountEquipments() : G.Game.Collection.GetCountHeroes(),
+            1 => Game03Client.Collection.CollectionProvider.GetCountHeroes(),
+            2 => Game03Client.Collection.CollectionProvider.GetCountEquipments(),
+            3 => PanelSelectedHeroIsActive ? Game03Client.Collection.CollectionProvider.GetCountEquipments() : Game03Client.Collection.CollectionProvider.GetCountHeroes(),
             _ => throw new Exception(),
         };
-        pageMax = (c / PlayerCollectionProvider.PAGE_SIZE) + (c % PlayerCollectionProvider.PAGE_SIZE > 0 ? 1 : 0);
+        pageMax = (c / Game03Client.Collection.CollectionProvider.PAGE_SIZE) + (c % Game03Client.Collection.CollectionProvider.PAGE_SIZE > 0 ? 1 : 0);
         if (pageMax < 1)
         {
             pageMax = 1;
@@ -481,7 +480,7 @@ public class Init_Collection : MonoBehaviour
             await UniTask.Yield();
 
 
-            int max = PlayerCollectionProvider.PAGE_SIZE * pageCurrent;
+            int max = Game03Client.Collection.CollectionProvider.PAGE_SIZE * pageCurrent;
 
             UpdatePageMax();
             _GroupDividers.Clear();
@@ -490,12 +489,12 @@ public class Init_Collection : MonoBehaviour
             {
                 if (pageCurrent >= pageMax)
                 {
-                    max = G.Game.Collection.GetCountHeroes();
+                    max = Game03Client.Collection.CollectionProvider.GetCountHeroes();
                 }
 
-                IEnumerable<GroupCollectionElement> grouped = G.Game.Collection.GetCollectionHeroesGroupedByGroupNames(pageCurrent);
-                IOrderedEnumerable<GroupCollectionElement> sorted = grouped.OrderByDescending(static a => a.Priority);
-                foreach (GroupCollectionElement item in sorted)
+                IEnumerable<Game03Client.Collection.GroupCollectionElement> grouped = Game03Client.Collection.CollectionProvider.GetCollectionHeroesGroupedByGroupNames(pageCurrent);
+                IOrderedEnumerable<Game03Client.Collection.GroupCollectionElement> sorted = grouped.OrderByDescending(static a => a.Priority);
+                foreach (Game03Client.Collection.GroupCollectionElement item in sorted)
                 {
                     if (item.List.Count() > 0)
                     {
@@ -511,12 +510,12 @@ public class Init_Collection : MonoBehaviour
             {
                 if (pageCurrent >= pageMax)
                 {
-                    max = G.Game.Collection.GetCountEquipments();
+                    max = Game03Client.Collection.CollectionProvider.GetCountEquipments();
                 }
 
-                IEnumerable<GroupCollectionElement> grouped = G.Game.Collection.GetCollectionEquipmentesGroupByGroups(pageCurrent);
-                IOrderedEnumerable<GroupCollectionElement> sorted = grouped.OrderByDescending(static a => a.Priority);
-                foreach (GroupCollectionElement item in sorted)
+                IEnumerable<Game03Client.Collection.GroupCollectionElement> grouped = Game03Client.Collection.CollectionProvider.GetCollectionEquipmentesGroupByGroups(pageCurrent);
+                IOrderedEnumerable<Game03Client.Collection.GroupCollectionElement> sorted = grouped.OrderByDescending(static a => a.Priority);
+                foreach (Game03Client.Collection.GroupCollectionElement item in sorted)
                 {
                     if (item.List.Count() > 0)
                     {
@@ -559,7 +558,7 @@ public class Init_Collection : MonoBehaviour
             }
 
 
-            _LabelRangePage_TextMeshProUGUI.text = $"{((pageCurrent - 1) * PlayerCollectionProvider.PAGE_SIZE) + 1} - {max}";
+            _LabelRangePage_TextMeshProUGUI.text = $"{((pageCurrent - 1) * Game03Client.Collection.CollectionProvider.PAGE_SIZE) + 1} - {max}";
 
             OnResizeWindow();
         }

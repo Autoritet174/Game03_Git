@@ -29,7 +29,7 @@ namespace Assets.GameData.Scripts
         public static async UniTask PreLoadAssets()
         {
             //DateTime start = DateTime.Now;
-            DtoContainerGameData dtoContainer = G.Game.GameData.Container;
+            DtoContainerGameData dtoContainer = Game03Client.GameData.Container;
 
             NullSprite = await Addressables.LoadAssetAsync<Sprite>("Null").ToUniTask();
 

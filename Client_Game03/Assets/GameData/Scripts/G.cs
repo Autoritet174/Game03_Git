@@ -31,7 +31,7 @@ namespace Assets.GameData.Scripts
             }
         }
 
-        public static Game03 Game { get; private set; }
+        //public static Game03 Game { get; private set; }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Initialize_BeforeSceneLoad()
@@ -46,7 +46,7 @@ namespace Assets.GameData.Scripts
                 Value = jsonFile.text,
             };
 
-            Game = Game03.Create(Path.Combine(UnityEngine.Application.dataPath, @"GameData\Config\Main.ini"), capsule, lang, LogError, LogInfo);
+            Game03.Init(Path.Combine(UnityEngine.Application.dataPath, @"GameData\Config\Main.ini"), capsule, LogError, LogInfo);
 
             Application.targetFrameRate = 60;
         }

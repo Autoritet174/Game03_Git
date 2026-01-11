@@ -1,13 +1,10 @@
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using General;
-using Newtonsoft.Json;
 using System;
-using System.Diagnostics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using G = Assets.GameData.Scripts.G;
 using L = General.LocalizationKeys;
 
 namespace Assets.GameData.Scenes.Auth
@@ -17,11 +14,11 @@ namespace Assets.GameData.Scenes.Auth
         private void Start()
         {
             Button button = GameObjectFinder.FindByName<Button>("Button_Login (id=bf6euydu)");
-            button.onClick.AddListener(() => ButtonLoginOnClick().Forget());
+            //button.onClick.AddListener(() => ButtonLoginOnClick().Forget());
+            button.gameObject.SetClickEvent(ButtonLoginOnClick, true);
         }
-        public async UniTask ButtonLoginOnClick()
+        public static async UniTask ButtonLoginOnClick()
         {
-           
             GameMessage.ShowLocale(L.Info.CheckingServerAvailability, false);
             if (!await GameServerPinger.PingAsync())
             {
@@ -59,36 +56,17 @@ namespace Assets.GameData.Scenes.Auth
 
                 passwordString = Game03Client.Password.HashSha512(passwordString);
 
-                // Данные авторизации и характеристики аппаратного устройства
-                General.ModelHttp.Authorization payload = new(
-                    emailString,
-                    passwordString,
-                    (TimeZoneInfo.Local.BaseUtcOffset.Hours * 60) + TimeZoneInfo.Local.BaseUtcOffset.Minutes,
-                    System.Environment.UserName,
-                    SystemInfo.deviceUniqueIdentifier,
-                    SystemInfo.deviceModel,
-                    SystemInfo.deviceType.ToString(),
-                    SystemInfo.operatingSystem,
-                    SystemInfo.processorType,
-                    SystemInfo.processorCount,
-                    SystemInfo.systemMemorySize,
-                    SystemInfo.graphicsDeviceName,
-                    SystemInfo.graphicsMemorySize,
-                    SystemInfo.supportsInstancing,
-                    SystemInfo.npotSupport.ToString()
-                );
-
                 // Блокируем кнопку и выводим сообщение непосредственно перед await
                 buttonLogin.interactable = false;
                 GameMessage.ShowLocale(L.Info.Authentication, false);
 
-                // Занулить токен
-                G.Game.JwtToken.token = null;
+                await Game03Client.Auth.RefreshTokensAsync(
+                    AuthManager.GetDtoRequestAuthReg(emailString, passwordString),
+                    CancellationTokenManager.Create("Game03Client.Auth.RefreshTokensAsync"));
 
-                string json = JsonConvert.SerializeObject(payload);
+                string accessToken = Game03Client.Auth.Dto?.AccessToken;
 
-                string jwtToken = await G.Game.JwtToken.GetTokenAsync(json, CancellationTokenManager.Create("G.Game.JwtToken.GetTokenAsync"));
-                if (string.IsNullOrWhiteSpace(jwtToken))
+                if (string.IsNullOrWhiteSpace(accessToken))
                 {
                     GameMessage.ShowLocale(L.Error.Server.InvalidResponse, true);
                     return;
@@ -98,19 +76,19 @@ namespace Assets.GameData.Scenes.Auth
 
 
                 // Открываем веб сокет
-                await G.Game.WebSocketClient.ConnectAsync(CancellationTokenManager.Create("G.Game.WebSocketClient.ConnectAsync"));
-                if (!G.Game.WebSocketClient.Connected)
+                await Game03Client.WebSocketClient.ConnectAsync(CancellationTokenManager.Create("Game03Client.WebSocketClient.ConnectAsync"));
+                if (!Game03Client.WebSocketClient.Connected)
                 {
                     GameMessage.ShowLocale(L.Error.Server.OpeningWebSocketFailed, true);
                     return;
                 }
 
-                await G.Game.WebSocketClient.SendMessageAsync("Да это жёстко!");
-                
+                await Game03Client.WebSocketClient.SendMessageAsync("Да это жёстко!");
+
 
                 // Загрузка игровых данных не связанных с конкретным пользователем
                 GameMessage.ShowLocale(L.Info.LoadingData, false);
-                await G.Game.GameData.LoadGameData(CancellationTokenManager.Create("G.Game.GameData.LoadListAllHeroesAsync"), jwtToken);
+                await Game03Client.GameData.LoadGameDataAsync(accessToken, CancellationTokenManager.Create("Game03Client.GameData.LoadGameData"));
 
                 // Предзагрузка AdressableAssets героев и редкости
                 //UniTask taskPreload = AddressableCache.PreLoadAssets();
@@ -120,14 +98,16 @@ namespace Assets.GameData.Scenes.Auth
                 GameMessage.ShowLocale(L.Info.LoadingCollection, false);
 
 
-                bool loaded = await G.Game.Collection.LoadAllCollectionFromServerAsync(
-                    CancellationTokenManager.Create("G.Game.Collection.LoadAllCollectionFromServerAsync"), jwtToken);
+                bool loaded = await Game03Client.Collection.CollectionProvider.LoadAllCollectionFromServerAsync(accessToken,
+                    CancellationTokenManager.Create("Game03Client.Collection.CollectionProvider.LoadAllCollectionFromServerAsync"));
                 if (!loaded)
                 {
                     GameMessage.ShowLocale(L.Error.Server.LoadingCollectionFailed, true);
                     return;
                 }
 
+                SecureStorageProvider.SetValue(SecureStorageKey.AccessToken, Game03Client.Auth.Dto?.AccessToken);
+                SecureStorageProvider.SetValue(SecureStorageKey.RefreshToken, Game03Client.Auth.Dto?.RefreshToken);
                 //await taskPreload;
 
                 UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");

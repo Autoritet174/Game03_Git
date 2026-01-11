@@ -4,68 +4,41 @@
         <name>Game03Client</name>
     </assembly>
     <members>
+        <member name="M:Game03Client.Collection.CollectionProvider.GetCollectionHeroesGroupedByGroupNames(System.Int32)">
+            <summary> Получить коллекцию героев сгруппированную по именам групп. </summary>
+        </member>
+        <member name="M:Game03Client.Collection.CollectionProvider.GetCollectionEquipmentesGroupByGroups(System.Int32)">
+            <summary> Получить коллекцию экипировки сгруппированную по именам групп. </summary>
+        </member>
+        <member name="T:Game03Client.Collection.GroupCollectionElement">
+            <summary>
+            Группа элемента коллекции.
+            </summary>
+        </member>
+        <member name="M:Game03Client.Collection.GroupCollectionElement.#ctor(System.String,System.Collections.Generic.IEnumerable{Game03Client.Collection.CollectionElement})">
+            <summary>
+            Группа элемента коллекции.
+            </summary>
+        </member>
+        <member name="P:Game03Client.Collection.GroupCollectionElement.Name">
+            <summary>
+            Возвращает имя группы элемента коллекции.
+            </summary>
+        </member>
+        <member name="P:Game03Client.Collection.GroupCollectionElement.List">
+            <summary>
+            Получает коллекцию, содержащихся в этом экземпляре.
+            </summary>
+        </member>
+        <member name="P:Game03Client.Collection.GroupCollectionElement.Priority">
+            <summary>
+            Возвращает или устанавливает уровень приоритета группы.
+            </summary>
+        </member>
         <member name="T:Game03Client.Game03">
             <summary>
             Класс содержащий логику и веб взаимодействие игрового клиента.
             </summary>
-        </member>
-        <member name="P:Game03Client.Game03.JwtToken">
-            <summary>
-            Провайдер JwtToken.
-            </summary>
-        </member>
-        <member name="P:Game03Client.Game03.IniFile">
-            <summary>
-            Провайдер IniFile.
-            </summary>
-        </member>
-        <member name="P:Game03Client.Game03.HttpRequester">
-            <summary>
-            Провайдер HttpRequester.
-            </summary>
-        </member>
-        <member name="P:Game03Client.Game03.LocalizationManager">
-            <summary>
-            Провайдер LocalizationManager.
-            </summary>
-        </member>
-        <member name="P:Game03Client.Game03.WebSocketClient">
-            <summary>
-            Провайдер LocalizationManager.
-            </summary>
-        </member>
-        <member name="P:Game03Client.Game03.GameData">
-            <summary>
-            Провайдер GameData.
-            </summary>
-        </member>
-        <member name="P:Game03Client.Game03.Collection">
-            <summary>
-            Провайдер Collection.
-            </summary>
-        </member>
-        <member name="M:Game03Client.Game03.#ctor(Microsoft.Extensions.DependencyInjection.ServiceProvider)">
-            <summary>
-            Провайдер Logger.
-            </summary>
-        </member>
-        <member name="M:Game03Client.Game03.DisposeAsync">
-            <summary>
-            Освободить ресурсы.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Game03Client.Game03.Create(System.String,General.StringCapsule,Game03Client.GameLanguage,Game03Client.Logger.LoggerCallbackError,Game03Client.Logger.LoggerCallbackInfo,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})">
-            <summary>
-            Фабрика.
-            </summary>
-            <param name="iniFileFullPath"></param>
-            <param name="stringCapsuleJsonFileData"></param>
-            <param name="languageGame"></param>
-            <param name="loggerCallbackError"></param>
-            <param name="loggerCallbackInfo"></param>
-            <param name="configure"></param>
-            <returns></returns>
         </member>
         <member name="T:Game03Client.GameLanguage">
             <summary>
@@ -113,14 +86,14 @@
             Все языки доступные в игре.
             </summary>
         </member>
-        <member name="M:Game03Client.HttpRequester.HttpRequesterProvider.GetHeadersAsString(System.Net.Http.HttpResponseMessage)">
+        <member name="M:Game03Client.HttpRequester.GetHeadersAsString(System.Net.Http.HttpResponseMessage)">
             <summary>
             Метод для преобразования заголовков в строку
             </summary>
             <param name="response"></param>
             <returns></returns>
         </member>
-        <member name="M:Game03Client.InternetChecker.InternetCheckerProvider.CheckInternetConnectionAsync(System.Threading.CancellationToken)">
+        <member name="M:Game03Client.InternetChecker.CheckInternetConnectionAsync(System.Threading.CancellationToken)">
             <summary>
             Асинхронно проверяет наличие интернет-соединения, пингуя известные DNS-сервера.
             </summary>
@@ -130,125 +103,49 @@
             </remarks>
             <returns>true, если соединение успешно установлено, иначе false.</returns>
         </member>
-        <member name="T:Game03Client.LocalizationManager.LocalizationManagerOptions">
-            <summary>
-            Предоставляет опции для инициализации провайдера локализации.
-            </summary>
-            <param name="jsonFileData">Капсула, содержащая строку с данными локализации в формате JSON.</param>
-            <param name="language">Язык, для которого предназначены данные локализации.</param>
-        </member>
-        <member name="M:Game03Client.LocalizationManager.LocalizationManagerOptions.#ctor(General.StringCapsule,Game03Client.GameLanguage)">
-            <summary>
-            Предоставляет опции для инициализации провайдера локализации.
-            </summary>
-            <param name="jsonFileData">Капсула, содержащая строку с данными локализации в формате JSON.</param>
-            <param name="language">Язык, для которого предназначены данные локализации.</param>
-        </member>
-        <member name="F:Game03Client.LocalizationManager.LocalizationManagerOptions.jsonFileData">
-            <summary>
-            Данные локализации в формате JSON, обернутые в <see cref="T:General.StringCapsule"/>.
-            </summary>
-        </member>
-        <member name="F:Game03Client.LocalizationManager.LocalizationManagerOptions.Language">
-            <summary>
-            Указывает язык, соответствующий загруженным данным.
-            </summary>
-        </member>
-        <member name="T:Game03Client.LocalizationManager.LocalizationManagerProvider">
+        <member name="T:Game03Client.LocalizationManager">
             <summary>
             Реализация провайдера для управления локализацией, загружающая данные из JSON.
             </summary>
         </member>
-        <member name="F:Game03Client.LocalizationManager.LocalizationManagerProvider.localizationManagerOptions">
-            <summary>
-            Опции, содержащие данные локализации в формате JSON.
-            </summary>
-        </member>
-        <member name="M:Game03Client.LocalizationManager.LocalizationManagerProvider.#ctor(Game03Client.LocalizationManager.LocalizationManagerOptions,Game03Client.Logger.LoggerProvider{Game03Client.LocalizationManager.LocalizationManagerProvider})">
-            <summary>
-            Инициализирует новый экземпляр класса <see cref="T:Game03Client.LocalizationManager.LocalizationManagerProvider"/>.
-            </summary>
-            <param name="localizationManagerOptions">Опции локализации, содержащие JSON-строку с данными.</param>
-            <param name="logger">Логер для вызова коллбеков в игре.</param>
-            <exception cref="T:Newtonsoft.Json.JsonReaderException">Вызывается, если JSON-строка в опциях недействительна.</exception>
-        </member>
-        <member name="F:Game03Client.LocalizationManager.LocalizationManagerProvider.localization">
+        <member name="F:Game03Client.LocalizationManager.localization">
             <summary>
             Словарь, хранящий ключи локализации (путь в JSON) и соответствующие им строковые значения.
             </summary>
         </member>
-        <member name="M:Game03Client.LocalizationManager.LocalizationManagerProvider.GetValue(System.String)">
+        <member name="M:Game03Client.LocalizationManager.GetValue(System.String)">
             <summary>
             Получает локализованное строковое значение по ключу.
             </summary>
             <param name="key">Ключ локализации (например, "UI.Menu.StartGame").</param>
             <returns>Локализованная строка, или сам ключ, если значение не найдено.</returns>
         </member>
-        <member name="M:Game03Client.LocalizationManager.LocalizationManagerProvider.GetTextByJObject(Newtonsoft.Json.Linq.JObject)">
+        <member name="M:Game03Client.LocalizationManager.GetTextByJObject(Newtonsoft.Json.Linq.JObject)">
             <summary>
             Получить локализованную строку текста ошибки на основе данных из <see cref="T:Newtonsoft.Json.Linq.JObject"/>.
             </summary>
             <param name="jObject">Объект JSON, содержащий ключ ошибки ("keyError") и дополнительные данные.</param>
             <returns>Локализованная строка ошибки с подставленными данными, или пустая строка, если <paramref name="jObject"/> равен null.</returns>
         </member>
-        <member name="M:Game03Client.Logger.LoggerProvider`1.LogAndThrow(System.String,System.String)">
-            <summary>
-            Отображает сообщение об ошибке и создает новое исключение останавливая выполнение кода.
-            </summary>
-            <param name="message"></param>
-            <param name="keyLocal"></param>
-            <exception cref="T:System.Exception"></exception>
-        </member>
         <member name="M:Game03Client.Password.HashSha512(System.String)">
             <summary>Хэширует пароль SHA512.</summary>
             <param name="password">Пароль пользователя в plaintext.</param>
             <returns>Хэш пароля в формате Base64.</returns>
         </member>
-        <member name="T:Game03Client.PlayerCollection.GroupCollectionElement">
-            <summary>
-            Группа элемента коллекции.
-            </summary>
-        </member>
-        <member name="M:Game03Client.PlayerCollection.GroupCollectionElement.#ctor(System.String,System.Collections.Generic.IEnumerable{Game03Client.PlayerCollection.CollectionElement})">
-            <summary>
-            Группа элемента коллекции.
-            </summary>
-        </member>
-        <member name="P:Game03Client.PlayerCollection.GroupCollectionElement.Name">
-            <summary>
-            Возвращает имя группы элемента коллекции.
-            </summary>
-        </member>
-        <member name="P:Game03Client.PlayerCollection.GroupCollectionElement.List">
-            <summary>
-            Получает коллекцию, содержащихся в этом экземпляре.
-            </summary>
-        </member>
-        <member name="P:Game03Client.PlayerCollection.GroupCollectionElement.Priority">
-            <summary>
-            Возвращает или устанавливает уровень приоритета группы.
-            </summary>
-        </member>
-        <member name="M:Game03Client.PlayerCollection.PlayerCollectionProvider.GetCollectionHeroesGroupedByGroupNames(System.Int32)">
-            <summary> Получить коллекцию героев сгруппированную по именам групп. </summary>
-        </member>
-        <member name="M:Game03Client.PlayerCollection.PlayerCollectionProvider.GetCollectionEquipmentesGroupByGroups(System.Int32)">
-            <summary> Получить коллекцию экипировки сгруппированную по именам групп. </summary>
-        </member>
-        <member name="M:Game03Client.WebSocketClient.WebSocketClientProvider.ReceiveMessagesAsync">
+        <member name="M:Game03Client.WebSocketClient.ReceiveMessagesAsync">
             <summary>
             Приём сообщений от сервера.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Game03Client.WebSocketClient.WebSocketClientProvider.SendMessageAsync(System.String)">
+        <member name="M:Game03Client.WebSocketClient.SendMessageAsync(System.String)">
             <summary>
             Отправить сообщение на сервер.
             </summary>
             <param name="message"></param>
             <returns></returns>
         </member>
-        <member name="M:Game03Client.WebSocketClient.WebSocketClientProvider.DisconnectAsync">
+        <member name="M:Game03Client.WebSocketClient.DisconnectAsync">
             <summary>
             Корректно отключает клиента от сервера.
             </summary>

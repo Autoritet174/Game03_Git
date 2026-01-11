@@ -49,6 +49,7 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Data\Tools\BuildPipeline\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\GameData\Scenes\Auth\AuthManager.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_InBattle.cs" />
     <Compile Include="Assets\GameData\Scenes\AllHeroes\AllHeroesConsts.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_AllHeroes.cs" />
@@ -675,6 +676,10 @@
       <HintPath>Library\PackageCache\com.unity.collections@aea9d3bd5e19\Unity.Collections.LowLevel.ILSupport\Unity.Collections.LowLevel.ILSupport.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Security.Cryptography.ProtectedData">
+      <HintPath>Assets\Packages\System.Security.Cryptography.ProtectedData.10.0.1\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>Library\PackageCache\com.unity.ext.nunit@d8c07649098d\net40\unity-custom\nunit.framework.dll</HintPath>
       <Private>False</Private>
@@ -729,10 +734,6 @@
     </Reference>
     <Reference Include="Game03Client">
       <HintPath>Assets\Plugins\Game03Client.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Security.Cryptography.ProtectedData">
-      <HintPath>Assets\Packages\System.Security.Cryptography.ProtectedData.10.0.1\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="netstandard">

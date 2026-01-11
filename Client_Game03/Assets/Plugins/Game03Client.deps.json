@@ -10,7 +10,6 @@
       "Game03Client/1.0.0": {
         "dependencies": {
           "General": "1.0.0",
-          "Microsoft.Extensions.DependencyInjection": "10.0.1",
           "Newtonsoft.Json": "13.0.4",
           "System.Net.Http": "4.3.4",
           "System.Text.Encodings.Web": "10.0.1",
@@ -26,25 +25,6 @@
           "lib/netstandard2.0/INIFileParser.dll": {
             "assemblyVersion": "2.5.3.0",
             "fileVersion": "2.5.3.0"
-          }
-        }
-      },
-      "Microsoft.Extensions.DependencyInjection/10.0.1": {
-        "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.1"
-        },
-        "runtime": {
-          "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.dll": {
-            "assemblyVersion": "10.0.0.0",
-            "fileVersion": "10.0.125.57005"
-          }
-        }
-      },
-      "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.1": {
-        "runtime": {
-          "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
-            "assemblyVersion": "10.0.0.0",
-            "fileVersion": "10.0.125.57005"
           }
         }
       },
@@ -290,20 +270,6 @@
       "sha512": "sha512-Ht3UqRCqizBPbB5pvQ/yCNZIChY6Cy5nLn7TKIlJzWnf4pbqGKqDO+AY6MDTD+fXgEzzMb64Qzl4/Hy7vEqfLA==",
       "path": "ini-parser-netstandard/2.5.3",
       "hashPath": "ini-parser-netstandard.2.5.3.nupkg.sha512"
-    },
-    "Microsoft.Extensions.DependencyInjection/10.0.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-zerXV0GAR9LCSXoSIApbWn+Dq1/T+6vbXMHGduq1LoVQRHT0BXsGQEau0jeLUBUcsoF/NaUT8ADPu8b+eNcIyg==",
-      "path": "microsoft.extensions.dependencyinjection/10.0.1",
-      "hashPath": "microsoft.extensions.dependencyinjection.10.0.1.nupkg.sha512"
-    },
-    "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-oIy8fQxxbUsSrrOvgBqlVgOeCtDmrcynnTG+FQufcUWBrwyPfwlUkCDB2vaiBeYPyT+20u9/HeuHeBf+H4F/8g==",
-      "path": "microsoft.extensions.dependencyinjection.abstractions/10.0.1",
-      "hashPath": "microsoft.extensions.dependencyinjection.abstractions.10.0.1.nupkg.sha512"
     },
     "Newtonsoft.Json/13.0.4": {
       "type": "package",

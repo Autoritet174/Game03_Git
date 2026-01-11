@@ -1,4 +1,6 @@
 using Assets.GameData.Scripts;
+using Cysharp.Threading.Tasks;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -40,6 +42,74 @@ namespace Assets.GameData.Scenes.Auth
             _initialized = true;
             OnResizeWindow();
 
+            string accessToken = SecureStorageProvider.GetValue(SecureStorageKey.AccessToken);
+            if (string.IsNullOrWhiteSpace(accessToken))
+            {
+
+            }
+            else
+            {
+                bool valid = General.GlobalHelper.IsAccessTokenStillValid(accessToken);
+                if (valid)
+                {
+                    Game03Client.Auth.RefreshTokensAsync().Wait();
+                }
+                else {
+
+                }
+            }
+
+
+
+
+
+            string refreshToken = SecureStorageProvider.GetValue(SecureStorageKey.RefreshToken);
+
+
+
+            
+
+            Debug.Log(valid);
+            if (string.IsNullOrWhiteSpace(refreshToken))
+            {
+
+            }
+            else {
+
+            }
+
+
+            string DecodeJwtPayload(string jwtToken)
+            {
+            try
+            {
+                string[] parts = jwtToken.Split('.');
+                if (parts.Length != 3) throw new Exception("Invalid JWT");
+
+                string payload = parts[1];
+                // Добавляем padding для Base64 (JWT может его опускать)
+                switch (payload.Length % 4)
+                {
+                    case 2: payload += "=="; break;
+                    case 3: payload += "="; break;
+                }
+
+                byte[] bytes = Convert.FromBase64String(payload);
+                string json = System.Text.Encoding.UTF8.GetString(bytes);
+
+                //Debug.Log("JWT Payload JSON: " + json);
+                return json; // Здесь: {"sub":"guid","jti":"...","iat":...,"exp":...}
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError("JWT decode error: " + ex.Message);
+                return null;
+            }
+        }
+
+        // Пример использования
+        string payloadJson = DecodeJwtPayload(accessToken);
+            //Debug.Log(payloadJson);
             //InputManager.Register(KeyCode.Escape, GameExitHandler.ExitGame);
             //InputManager.Register(KeyCode.Return, PressLogin, key2: KeyCode.KeypadEnter);
 
@@ -63,18 +133,14 @@ namespace Assets.GameData.Scenes.Auth
                 OnResizeWindow();
             }
         }
-        private void PressLogin() {
-            _ButtonLogin_Button.onClick?.Invoke();
-        }
 
         private void InitTextLocalization()
         {
-            Game03Client.LocalizationManager.LocalizationManagerProvider locManager = G.Game.LocalizationManager;
-            GameObjectFinder.FindByName<TextMeshProUGUI>("Label_Email (id=ndtil638)").text = locManager.GetValue(L.UI.Label.Email);
-            GameObjectFinder.FindByName<TextMeshProUGUI>("Label_Password (id=e319ahd6)").text = locManager.GetValue(L.UI.Label.Password);
-            GameObjectFinder.FindByName<TextMeshProUGUI>("Text_ButtonLogin (id=wf6fw0y1)").text = locManager.GetValue(L.UI.Button.Login);
-            GameObjectFinder.FindByName<TextMeshProUGUI>("Text_ButtonReg (id=tsuvx5vf)").text = locManager.GetValue(L.UI.Button.Reg);
-            GameObjectFinder.FindByName<TextMeshProUGUI>("Text_ButtonExitGame (id=flb78tua)").text = locManager.GetValue(L.UI.Button.ExitGame);
+            GameObjectFinder.FindByName<TextMeshProUGUI>("Label_Email (id=ndtil638)").text = Game03Client.LocalizationManager.GetValue(L.UI.Label.Email);
+            GameObjectFinder.FindByName<TextMeshProUGUI>("Label_Password (id=e319ahd6)").text = Game03Client.LocalizationManager.GetValue(L.UI.Label.Password);
+            GameObjectFinder.FindByName<TextMeshProUGUI>("Text_ButtonLogin (id=wf6fw0y1)").text = Game03Client.LocalizationManager.GetValue(L.UI.Button.Login);
+            GameObjectFinder.FindByName<TextMeshProUGUI>("Text_ButtonReg (id=tsuvx5vf)").text = Game03Client.LocalizationManager.GetValue(L.UI.Button.Reg);
+            GameObjectFinder.FindByName<TextMeshProUGUI>("Text_ButtonExitGame (id=flb78tua)").text = Game03Client.LocalizationManager.GetValue(L.UI.Button.ExitGame);
         }
 
         private void InitObjects() {
@@ -137,6 +203,10 @@ namespace Assets.GameData.Scenes.Auth
             _ImageBackground_Image.rectTransform.sizeDelta = coefScreen > _ImageBackground_CoefWH
                 ? new Vector2(_width, _width / _ImageBackground_CoefWH)
                 : new Vector2(_height * _ImageBackground_CoefWH, _height);
+        }
+
+        private static async UniTask qwe() {
+
         }
     }
 }

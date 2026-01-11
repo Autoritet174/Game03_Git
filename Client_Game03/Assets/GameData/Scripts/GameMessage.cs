@@ -21,13 +21,13 @@ namespace Assets.GameData.Scripts
         private static bool resultYesNo = false;
 
 
-        private static readonly string textYes = G.Game.LocalizationManager.GetValue(L.UI.Button.Yes);
+        private static readonly string textYes = Game03Client.LocalizationManager.GetValue(L.UI.Button.Yes);
         private static readonly string textYesHover = $"{textYes} [Enter]";
 
-        private static readonly string textNo = G.Game.LocalizationManager.GetValue(L.UI.Button.No);
+        private static readonly string textNo = Game03Client.LocalizationManager.GetValue(L.UI.Button.No);
         private static readonly string textNoHover = $"{textNo} [Escape]";
 
-        private static readonly string textOk = G.Game.LocalizationManager.GetValue(L.UI.Button.Ok);
+        private static readonly string textOk = Game03Client.LocalizationManager.GetValue(L.UI.Button.Ok);
         private static readonly string textOkHover = $"{textOk} [Enter/Escape]";
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Assets.GameData.Scripts
         /// </summary>
         public static async UniTask ShowLocaleAndWaitCloseAsync(string keyLocalization)
         {
-            Show(G.Game.LocalizationManager.GetValue(keyLocalization), true);
+            Show(Game03Client.LocalizationManager.GetValue(keyLocalization), true);
             await UniTask.WaitUntil(() => !_opened);
         }
 
@@ -54,7 +54,7 @@ namespace Assets.GameData.Scripts
         public static async UniTask<bool> ShowLocaleYesNo(string keyLocalization)
         {
             resultYesNo = false;
-            Show(G.Game.LocalizationManager.GetValue(keyLocalization), buttonActiveClose: false, yesNoDialog: true);
+            Show(Game03Client.LocalizationManager.GetValue(keyLocalization), buttonActiveClose: false, yesNoDialog: true);
             await UniTask.WaitUntil(() => !_opened);
             return resultYesNo;
         }
@@ -74,7 +74,7 @@ namespace Assets.GameData.Scripts
         /// </summary>
         public static void ShowLocale(string keyLocalization, bool buttonActive)
         {
-            Show(G.Game.LocalizationManager.GetValue(keyLocalization), buttonActive);
+            Show(Game03Client.LocalizationManager.GetValue(keyLocalization), buttonActive);
         }
 
         /// <summary>

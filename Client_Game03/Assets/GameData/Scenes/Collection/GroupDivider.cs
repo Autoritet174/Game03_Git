@@ -1,6 +1,6 @@
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
-using Game03Client.PlayerCollection;
+using Game03Client.Collection;
 using General;
 using General.DTO.Entities.Collection;
 using Newtonsoft.Json.Linq;
@@ -215,14 +215,14 @@ public class GroupDivider : MonoBehaviour
                                     throw new Exception();
                                 }
 
-                                IEnumerable<DtoEquipment> equipments = G.Game.Collection.GetCollectionEquipmentsFromCache();
+                                IEnumerable<DtoEquipment> equipments = CollectionProvider.GetCollectionEquipmentsFromCache();
                                 DtoEquipment equipment = equipments.FirstOrDefault(a => a.Id == collectionElement.Id);
                                 if (equipment == null || _Init_Collection.SelectedHeroId == Guid.Empty)
                                 {
                                     return;
                                 }
 
-                                DtoHero hero = G.Game.Collection.GetCollectionHeroesFromCache().FirstOrDefault(a => a.Id == _Init_Collection.SelectedHeroId);
+                                DtoHero hero = CollectionProvider.GetCollectionHeroesFromCache().FirstOrDefault(a => a.Id == _Init_Collection.SelectedHeroId);
                                 if (hero == null)
                                 {
                                     return;
@@ -230,12 +230,12 @@ public class GroupDivider : MonoBehaviour
 
                                 if (equipment.HeroId != null && equipment.SlotId != null)
                                 {
-                                    _Init_Collection.ButtonTakeOnOff_TextMeshProUGUI.text = G.Game.LocalizationManager.GetValue(L.UI.Button.TakeOff);
+                                    _Init_Collection.ButtonTakeOnOff_TextMeshProUGUI.text = Game03Client.LocalizationManager.GetValue(L.UI.Button.TakeOff);
                                 }
                                 else if (equipment.HeroId == null && equipment.SlotId == null)
                                 {
                                     // Предмет ни на кого не одет
-                                    _Init_Collection.ButtonTakeOnOff_TextMeshProUGUI.text = G.Game.LocalizationManager.GetValue(L.UI.Button.TakeOn);
+                                    _Init_Collection.ButtonTakeOnOff_TextMeshProUGUI.text = Game03Client.LocalizationManager.GetValue(L.UI.Button.TakeOn);
                                     int slotTypeId = equipment.BaseEquipment.EquipmentType.SlotTypeId;
                                     switch (slotTypeId)
                                     {
@@ -247,7 +247,7 @@ public class GroupDivider : MonoBehaviour
                                             break;
                                         default:
                                             {
-                                                int slotId = G.Game.GameData.Container.Slots.First(a=>a.SlotTypeId == slotTypeId).Id;
+                                                int slotId = Game03Client.GameData.Container.Slots.First(a=>a.SlotTypeId == slotTypeId).Id;
                                                 DtoEquipment equipmentOnHero = equipments.FirstOrDefault(a => a.SlotId == slotId && a.HeroId == hero.Id);
                                                 if (equipmentOnHero != null)
                                                 {

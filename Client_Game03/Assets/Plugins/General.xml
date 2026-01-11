@@ -113,7 +113,7 @@
         <member name="M:General.DTO.Entities.GameData.DtoBaseHero.#ctor(System.Int32,System.String,System.Int32,System.Boolean,System.Int32,General.DTO.Dice,General.DTO.Dice)">
             <summary> Data Transfer Object. Представляет базовую сущность игрового героя с основными характеристиками. </summary>
         </member>
-        <member name="T:General.DTO.RestRequest.DtoRequestAuthentication">
+        <member name="T:General.DTO.RestRequest.DtoRequestAuthReg">
             <summary>
             Класс, содержащий данные для авторизации пользователя и системную информацию об устройстве.
             </summary>
@@ -122,7 +122,7 @@
             Все поля обязательны для заполнения при создании экземпляра.
             </remarks>
             <remarks>
-            Инициализирует новый экземпляр класса <see cref="T:General.DTO.RestRequest.DtoRequestAuthentication"/>.
+            Инициализирует новый экземпляр класса <see cref="T:General.DTO.RestRequest.DtoRequestAuthReg"/>.
             </remarks>
             <param name="email">Адрес электронной почты пользователя, используемый для входа в систему.</param>
             <param name="password">Пароль пользователя в открытом виде (должен передаваться по защищённому каналу).</param>
@@ -140,7 +140,7 @@
             <param name="systemInfo_supportsInstancing">Указывает, поддерживает ли графическая система инстансинг (отрисовку множественных копий объектов за один вызов).</param>
             <param name="systemInfo_npotSupport">Указывает, поддерживает ли графическая карта текстуры с размерами, не являющимися степенью двойки (NPOT).</param>
         </member>
-        <member name="M:General.DTO.RestRequest.DtoRequestAuthentication.#ctor(System.String,System.String,System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.String,System.Int32,System.Boolean,System.String)">
+        <member name="M:General.DTO.RestRequest.DtoRequestAuthReg.#ctor(System.String,System.String,System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.String,System.Int32,System.Boolean,System.String)">
             <summary>
             Класс, содержащий данные для авторизации пользователя и системную информацию об устройстве.
             </summary>
@@ -149,7 +149,7 @@
             Все поля обязательны для заполнения при создании экземпляра.
             </remarks>
             <remarks>
-            Инициализирует новый экземпляр класса <see cref="T:General.DTO.RestRequest.DtoRequestAuthentication"/>.
+            Инициализирует новый экземпляр класса <see cref="T:General.DTO.RestRequest.DtoRequestAuthReg"/>.
             </remarks>
             <param name="email">Адрес электронной почты пользователя, используемый для входа в систему.</param>
             <param name="password">Пароль пользователя в открытом виде (должен передаваться по защищённому каналу).</param>
@@ -167,91 +167,91 @@
             <param name="systemInfo_supportsInstancing">Указывает, поддерживает ли графическая система инстансинг (отрисовку множественных копий объектов за один вызов).</param>
             <param name="systemInfo_npotSupport">Указывает, поддерживает ли графическая карта текстуры с размерами, не являющимися степенью двойки (NPOT).</param>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.Email">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.Email">
             <summary>
             Получает или задаёт адрес электронной почты пользователя.
             </summary>
             <value>Строка, содержащая email пользователя.</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.Password">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.Password">
             <summary>
             Получает или задаёт пароль пользователя.
             </summary>
             <value>Строка с паролем. Передача должна осуществляться по защищённому соединению.</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.TimeZoneInfo_Local_BaseUtcOffset_Minutes">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.TimeZoneInfo_Local_BaseUtcOffset_Minutes">
             <summary>
             Получает или задаёт смещение локального часового пояса от UTC в минутах.
             </summary>
             <value>Целое число, представляющее разницу во времени (например, +180 для UTC+3).</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.System_Environment_UserName">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.System_Environment_UserName">
             <summary>
             Получает или задаёт имя пользователя операционной системы.
             </summary>
             <value>Имя пользователя, под которым запущено приложение (например, 'JohnDoe').</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.DeviceModel">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.DeviceModel">
             <summary>
             Получает или задаёт модель устройства.
             </summary>
             <value>Описание аппаратной модели устройства.</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.DeviceType">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.DeviceType">
             <summary>
             Получает или задаёт тип устройства.
             </summary>
             <value>Категория устройства: мобильное, настольное, игровая консоль и т.д.</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.OperatingSystem">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.OperatingSystem">
             <summary>
             Получает или задаёт операционную систему устройства.
             </summary>
             <value>Название и версия ОС (например, 'Windows 10', 'iOS 17').</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.ProcessorType">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.ProcessorType">
             <summary>
             Получает или задаёт тип процессора устройства.
             </summary>
             <value>Архитектура и модель процессора (например, 'Intel Core i7', 'Apple M1').</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.ProcessorCount">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.ProcessorCount">
             <summary>
             Получает или задаёт количество логических ядер процессора.
             </summary>
             <value>Число, равное количеству потоков процессора.</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.SystemMemorySize">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.SystemMemorySize">
             <summary>
             Получает или задаёт объём оперативной памяти устройства в мегабайтах.
             </summary>
             <value>Размер ОЗУ в мегабайтах (например, 16384 для 16 ГБ).</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.GraphicsDeviceName">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.GraphicsDeviceName">
             <summary>
             Получает или задаёт название графического устройства.
             </summary>
             <value>Модель видеокарты или встроенного GPU.</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.GraphicsMemorySize">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.GraphicsMemorySize">
             <summary>
             Получает или задаёт объём видеопамяти в мегабайтах.
             </summary>
             <value>Размер видеопамяти (VRAM) в МБ.</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.DeviceUniqueIdentifier">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.DeviceUniqueIdentifier">
             <summary>
             Получает или задаёт уникальный идентификатор устройства.
             </summary>
             <value>Уникальная строка, идентифицирующая устройство (например, IMEI, UUID).</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.SystemInfo_supportsInstancing">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.SystemInfo_supportsInstancing">
             <summary>
             Получает или задаёт признак поддержки графической системой инстансинга.
             </summary>
             <value><c>true</c>, если поддерживается; иначе <c>false</c>.</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthentication.SystemInfo_npotSupport">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.SystemInfo_npotSupport">
             <summary>
             Получает или задаёт информацию о поддержке текстур с размерами, не являющимися степенью двойки (NPOT).
             </summary>
@@ -279,6 +279,13 @@
             Пример: "05m 10s", "01h 05m 10s", "1d 01h 05m 10s".
             </returns>
             <exception cref="T:System.ArgumentOutOfRangeException">Выбрасывается, если <paramref name="sec"/> меньше нуля.</exception>
+        </member>
+        <member name="M:General.GlobalHelper.IsAccessTokenStillValid(System.String)">
+            <summary>
+            Проверяет, действителен ли JWT access-токен по времени (exp и nbf), без валидации подписи.
+            </summary>
+            <param name="accessToken">Строка JWT токена</param>
+            <returns>true — токен ещё действителен по времени, false — истёк или ещё не начал действовать</returns>
         </member>
         <member name="M:General.JtokenExt.GetString(Newtonsoft.Json.Linq.JToken)">
             <summary>

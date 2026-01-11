@@ -2,17 +2,19 @@ using System;
 using System.Text;
 using UnityEngine;
 
-
-#if UNITY_STANDALONE_WIN
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
 using System.Security.Cryptography;
 #endif
+
 namespace Assets.GameData.Scripts
 {
+
+    public enum SecureStorageKey {AccessToken =1 , RefreshToken=2 }
 
     /// <summary>
     /// Обеспечивает защищенное хранение данных на Windows (DPAPI), Android (Keystore) и iOS (Keychain).
     /// </summary>
-    public sealed class SecureStorageProvider
+    public static class SecureStorageProvider
     {
         /// <summary>
         /// Сохраняет значение в защищенное хранилище.
@@ -20,7 +22,7 @@ namespace Assets.GameData.Scripts
         /// <param name="key">Ключ доступа к данным.</param>
         /// <param name="value">Строковое значение для сохранения.</param>
         /// <exception cref="ArgumentNullException">Выбрасывается, если key или value равны null.</exception>
-        public void SetValue(string key, string value)
+        private static void SetValue(string key, string value)
         {
             if (key == null || value == null)
             {
@@ -37,13 +39,17 @@ namespace Assets.GameData.Scripts
 #endif
         }
 
+        public static void SetValue(SecureStorageKey key, string value) {
+            SetValue(key.ToString(), value);
+        }
+
         /// <summary>
         /// Извлекает значение из защищенного хранилища.
         /// </summary>
         /// <param name="key">Ключ доступа.</param>
         /// <returns>Строковое значение или null, если ключ не найден.</returns>
         /// <exception cref="ArgumentNullException">Выбрасывается, если key равен null.</exception>
-        public string GetValue(string key)
+        private static string GetValue(string key)
         {
             if (key == null)
             {
@@ -61,11 +67,15 @@ namespace Assets.GameData.Scripts
 #endif
         }
 
+        public static string GetValue(SecureStorageKey key) {
+            return GetValue(key.ToString());
+        }
+
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR
         /// <summary>
         /// Сохраняет данные на Windows, используя DPAPI (Data Protection API).
         /// </summary>
-        private void SaveWindows(string key, string value)
+        private static void SaveWindows(string key, string value)
         {
             // 1. Переводим строку в байты UTF-8
             byte[] data = Encoding.UTF8.GetBytes(value);
@@ -83,7 +93,7 @@ namespace Assets.GameData.Scripts
         /// <summary>
         /// Загружает и расшифровывает данные на Windows.
         /// </summary>
-        private string LoadWindows(string key)
+        private static string LoadWindows(string key)
         {
             string storedBase64 = PlayerPrefs.GetString(GetHashedKey(key), null);
             if (string.IsNullOrEmpty(storedBase64))
@@ -109,7 +119,7 @@ namespace Assets.GameData.Scripts
             }
         }
 
-        private string GetHashedKey(string key)
+        private static string GetHashedKey(string key)
         {
             return $"win_sec_{key}";
         }
