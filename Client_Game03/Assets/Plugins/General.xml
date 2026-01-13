@@ -139,8 +139,6 @@
             <param name="deviceUniqueIdentifier">Уникальный идентификатор устройства, используемый для привязки сессии.</param>
             <param name="systemInfo_supportsInstancing">Указывает, поддерживает ли графическая система инстансинг (отрисовку множественных копий объектов за один вызов).</param>
             <param name="systemInfo_npotSupport">Указывает, поддерживает ли графическая карта текстуры с размерами, не являющимися степенью двойки (NPOT).</param>
-            <param name="accessToken"></param>
-            <param name="refreshToken"></param>
         </member>
         <member name="M:General.DTO.RestRequest.DtoRequestAuthReg.#ctor(System.String,System.String,System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.String,System.Int32,System.Boolean,System.String)">
             <summary>
@@ -168,8 +166,6 @@
             <param name="deviceUniqueIdentifier">Уникальный идентификатор устройства, используемый для привязки сессии.</param>
             <param name="systemInfo_supportsInstancing">Указывает, поддерживает ли графическая система инстансинг (отрисовку множественных копий объектов за один вызов).</param>
             <param name="systemInfo_npotSupport">Указывает, поддерживает ли графическая карта текстуры с размерами, не являющимися степенью двойки (NPOT).</param>
-            <param name="accessToken"></param>
-            <param name="refreshToken"></param>
         </member>
         <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.Email">
             <summary>
