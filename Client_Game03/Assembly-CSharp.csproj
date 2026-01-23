@@ -86,6 +86,7 @@
     <Compile Include="Assets\GameData\Scenes\TEST_01\TestScript.cs" />
     <Compile Include="Assets\GameData\Scenes\AllHeroes\AllHeroes.cs" />
     <Compile Include="Assets\GameData\Scripts\G.cs" />
+    <Compile Include="Assets\GameData\Scenes\Auth\AuthHelper.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Button_Auth.cs" />
   </ItemGroup>
   <ItemGroup>

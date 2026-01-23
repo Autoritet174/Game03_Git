@@ -31,7 +31,7 @@ namespace Assets.GameData.Scenes.Auth
         private Image _ImageBackground_Image;
         private float _ImageBackground_CoefWH = 1f;
 
-        private void Start()
+        private async void Start()
         {
             GameObjectFinder.FindByName<TMP_InputField>("InputText_Email (id=96oaypns)").text = "SUPERADMIN@MAIL.RU";
             GameObjectFinder.FindByName<TMP_InputField>("InputText_Password (id=9vfnj9oh)").text = "testPassword";
@@ -43,40 +43,31 @@ namespace Assets.GameData.Scenes.Auth
             OnResizeWindow();
 
             string accessToken = SecureStorageProvider.GetValue(SecureStorageKey.AccessToken);
-            if (string.IsNullOrWhiteSpace(accessToken))
+            if (string.IsNullOrWhiteSpace(accessToken) || !General.AccessTokenHelper.IsStillValid(accessToken))
             {
-
+                SetVisibleInputFields(true);
+                return;
             }
-            else
+
+            // если код дошёл сюда значит токен есть и он по времени валиден, но не факт что валиден на самом деле
+
+            // Открываем веб сокет
+            await Game03Client.WebSocketClient.ConnectAsync(CancellationTokenManager.Create("Game03Client.WebSocketClient.ConnectAsync"));
+            if (!Game03Client.WebSocketClient.Connected)
             {
-                bool valid = General.GlobalHelper.IsAccessTokenStillValid(accessToken);
-                if (valid)
-                {
-                    Game03Client.Auth.RefreshTokensAsync().Wait();
-                }
-                else {
-
-                }
+                // веб сокет не открыт
+                SetVisibleInputFields(true);
+                return;
             }
 
+            await Game03Client.WebSocketClient.SendMessageAsync("Да это жёстко!");
 
 
 
 
-            string refreshToken = SecureStorageProvider.GetValue(SecureStorageKey.RefreshToken);
 
+            //string refreshToken = SecureStorageProvider.GetValue(SecureStorageKey.RefreshToken);
 
-
-            
-
-            Debug.Log(valid);
-            if (string.IsNullOrWhiteSpace(refreshToken))
-            {
-
-            }
-            else {
-
-            }
 
 
             string DecodeJwtPayload(string jwtToken)
@@ -108,7 +99,7 @@ namespace Assets.GameData.Scenes.Auth
         }
 
         // Пример использования
-        string payloadJson = DecodeJwtPayload(accessToken);
+        //string payloadJson = DecodeJwtPayload(accessToken);
             //Debug.Log(payloadJson);
             //InputManager.Register(KeyCode.Escape, GameExitHandler.ExitGame);
             //InputManager.Register(KeyCode.Return, PressLogin, key2: KeyCode.KeypadEnter);
@@ -166,6 +157,7 @@ namespace Assets.GameData.Scenes.Auth
                 Texture2D texture = _ImageBackground_Image.sprite.texture;
                 _ImageBackground_CoefWH = texture.width / (float)texture.height;
             }
+            SetVisibleInputFields(false);
         }
 
         private void OnResizeWindow()
@@ -205,8 +197,14 @@ namespace Assets.GameData.Scenes.Auth
                 : new Vector2(_height * _ImageBackground_CoefWH, _height);
         }
 
-        private static async UniTask qwe() {
+        private async void SetVisibleInputFields(bool visible)
+        {
+            visible=false; 
+            await GameMessage.ShowAndWaitCloseAsync("qwe");
 
+            _ButtonLogin_Button.gameObject.SetActive(visible);
+            _InputTextWithLabelEmail_RectTransform.gameObject.SetActive(visible);
+            _InputTextWithLabelPassword_RectTransform.gameObject.SetActive(visible);
         }
     }
 }

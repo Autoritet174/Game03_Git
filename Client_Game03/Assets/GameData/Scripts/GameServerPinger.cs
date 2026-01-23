@@ -25,7 +25,7 @@ namespace Assets.GameData.Scripts
         {
             try
             {
-                using HttpRequestMessage request = new(HttpMethod.Get, Url.Ping);
+                using HttpRequestMessage request = new(HttpMethod.Get, Url.PING);
                 using HttpResponseMessage response = await _httpClient.SendAsync(request, CancellationTokenManager.Create("ping", 5)).AsUniTask();
                 string responseContent = await response.Content.ReadAsStringAsync().AsUniTask();
                 if (!string.IsNullOrWhiteSpace(responseContent))

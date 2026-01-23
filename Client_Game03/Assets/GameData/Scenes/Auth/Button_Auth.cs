@@ -64,7 +64,7 @@ namespace Assets.GameData.Scenes.Auth
                     AuthManager.GetDtoRequestAuthReg(emailString, passwordString),
                     CancellationTokenManager.Create("Game03Client.Auth.RefreshTokensAsync"));
 
-                string accessToken = Game03Client.Auth.Dto?.AccessToken;
+                string accessToken = Game03Client.Auth.AccessToken;
 
                 if (string.IsNullOrWhiteSpace(accessToken))
                 {

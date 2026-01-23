@@ -12,7 +12,7 @@
           "General": "1.0.0",
           "Newtonsoft.Json": "13.0.4",
           "System.Net.Http": "4.3.4",
-          "System.Text.Encodings.Web": "10.0.1",
+          "System.Text.Encodings.Web": "10.0.2",
           "System.Text.RegularExpressions": "4.3.1",
           "ini-parser-netstandard": "2.5.3"
         },
@@ -214,14 +214,14 @@
           "runtime.native.System.Security.Cryptography.OpenSsl": "4.3.2"
         }
       },
-      "System.Text.Encodings.Web/10.0.1": {
+      "System.Text.Encodings.Web/10.0.2": {
         "dependencies": {
           "System.Runtime.CompilerServices.Unsafe": "6.1.2"
         },
         "runtime": {
           "lib/netstandard2.0/System.Text.Encodings.Web.dll": {
             "assemblyVersion": "10.0.0.0",
-            "fileVersion": "10.0.125.57005"
+            "fileVersion": "10.0.225.61305"
           }
         }
       },
@@ -481,12 +481,12 @@
       "path": "system.security.cryptography.x509certificates/4.3.0",
       "hashPath": "system.security.cryptography.x509certificates.4.3.0.nupkg.sha512"
     },
-    "System.Text.Encodings.Web/10.0.1": {
+    "System.Text.Encodings.Web/10.0.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-cVAka0o1rJJ5/De0pjNs7jcaZk5hUGf1HGzUyVmE2MEB1Vf0h/8qsWxImk1zjitCbeD2Avaq2P2+usdvqgbeVQ==",
-      "path": "system.text.encodings.web/10.0.1",
-      "hashPath": "system.text.encodings.web.10.0.1.nupkg.sha512"
+      "sha512": "sha512-Ro4cLT4qpRy64crfLAy3ekihtXckeXrD5eI6qb6NDSEVyHcHsmH7KgN4dbnIuiBmXIoaCslx4SynLYxag1SLSQ==",
+      "path": "system.text.encodings.web/10.0.2",
+      "hashPath": "system.text.encodings.web.10.0.2.nupkg.sha512"
     },
     "System.Text.RegularExpressions/4.3.1": {
       "type": "package",

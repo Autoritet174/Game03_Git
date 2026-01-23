@@ -4,6 +4,13 @@
         <name>General</name>
     </assembly>
     <members>
+        <member name="M:General.AccessTokenHelper.IsStillValid(System.String)">
+            <summary>
+            Проверяет, действителен ли JWT access-токен по времени (exp и nbf), без валидации подписи.
+            </summary>
+            <param name="accessToken">Строка JWT токена</param>
+            <returns>true — токен ещё действителен по времени, false — истёк или ещё не начал действовать</returns>
+        </member>
         <member name="T:General.CustomRandom">
             <summary>
             Сверхвысокопроизводительный генератор псевдослучайных чисел.
@@ -279,13 +286,6 @@
             Пример: "05m 10s", "01h 05m 10s", "1d 01h 05m 10s".
             </returns>
             <exception cref="T:System.ArgumentOutOfRangeException">Выбрасывается, если <paramref name="sec"/> меньше нуля.</exception>
-        </member>
-        <member name="M:General.GlobalHelper.IsAccessTokenStillValid(System.String)">
-            <summary>
-            Проверяет, действителен ли JWT access-токен по времени (exp и nbf), без валидации подписи.
-            </summary>
-            <param name="accessToken">Строка JWT токена</param>
-            <returns>true — токен ещё действителен по времени, false — истёк или ещё не начал действовать</returns>
         </member>
         <member name="M:General.JtokenExt.GetString(Newtonsoft.Json.Linq.JToken)">
             <summary>
@@ -642,7 +642,7 @@
         </member>
         <member name="T:General.Url">
             <summary>
-            Класс предоставляющий ссылки на api сервера.
+            Класс предоставляющий ссылки на API сервера.
             </summary>
         </member>
         <member name="F:General.Url.URL_HEADER">
@@ -650,7 +650,7 @@
             URL API старт
             </summary>
         </member>
-        <member name="P:General.Url.GameData">
+        <member name="F:General.Url.GAME_DATA">
             <summary> URL. Все игровые данные нужные на клиенте игры. </summary>
         </member>
     </members>
