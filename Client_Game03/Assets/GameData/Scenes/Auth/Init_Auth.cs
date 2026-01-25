@@ -39,13 +39,18 @@ namespace Assets.GameData.Scenes.Auth
             InitTextLocalization();
             InitObjects();
 
+            await SetVisibleInputFields(false);
+
             _initialized = true;
             OnResizeWindow();
 
             string accessToken = SecureStorageProvider.GetValue(SecureStorageKey.AccessToken);
             if (string.IsNullOrWhiteSpace(accessToken) || !General.AccessTokenHelper.IsStillValid(accessToken))
             {
-                SetVisibleInputFields(true);
+                Debug.Log(1);
+                await GameMessage.ShowAndWaitCloseAsync("1");
+                Debug.Log(11);
+                await SetVisibleInputFields(true);
                 return;
             }
 
@@ -55,8 +60,11 @@ namespace Assets.GameData.Scenes.Auth
             await Game03Client.WebSocketClient.ConnectAsync(CancellationTokenManager.Create("Game03Client.WebSocketClient.ConnectAsync"));
             if (!Game03Client.WebSocketClient.Connected)
             {
+                Debug.Log(2);
+                await GameMessage.ShowAndWaitCloseAsync("2");
+                Debug.Log(22);
                 // веб сокет не открыт
-                SetVisibleInputFields(true);
+                await SetVisibleInputFields(true);
                 return;
             }
 
@@ -157,7 +165,6 @@ namespace Assets.GameData.Scenes.Auth
                 Texture2D texture = _ImageBackground_Image.sprite.texture;
                 _ImageBackground_CoefWH = texture.width / (float)texture.height;
             }
-            SetVisibleInputFields(false);
         }
 
         private void OnResizeWindow()
@@ -197,11 +204,8 @@ namespace Assets.GameData.Scenes.Auth
                 : new Vector2(_height * _ImageBackground_CoefWH, _height);
         }
 
-        private async void SetVisibleInputFields(bool visible)
+        private async UniTask SetVisibleInputFields(bool visible)
         {
-            visible=false; 
-            await GameMessage.ShowAndWaitCloseAsync("qwe");
-
             _ButtonLogin_Button.gameObject.SetActive(visible);
             _InputTextWithLabelEmail_RectTransform.gameObject.SetActive(visible);
             _InputTextWithLabelPassword_RectTransform.gameObject.SetActive(visible);
