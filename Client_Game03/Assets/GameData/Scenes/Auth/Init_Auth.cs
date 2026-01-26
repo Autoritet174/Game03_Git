@@ -44,14 +44,20 @@ namespace Assets.GameData.Scenes.Auth
             _initialized = true;
             OnResizeWindow();
 
+            bool updateRefreshToken = false;
             string accessToken = SecureStorageProvider.GetValue(SecureStorageKey.AccessToken);
             if (string.IsNullOrWhiteSpace(accessToken) || !General.AccessTokenHelper.IsStillValid(accessToken))
             {
-                Debug.Log(1);
-                await GameMessage.ShowAndWaitCloseAsync("1");
-                Debug.Log(11);
-                await SetVisibleInputFields(true);
-                return;
+                updateRefreshToken = true;
+            }
+
+            if (updateRefreshToken)
+            {
+                string refreshToken = SecureStorageProvider.GetValue(SecureStorageKey.RefreshToken);
+                if (string.IsNullOrWhiteSpace(refreshToken) || !General.AccessTokenHelper.IsStillValid(accessToken))
+                {
+                    updateRefreshToken = true;
+                }
             }
 
             // если код дошёл сюда значит токен есть и он по времени валиден, но не факт что валиден на самом деле

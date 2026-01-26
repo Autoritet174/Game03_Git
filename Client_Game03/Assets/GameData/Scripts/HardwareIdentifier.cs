@@ -50,7 +50,7 @@ namespace Assets.GameData.Scripts
         /// <returns>Хеш SHA256 в шестнадцатеричном представлении.</returns>
         private static string ComputeSha256Hash(string input)
         {
-            using SHA256 sha256 = SHA256.Create();
+            using var sha256 = SHA256.Create();
             byte[] rawBytes = Encoding.UTF8.GetBytes(input);
             byte[] hashBytes = sha256.ComputeHash(rawBytes);
             StringBuilder builder = new();
