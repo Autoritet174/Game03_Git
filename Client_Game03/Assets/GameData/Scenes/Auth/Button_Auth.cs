@@ -107,7 +107,7 @@ namespace Assets.GameData.Scenes.Auth
                 }
 
                 SecureStorageProvider.SetValue(SecureStorageKey.AccessToken, Game03Client.Auth.Dto?.AccessToken);
-                SecureStorageProvider.SetValue(SecureStorageKey.RefreshToken, Game03Client.Auth.Dto?.RefreshToken);
+                SecureStorageProvider.SetValue(SecureStorageKey.SessionToken, Game03Client.Auth.Dto?.RefreshToken);
                 //await taskPreload;
 
                 UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");

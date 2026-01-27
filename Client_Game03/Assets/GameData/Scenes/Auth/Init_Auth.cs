@@ -1,6 +1,5 @@
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -44,21 +43,21 @@ namespace Assets.GameData.Scenes.Auth
             _initialized = true;
             OnResizeWindow();
 
-            bool updateRefreshToken = false;
+            bool needUpdateAccessToken = false;
             string accessToken = SecureStorageProvider.GetValue(SecureStorageKey.AccessToken);
             if (string.IsNullOrWhiteSpace(accessToken) || !General.AccessTokenHelper.IsStillValid(accessToken))
             {
-                updateRefreshToken = true;
+                needUpdateAccessToken = true;//токен доступа нужно обновить
             }
 
-            if (updateRefreshToken)
+            if (needUpdateAccessToken)
             {
-                string refreshToken = SecureStorageProvider.GetValue(SecureStorageKey.RefreshToken);
-                if (string.IsNullOrWhiteSpace(refreshToken) || !General.AccessTokenHelper.IsStillValid(accessToken))
+                string sessionToken = SecureStorageProvider.GetValue(SecureStorageKey.SessionToken);
+                if (string.IsNullOrWhiteSpace(sessionToken) || !General.AccessTokenHelper.IsStillValid(accessToken))
                 {
-                    updateRefreshToken = true;
                 }
             }
+
 
             // если код дошёл сюда значит токен есть и он по времени валиден, но не факт что валиден на самом деле
 
@@ -76,44 +75,8 @@ namespace Assets.GameData.Scenes.Auth
 
             await Game03Client.WebSocketClient.SendMessageAsync("Да это жёстко!");
 
-
-
-
-
-            //string refreshToken = SecureStorageProvider.GetValue(SecureStorageKey.RefreshToken);
-
-
-
-            string DecodeJwtPayload(string jwtToken)
-            {
-            try
-            {
-                string[] parts = jwtToken.Split('.');
-                if (parts.Length != 3) throw new Exception("Invalid JWT");
-
-                string payload = parts[1];
-                // Добавляем padding для Base64 (JWT может его опускать)
-                switch (payload.Length % 4)
-                {
-                    case 2: payload += "=="; break;
-                    case 3: payload += "="; break;
-                }
-
-                byte[] bytes = Convert.FromBase64String(payload);
-                string json = System.Text.Encoding.UTF8.GetString(bytes);
-
-                //Debug.Log("JWT Payload JSON: " + json);
-                return json; // Здесь: {"sub":"guid","jti":"...","iat":...,"exp":...}
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError("JWT decode error: " + ex.Message);
-                return null;
-            }
-        }
-
-        // Пример использования
-        //string payloadJson = DecodeJwtPayload(accessToken);
+            // Пример использования
+            //string payloadJson = DecodeJwtPayload(accessToken);
             //Debug.Log(payloadJson);
             //InputManager.Register(KeyCode.Escape, GameExitHandler.ExitGame);
             //InputManager.Register(KeyCode.Return, PressLogin, key2: KeyCode.KeypadEnter);
@@ -148,7 +111,8 @@ namespace Assets.GameData.Scenes.Auth
             GameObjectFinder.FindByName<TextMeshProUGUI>("Text_ButtonExitGame (id=flb78tua)").text = Game03Client.LocalizationManager.GetValue(L.UI.Button.ExitGame);
         }
 
-        private void InitObjects() {
+        private void InitObjects()
+        {
             _ButtonLogin_Button = GameObjectFinder.FindByName<Button>("Button_Login (id=bf6euydu)");
 
             _ButtonLogin_RectTransform = GameObjectFinder.FindByName<RectTransform>("Button_Login (id=bf6euydu)");

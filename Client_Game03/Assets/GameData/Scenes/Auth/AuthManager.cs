@@ -25,7 +25,8 @@ namespace Assets.GameData.Scenes.Auth
                     SystemInfo.graphicsDeviceName,
                     SystemInfo.graphicsMemorySize,
                     SystemInfo.supportsInstancing,
-                    SystemInfo.npotSupport.ToString()
+                    SystemInfo.npotSupport.ToString(),
+                    ""
                 );
         }
     }
