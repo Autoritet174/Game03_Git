@@ -60,8 +60,9 @@ namespace Assets.GameData.Scenes.Auth
                 buttonLogin.interactable = false;
                 GameMessage.ShowLocale(L.Info.Authentication, false);
 
-                await Game03Client.Auth.RefreshTokensAsync(
-                    AuthManager.GetDtoRequestAuthReg(emailString, passwordString),
+                var dto = AuthManager.GetDtoRequestAuthReg(emailString, passwordString, null);
+                await Game03Client.Auth.AuthentificationAsync(dto,
+                    Game03Client.Auth.AuthType.Login,
                     CancellationTokenManager.Create("Game03Client.Auth.RefreshTokensAsync"));
 
                 string accessToken = Game03Client.Auth.AccessToken;
@@ -106,8 +107,9 @@ namespace Assets.GameData.Scenes.Auth
                     return;
                 }
 
-                SecureStorageProvider.SetValue(SecureStorageKey.AccessToken, Game03Client.Auth.Dto?.AccessToken);
-                SecureStorageProvider.SetValue(SecureStorageKey.SessionToken, Game03Client.Auth.Dto?.RefreshToken);
+                SecureStorageProvider.SetValue(SecureStorageKey.AccessToken, Game03Client.Auth.AccessToken);
+                SecureStorageProvider.SetValue(SecureStorageKey.RefreshToken, Game03Client.Auth.RefreshToken);
+                SecureStorageProvider.SetValue(SecureStorageKey.RefreshTokenExpirationAt, Game03Client.Auth.RefreshTokenExpirationAt);
                 //await taskPreload;
 
                 UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");

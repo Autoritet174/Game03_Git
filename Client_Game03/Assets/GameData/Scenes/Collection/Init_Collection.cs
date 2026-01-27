@@ -204,7 +204,7 @@ public class Init_Collection : MonoBehaviour
 
     private int pageCurrent = 1;
     private int pageMax = 1;
-    private readonly int slotIndex = 0;
+    //private readonly int slotIndex = 0;
 
 
     private async void Start()

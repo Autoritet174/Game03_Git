@@ -9,13 +9,35 @@ using System.Security.Cryptography;
 namespace Assets.GameData.Scripts
 {
 
-    public enum SecureStorageKey {AccessToken =1 , SessionToken=2 }
+    public enum SecureStorageKey {AccessToken =1 , RefreshToken=2 , RefreshTokenExpirationAt=3}
 
     /// <summary>
     /// Обеспечивает защищенное хранение данных на Windows (DPAPI), Android (Keystore) и iOS (Keychain).
     /// </summary>
     public static class SecureStorageProvider
     {
+        public static void SetValue(SecureStorageKey key, string value)
+        {
+            SetValue(key.ToString(), value);
+        }
+        public static void SetValue(SecureStorageKey key, DateTimeOffset? value)
+        {
+            SetValue(key.ToString(), value?.ToString("yyyy.MM.dd.HH.mm.ss") ?? string.Empty);
+        }
+
+        public static string GetString(SecureStorageKey key)
+        {
+            return GetValue(key.ToString());
+        }
+        public static DateTimeOffset? GetDateTimeOffset(SecureStorageKey key)
+        {
+            string storedValue = GetValue(key.ToString());
+            return !string.IsNullOrEmpty(storedValue) && DateTimeOffset.TryParseExact(storedValue, "yyyy.MM.dd.HH.mm.ss", null, System.Globalization.DateTimeStyles.None, out DateTimeOffset result)
+                ? result
+                : null;
+        }
+
+        #region Private Methods
         /// <summary>
         /// Сохраняет значение в защищенное хранилище.
         /// </summary>
@@ -39,9 +61,6 @@ namespace Assets.GameData.Scripts
 #endif
         }
 
-        public static void SetValue(SecureStorageKey key, string value) {
-            SetValue(key.ToString(), value);
-        }
 
         /// <summary>
         /// Извлекает значение из защищенного хранилища.
@@ -67,9 +86,6 @@ namespace Assets.GameData.Scripts
 #endif
         }
 
-        public static string GetValue(SecureStorageKey key) {
-            return GetValue(key.ToString());
-        }
 
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR
         /// <summary>
@@ -125,4 +141,5 @@ namespace Assets.GameData.Scripts
         }
 #endif
     }
+    #endregion Private Methods
 }

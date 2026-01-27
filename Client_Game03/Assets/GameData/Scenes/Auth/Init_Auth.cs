@@ -1,5 +1,6 @@
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -43,31 +44,47 @@ namespace Assets.GameData.Scenes.Auth
             _initialized = true;
             OnResizeWindow();
 
-            bool needUpdateAccessToken = false;
-            string accessToken = SecureStorageProvider.GetValue(SecureStorageKey.AccessToken);
+            string accessToken = SecureStorageProvider.GetString(SecureStorageKey.AccessToken);
             if (string.IsNullOrWhiteSpace(accessToken) || !General.AccessTokenHelper.IsStillValid(accessToken))
             {
-                needUpdateAccessToken = true;//токен доступа нужно обновить
-            }
-
-            if (needUpdateAccessToken)
-            {
-                string sessionToken = SecureStorageProvider.GetValue(SecureStorageKey.SessionToken);
-                if (string.IsNullOrWhiteSpace(sessionToken) || !General.AccessTokenHelper.IsStillValid(accessToken))
+                // обновляем access токен
+                DateTimeOffset? refreshTokenExpirationAt = SecureStorageProvider.GetDateTimeOffset(SecureStorageKey.RefreshTokenExpirationAt);
+                if (refreshTokenExpirationAt == null || refreshTokenExpirationAt.Value < DateTimeOffset.UtcNow)
                 {
+                    // нет токена обновления или он просрочен
+                    await SetVisibleInputFields(true);
+                    return;
+                }
+
+                string refreshToken = SecureStorageProvider.GetString(SecureStorageKey.RefreshToken);
+                if (string.IsNullOrWhiteSpace(refreshToken))
+                {
+                    // нет токена обновления
+                    await SetVisibleInputFields(true);
+                    return;
+                }
+
+
+                bool success = await Game03Client.Auth.AuthentificationAsync(
+                      AuthManager.GetDtoRequestAuthReg(null, null, refreshToken),
+                      Game03Client.Auth.AuthType.RefreshTokens,
+                      CancellationTokenManager.Create("Game03Client.Auth.RefreshTokensAsync"));
+                if (!success)
+                {
+                    // не удалось обновить токены
+                    await SetVisibleInputFields(true);
+                    return;
                 }
             }
-
-
-            // если код дошёл сюда значит токен есть и он по времени валиден, но не факт что валиден на самом деле
+            else {
+                Game03Client.Auth.AccessToken = accessToken;
+            }
+            
 
             // Открываем веб сокет
             await Game03Client.WebSocketClient.ConnectAsync(CancellationTokenManager.Create("Game03Client.WebSocketClient.ConnectAsync"));
             if (!Game03Client.WebSocketClient.Connected)
             {
-                Debug.Log(2);
-                await GameMessage.ShowAndWaitCloseAsync("2");
-                Debug.Log(22);
                 // веб сокет не открыт
                 await SetVisibleInputFields(true);
                 return;
@@ -179,6 +196,7 @@ namespace Assets.GameData.Scenes.Auth
             _ButtonLogin_Button.gameObject.SetActive(visible);
             _InputTextWithLabelEmail_RectTransform.gameObject.SetActive(visible);
             _InputTextWithLabelPassword_RectTransform.gameObject.SetActive(visible);
+            await UniTask.Yield();
         }
     }
 }

@@ -182,9 +182,9 @@ public class GroupDivider : MonoBehaviour
                         {
                             if (collectionElement.TypeCollectionElement != TypeCollectionElement.Hero)
                             {
+                                await UniTask.Yield();
                                 throw new Exception();
                             }
-
                             _Init_Collection.PanelSelectedHeroSetActive(true, false);
                             string name = collectionElement.Name;
                             _Init_Collection.SelectedHeroTop_TextMeshProUGUI.text = name.ToUpper1Char();
@@ -212,6 +212,7 @@ public class GroupDivider : MonoBehaviour
                             {
                                 if (collectionElement.TypeCollectionElement != TypeCollectionElement.Equipment)
                                 {
+                                    await UniTask.Yield();
                                     throw new Exception();
                                 }
 
@@ -282,6 +283,7 @@ public class GroupDivider : MonoBehaviour
                                 }
 
                             }, true);
+                            await UniTask.Yield();
                         }
 
 

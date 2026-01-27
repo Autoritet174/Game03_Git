@@ -8,7 +8,7 @@ namespace Assets.GameData.Scenes.Auth
 {
     public static class AuthManager
     {
-        public static DtoRequestAuthReg GetDtoRequestAuthReg(string email, string password)
+        public static DtoRequestAuthReg GetDtoRequestAuthReg(string email, string password, string refreshToken)
         {
             return new DtoRequestAuthReg(
                     email,
@@ -26,7 +26,7 @@ namespace Assets.GameData.Scenes.Auth
                     SystemInfo.graphicsMemorySize,
                     SystemInfo.supportsInstancing,
                     SystemInfo.npotSupport.ToString(),
-                    ""
+                    refreshToken
                 );
         }
     }
