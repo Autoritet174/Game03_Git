@@ -19,13 +19,6 @@ namespace Assets.GameData.Scenes.Auth
         }
         public static async UniTask ButtonLoginOnClick()
         {
-            GameMessage.ShowLocale(L.Info.CheckingServerAvailability, false);
-            if (!await GameServerPinger.PingAsync())
-            {
-                GameMessage.ShowLocale(L.Error.Server.Unavailable, true);
-                return;
-            }
-
             Button buttonLogin = null;
             try
             {
@@ -58,61 +51,8 @@ namespace Assets.GameData.Scenes.Auth
 
                 // Блокируем кнопку и выводим сообщение непосредственно перед await
                 buttonLogin.interactable = false;
-                GameMessage.ShowLocale(L.Info.Authentication, false);
 
-                var dto = AuthManager.GetDtoRequestAuthReg(emailString, passwordString, null);
-                await Game03Client.Auth.AuthentificationAsync(dto,
-                    Game03Client.Auth.AuthType.Login,
-                    CancellationTokenManager.Create("Game03Client.Auth.RefreshTokensAsync"));
-
-                string accessToken = Game03Client.Auth.AccessToken;
-
-                if (string.IsNullOrWhiteSpace(accessToken))
-                {
-                    GameMessage.ShowLocale(L.Error.Server.InvalidResponse, true);
-                    return;
-                }
-
-                GameMessage.ShowLocale(L.Info.OpeningWebSocket, false);
-
-
-                // Открываем веб сокет
-                await Game03Client.WebSocketClient.ConnectAsync(CancellationTokenManager.Create("Game03Client.WebSocketClient.ConnectAsync"));
-                if (!Game03Client.WebSocketClient.Connected)
-                {
-                    GameMessage.ShowLocale(L.Error.Server.OpeningWebSocketFailed, true);
-                    return;
-                }
-
-                await Game03Client.WebSocketClient.SendMessageAsync("Да это жёстко!");
-
-
-                // Загрузка игровых данных не связанных с конкретным пользователем
-                GameMessage.ShowLocale(L.Info.LoadingData, false);
-                await Game03Client.GameData.LoadGameDataAsync(accessToken, CancellationTokenManager.Create("Game03Client.GameData.LoadGameData"));
-
-                // Предзагрузка AdressableAssets героев и редкости
-                //UniTask taskPreload = AddressableCache.PreLoadAssets();
-                await AddressableCache.PreLoadAssets();
-
-                // Загрузка коллекции пользователя
-                GameMessage.ShowLocale(L.Info.LoadingCollection, false);
-
-
-                bool loaded = await Game03Client.Collection.CollectionProvider.LoadAllCollectionFromServerAsync(accessToken,
-                    CancellationTokenManager.Create("Game03Client.Collection.CollectionProvider.LoadAllCollectionFromServerAsync"));
-                if (!loaded)
-                {
-                    GameMessage.ShowLocale(L.Error.Server.LoadingCollectionFailed, true);
-                    return;
-                }
-
-                SecureStorageProvider.SetValue(SecureStorageKey.AccessToken, Game03Client.Auth.AccessToken);
-                SecureStorageProvider.SetValue(SecureStorageKey.RefreshToken, Game03Client.Auth.RefreshToken);
-                SecureStorageProvider.SetValue(SecureStorageKey.RefreshTokenExpirationAt, Game03Client.Auth.RefreshTokenExpirationAt);
-                //await taskPreload;
-
-                UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+                bool success = await AuthHelper.AuthAndLoadData(emailString, passwordString);
             }
             catch (Exception ex)
             {

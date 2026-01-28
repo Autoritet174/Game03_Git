@@ -148,7 +148,7 @@
             <param name="systemInfo_npotSupport">Указывает, поддерживает ли графическая карта текстуры с размерами, не являющимися степенью двойки (NPOT).</param>
             <param name="refreshToken"></param>
         </member>
-        <member name="M:General.DTO.RestRequest.DtoRequestAuthReg.#ctor(System.String,System.String,System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.String,System.Int32,System.Boolean,System.String,System.String)">
+        <member name="M:General.DTO.RestRequest.DtoRequestAuthReg.#ctor(System.String,System.String,System.Nullable{System.Int32},System.String,System.String,System.String,System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Nullable{System.Boolean},System.String,System.String)">
             <summary>
             Класс, содержащий данные для авторизации пользователя и системную информацию об устройстве.
             </summary>
@@ -396,7 +396,7 @@
             Статический класс-расширение, предоставляющий полезные методы для работы со строками (<see cref="T:System.String"/>).
             </summary>
         </member>
-        <member name="M:General.StringExt.NormalizedValueGame03(System.String)">
+        <member name="M:General.StringExt.GetTrimmedOrNull(System.String)">
             <summary>
             Trim and ToUpperInvariant
             </summary>

@@ -33,65 +33,43 @@ namespace Assets.GameData.Scenes.Auth
 
         private async void Start()
         {
-            GameObjectFinder.FindByName<TMP_InputField>("InputText_Email (id=96oaypns)").text = "SUPERADMIN@MAIL.RU";
-            GameObjectFinder.FindByName<TMP_InputField>("InputText_Password (id=9vfnj9oh)").text = "testPassword";
-
             InitTextLocalization();
             InitObjects();
 
-            await SetVisibleInputFields(false);
-
             _initialized = true;
             OnResizeWindow();
-
-            string accessToken = SecureStorageProvider.GetString(SecureStorageKey.AccessToken);
-            if (string.IsNullOrWhiteSpace(accessToken) || !General.AccessTokenHelper.IsStillValid(accessToken))
+            bool visibleInputFields = false;
+            try
             {
-                // обновляем access токен
+                string refreshToken = SecureStorageProvider.GetString(SecureStorageKey.RefreshToken);
                 DateTimeOffset? refreshTokenExpirationAt = SecureStorageProvider.GetDateTimeOffset(SecureStorageKey.RefreshTokenExpirationAt);
-                if (refreshTokenExpirationAt == null || refreshTokenExpirationAt.Value < DateTimeOffset.UtcNow)
+                if (string.IsNullOrWhiteSpace(refreshToken)
+                    || refreshTokenExpirationAt == null
+                    || refreshTokenExpirationAt.Value < DateTimeOffset.UtcNow)
                 {
                     // нет токена обновления или он просрочен
-                    await SetVisibleInputFields(true);
+                    visibleInputFields = true;
                     return;
                 }
 
-                string refreshToken = SecureStorageProvider.GetString(SecureStorageKey.RefreshToken);
-                if (string.IsNullOrWhiteSpace(refreshToken))
-                {
-                    // нет токена обновления
-                    await SetVisibleInputFields(true);
-                    return;
-                }
+                await SetVisibleInputFieldsAsync(false);
 
-
-                bool success = await Game03Client.Auth.AuthentificationAsync(
-                      AuthManager.GetDtoRequestAuthReg(null, null, refreshToken),
-                      Game03Client.Auth.AuthType.RefreshTokens,
-                      CancellationTokenManager.Create("Game03Client.Auth.RefreshTokensAsync"));
+                bool success = await AuthHelper.AuthAndLoadData(refreshToken: refreshToken);
                 if (!success)
                 {
-                    // не удалось обновить токены
-                    await SetVisibleInputFields(true);
+                    visibleInputFields = true;
                     return;
                 }
             }
-            else {
-                Game03Client.Auth.AccessToken = accessToken;
-            }
-            
-
-            // Открываем веб сокет
-            await Game03Client.WebSocketClient.ConnectAsync(CancellationTokenManager.Create("Game03Client.WebSocketClient.ConnectAsync"));
-            if (!Game03Client.WebSocketClient.Connected)
+            finally
             {
-                // веб сокет не открыт
-                await SetVisibleInputFields(true);
-                return;
+                if (visibleInputFields)
+                {
+                    GameObjectFinder.FindByName<TMP_InputField>("InputText_Email (id=96oaypns)").text = "SUPERadmin@mail.RU";
+                    GameObjectFinder.FindByName<TMP_InputField>("InputText_Password (id=9vfnj9oh)").text = "testPassword";
+                }
+                SetVisibleInputFields(visibleInputFields);
             }
-
-            await Game03Client.WebSocketClient.SendMessageAsync("Да это жёстко!");
-
             // Пример использования
             //string payloadJson = DecodeJwtPayload(accessToken);
             //Debug.Log(payloadJson);
@@ -191,7 +169,13 @@ namespace Assets.GameData.Scenes.Auth
                 : new Vector2(_height * _ImageBackground_CoefWH, _height);
         }
 
-        private async UniTask SetVisibleInputFields(bool visible)
+        private void SetVisibleInputFields(bool visible)
+        {
+            _ButtonLogin_Button.gameObject.SetActive(visible);
+            _InputTextWithLabelEmail_RectTransform.gameObject.SetActive(visible);
+            _InputTextWithLabelPassword_RectTransform.gameObject.SetActive(visible);
+        }
+        private async UniTask SetVisibleInputFieldsAsync(bool visible)
         {
             _ButtonLogin_Button.gameObject.SetActive(visible);
             _InputTextWithLabelEmail_RectTransform.gameObject.SetActive(visible);

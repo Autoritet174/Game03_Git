@@ -9,7 +9,8 @@ using System.Security.Cryptography;
 namespace Assets.GameData.Scripts
 {
 
-    public enum SecureStorageKey {AccessToken =1 , RefreshToken=2 , RefreshTokenExpirationAt=3}
+    public enum SecureStorageKey {//AccessToken =1 ,
+        RefreshToken=2 , RefreshTokenExpirationAt=3}
 
     /// <summary>
     /// Обеспечивает защищенное хранение данных на Windows (DPAPI), Android (Keystore) и iOS (Keychain).
