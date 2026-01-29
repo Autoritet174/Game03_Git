@@ -2,6 +2,7 @@ using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using General.DTO.RestRequest;
 using System;
+using System.Diagnostics;
 using L = General.LocalizationKeys;
 
 namespace Assets.GameData.Scenes.Auth
@@ -70,8 +71,7 @@ namespace Assets.GameData.Scenes.Auth
 
             // Загрузка коллекции пользователя
             GameMessage.ShowLocale(L.Info.LoadingCollection, false);
-            bool loaded = await Game03Client.Collection.CollectionProvider.LoadAllCollectionFromServerAsync(Game03Client.Auth.AccessToken,
-                CancellationTokenManager.Create("Game03Client.Collection.CollectionProvider.LoadAllCollectionFromServerAsync"));
+            bool loaded = await Game03Client.Collection.CollectionProvider.LoadAllCollectionFromServerAsync(CancellationTokenManager.Create("Game03Client.Collection.CollectionProvider.LoadAllCollectionFromServerAsync"));
             if (!loaded)
             {
                 GameMessage.ShowLocale(L.Error.Server.LoadingCollectionFailed, true);
@@ -81,6 +81,7 @@ namespace Assets.GameData.Scenes.Auth
             //SecureStorageProvider.SetValue(SecureStorageKey.AccessToken, Game03Client.Auth.AccessToken);
             SecureStorageProvider.SetValue(SecureStorageKey.RefreshToken, Game03Client.Auth.RefreshToken);
             SecureStorageProvider.SetValue(SecureStorageKey.RefreshTokenExpirationAt, Game03Client.Auth.RefreshTokenExpirationAt);
+
 
             UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
             return true;

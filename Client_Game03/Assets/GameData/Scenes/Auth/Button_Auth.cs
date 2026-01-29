@@ -26,6 +26,7 @@ namespace Assets.GameData.Scenes.Auth
                 TMP_InputField textPassword = GameObjectFinder.FindByName<TMP_InputField>("InputText_Password (id=9vfnj9oh)");
                 buttonLogin = GameObjectFinder.FindByName<Button>("Button_Login (id=bf6euydu)");
 
+
                 // Проверка емаил
                 string emailString = textEmail.text?.Trim() ?? string.Empty;
                 if (emailString == string.Empty)
