@@ -11,15 +11,7 @@ namespace Assets.GameData.Scenes.Auth
 {
     public class Init_Auth : MonoBehaviour
     {
-        void LogRefreshToken(string refreshToken = null)
-        {
-            refreshToken ??= Game03Client.Auth.RefreshToken;
-            if (!string.IsNullOrWhiteSpace(refreshToken)){
-                using var sha256 = SHA256.Create();
-                byte[] hashBytes = sha256.ComputeHash(Convert.FromBase64String(refreshToken));
-                Debug.Log(string.Join(" ", hashBytes));
-            }
-        }
+        
         private bool _initialized = false;
         private float _width, _height;
 
@@ -52,7 +44,7 @@ namespace Assets.GameData.Scenes.Auth
             try
             {
                 string refreshToken = SecureStorageProvider.GetString(SecureStorageKey.RefreshToken);
-                LogRefreshToken(refreshToken);
+                AuthHelper.LogRefreshToken(refreshToken);
                 DateTimeOffset? refreshTokenExpirationAt = SecureStorageProvider.GetDateTimeOffset(SecureStorageKey.RefreshTokenExpirationAt);
                 if (string.IsNullOrWhiteSpace(refreshToken)
                     || refreshTokenExpirationAt == null
@@ -80,7 +72,7 @@ namespace Assets.GameData.Scenes.Auth
                     GameObjectFinder.FindByName<TMP_InputField>("InputText_Password (id=9vfnj9oh)").text = "testPassword";
                 }
                 SetVisibleInputFields(visibleInputFields);
-                LogRefreshToken();
+                AuthHelper.LogRefreshToken();
 
             }
             // Пример использования

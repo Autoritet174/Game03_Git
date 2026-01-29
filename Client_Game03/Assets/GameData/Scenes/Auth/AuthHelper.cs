@@ -3,12 +3,24 @@ using Cysharp.Threading.Tasks;
 using General.DTO.RestRequest;
 using System;
 using System.Diagnostics;
+using System.Security.Cryptography;
+using UnityEngine;
 using L = General.LocalizationKeys;
 
 namespace Assets.GameData.Scenes.Auth
 {
-    public static class AuthHelper
+    public class AuthHelper : MonoBehaviour
     {
+        public static void LogRefreshToken(string refreshToken = null)
+        {
+            refreshToken ??= Game03Client.Auth.RefreshToken;
+            if (!string.IsNullOrWhiteSpace(refreshToken))
+            {
+                using var sha256 = SHA256.Create();
+                byte[] hashBytes = sha256.ComputeHash(Convert.FromBase64String(refreshToken));
+                UnityEngine.Debug.Log(string.Join(" ", hashBytes));
+            }
+        }
         public static async UniTask<bool> AuthAndLoadData(string email = null, string password = null, string refreshToken = null)
         {
             Game03Client.Auth.AuthType type;
