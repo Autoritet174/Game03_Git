@@ -2,7 +2,6 @@ using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using General.DTO.RestRequest;
 using System;
-using System.Diagnostics;
 using System.Security.Cryptography;
 using UnityEngine;
 using L = General.LocalizationKeys;
@@ -18,9 +17,22 @@ namespace Assets.GameData.Scenes.Auth
             {
                 using var sha256 = SHA256.Create();
                 byte[] hashBytes = sha256.ComputeHash(Convert.FromBase64String(refreshToken));
-                UnityEngine.Debug.Log(string.Join(" ", hashBytes));
+                UnityEngine.Debug.Log(string.Join(' ', hashBytes));
             }
         }
+
+        private static void ClearTokenInSecureStorageProvider()
+        {
+            SecureStorageProvider.SetValue(SecureStorageKey.RefreshToken, string.Empty);
+            SecureStorageProvider.SetValue(SecureStorageKey.RefreshTokenExpirationAt, string.Empty);
+        }
+
+        private static void SaveTokenInSecureStorageProvider()
+        {
+            SecureStorageProvider.SetValue(SecureStorageKey.RefreshToken, Game03Client.Auth.RefreshToken);
+            SecureStorageProvider.SetValue(SecureStorageKey.RefreshTokenExpirationAt, Game03Client.Auth.RefreshTokenExpirationAt);
+        }
+
         public static async UniTask<bool> AuthAndLoadData(string email = null, string password = null, string refreshToken = null)
         {
             Game03Client.Auth.AuthType type;
@@ -41,6 +53,7 @@ namespace Assets.GameData.Scenes.Auth
             GameMessage.ShowLocale(L.Info.CheckingServerAvailability, false);
             if (!await GameServerPinger.PingAsync())
             {
+                ClearTokenInSecureStorageProvider();
                 GameMessage.ShowLocale(L.Error.Server.Unavailable, true);
                 return false;
             }
@@ -52,11 +65,13 @@ namespace Assets.GameData.Scenes.Auth
 
             if (!authSuccess)
             {
+                ClearTokenInSecureStorageProvider();
                 if (type == Game03Client.Auth.AuthType.Login)
                 {
                     GameMessage.ShowLocale(L.Error.Server.InvalidResponse, true);
                 }
-                else {
+                else
+                {
                     GameMessage.Close();
                 }
                 return false;
@@ -67,16 +82,17 @@ namespace Assets.GameData.Scenes.Auth
             await Game03Client.WebSocketClient.ConnectAsync(CancellationTokenManager.Create("Game03Client.WebSocketClient.ConnectAsync"));
             if (!Game03Client.WebSocketClient.Connected)
             {
+                ClearTokenInSecureStorageProvider();
                 GameMessage.ShowLocale(L.Error.Server.OpeningWebSocketFailed, true);
                 return false;
             }
 
-            await Game03Client.WebSocketClient.SendMessageAsync("Да это жёстко!");
+            await Game03Client.WebSocketClient.SendMessageAsync("Да это жёстко!", CancellationTokenManager.Create("test"));
 
 
             // Загрузка игровых данных не связанных с конкретным пользователем
             GameMessage.ShowLocale(L.Info.LoadingData, false);
-            await Game03Client.GameData.LoadGameDataAsync(CancellationTokenManager.Create("Game03Client.GameData.LoadGameData"));
+            _ = await Game03Client.GameData.LoadGameDataAsync(CancellationTokenManager.Create("Game03Client.GameData.LoadGameData"));
 
             // Предзагрузка AdressableAssets героев и редкости
             await AddressableCache.PreLoadAssets();
@@ -86,17 +102,17 @@ namespace Assets.GameData.Scenes.Auth
             bool loaded = await Game03Client.Collection.CollectionProvider.LoadAllCollectionFromServerAsync(CancellationTokenManager.Create("Game03Client.Collection.CollectionProvider.LoadAllCollectionFromServerAsync"));
             if (!loaded)
             {
+                ClearTokenInSecureStorageProvider();
                 GameMessage.ShowLocale(L.Error.Server.LoadingCollectionFailed, true);
                 return false;
             }
 
             //SecureStorageProvider.SetValue(SecureStorageKey.AccessToken, Game03Client.Auth.AccessToken);
-            SecureStorageProvider.SetValue(SecureStorageKey.RefreshToken, Game03Client.Auth.RefreshToken);
-            SecureStorageProvider.SetValue(SecureStorageKey.RefreshTokenExpirationAt, Game03Client.Auth.RefreshTokenExpirationAt);
-
+            SaveTokenInSecureStorageProvider();
 
             UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
             return true;
         }
+
     }
 }
