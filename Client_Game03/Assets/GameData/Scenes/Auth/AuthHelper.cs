@@ -79,7 +79,7 @@ namespace Assets.GameData.Scenes.Auth
 
             // Открываем веб сокет
             GameMessage.ShowLocale(L.Info.OpeningWebSocket, false);
-            await Game03Client.WebSocketClient.ConnectAsync(CancellationTokenManager.Create("Game03Client.WebSocketClient.ConnectAsync"));
+            await Game03Client.WebSocketClient.ConnectAsync(CancellationTokenManager.Create("Game03Client.WebSocketClient.ConnectAsync", 5));
             if (!Game03Client.WebSocketClient.Connected)
             {
                 ClearTokenInSecureStorageProvider();
