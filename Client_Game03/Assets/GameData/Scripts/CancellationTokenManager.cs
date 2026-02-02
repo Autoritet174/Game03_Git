@@ -12,6 +12,7 @@ namespace Assets.GameData.Scripts
     {
         // Глобальный источник отмены при выходе из приложения.
         private static readonly CancellationTokenSource _globalQuitCts = new();
+        public static CancellationToken GlobalQuitToken => _globalQuitCts.Token;
 
         // Словарь для хранения активных связанных токенов: (Name, (TimeoutCTS, LinkedCTS)).
         private static readonly Dictionary<string, (CancellationTokenSource TimeoutCts, CancellationTokenSource LinkedCts)> _activeTokens = new();

@@ -57,7 +57,7 @@ namespace Assets.GameData.Scenes.Auth
 
                 await SetVisibleInputFieldsAsync(false);
 
-                bool success = await AuthHelper.AuthAndLoadData(refreshToken: refreshToken);
+                bool success = await AuthHelper.AuthAndLoadDataAsync(refreshToken: refreshToken);
                 if (!success)
                 {
                     visibleInputFields = true;

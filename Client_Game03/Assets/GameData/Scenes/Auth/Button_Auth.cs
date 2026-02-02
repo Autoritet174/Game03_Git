@@ -53,7 +53,7 @@ namespace Assets.GameData.Scenes.Auth
                 // Блокируем кнопку и выводим сообщение непосредственно перед await
                 buttonLogin.interactable = false;
 
-                bool success = await AuthHelper.AuthAndLoadData(emailString, passwordString);
+                bool success = await AuthHelper.AuthAndLoadDataAsync(emailString, passwordString);
             }
             catch (Exception ex)
             {
