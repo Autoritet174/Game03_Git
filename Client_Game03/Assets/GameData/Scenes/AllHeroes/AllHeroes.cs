@@ -12,7 +12,6 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
-using G = Assets.GameData.Scripts.G;
 
 public class AllHeroes : MonoBehaviour
 {
@@ -90,7 +89,7 @@ public class AllHeroes : MonoBehaviour
     private async UniTask AddAllImageOnContent()
     {
         List<UniTask> list = new();
-        foreach (DtoBaseHero heroStats in Game03Client.GameData.Container.BaseHeroes.OrderByDescending(a => a.Rarity))
+        foreach (DtoBaseHero heroStats in Game03Client.GameData.Container.BaseHeroes.OrderByDescending(static a => a.Rarity))
         {
             list.Add(LoadHeroByName(heroStats));
         }
@@ -101,18 +100,21 @@ public class AllHeroes : MonoBehaviour
     private async UniTask LoadHeroByName(DtoBaseHero hero)
     {
         GameObject _prefabIconHero = prefabIconHero.SafeInstant();
-        string heroName = hero.Name;
-        _prefabIconHero.name = heroName;
+        _prefabIconHero.name = hero.Name;
 
         Transform transform = _prefabIconHero.transform;
         transform.SetParent(content.transform, false);
 
         // Текст (может быть установлен сразу)
-        Transform childText = _prefabIconHero.transform.Find("TextHero");
+        Transform childText = _prefabIconHero.transform.Find("TextCollectionElement");
         if (childText != null && childText.TryGetComponent(out TextMeshProUGUI textMeshPro))
         {
-            textMeshPro.text = heroName.ToUpper1Char();
+            textMeshPro.text = hero.Name.ToUpper1Char();
             list_TextMeshProUGUI_heroNames.Add(textMeshPro);
+        }
+        else
+        {
+            throw new Exception("TextCollectionElement not found");
         }
 
         // Изображение (загружаем через Addressable)
@@ -124,17 +126,17 @@ public class AllHeroes : MonoBehaviour
         UnityEngine.UI.Image imageHero = childImageHero.GetComponent<Image>();
         UnityEngine.UI.Image imageRarity = childImageRarity.GetComponent<Image>();
 
-        string addressableKey = $"hero-image-{heroName.ToLower()}_face";
+        //string addressableKey = $"hero-image-{heroName.ToLower()}_face";
 
-        var heroSprite = await Addressables.LoadAssetAsync<Sprite>(addressableKey).ToUniTask();
-        var raritySprite = await Addressables.LoadAssetAsync<Sprite>($"rarity{hero.Rarity}").ToUniTask();
-        var selectedSprite = await Addressables.LoadAssetAsync<Sprite>($"raritySelected").ToUniTask();
+        //var heroSprite = await Addressables.LoadAssetAsync<Sprite>(addressableKey).ToUniTask();
+        //var raritySprite = await Addressables.LoadAssetAsync<Sprite>($"rarity{hero.Rarity}").ToUniTask();
+        //var selectedSprite = await Addressables.LoadAssetAsync<Sprite>($"raritySelected").ToUniTask();
 
-        imageHero.sprite = heroSprite;
+        imageHero.sprite = AddressableCache.Heroes[hero.Name + "_face"];
         imageHero.preserveAspect = true; // Сохраняет пропорции изображения
         imageHero.type = Image.Type.Simple; // Режим без растягивания;
 
-        imageRarity.sprite = raritySprite;
+        imageRarity.sprite = AddressableCache.Rarityes[hero.Rarity];
         imageRarity.preserveAspect = true; // Сохраняет пропорции изображения
         imageRarity.type = Image.Type.Simple; // Режим без растягивания;
 
@@ -146,12 +148,12 @@ public class AllHeroes : MonoBehaviour
 
         async UniTask OnPoinerEnter()
         {
-            imageRarity.sprite = selectedSprite;
+            imageRarity.sprite = AddressableCache.Rarityes[0];
             await UniTask.Yield();
         }
         async UniTask OnPoinerExit()
         {
-            imageRarity.sprite = raritySprite;
+            imageRarity.sprite = AddressableCache.Rarityes[hero.Rarity];
             await UniTask.Yield();
         }
         _prefabIconHero.AddHoverEvents(OnPoinerEnter, OnPoinerExit);
@@ -281,10 +283,8 @@ public class AllHeroes : MonoBehaviour
         //Изображение героя
         const string imageHeroFull__Name = "Image_HeroFull (id=6z1ddxml)";
         Image imageHero = GameObjectFinder.FindByName<Image>(imageHeroFull__Name);
-        string imageHeroFull__Image = $"hero-image-{hero.Name.ToLower()}";
-        var heroImage = await Addressables.LoadAssetAsync<Sprite>(imageHeroFull__Image).ToUniTask();
 
-        imageHero.sprite = heroImage;
+        imageHero.sprite = AddressableCache.Heroes[hero.Name];
         imageHero.preserveAspect = true; // Сохраняет пропорции изображения
         imageHero.type = Image.Type.Simple; // Режим без растягивания;
 

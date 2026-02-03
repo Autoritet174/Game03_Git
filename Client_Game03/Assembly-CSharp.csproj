@@ -54,9 +54,9 @@
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_AllHeroes.cs" />
     <Compile Include="Assets\GameData\Scripts\ButtonCloseHelper.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Init_Auth.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\Init_Collection.cs" />
     <Compile Include="Assets\GameData\Scripts\ButtonClose_Click_MoveToMainMenu.cs" />
     <Compile Include="Assets\GameData\Scripts\SecureStorageProvider.cs" />
+    <Compile Include="Assets\GameData\Scripts\MainThreadDispatcher.cs" />
     <Compile Include="Assets\GameData\Prefabs\Buttons\Button_01_Init.cs" />
     <Compile Include="Assets\GameData\Scripts\LoggerException.cs" />
     <Compile Include="Assets\GameData\Prefabs\InputFields\InputField.cs" />
@@ -66,9 +66,9 @@
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_Collection.cs" />
     <Compile Include="Assets\GameData\Scripts\Redactor\AddressableNamesGenerator.cs" />
     <Compile Include="Assets\GameData\Scripts\Redactor\SpriteGenerator.cs" />
-    <Compile Include="Assets\GameData\Scripts\UnityMainThreadDispatcher.cs" />
     <Compile Include="Assets\GameData\Scripts\GameMessage.cs" />
     <Compile Include="Assets\GameData\Scripts\InitializatorStartScene.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\Initializator.cs" />
     <Compile Include="Assets\GameData\Scripts\UnityObject.cs" />
     <Compile Include="Assets\GameData\Scripts\AddressableCache.cs" />
     <Compile Include="Assets\GameData\Scripts\InputManager.cs" />
@@ -77,7 +77,7 @@
     <Compile Include="Assets\GameData\Scripts\CancellationTokenManager.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Button_Close.cs" />
     <Compile Include="Assets\GameData\Scripts\GameObjectExtensions.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\CollectionElement.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\Viewer.cs" />
     <Compile Include="Assets\GameData\Scripts\EventHelper.cs" />
     <Compile Include="Assets\GameData\Scripts\GameServerPinger.cs" />
     <Compile Include="Assets\GameData\Scripts\Tests\Spawner.cs" />

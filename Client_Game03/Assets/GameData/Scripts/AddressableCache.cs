@@ -53,12 +53,9 @@ namespace Assets.GameData.Scripts
             // Heroes
             foreach (DtoBaseHero hero in dtoContainer.BaseHeroes)
             {
-                string name1 = $"Heroes-{hero.Name}";
-                string name2 = $"Heroes-{hero.Name}_face";
-
                 // Используем TryAdd для избежания крэша при дубликатах в конфиге
-                tasks.Add(SafeLoadAsync(name1, s => Heroes.TryAdd(name1, s)));
-                tasks.Add(SafeLoadAsync(name2, s => Heroes.TryAdd(name2, s)));
+                tasks.Add(SafeLoadAsync($"Heroes-{hero.Name}", s => Heroes.TryAdd(hero.Name, s)));
+                tasks.Add(SafeLoadAsync($"Heroes-{hero.Name}_face", s => Heroes.TryAdd($"{hero.Name}_face", s)));
             }
             
 
@@ -81,11 +78,8 @@ namespace Assets.GameData.Scripts
             foreach (DtoBaseEquipment equipment in dtoContainer.BaseEquipments)
             {
                 string tagUnique = equipment.IsUnique ? "Unique-" : string.Empty;
-                string key1 = $"Equipments-{tagUnique}{equipment.Name}";
-                string key2 = $"Equipments-{tagUnique}{equipment.Name}_128";
-
-                tasks.Add(SafeLoadAsync(key1, s => Equipments.TryAdd(key1, s)));
-                tasks.Add(SafeLoadAsync(key2, s => Equipments.TryAdd(key2, s)));
+                tasks.Add(SafeLoadAsync($"Equipments-{tagUnique}{equipment.Name}", s => Equipments.TryAdd($"{tagUnique}{equipment.Name}", s)));
+                tasks.Add(SafeLoadAsync($"Equipments-{tagUnique}{equipment.Name}_128", s => Equipments.TryAdd($"{tagUnique}{equipment.Name}_128", s)));
             }
             
 

@@ -80,7 +80,10 @@ namespace Assets.GameData.Scripts
                 if (index1 > index && index2 > index1)
                 {
                     string keyLocale = m[index1..index2];
-                    GameMessage.ShowLocale(keyLocale, true);
+                    MainThreadDispatcher.Run(() =>
+                    {
+                        //GameMessage.ShowLocale(keyLocale, true);
+                    });
                 }
             }
         }

@@ -1,5 +1,6 @@
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
+using Game03Client;
 using System;
 using System.Security.Cryptography;
 using TMPro;
@@ -44,7 +45,7 @@ namespace Assets.GameData.Scenes.Auth
             try
             {
                 string refreshToken = SecureStorageProvider.GetString(SecureStorageKey.RefreshToken);
-                AuthHelper.LogRefreshToken(refreshToken);
+                //AuthHelper.LogRefreshToken(refreshToken);
                 DateTimeOffset? refreshTokenExpirationAt = SecureStorageProvider.GetDateTimeOffset(SecureStorageKey.RefreshTokenExpirationAt);
                 if (string.IsNullOrWhiteSpace(refreshToken)
                     || refreshTokenExpirationAt == null
@@ -52,6 +53,7 @@ namespace Assets.GameData.Scenes.Auth
                 {
                     // нет токена обновления или он просрочен
                     visibleInputFields = true;
+                    AuthHelper.ClearTokenInSecureStorageProvider();
                     return;
                 }
 
@@ -72,9 +74,10 @@ namespace Assets.GameData.Scenes.Auth
                     GameObjectFinder.FindByName<TMP_InputField>("InputText_Password (id=9vfnj9oh)").text = "testPassword";
                 }
                 SetVisibleInputFields(visibleInputFields);
-                AuthHelper.LogRefreshToken();
+                //AuthHelper.LogRefreshToken();
 
             }
+
             // Пример использования
             //string payloadJson = DecodeJwtPayload(accessToken);
             //Debug.Log(payloadJson);

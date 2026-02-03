@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
 namespace Assets.GameData.Scenes.Collection
 {
-    internal class CollectionElement
+    public class Viewer : MonoBehaviour
     {
     }
 }
