@@ -45,9 +45,18 @@
         <member name="P:General.DTO.Dice.Modificator1000">
             <summary> Modificator. Модификатор к броску кубиков. Первые три знака, тысячные доли от единицы видимой игроку. </summary>
         </member>
+        <member name="P:General.DTO.Dice.Min">
+            <summary> Минимальное значение. </summary>
+        </member>
+        <member name="P:General.DTO.Dice.Max">
+            <summary> Максимальное значение. </summary>
+        </member>
+        <member name="P:General.DTO.Dice.Expected">
+            <summary> Ожидаемое значение. </summary>
+        </member>
         <member name="M:General.DTO.Dice.#ctor(System.String)">
             <summary>
-            Примеры строк: "2d6_10+3", "20d358_123+9999".
+            Примеры строк: "2d6+3", "20d358_123+9999".
             </summary>
             <param name="diceStr"></param>
             <exception cref="T:System.FormatException"></exception>
