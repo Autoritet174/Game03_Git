@@ -52,6 +52,7 @@
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_InBattle.cs" />
     <Compile Include="Assets\GameData\Scenes\AllHeroes\AllHeroesConsts.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_AllHeroes.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\PanelScene.cs" />
     <Compile Include="Assets\GameData\Scripts\ButtonCloseHelper.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Init_Auth.cs" />
     <Compile Include="Assets\GameData\Scripts\ButtonClose_Click_MoveToMainMenu.cs" />
@@ -66,18 +67,25 @@
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_Collection.cs" />
     <Compile Include="Assets\GameData\Scripts\Redactor\AddressableNamesGenerator.cs" />
     <Compile Include="Assets\GameData\Scripts\Redactor\SpriteGenerator.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\TabButton.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\PanelCollectionViewer.cs" />
     <Compile Include="Assets\GameData\Scripts\GameMessage.cs" />
     <Compile Include="Assets\GameData\Scripts\InitializatorStartScene.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\Initializator.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\FilterButton.cs" />
     <Compile Include="Assets\GameData\Scripts\UnityObject.cs" />
     <Compile Include="Assets\GameData\Scripts\AddressableCache.cs" />
     <Compile Include="Assets\GameData\Scripts\InputManager.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\AuthManager.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\PanelCollection.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\GroupDivider.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\PanelTop.cs" />
     <Compile Include="Assets\GameData\Scripts\CancellationTokenManager.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Button_Close.cs" />
     <Compile Include="Assets\GameData\Scripts\GameObjectExtensions.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\Viewer.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\PanelCollectionTopButtons.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\PanelSelectedHero.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\PanelSelectedEquipment.cs" />
     <Compile Include="Assets\GameData\Scripts\EventHelper.cs" />
     <Compile Include="Assets\GameData\Scripts\GameServerPinger.cs" />
     <Compile Include="Assets\GameData\Scripts\Tests\Spawner.cs" />
@@ -87,6 +95,7 @@
     <Compile Include="Assets\GameData\Scenes\AllHeroes\AllHeroes.cs" />
     <Compile Include="Assets\GameData\Scripts\G.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\AuthHelper.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\Slot.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Button_Auth.cs" />
   </ItemGroup>
   <ItemGroup>

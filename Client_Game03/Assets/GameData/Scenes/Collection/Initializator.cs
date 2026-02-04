@@ -12,127 +12,31 @@ namespace Assets.GameData.Scenes.Collection
 {
     public class Initializator : MonoBehaviour
     {
+        public Initializator() {
+            viewer = new(this);
+            panelTop = new(this);
+        }
+        private readonly PanelCollection viewer;
+        private readonly PanelTop panelTop;
+
         public static readonly IEnumerable<string> Slots1by1 = new[] { "Head", "Armor", "Hands", "Feet", "Waist", "Neck", "Shield" };
-
-        private class TabButton
-        {
-            public readonly string name;
-            public readonly RectTransform rectTransform;
-            public readonly Button button;
-            public readonly TextMeshProUGUI textMeshProUGUI;
-            public readonly Image image;
-
-            public TabButton(string name, string nameText, Func<UniTask> asyncAction)
-            {
-                this.name = name;
-                button = GameObjectFinder.FindByName<Button>(name);
-                rectTransform = GameObjectFinder.FindByName<RectTransform>(name);
-                image = GameObjectFinder.FindByName<Image>(name);
-                textMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>(nameText);
-                //button.onClick.AddListener(() => asyncAction().Forget());
-                rectTransform.gameObject.SetClickEvent(asyncAction, true);
-            }
-            public void SetText(string text)
-            {
-                textMeshProUGUI.text = text;
-            }
-        }
-
-        private class Slot
-        {
-            private readonly string name;
-            private readonly int posX;
-            private readonly int posY;
-            private readonly RectTransform _RectTransform;
-            private readonly TextMeshProUGUI _TextMeshProUGUI;
-
-            public Slot(string name, int posX, int posY, Transform parent, string suffix = "")
-            {
-                this.name = name;
-                this.posX = posX;
-                this.posY = posY;
-
-                _RectTransform = GameObjectFinder.FindByName<RectTransform>($"PanelSlot{name}{suffix}", parent);
-                _TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("LabelSlot", _RectTransform);
-                string lKey = L.UI.Label.Slot.GetKey(name);
-                string text = Game03Client.LocalizationManager.GetValue(lKey);
-                if (suffix != "")
-                {
-                    text += " " + suffix;
-                }
-                _TextMeshProUGUI.text = text;
-            }
-
-
-            public void Resize(float coefHeight)
-            {
-                const float _TopLeftBase = 10f;
-                const float widthBase = 95f;
-                const float heightBase = widthBase / 0.845693f; // (1f - 0.154307f);
-                _RectTransform.sizeDelta = new Vector2(widthBase * coefHeight, heightBase * coefHeight);
-                float x = (((widthBase + _TopLeftBase) * (posX - 1)) + _TopLeftBase) * coefHeight;
-                float y = (((heightBase + _TopLeftBase) * (posY - 1)) + _TopLeftBase) * coefHeight;
-                _RectTransform.anchoredPosition = new Vector2(x, -y);
-
-                _TextMeshProUGUI.fontSize = 15f * coefHeight;
-            }
-        }
-
-        /// <summary>
-        /// Внутренняя панель, кнопки.
-        /// </summary>
-        private class InternalPanelButton
-        {
-            private readonly RectTransform rectTransform;
-            private readonly RectTransform rectTransformButton;
-            private readonly RectTransform rectTransformLabel;
-            private readonly TextMeshProUGUI textMeshProUGUILabel;
-            private readonly GameObject gameObject;
-
-            public InternalPanelButton(string name)
-            {
-                rectTransform = GameObjectFinder.FindByName<RectTransform>(name);
-                gameObject = rectTransform.gameObject;
-                rectTransformButton = GameObjectFinder.FindByName<RectTransform>("Button", rectTransform.transform);
-                rectTransformLabel = GameObjectFinder.FindByName<RectTransform>("Label", rectTransform.transform);
-                textMeshProUGUILabel = GameObjectFinder.FindByName<TextMeshProUGUI>("Label", rectTransform.transform);
-            }
-            public void Refresh(float coefHeight, Vector2 vector008PercentOfHeight, float anchoredPositionX)
-            {
-                rectTransform.sizeDelta = vector008PercentOfHeight;
-                rectTransform.anchoredPosition = new(anchoredPositionX * coefHeight, -5 * coefHeight);
-                rectTransformButton.sizeDelta = new(77 * coefHeight, 77 * coefHeight);
-                rectTransformLabel.sizeDelta = new(86 * coefHeight, 13 * coefHeight);
-                rectTransformLabel.anchoredPosition = new(0, -86 * coefHeight);
-                textMeshProUGUILabel.fontSize = 18 * coefHeight;
-            }
-            public void SetActive(bool active)
-            {
-                gameObject.SetActive(active);
-            }
-        }
-
 
         public static readonly Vector3 Vector3Selected = new(1.15f, 1.15f, 1);
 
         //public bool Initialized { get; private set; }
-        private const int COLOR_OFF_BUTTON_RGB_VALUE = 100;
-        private static Color ColorOffButton = new(COLOR_OFF_BUTTON_RGB_VALUE / 255f, COLOR_OFF_BUTTON_RGB_VALUE / 255f, COLOR_OFF_BUTTON_RGB_VALUE / 255f);
         private bool _initialized = false;
         public bool ScrollbarVertical_Active { get; private set; } = false;
         private float _width, _height;
 
 
-        private TabButton _TabButtonHeroes, _TabButtonEquipment, _TabButtonChangingEquipment;
+        
         private Image _Background_Image;
         private float _ImageBackgroundCoef = 1;
 
-        private RectTransform _PanelTop_RectTransform;
-        private RectTransform _ButtonClose_RectTransform;
+       
         private RectTransform _ButtonCloseSelectedHero_RectTransform;
         private RectTransform _ButtonCloseSelectedEquipment_RectTransform;
-        private RectTransform _PanelSelectedHero_RectTransform;
-        public GameObject PanelSelectedHero_GameObject { get; private set; }
+        
         public bool PanelSelectedHeroIsActive { get; set; } = false;
         public bool PanelSelectedEquipmentIsActive { get; set; } = false;
         private RectTransform _PanelSelectedHeroTop_RectTransform;
@@ -153,8 +57,7 @@ namespace Assets.GameData.Scenes.Collection
         private TextMeshProUGUI _PanelSelectedEquipmentBottomTabButton2_TextMeshProUGUI;
         private RectTransform _PanelSelectedEquipmentBottomTab1_RectTransform;
 
-        public RectTransform PanelCollection_RectTransform { get; private set; }
-        private RectTransform _PanelCollectionTopButtons_RectTransform;
+
         private RectTransform _ScrollViewCollection_RectTransform;
         public RectTransform ScrollbarVertical_RectTransform { get; private set; }
         private GameObject ScrollbarVertical_GameObject;
@@ -180,43 +83,25 @@ namespace Assets.GameData.Scenes.Collection
         public TextMeshProUGUI ButtonSell_TextMeshProUGUI { get; private set; }
 
 
-        private InternalPanelButton _InternalPanelHeroes;
-        private InternalPanelButton _InternalPanelEquipments;
-        private InternalPanelButton _InternalPanelFilter;
-        private InternalPanelButton _InternalPanelGroup;
-        private InternalPanelButton _InternalPanelSort;
 
         private Transform _CollectionContent_Transform;
 
 
         private RectTransform _RangePanel_RectTransform;
         private GameObject _RangePanel_GameObject;
-        private RectTransform _ButtonPrevPage_RectTransform;
-        private RectTransform _ButtonNextPage_RectTransform;
-        private RectTransform _LabelRangePage_RectTransform;
-        private TextMeshProUGUI _LabelRangePage_TextMeshProUGUI;
 
         private readonly List<Slot> _Slots = new();
-        private readonly List<GroupDivider> _GroupDividers = new();
 
-        /// <summary>
-        /// 1 - герои, 2 - экипировка
-        /// </summary>
-        public int CollectionMode { get; private set; } = 1;
+     
+       
 
-        private int pageCurrent = 1;
-        private int pageMax = 1;
         //private readonly int slotIndex = 0;
+
 
 
         private async void Start()
         {
-            _TabButtonHeroes = new("ButtonHeroes (id=40jhb51a)", "Text (TMP) (id=wl92ls1m)", OnClickHeroes);
-            _TabButtonEquipment = new("ButtonEquipment (id=k5hqeyat)", "Text (TMP) (id=cklw2id1)", OnClickEquipment);
-            _TabButtonChangingEquipment = new("ButtonChangingEquipment (id=4r13hk1v)", "Text (TMP) (id=nzouq7ws)", OnClickChangingEquipment);
-            _TabButtonHeroes.SetText($"{Game03Client.LocalizationManager.GetValue(L.UI.Button.Heroes)} ({Game03Client.Collection.CollectionProvider.GetCountHeroes()})");
-            _TabButtonEquipment.SetText($"{Game03Client.LocalizationManager.GetValue(L.UI.Button.Equipment)} ({Game03Client.Collection.CollectionProvider.GetCountEquipments()})");
-            _TabButtonChangingEquipment.SetText($"{Game03Client.LocalizationManager.GetValue(L.UI.Button.ChangingEquipment)}");
+          
 
             // Изображение заднего фона
             _Background_Image = GameObjectFinder.FindByName<Image>("Image_Background (id=688x18dt)");
@@ -225,16 +110,14 @@ namespace Assets.GameData.Scenes.Collection
                 Texture2D texture = _Background_Image.sprite.texture;
                 _ImageBackgroundCoef = texture.width / (float)texture.height;
             }
-            _PanelTop_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelTop (id=ibal8ya0)");
-            _ButtonClose_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose (id=4nretdab)");
 
-            _PanelSelectedHero_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHero (id=vs2gi8c6)");
+            
             PanelSelectedHero_GameObject = _PanelSelectedHero_RectTransform.gameObject;
             PanelSelectedHeroSetActive(false, false);
             _PanelSelectedHero_RectTransform.anchoredPosition = Vector2.zero;
             PanelSelectedHeroIsActive = PanelSelectedHero_GameObject.activeInHierarchy;
 
-            _PanelSelectedEquipment_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedEquipment (id=ta39338e)");
+            _PanelSelectedEquipment_RectTransform = ;
             PanelSelectedEquipment_GameObject = _PanelSelectedEquipment_RectTransform.gameObject;
             PanelSelectedEquipmentSetActive(false, false);
             _PanelSelectedEquipment_RectTransform.anchoredPosition = Vector2.zero;
@@ -255,17 +138,7 @@ namespace Assets.GameData.Scenes.Collection
             _SelectedHeroImageContainer_RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Container (id=1l6gscif)");
             _SelectedEquipmentImageContainer_RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Container (id=bqxjhczr)");
 
-
-            // Панель для внутренних кнопок
-            PanelCollection_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelCollection (id=jcxwa01g)");
-            _PanelCollectionTopButtons_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelCollectionTopButtons (id=gmzb0h9f)");
-
-            // Внутренние кнопки
-            _InternalPanelHeroes = new("ImageButtonHeroes (id=pakco5ud)");
-            _InternalPanelEquipments = new("ImageButtonEquipments (id=vuhjngaz)");
-            _InternalPanelFilter = new("ImageButtonFilter (id=vjeqfzen)");
-            _InternalPanelGroup = new("ImageButtonGroup (id=hbsaogwl)");
-            _InternalPanelSort = new("ImageButtonSort (id=6nvcsrdm)");
+           
 
 
             _ButtonCloseSelectedHero_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose (id=0ursxw0e)");
@@ -373,12 +246,6 @@ namespace Assets.GameData.Scenes.Collection
             // Панель навигации по страницам
             _RangePanel_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelRange (id=66z5bnzi)");
             _RangePanel_GameObject = _RangePanel_RectTransform.gameObject;
-            _ButtonPrevPage_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonPrevPage (id=25alql62)");
-            _ButtonNextPage_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonNextPage (id=k5moi57b)");
-            _LabelRangePage_RectTransform = GameObjectFinder.FindByName<RectTransform>("LabelRangePage (id=6jgz12bu)");
-            _LabelRangePage_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("LabelRangePage (id=6jgz12bu)");
-            _ButtonPrevPage_RectTransform.gameObject.SetClickEvent(PagePrev, true);
-            _ButtonNextPage_RectTransform.gameObject.SetClickEvent(PageNext, true);
             UpdatePageMax();
 
 
@@ -427,149 +294,10 @@ namespace Assets.GameData.Scenes.Collection
             }
         }
 
-        private void UpdatePageMax()
-        {
-            int c = CollectionMode switch
-            {
-                1 => Game03Client.Collection.CollectionProvider.GetCountHeroes(),
-                2 => Game03Client.Collection.CollectionProvider.GetCountEquipments(),
-                3 => PanelSelectedHeroIsActive ? Game03Client.Collection.CollectionProvider.GetCountEquipments() : Game03Client.Collection.CollectionProvider.GetCountHeroes(),
-                _ => throw new Exception(),
-            };
-            pageMax = (c / Game03Client.Collection.CollectionProvider.PAGE_SIZE) + (c % Game03Client.Collection.CollectionProvider.PAGE_SIZE > 0 ? 1 : 0);
-            if (pageMax < 1)
-            {
-                pageMax = 1;
-            }
-            if (pageCurrent > pageMax)
-            {
-                pageCurrent = pageMax;
-            }
-            _RangePanel_GameObject.SetActive(pageMax > 1);
-        }
+       
+      
 
-        private async UniTask PagePrev()
-        {
-            if (pageCurrent > 1)
-            {
-                pageCurrent--;
-                await InstantiateCollectionAsync();
-            }
-        }
-        private async UniTask PageNext()
-        {
-            if (pageCurrent < pageMax)
-            {
-                pageCurrent++;
-                await InstantiateCollectionAsync();
-            }
-        }
-
-        public async UniTask InstantiateCollectionAsync()
-        {
-            try
-            {
-                if (_GroupDividers.Count > 0)
-                {
-                    foreach (GroupDivider item in _GroupDividers)
-                    {
-                        UnityEngine.Object.Destroy(item.gameObject);
-                    }
-                }
-
-
-                OnResizeWindow();
-                await UniTask.Yield();
-
-
-                int max = Game03Client.Collection.CollectionProvider.PAGE_SIZE * pageCurrent;
-
-                UpdatePageMax();
-                _GroupDividers.Clear();
-
-                async UniTask LoadHeroes()
-                {
-                    if (pageCurrent >= pageMax)
-                    {
-                        max = Game03Client.Collection.CollectionProvider.GetCountHeroes();
-                    }
-
-                    IEnumerable<Game03Client.Collection.GroupCollectionElement> grouped = Game03Client.Collection.CollectionProvider.GetCollectionHeroesGroupedByGroupNames(pageCurrent);
-                    IOrderedEnumerable<Game03Client.Collection.GroupCollectionElement> sorted = grouped.OrderByDescending(static a => a.Priority);
-                    foreach (Game03Client.Collection.GroupCollectionElement item in sorted)
-                    {
-                        if (item.List.Count() > 0)
-                        {
-                            GameObject obj = AddressableCache.GroupDividerPrefabAddressableGameObject.SafeInstant();
-                            GroupDivider groupDivider = obj.AddComponent<GroupDivider>();
-                            obj.transform.SetParent(_CollectionContent_Transform, false);
-                            _GroupDividers.Add(groupDivider);
-                            await groupDivider.Init(item.Name, this, obj, item.List);
-                        }
-                    }
-                }
-                async UniTask LoadEquipmentes()
-                {
-                    if (pageCurrent >= pageMax)
-                    {
-                        max = Game03Client.Collection.CollectionProvider.GetCountEquipments();
-                    }
-
-                    IEnumerable<Game03Client.Collection.GroupCollectionElement> grouped = Game03Client.Collection.CollectionProvider.GetCollectionEquipmentesGroupByGroups(pageCurrent);
-                    IOrderedEnumerable<Game03Client.Collection.GroupCollectionElement> sorted = grouped.OrderByDescending(static a => a.Priority);
-                    foreach (Game03Client.Collection.GroupCollectionElement item in sorted)
-                    {
-                        if (item.List.Count() > 0)
-                        {
-                            GameObject groupDividerPrefab = AddressableCache.GroupDividerPrefabAddressableGameObject;
-                            GameObject obj = groupDividerPrefab.SafeInstant();
-                            GroupDivider groupDivider = obj.AddComponent<GroupDivider>();
-                            obj.transform.SetParent(_CollectionContent_Transform, false);
-                            _GroupDividers.Add(groupDivider);
-                            await groupDivider.Init(item.Name, this, obj, item.List);
-                        }
-                    }
-                }
-
-
-                switch (CollectionMode)
-                {
-                    case 1:
-                        PanelSelectedEquipmentSetActive(false, false);
-                        await LoadHeroes(); break;
-                    case 2:
-                        PanelSelectedHeroSetActive(false, false);
-                        await LoadEquipmentes(); break;
-                    case 3:
-                        {
-                            if (PanelSelectedHeroIsActive)
-                            {
-                                await LoadEquipmentes();
-                            }
-                            else
-                            {
-                                _InternalPanelEquipments.SetActive(false);
-                                PanelSelectedEquipmentIsActive = false;
-                                await LoadHeroes();
-                            }
-                            break;
-                        }
-
-                    default:
-                        throw new Exception();
-                }
-
-
-                _LabelRangePage_TextMeshProUGUI.text = $"{((pageCurrent - 1) * Game03Client.Collection.CollectionProvider.PAGE_SIZE) + 1} - {max}";
-
-                OnResizeWindow();
-            }
-            finally
-            {
-                GameMessage.Close();
-            }
-        }
-
+       
         public void UnselectAll()
         {
             for (int i = 0; i < _GroupDividers.Count; i++)
@@ -584,68 +312,13 @@ namespace Assets.GameData.Scenes.Collection
             }
         }
 
-        /// <summary> Кнопка "Герои". </summary>
-        private async UniTask OnClickHeroes()
-        {
-            if (CollectionMode == 1)
-            {
-                return;
-            }
-            CollectionMode = 1;
-            _InternalPanelHeroes.SetActive(true);
-            _InternalPanelEquipments.SetActive(false);
-            OnClickTabButton(_TabButtonHeroes);
-            await InstantiateCollectionAsync();
-        }
+       
 
-        /// <summary> Кнопка "Экипировка". </summary>
-        private async UniTask OnClickEquipment()
-        {
-            if (CollectionMode == 2)
-            {
-                return;
-            }
-            CollectionMode = 2;
-            _InternalPanelHeroes.SetActive(false);
-            _InternalPanelEquipments.SetActive(true);
-            OnClickTabButton(_TabButtonEquipment);
-            await InstantiateCollectionAsync();
-        }
-
-        /// <summary> Кнопка "Смена экипировки". </summary>
-        private async UniTask OnClickChangingEquipment()
-        {
-            if (CollectionMode == 3)
-            {
-                return;
-            }
-            CollectionMode = 3;
-            OnClickTabButton(_TabButtonChangingEquipment);
-            await InstantiateCollectionAsync();
-        }
-
-        private void OnClickTabButton(TabButton tabButtonPressed)
-        {
-            var array = new TabButton[] { _TabButtonHeroes, _TabButtonEquipment, _TabButtonChangingEquipment };
-            foreach (TabButton item in array)
-            {
-                item.image.color = tabButtonPressed.name == item.name ? Color.white : ColorOffButton;
-            }
-        }
+       
 
         public void PanelSelectedHeroSetActive(bool active, bool executeOnResizeWindow)
         {
-            PanelSelectedHero_GameObject.SetActive(active);
-            if (active)
-            {
-                SelectedHeroId = Guid.Empty;
-            }
-
-            if (executeOnResizeWindow)
-            {
-                PanelSelectedHeroIsActive = true;
-                OnResizeWindow();
-            }
+           
         }
         public void PanelSelectedEquipmentSetActive(bool active, bool executeOnResizeWindow)
         {
@@ -680,31 +353,31 @@ namespace Assets.GameData.Scenes.Collection
             float topPanelHeightPercent = 0.08f;
             float panelTopHeight = topPanelHeightPercent * _height; // 86.4
             Vector2 vector008PercentOfHeight = new(panelTopHeight, panelTopHeight);
-            _PanelTop_RectTransform.sizeDelta = new Vector2(_width, panelTopHeight);
+            
 
 
-            // Кнопки вкладок
-            float tabButtonWidth = 230.4f * coefHeight;
-            var v = new Vector2(tabButtonWidth, panelTopHeight);
-            _TabButtonHeroes.rectTransform.sizeDelta = v;
-            _TabButtonEquipment.rectTransform.sizeDelta = v;
-            _TabButtonChangingEquipment.rectTransform.sizeDelta = v;
+            //// Кнопки вкладок
+            //float tabButtonWidth = 230.4f * coefHeight;
+            //var v = new Vector2(tabButtonWidth, panelTopHeight);
+            //_TabButtonHeroes.rectTransform.sizeDelta = v;
+            //_TabButtonEquipment.rectTransform.sizeDelta = v;
+            //_TabButtonChangingEquipment.rectTransform.sizeDelta = v;
 
-            _TabButtonEquipment.rectTransform.anchoredPosition = new Vector2(tabButtonWidth, 0);
-            _TabButtonChangingEquipment.rectTransform.anchoredPosition = new Vector2(tabButtonWidth * 2, 0);
+            //_TabButtonEquipment.rectTransform.anchoredPosition = new Vector2(tabButtonWidth, 0);
+            //_TabButtonChangingEquipment.rectTransform.anchoredPosition = new Vector2(tabButtonWidth * 2, 0);
 
-            float f22 = 22f * coefHeight;
-            float f5 = 5f * coefHeight;
-            float f10 = 10f * coefHeight;
-            float f15 = 15f * coefHeight;
-            float f50 = 50f * coefHeight;
-            _TabButtonHeroes.textMeshProUGUI.fontSize = f22;
-            _TabButtonEquipment.textMeshProUGUI.fontSize = f22;
-            _TabButtonChangingEquipment.textMeshProUGUI.fontSize = f22;
+            //float f22 = 22f * coefHeight;
+            //float f5 = 5f * coefHeight;
+            //float f10 = 10f * coefHeight;
+            //float f15 = 15f * coefHeight;
+            //float f50 = 50f * coefHeight;
+            //_TabButtonHeroes.textMeshProUGUI.fontSize = f22;
+            //_TabButtonEquipment.textMeshProUGUI.fontSize = f22;
+            //_TabButtonChangingEquipment.textMeshProUGUI.fontSize = f22;
 
 
-            // Кнопки "Закрыть"
-            _ButtonClose_RectTransform.sizeDelta = vector008PercentOfHeight;
+            //// Кнопки "Закрыть"
+            //_ButtonClose_RectTransform.sizeDelta = vector008PercentOfHeight;
 
 
             // Панель выбранного героя
@@ -728,7 +401,7 @@ namespace Assets.GameData.Scenes.Collection
                 // Кнопки вкладок
                 _PanelSelectedHeroBottomTabButton1_RectTransform.sizeDelta = new Vector2(150f * coefHeight, f50);
                 _PanelSelectedHeroBottomTabButton2_RectTransform.sizeDelta = _PanelSelectedHeroBottomTabButton1_RectTransform.sizeDelta;
-            
+
                 _PanelSelectedHeroBottomTabButton1_RectTransform.anchoredPosition = new Vector2(f5, -f5);
                 _PanelSelectedHeroBottomTabButton2_RectTransform.anchoredPosition = new Vector2(160f * coefHeight, -f5);
 
