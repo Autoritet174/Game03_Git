@@ -39,12 +39,8 @@ namespace Assets.GameData.Scenes.Collection
         
         public bool PanelSelectedHeroIsActive { get; set; } = false;
         public bool PanelSelectedEquipmentIsActive { get; set; } = false;
-        private RectTransform _PanelSelectedHeroTop_RectTransform;
-        private RectTransform _PanelSelectedHeroBottom_RectTransform;
-        private RectTransform _PanelSelectedHeroBottomTabButton1_RectTransform;
-        private RectTransform _PanelSelectedHeroBottomTabButton2_RectTransform;
-        private TextMeshProUGUI _PanelSelectedHeroBottomTabButton1_TextMeshProUGUI;
-        private TextMeshProUGUI _PanelSelectedHeroBottomTabButton2_TextMeshProUGUI;
+        
+   
         private RectTransform _PanelSelectedHeroBottomTab1_RectTransform;
 
         public GameObject PanelSelectedEquipment_GameObject { get; private set; }
@@ -62,7 +58,7 @@ namespace Assets.GameData.Scenes.Collection
         public RectTransform ScrollbarVertical_RectTransform { get; private set; }
         private GameObject ScrollbarVertical_GameObject;
 
-        public TextMeshProUGUI SelectedHeroTop_TextMeshProUGUI { get; private set; }
+       
         public TextMeshProUGUI SelectedEquipmentTop_TextMeshProUGUI { get; private set; }
         private RectTransform _SelectedHeroImageContainer_RectTransform;
         private RectTransform _SelectedEquipmentImageContainer_RectTransform;
@@ -141,29 +137,8 @@ namespace Assets.GameData.Scenes.Collection
            
 
 
-            _ButtonCloseSelectedHero_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose (id=0ursxw0e)");
-            _ButtonCloseSelectedHero_RectTransform.gameObject.GetComponent<Button>().onClick.AddListener(() =>
-            {
-                PanelSelectedHeroSetActive(false, false);
-                foreach (GroupDivider a in _GroupDividers)
-                {
-                    bool founded = false;
-                    foreach (GroupDivider.DataCollectionElement b in a.ListDataCollectionElement)
-                    {
-                        if (b.Selected)
-                        {
-                            b.rectTransform.localScale = Vector3.one;
-                            founded = true;
-                            break;
-                        }
-                    }
-                    if (founded)
-                    {
-                        break;
-                    }
-                }
-                OnResizeWindow();
-            });
+           
+           
 
 
             _ButtonCloseSelectedEquipment_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose (id=va8d3lsz)");
@@ -190,15 +165,12 @@ namespace Assets.GameData.Scenes.Collection
                 OnResizeWindow();
             });
 
-            _PanelSelectedHeroTop_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHeroTop (id=0y6mrhc2)");
-            _PanelSelectedHeroBottom_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHeroBottom (id=wejn6493)");
+            
 
             _PanelSelectedEquipmentTop_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedEquipmentTop (id=dp54agcp)");
             _PanelSelectedEquipmentBottom_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedEquipmentBottom (id=bj3zvapm)");
 
-            _PanelSelectedHeroBottomTabButton1_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonTab1 (id=uiufd2wv)");
-            _PanelSelectedHeroBottomTabButton1_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonTab1Text (id=lf8q2aas)");
-            _PanelSelectedHeroBottomTabButton1_TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(L.UI.Button.Equipment));
+           
 
             _PanelSelectedEquipmentBottomTabButton1_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonTab1 (id=n94o21t8)");
             _PanelSelectedEquipmentBottomTabButton1_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonTab1Text (id=yjb1gqbc)");
@@ -213,7 +185,7 @@ namespace Assets.GameData.Scenes.Collection
             _PanelSelectedEquipmentBottomTabButton2_TextMeshProUGUI.SetText("{Tab2}");
 
             _PanelSelectedHeroBottomTab1_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHeroBottomTab1 (id=kn3yl79k)");
-            SelectedHeroTop_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label_SelectedHero (id=ahrtgg43)");
+            
 
             _PanelSelectedEquipmentBottomTab1_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedEquipmentBottomTab1 (id=9nwzj7p8)");
             SelectedEquipmentTop_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label_SelectedEquipment (id=004gk90y)");
@@ -392,27 +364,16 @@ namespace Assets.GameData.Scenes.Collection
                 // Панель выбранного героя
                 _PanelSelectedHero_RectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth, 994f * coefHeight);
 
-                // Панель выбранного героя. Верхняя панель где написано имя героя
-                _PanelSelectedHeroTop_RectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth, panelTopHeight);
+                
 
-                // Панель выбранного героя. Нижняя панель с характеристиками героя
-                _PanelSelectedHeroBottom_RectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth, 908f * coefHeight);
+                
 
-                // Кнопки вкладок
-                _PanelSelectedHeroBottomTabButton1_RectTransform.sizeDelta = new Vector2(150f * coefHeight, f50);
-                _PanelSelectedHeroBottomTabButton2_RectTransform.sizeDelta = _PanelSelectedHeroBottomTabButton1_RectTransform.sizeDelta;
-
-                _PanelSelectedHeroBottomTabButton1_RectTransform.anchoredPosition = new Vector2(f5, -f5);
-                _PanelSelectedHeroBottomTabButton2_RectTransform.anchoredPosition = new Vector2(160f * coefHeight, -f5);
-
-                _PanelSelectedHeroBottomTabButton1_TextMeshProUGUI.fontSize = f15;
-                _PanelSelectedHeroBottomTabButton2_TextMeshProUGUI.fontSize = f15;
+             
 
                 // Вкладка 1. Экипировка
                 _PanelSelectedHeroBottomTab1_RectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth, 848f * coefHeight);
 
                 // Выбранный герой. Лабел
-                //SelectedHeroTop_TextMeshProUGUI.rectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth - panelTopHeight, panelTopHeight);
                 SelectedHeroTop_TextMeshProUGUI.rectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth - panelTopHeight, panelTopHeight);
                 //SelectedHeroTop_TextMeshProUGUI.rectTransform.anchoredPosition = new Vector2(panelTopHeight, 0);
                 SelectedHeroTop_TextMeshProUGUI.fontSize = 30f * coefHeight;

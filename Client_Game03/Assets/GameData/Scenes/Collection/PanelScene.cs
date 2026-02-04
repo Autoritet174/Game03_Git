@@ -18,12 +18,22 @@ namespace Assets.GameData.Scenes.Collection
         public PanelSelectedHero PanelSelectedHero { get; }
         public PanelSelectedEquipment PanelSelectedEquipment { get; }
 
-        
         public static CollectionMode CollectionMode { get; set; } = CollectionMode.Hero;
 
+        private float _Width, _Height;
 
-        public float Width { get; set; }
-        public float Height { get; set; }
+        public void OnResized()
+        {
+            _Height = Screen.height;
+            _Width = Screen.width;
+
+            // Вызваем OnResized у всех дочерних объектов
+            PanelTop.OnResized();
+            PanelSelectedHero.OnResized();
+            PanelSelectedEquipment.OnResized();
+            PanelCollection.OnResized();
+        }
+
         private void Update()
         {
             //bool resize = false;
@@ -35,22 +45,11 @@ namespace Assets.GameData.Scenes.Collection
             //{
             //    OnResized();
             //}
-            if (!Mathf.Approximately(Screen.height, Height) || !Mathf.Approximately(Screen.width, Width))
+            if (!Mathf.Approximately(Screen.height, _Height) || !Mathf.Approximately(Screen.width, _Width))
             {
                 OnResized();
             }
         }
 
-        public void OnResized()
-        {
-            Height = Screen.height;
-            Width = Screen.width;
-
-            // Вызваем OnResized у всех дочерних объектов
-            PanelTop.OnResized();
-            PanelSelectedHero.OnResized();
-            PanelSelectedEquipment.OnResized();
-            PanelCollection.OnResized();
-        }
     }
 }

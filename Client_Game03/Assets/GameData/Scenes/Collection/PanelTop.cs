@@ -22,7 +22,10 @@ namespace Assets.GameData.Scenes.Collection
             _TabButtonChangingEquipment = new("ButtonChangingEquipment (id=4r13hk1v)", "Text (TMP) (id=nzouq7ws)", OnClickChangingEquipment);
             _TabButtonChangingEquipment.SetText(Game03Client.LocalizationManager.GetValue(L.UI.Button.ChangingEquipment));
         }
-        public const float HEIGHT_BASE = 90f;
+
+        public float Height { get; private set; }
+
+        private const float HEIGHT_BASE = 90f;
 
         private readonly PanelScene _PanelScene;
         private readonly RectTransform _RectTransform;
@@ -38,29 +41,26 @@ namespace Assets.GameData.Scenes.Collection
         public void OnResized()
         {
             float coefHeight = Screen.height / 1080f;
-            float h = HEIGHT_BASE * coefHeight;
-            float w = Screen.width;
-            _RectTransform.sizeDelta = new(w, h);
+            Height = HEIGHT_BASE * coefHeight;
+            _RectTransform.sizeDelta.Set(Screen.width, 0f);
 
             // Кнопки вкладок
             float tabButtonWidth = 240f * coefHeight;
-            Vector2 sizeDelta = new(tabButtonWidth, h);
+            float fontSize = Height / 4f * coefHeight;
 
-            float fontSize = h / 4f * coefHeight;
-
-            _TabButtonHeroes.rectTransform.sizeDelta = sizeDelta;
+            _TabButtonHeroes.rectTransform.sizeDelta.Set(tabButtonWidth, Height);
             _TabButtonHeroes.textMeshProUGUI.fontSize = fontSize;
 
-            _TabButtonEquipment.rectTransform.sizeDelta = sizeDelta;
-            _TabButtonEquipment.rectTransform.anchoredPosition = new(tabButtonWidth, 0f);
+            _TabButtonEquipment.rectTransform.sizeDelta.Set(tabButtonWidth, Height);
+            _TabButtonEquipment.rectTransform.anchoredPosition.Set(tabButtonWidth, Height);
             _TabButtonEquipment.textMeshProUGUI.fontSize = fontSize;
 
-            _TabButtonChangingEquipment.rectTransform.sizeDelta = sizeDelta;
-            _TabButtonChangingEquipment.rectTransform.anchoredPosition = new(tabButtonWidth * 2f, 0f);
+            _TabButtonChangingEquipment.rectTransform.sizeDelta.Set(tabButtonWidth, Height);
+            _TabButtonChangingEquipment.rectTransform.anchoredPosition.Set(tabButtonWidth * 2f, Height);
             _TabButtonChangingEquipment.textMeshProUGUI.fontSize = fontSize;
 
             // Кнопка "Закрыть"
-            _ButtonClose_RectTransform.sizeDelta = new(h, h);
+            _ButtonClose_RectTransform.sizeDelta.Set(Height, Height);
         }
 
         /// <summary> Кнопка "Герои". </summary>

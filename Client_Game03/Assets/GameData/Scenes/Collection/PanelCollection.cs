@@ -55,15 +55,15 @@ namespace Assets.GameData.Scenes.Collection
             }
         }
 
-        public float Width { get; set; }
-        public float Height { get; set; }
+        public float Width { get; private set; }
+        public float Height { get; private set; }
         public void OnResized()
         {
             float coefHeight = Screen.height / 1080f;
-            Height = (1080f - PanelTop.HEIGHT_BASE) * coefHeight;
-            Width = (1920f-((_PanelScene.PanelSelectedHero.Visible ? PanelSelectedHero .WIDTH_BASE: 0)
-                    + (_PanelScene.PanelSelectedEquipment.Visible ? PanelSelectedEquipment.WIDTH_BASE : 0)))* coefHeight;
-            _RectTransform.sizeDelta = new(Width, Height);
+            Height = Screen.height - _PanelScene.PanelTop.Height;
+            Width = (1920f * coefHeight) - _PanelScene.PanelSelectedHero.Width - _PanelScene.PanelSelectedEquipment.Width;
+
+            _RectTransform.sizeDelta.Set(Width, Height);
             PanelCollectionTopButtons.OnResized();
             PanelCollectionViewer.OnResized();
         }
