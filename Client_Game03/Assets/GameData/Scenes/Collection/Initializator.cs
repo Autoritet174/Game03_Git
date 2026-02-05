@@ -286,7 +286,7 @@ namespace Assets.GameData.Scenes.Collection
                 OnResizeWindow();
             }
         }
-
+         
         public void OnResizeWindow()
         {
             _height = Screen.height;
