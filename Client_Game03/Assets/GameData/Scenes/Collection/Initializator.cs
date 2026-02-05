@@ -60,7 +60,6 @@ namespace Assets.GameData.Scenes.Collection
 
        
         public TextMeshProUGUI SelectedEquipmentTop_TextMeshProUGUI { get; private set; }
-        private RectTransform _SelectedHeroImageContainer_RectTransform;
         private RectTransform _SelectedEquipmentImageContainer_RectTransform;
 
 
@@ -83,10 +82,7 @@ namespace Assets.GameData.Scenes.Collection
         private Transform _CollectionContent_Transform;
 
 
-        private RectTransform _RangePanel_RectTransform;
-        private GameObject _RangePanel_GameObject;
 
-        private readonly List<Slot> _Slots = new();
 
      
        
@@ -131,7 +127,7 @@ namespace Assets.GameData.Scenes.Collection
             SelectedEquipment_Image = GameObjectFinder.FindByName<Image>("ImageEquipmentFull (id=gu7wtz83)");
             SelectedEquipmentRarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity (id=qje8dq78)");
 
-            _SelectedHeroImageContainer_RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Container (id=1l6gscif)");
+            
             _SelectedEquipmentImageContainer_RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Container (id=bqxjhczr)");
 
            
@@ -184,7 +180,7 @@ namespace Assets.GameData.Scenes.Collection
             _PanelSelectedEquipmentBottomTabButton2_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonTab2Text (id=pn28dhfr)");
             _PanelSelectedEquipmentBottomTabButton2_TextMeshProUGUI.SetText("{Tab2}");
 
-            _PanelSelectedHeroBottomTab1_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHeroBottomTab1 (id=kn3yl79k)");
+            
             
 
             _PanelSelectedEquipmentBottomTab1_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedEquipmentBottomTab1 (id=9nwzj7p8)");
@@ -198,26 +194,11 @@ namespace Assets.GameData.Scenes.Collection
             // Коллекция контент
             _CollectionContent_Transform = GameObjectFinder.FindByName("Content (id=ddmjr9vy)").transform;
 
-            _Slots.Clear();
-            _Slots.Add(new Slot("Head", 1, 1, _PanelSelectedHeroBottom_RectTransform));
-            _Slots.Add(new Slot("Armor", 2, 1, _PanelSelectedHeroBottom_RectTransform));
-            _Slots.Add(new Slot("Hands", 3, 1, _PanelSelectedHeroBottom_RectTransform));
-            _Slots.Add(new Slot("Feet", 4, 1, _PanelSelectedHeroBottom_RectTransform));
-            _Slots.Add(new Slot("Waist", 5, 1, _PanelSelectedHeroBottom_RectTransform));
-
-            _Slots.Add(new Slot("Ring", 1, 2, _PanelSelectedHeroBottom_RectTransform, "1"));
-            _Slots.Add(new Slot("Ring", 2, 2, _PanelSelectedHeroBottom_RectTransform, "2"));
-            _Slots.Add(new Slot("Neck", 3, 2, _PanelSelectedHeroBottom_RectTransform));
-            _Slots.Add(new Slot("Trinket", 4, 2, _PanelSelectedHeroBottom_RectTransform, "1"));
-            _Slots.Add(new Slot("Trinket", 5, 2, _PanelSelectedHeroBottom_RectTransform, "2"));
-
-            _Slots.Add(new Slot("Weapon", 1, 3, _PanelSelectedHeroBottom_RectTransform));
-            _Slots.Add(new Slot("WeaponShield", 2, 3, _PanelSelectedHeroBottom_RectTransform));
+            
 
 
             // Панель навигации по страницам
-            _RangePanel_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelRange (id=66z5bnzi)");
-            _RangePanel_GameObject = _RangePanel_RectTransform.gameObject;
+           
             UpdatePageMax();
 
 
@@ -371,7 +352,7 @@ namespace Assets.GameData.Scenes.Collection
              
 
                 // Вкладка 1. Экипировка
-                _PanelSelectedHeroBottomTab1_RectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth, 848f * coefHeight);
+                
 
                 // Выбранный герой. Лабел
                 SelectedHeroTop_TextMeshProUGUI.rectTransform.sizeDelta = new Vector2(panelSelectedHeroWidth - panelTopHeight, panelTopHeight);
@@ -379,11 +360,8 @@ namespace Assets.GameData.Scenes.Collection
                 SelectedHeroTop_TextMeshProUGUI.fontSize = 30f * coefHeight;
 
                 float f = 460.9983f * coefHeight;
-                _SelectedHeroImageContainer_RectTransform.sizeDelta = new Vector2(f / 1.75f, f);
+                
 
-                _SelectedHeroImageContainer_RectTransform.anchoredPosition = new Vector2(f10, f10);
-
-                _Slots.ForEach(a => a.Resize(coefHeight));
             }
 
             float panelSelectedEquipmentWidth = 0;
@@ -465,11 +443,7 @@ namespace Assets.GameData.Scenes.Collection
             }
 
             // Панель навигации по страницам
-            _RangePanel_RectTransform.sizeDelta = new Vector2(230f * coefHeight, 90f * coefHeight);
-            _RangePanel_RectTransform.anchoredPosition = new Vector2(468f * coefHeight, -f10);
-            _ButtonNextPage_RectTransform.sizeDelta = _ButtonPrevPage_RectTransform.sizeDelta = new Vector2(100f * coefHeight, 60f * coefHeight);
-            _LabelRangePage_RectTransform.sizeDelta = new Vector2(230f * coefHeight, 30f * coefHeight);
-            _LabelRangePage_TextMeshProUGUI.fontSize = 18f * coefHeight;
+       
         }
     }
 }

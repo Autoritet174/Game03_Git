@@ -116,5 +116,13 @@ namespace Assets.GameData.Scripts
             //};
             return Application.platform is RuntimePlatform.WindowsPlayer or RuntimePlatform.OSXPlayer or RuntimePlatform.LinuxPlayer or RuntimePlatform.WindowsEditor;
         }
+
+        /// <summary>
+        /// Коэфициент высоты относительно высоты FullHD монитора = "Screen.height / 1080"
+        /// </summary>
+        public static float GetCoefHeight()
+        {
+            return Screen.height / 1080f;
+        }
     }
 }

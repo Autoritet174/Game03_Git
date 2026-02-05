@@ -76,6 +76,7 @@
     <Compile Include="Assets\GameData\Scripts\UnityObject.cs" />
     <Compile Include="Assets\GameData\Scripts\AddressableCache.cs" />
     <Compile Include="Assets\GameData\Scripts\InputManager.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\DataCollectionElement.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\AuthManager.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\PanelCollection.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\GroupDivider.cs" />

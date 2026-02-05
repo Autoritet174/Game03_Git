@@ -1,4 +1,7 @@
+using Assets.GameData.Scripts;
+using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.GameData.Scenes.Collection
 {
@@ -8,6 +11,17 @@ namespace Assets.GameData.Scenes.Collection
     {
         public PanelScene()
         {
+            // Изображение заднего фона
+            _Background_Image = GameObjectFinder.FindByName<Image>("Image_Background (id=688x18dt)");
+            if (_Background_Image != null && _Background_Image.sprite != null)
+            {
+                Texture2D texture = _Background_Image.sprite.texture;
+                _ImageBackgroundCoef = texture.width / (float)texture.height;
+            }
+            else
+            {
+                throw new Exception("Изображение заднего фона некорректно.");
+            }
             PanelTop = new(this);
             PanelCollection = new(this);
             PanelSelectedHero = new(this);
@@ -18,14 +32,26 @@ namespace Assets.GameData.Scenes.Collection
         public PanelSelectedHero PanelSelectedHero { get; }
         public PanelSelectedEquipment PanelSelectedEquipment { get; }
 
-        public static CollectionMode CollectionMode { get; set; } = CollectionMode.Hero;
+        public CollectionMode CollectionMode { get; set; } = CollectionMode.Hero;
 
         private float _Width, _Height;
+        private readonly float _ImageBackgroundCoef;
+        private readonly Image _Background_Image;
 
         public void OnResized()
         {
             _Height = Screen.height;
             _Width = Screen.width;
+
+            // Изображение заднего фона
+            if (_Width / _Height > _ImageBackgroundCoef)//_Width / _Height;// 10000/1000 = 10 // 1920 / 1080 = 1,7778
+            {
+                _Background_Image.rectTransform.sizeDelta.Set(_Width, _Width / _ImageBackgroundCoef);
+            }
+            else
+            {
+                _Background_Image.rectTransform.sizeDelta.Set(_Height * _ImageBackgroundCoef, _Height);
+            }
 
             // Вызваем OnResized у всех дочерних объектов
             PanelTop.OnResized();

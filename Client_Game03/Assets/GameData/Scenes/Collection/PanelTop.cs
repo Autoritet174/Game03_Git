@@ -40,7 +40,7 @@ namespace Assets.GameData.Scenes.Collection
 
         public void OnResized()
         {
-            float coefHeight = Screen.height / 1080f;
+            float coefHeight = G.GetCoefHeight();
             Height = HEIGHT_BASE * coefHeight;
             _RectTransform.sizeDelta.Set(Screen.width, 0f);
 
@@ -66,11 +66,11 @@ namespace Assets.GameData.Scenes.Collection
         /// <summary> Кнопка "Герои". </summary>
         private async UniTask OnClickHeroes()
         {
-            if (PanelScene.CollectionMode == CollectionMode.Hero)
+            if (_PanelScene.CollectionMode == CollectionMode.Hero)
             {
                 return;
             }
-            PanelScene.CollectionMode = CollectionMode.Hero;
+            _PanelScene.CollectionMode = CollectionMode.Hero;
             _PanelScene.PanelCollection.PanelCollectionTopButtons.UpdateActiveButtons();
             SetColorOnTabButtons(_TabButtonHeroes);
             await _PanelScene.PanelCollection.PanelCollectionViewer.InstantiateCollectionAsync();
@@ -79,11 +79,11 @@ namespace Assets.GameData.Scenes.Collection
         /// <summary> Кнопка "Экипировка". </summary>
         private async UniTask OnClickEquipment()
         {
-            if (PanelScene.CollectionMode == CollectionMode.Equipment)
+            if (_PanelScene.CollectionMode == CollectionMode.Equipment)
             {
                 return;
             }
-            PanelScene.CollectionMode = CollectionMode.Equipment;
+            _PanelScene.CollectionMode = CollectionMode.Equipment;
             _PanelScene.PanelCollection.PanelCollectionTopButtons.UpdateActiveButtons();
             SetColorOnTabButtons(_TabButtonEquipment);
             await _PanelScene.PanelCollection.PanelCollectionViewer.InstantiateCollectionAsync();
@@ -92,11 +92,11 @@ namespace Assets.GameData.Scenes.Collection
         /// <summary> Кнопка "Смена экипировки". </summary>
         private async UniTask OnClickChangingEquipment()
         {
-            if (PanelScene.CollectionMode == CollectionMode.ChangingEquipment)
+            if (_PanelScene.CollectionMode == CollectionMode.ChangingEquipment)
             {
                 return;
             }
-            PanelScene.CollectionMode = CollectionMode.ChangingEquipment;
+            _PanelScene.CollectionMode = CollectionMode.ChangingEquipment;
             SetColorOnTabButtons(_TabButtonChangingEquipment);
             _PanelScene.PanelCollection.PanelCollectionTopButtons.UpdateActiveButtons();
             await _PanelScene.PanelCollection.PanelCollectionViewer.InstantiateCollectionAsync();

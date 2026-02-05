@@ -3,7 +3,6 @@ using Cysharp.Threading.Tasks;
 using Game03Client.Collection;
 using General;
 using General.DTO.Entities.Collection;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +17,15 @@ namespace Assets.GameData.Scenes.Collection
     /// Управляет сворачиванием/разворачиванием группы UI-элементов (ячеек)
     /// с асинхронной анимацией высоты.
     /// </summary>
-    public class GroupDivider : MonoBehaviour
+    public class GroupDivider
     {
-        private Initializator _Init_Collection;
+        public GroupDivider(PanelCollectionViewer panelCollectionViewer, string groupName) {
+            _PanelCollectionViewer = panelCollectionViewer;
+            _GroupName = groupName;
+        }
 
-        private string group_name;
+        private readonly PanelCollectionViewer _PanelCollectionViewer;
+        private readonly string _GroupName;
 
         private GameObject _GameObject;
         private RectTransform _RectTransform;
@@ -46,22 +49,18 @@ namespace Assets.GameData.Scenes.Collection
 
         private IEnumerable<CollectionElement> _listCollectionElement;
 
-        public class DataCollectionElement
-        {
-            public GameObject gameObject;
-            public CollectionElement collectionElement;
-            public TextMeshProUGUI textMeshPro;
-            public bool Selected = false;
-            public Image imageRarity;
-            public RectTransform rectTransform;
-        }
-        public readonly List<DataCollectionElement> ListDataCollectionElement = new();
-
+        /// <summary>
+        /// Флаг, переключаем в true при вызове OnDestroy для остановки анимаций.
+        /// </summary>
+        private bool _Destroying = false;
 
         /// <summary>
         /// Текущее состояние группы (true - развернута, false - свернута).
         /// </summary>
-        private bool expanded = true;
+        private bool _Expanded = true;
+
+        
+        public readonly List<DataCollectionElement> ListDataCollectionElement = new();
 
         /// <summary>
         /// Переключает состояние группы и запускает анимацию.
@@ -69,9 +68,9 @@ namespace Assets.GameData.Scenes.Collection
         public void ToggleGroup()
         {
             //Debug.Log(1);
-            expanded = !expanded;
+            _Expanded = !_Expanded;
 
-            if (expanded)
+            if (_Expanded)
             {
                 //    // Разворачивание
                 //    // Сначала активируем контейнер, чтобы он участвовал в макете, но с высотой 0
@@ -95,8 +94,6 @@ namespace Assets.GameData.Scenes.Collection
 
         public async UniTask Init(string group_name, Initializator init_Collection, GameObject gameObjectInput, IEnumerable<CollectionElement> listCollectionElement)
         {
-            _Init_Collection = init_Collection;
-            this.group_name = group_name;
             _GameObject = gameObjectInput;
             _RectTransform = gameObjectInput.GetComponent<RectTransform>();
             _DividerButton_GameObject = GameObjectFinder.FindByName("DividerButton", _GameObject.transform);
@@ -345,7 +342,7 @@ namespace Assets.GameData.Scenes.Collection
 
             // Если группа должна быть свернута по умолчанию, устанавливаем высоту в 0,
             // иначе сохраняем текущую высоту.
-            if (!expanded)
+            if (!_Expanded)
             {
                 // Установка начальной высоты в 0, но нужно сохранить полную высоту
                 // Для корректного расчета полной высоты, сначала активируем объект
@@ -370,7 +367,7 @@ namespace Assets.GameData.Scenes.Collection
         public void Resize()
         {
             float width = _Init_Collection.PanelCollection_RectTransform.sizeDelta.x;
-            float coefHeight = Screen.height / 1080f;
+            float coefHeight = G.GetCoefHeight();
             float heightButton = 45f * coefHeight;
             float height = heightButton;
 
@@ -384,7 +381,7 @@ namespace Assets.GameData.Scenes.Collection
                 DividerButton_TextMeshProUGUI.fontSize = 24 * coefHeight;
             }
 
-            if (expanded)
+            if (_Expanded)
             {
                 const float cellSize1080 = 140f;
                 const float spacing1080 = 9f;
@@ -437,117 +434,19 @@ namespace Assets.GameData.Scenes.Collection
 
         }
 
-
-        // --- Публичные поля, которые настраиваются в Инспекторе ---
-
-        //[SerializeField]
-        //private RectTransform rectTransformDividerButton
-
-        //[SerializeField]
-        //private RectTransform rectTransformGroupDivider;
-
-        /// <summary>
-        /// Скорость анимации (единиц в секунду).
-        /// </summary>
-        //[Tooltip("Скорость анимации в единицах высоты в секунду.")]
-        //[SerializeField]
-        //private float animationSpeed = 1000f;
-
-
-        /// <summary>
-        /// Флаг, переключаем в true при вызове OnDestroy для остановки анимаций.
-        /// </summary>
-        private bool destroying = false;
-
-
-        //private RectTransform cellsRectTransform;
-        //private float expandedHeight; // Сохраняемая полная высота контейнера
-        //private CancellationTokenSource cancellationTokenSource;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="nameGroup"></param>
-        /// <param name="data"></param>
-        /// <param name="countInRow">Количество ячеек в строке.</param>
-        public void Initialize(string nameGroup, JObject data, int countInRow = 12)
-        {
-
-            //cellsRectTransform = gameObjectCellsContainer.GetComponent<RectTransform>();
-
-            //if (cellsRectTransform == null)
-            //{
-            //    throw new MissingComponentException("cellsContainer не имеет компонента RectTransform.");
-            //}
-
-
-        }
-
-
         /// <summary>
         /// Вызывается при уничтожении объекта для отмены всех активных задач.
         /// </summary>
         private void OnDestroy()
         {
-            if (!destroying)
+            if (!_Destroying)
             {
                 // позже удалить
             }
-            destroying = true;
+            _Destroying = true;
             //cancellationTokenSource?.Cancel();
             //cancellationTokenSource?.Dispose();
         }
 
-        // --- Логика Группировки ---
-
-
-
-        private void AnimateHeight()
-        {
-            //while (true)
-            //{
-            //    if (destroying) {
-            //        return;
-            //    }
-            //    // Вычисляем смещение
-            //    float delta = direction * animationSpeed * Time.deltaTime;
-            //    currentHeight += delta;
-
-            //    // Ограничиваем значение конечной точкой, чтобы избежать перескока
-            //    if (direction > 0 && currentHeight > endHeight)
-            //    {
-            //        currentHeight = endHeight;
-            //    }
-            //    else if (direction < 0 && currentHeight < endHeight)
-            //    {
-            //        currentHeight = endHeight;
-            //    }
-
-            //    SetHeight(currentHeight);
-
-
-            //    // Асинхронная задержка до следующего кадра (аналог yield return null в корутинах)
-            //    await Task.Yield();
-            //}
-            ////SetHeight(endHeight);
-        }
-        private void SetHeight(float h)
-        {
-            //cellsRectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, h);
-            //rectTransformGroupDivider.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, h + 45.36f);
-
-            //// Принудительно перестраиваем родительский макет после каждого шага
-            //// Это необходимо, чтобы ScrollView и Vertical Layout Group реагировали на изменение высоты.
-            //LayoutRebuilder.ForceRebuildLayoutImmediate(cellsRectTransform.parent.GetComponent<RectTransform>());
-        }
-
-        /// <summary>
-        /// Обновляет визуальное представление разделителя (например, меняет иконку-стрелку).
-        /// </summary>
-        /// <param name="expanded">Текущее состояние: true - развернута, false - свернута.</param>
-        //private void UpdateDividerVisual(bool expanded){
-        // Здесь можно добавить логику для изменения иконки-стрелки на кнопке
-        // Например: arrow.transform.localRotation = expanded ? Quaternion.Euler(0, 0, 0) : Quaternion.Euler(0, 0, -90);
-        //}
     }
 }

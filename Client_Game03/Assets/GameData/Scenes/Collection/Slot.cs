@@ -7,19 +7,36 @@ namespace Assets.GameData.Scenes.Collection
 {
     public class Slot
     {
-        private readonly string name;
+        private const float PANELSLOT_WIDTH = 95f;
+        private const float PANELSLOT_HEIGHT = 112f;
+        private const float PANELSLOT_LEFT = 10f;
+        private const float PANELSLOT_TOP = 10f;
+        public const float PANELSLOT_SPACING = 10f;
+        private const float PANELSLOTLABEL_FONTSIZE = 13f;
+
+        public string Name { get; private set; }
         private readonly int posX;
         private readonly int posY;
         private readonly RectTransform _RectTransform;
+        private readonly RectTransform _Image_RectTransform;
+        private readonly RectTransform _LabelSlot_RectTransform;
         private readonly TextMeshProUGUI _TextMeshProUGUI;
+
+        public float Width { get; private set; }
+        public float Height { get; private set; }
+        public float Left { get; private set; }
+        public float Top { get; private set; }
 
         public Slot(string name, int posX, int posY, Transform parent, string suffix = "")
         {
-            this.name = name;
+            this.Name = name;
             this.posX = posX;
             this.posY = posY;
 
             _RectTransform = GameObjectFinder.FindByName<RectTransform>($"PanelSlot{name}{suffix}", parent);
+            _Image_RectTransform = GameObjectFinder.FindByName<RectTransform>("Image", _RectTransform);
+            _LabelSlot_RectTransform = GameObjectFinder.FindByName<RectTransform>("LabelSlot", _RectTransform);
+
             _TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("LabelSlot", _RectTransform);
             string lKey = L.UI.Label.Slot.GetKey(name);
             string text = Game03Client.LocalizationManager.GetValue(lKey);
@@ -30,18 +47,23 @@ namespace Assets.GameData.Scenes.Collection
             _TextMeshProUGUI.text = text;
         }
 
-
-        public void Resize(float coefHeight)
+        public void OnResized()
         {
-            const float _TopLeftBase = 10f;
-            const float widthBase = 95f;
-            const float heightBase = widthBase / 0.845693f; // (1f - 0.154307f);
-            _RectTransform.sizeDelta = new Vector2(widthBase * coefHeight, heightBase * coefHeight);
-            float x = (((widthBase + _TopLeftBase) * (posX - 1)) + _TopLeftBase) * coefHeight;
-            float y = (((heightBase + _TopLeftBase) * (posY - 1)) + _TopLeftBase) * coefHeight;
-            _RectTransform.anchoredPosition = new Vector2(x, -y);
+            float coefHeight = G.GetCoefHeight();
 
-            _TextMeshProUGUI.fontSize = 15f * coefHeight;
+            Left = (((PANELSLOT_WIDTH + PANELSLOT_SPACING) * (posX - 1)) + PANELSLOT_LEFT) * coefHeight;
+            Top = (((PANELSLOT_HEIGHT + PANELSLOT_SPACING) * (posY - 1)) + PANELSLOT_TOP) * coefHeight;
+            _RectTransform.anchoredPosition.Set(Left, -Top);
+            Width = PANELSLOT_WIDTH * coefHeight;
+            Height = PANELSLOT_HEIGHT * coefHeight;
+            _RectTransform.sizeDelta.Set(Width, Height);
+            _TextMeshProUGUI.fontSize = PANELSLOTLABEL_FONTSIZE * coefHeight;
+
+            _Image_RectTransform.anchoredPosition.Set(0f, 0f);
+            _Image_RectTransform.sizeDelta.Set(Width, Width);
+
+            _LabelSlot_RectTransform.anchoredPosition.Set(0f, -Width);
+            _LabelSlot_RectTransform.sizeDelta.Set(Width, (PANELSLOT_HEIGHT- PANELSLOT_WIDTH) * coefHeight);
         }
     }
 
