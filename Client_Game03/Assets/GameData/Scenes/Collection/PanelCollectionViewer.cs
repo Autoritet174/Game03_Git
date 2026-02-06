@@ -3,9 +3,7 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
 
 namespace Assets.GameData.Scenes.Collection
@@ -14,62 +12,64 @@ namespace Assets.GameData.Scenes.Collection
     {
         private const float SCROLLBAR_WIDTH = 32f;
         private const float VIEWPORT_CONTENT_SPACING = 5f;
-        public PanelCollection PanelCollection { get; }
-        public PanelCollectionViewer(PanelCollection panelCollection ) {
+
+        public PanelCollectionViewer(PanelCollection panelCollection)
+        {
             PanelCollection = panelCollection;
 
             _RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollViewCollection (id=ph1oh7dk)");
             _ScrollbarVertical_RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollbarVertical (id=ti32ix3l)");
-            _CollectionContent_Transform = GameObjectFinder.FindByName("Content (id=ddmjr9vy)").transform;
-            _Content_VerticalLayoutGroup = _CollectionContent_Transform.GetComponent<VerticalLayoutGroup>();
+            CollectionContent_Transform = GameObjectFinder.FindByName("Content (id=ddmjr9vy)").transform;
+            _Content_VerticalLayoutGroup = CollectionContent_Transform.GetComponent<VerticalLayoutGroup>();
+            _PanelCollectionTopButtons = panelCollection.PanelCollectionTopButtons;
         }
 
+        public PanelCollection PanelCollection { get; }
+        public Transform CollectionContent_Transform { get; }
+        public int MaxCollectionElements { get; private set; }
+        public float Width { get; private set; }
+
+        private readonly PanelCollectionTopButtons _PanelCollectionTopButtons;
         private readonly RectTransform _RectTransform;
         private readonly RectTransform _ScrollbarVertical_RectTransform;
-        private readonly Transform _CollectionContent_Transform;
         private readonly VerticalLayoutGroup _Content_VerticalLayoutGroup;
+        private readonly List<PanelGroupDivider> _GroupDividers = new();
 
-        private readonly List<GroupDivider> _GroupDividers = new();
-        public int MaxCollectionElements { get; private set; }
         public async UniTask InstantiateCollectionAsync()
         {
             try
             {
-                if (_GroupDividers.Count > 0)
-                {
-                    foreach (GroupDivider item in _GroupDividers)
-                    {
-                        UnityEngine.Object.Destroy(item.gameObject);
-                    }
-                }
+                _GroupDividers.ForEach(a => a.Destroy());
+                _GroupDividers.Clear();
 
                 PanelCollection.PanelScene.OnResized();
                 await UniTask.Yield();
 
-                MaxCollectionElements = Game03Client.Collection.CollectionProvider.PAGE_SIZE * PanelCollection.PanelCollectionTopButtons.PageCurrent;
+                MaxCollectionElements = Game03Client.Collection.CollectionProvider.PAGE_SIZE * _PanelCollectionTopButtons.PageCurrent;
 
-                PanelCollection.PanelCollectionTopButtons.UpdatePageMax();
-                _GroupDividers.Clear();
+                _PanelCollectionTopButtons.UpdatePageMax();
 
                 switch (PanelCollection.PanelScene.CollectionMode)
                 {
-                    case CollectionMode.Hero:
+                    case CollectionModeEnum.Hero:
                         PanelCollection.PanelScene.PanelSelectedEquipment.Hide();
-                        await LoadHeroes(); break;
-                    case CollectionMode.Equipment:
+                        await LoadCollectionElement(CollectionElementEnum.Hero); break;
+
+                    case CollectionModeEnum.Equipment:
                         PanelCollection.PanelScene.PanelSelectedHero.Hide();
-                        await LoadEquipmentes(); break;
-                    case CollectionMode.ChangingEquipment:
+                        await LoadCollectionElement(CollectionElementEnum.Equipment); break;
+
+                    case CollectionModeEnum.ChangingEquipment:
                         {
                             bool h = PanelCollection.PanelScene.PanelSelectedHero.IsVisible;
                             //bool e = PanelCollection.PanelScene.PanelSelectedEquipment.IsVisible;
                             if (h)
                             {
-                                await LoadEquipmentes();
+                                await LoadCollectionElement(CollectionElementEnum.Equipment);
                             }
                             else
                             {
-                                await LoadHeroes();
+                                await LoadCollectionElement(CollectionElementEnum.Hero);
                             }
                             break;
                         }
@@ -78,7 +78,7 @@ namespace Assets.GameData.Scenes.Collection
                         throw new Exception();
                 }
 
-                PanelCollection.PanelCollectionTopButtons.SetPageDiapason();
+                _PanelCollectionTopButtons.SetPageDiapason();
                 OnResized();
             }
             finally
@@ -91,17 +91,17 @@ namespace Assets.GameData.Scenes.Collection
         {
             float coefHeight = G.GetCoefHeight();
 
-            float width = PanelCollection.Width;
-            float height = PanelCollection.Height - PanelCollection.PanelCollectionTopButtons.Height;
+            Width = PanelCollection.Width;
+            float height = PanelCollection.Height - _PanelCollectionTopButtons.Height;
 
-            _RectTransform.sizeDelta.Set(width, height);
+            _RectTransform.sizeDelta.Set(Width, height);
 
             // ScrollbarVertical для коллекции героев
             float scrollBarWidth = SCROLLBAR_WIDTH * coefHeight;
             _ScrollbarVertical_RectTransform.sizeDelta.Set(scrollBarWidth, height);
 
             // Scroll View для коллекции героев
-            float viewportWidth = width - scrollBarWidth;
+            float viewportWidth = Width - scrollBarWidth;
             _RectTransform.sizeDelta.Set(viewportWidth, height);
 
             _Content_VerticalLayoutGroup.spacing = VIEWPORT_CONTENT_SPACING * coefHeight;
@@ -109,52 +109,39 @@ namespace Assets.GameData.Scenes.Collection
             // groupDividers
             if (_GroupDividers.Count > 0)
             {
-                _GroupDividers.ForEach(a => a.Resize());
+                _GroupDividers.ForEach(a => a.OnResized());
             }
         }
 
-        private async UniTask LoadHeroes()
-        {
-            if (PanelCollection.PanelCollectionTopButtons.PageCurrent >= PanelCollection.PanelCollectionTopButtons.PageMax)
-            {
-                MaxCollectionElements = Game03Client.Collection.CollectionProvider.GetCountHeroes();
-            }
-
-            IEnumerable<Game03Client.Collection.GroupCollectionElement> grouped = Game03Client.Collection.CollectionProvider.GetCollectionHeroesGroupedByGroupNames(PanelCollection.PanelCollectionTopButtons.PageCurrent);
-            IOrderedEnumerable<Game03Client.Collection.GroupCollectionElement> sorted = grouped.OrderByDescending(static a => a.Priority);
-            foreach (Game03Client.Collection.GroupCollectionElement item in sorted)
-            {
-                if (item.List.Count() > 0)
-                {
-                    GameObject obj = AddressableCache.GroupDividerPrefabAddressableGameObject.SafeInstant();
-                    obj.transform.SetParent(_CollectionContent_Transform, false);
-                    //GroupDivider groupDivider = obj.AddComponent<GroupDivider>();
-                    GroupDivider groupDivider = new(this, item.Name);
-                    _GroupDividers.Add(groupDivider);
-                    //await groupDivider.Init(item.Name, this, obj, item.List);
-                }
-            }
+        public void UnselectAll() {
+            _GroupDividers.ForEach(a => a.UnselectAll());
         }
-        private async UniTask LoadEquipmentes()
+        private async UniTask LoadCollectionElement(CollectionElementEnum collectionElementEnum)
         {
-            if (PanelCollection.PanelCollectionTopButtons.PageCurrent >= PanelCollection.PanelCollectionTopButtons.PageMax)
+            if (_PanelCollectionTopButtons.PageCurrent >= _PanelCollectionTopButtons.PageMax)
             {
-                MaxCollectionElements = Game03Client.Collection.CollectionProvider.GetCountEquipments();
+                MaxCollectionElements = collectionElementEnum switch
+                {
+                    CollectionElementEnum.Hero => Game03Client.Collection.CollectionProvider.GetCountHeroes(),
+                    CollectionElementEnum.Equipment => Game03Client.Collection.CollectionProvider.GetCountEquipments(),
+                    _ => throw new NotImplementedException(),
+                };
             }
 
-            IEnumerable<Game03Client.Collection.GroupCollectionElement> grouped = Game03Client.Collection.CollectionProvider.GetCollectionEquipmentesGroupByGroups(PanelCollection.PanelCollectionTopButtons.PageCurrent);
-            IOrderedEnumerable<Game03Client.Collection.GroupCollectionElement> sorted = grouped.OrderByDescending(static a => a.Priority);
+            IEnumerable<Game03Client.Collection.GroupCollectionElement> grouped = collectionElementEnum switch
+            {
+                CollectionElementEnum.Hero => Game03Client.Collection.CollectionProvider.GetCollectionHeroesGroupedByGroupNames(_PanelCollectionTopButtons.PageCurrent),
+                CollectionElementEnum.Equipment => Game03Client.Collection.CollectionProvider.GetCollectionEquipmentesGroupByGroups(_PanelCollectionTopButtons.PageCurrent),
+                _ => throw new NotImplementedException(),
+            };
+
+            IOrderedEnumerable<Game03Client.Collection.GroupCollectionElement> sorted = grouped
+                .Where(static a => a.List.Count() > 0)
+                .OrderByDescending(static a => a.Priority);
+
             foreach (Game03Client.Collection.GroupCollectionElement item in sorted)
             {
-                if (item.List.Count() > 0)
-                {
-                    GameObject obj = AddressableCache.GroupDividerPrefabAddressableGameObject.SafeInstant();
-                    obj.transform.SetParent(_CollectionContent_Transform, false);
-                    //GroupDivider groupDivider = obj.AddComponent<GroupDivider>();
-                    GroupDivider groupDivider = new(this, item.Name);
-                    _GroupDividers.Add(groupDivider);
-                    //await groupDivider.Init(item.Name, this, obj, item.List);
-                }
+                _GroupDividers.Add(new(this, item));
             }
         }
     }

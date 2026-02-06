@@ -66,11 +66,11 @@ namespace Assets.GameData.Scenes.Collection
         /// <summary> Кнопка "Герои". </summary>
         private async UniTask OnClickHeroes()
         {
-            if (_PanelScene.CollectionMode == CollectionMode.Hero)
+            if (_PanelScene.CollectionMode == CollectionModeEnum.Hero)
             {
                 return;
             }
-            _PanelScene.CollectionMode = CollectionMode.Hero;
+            _PanelScene.CollectionMode = CollectionModeEnum.Hero;
             _PanelScene.PanelCollection.PanelCollectionTopButtons.UpdateActiveButtons();
             SetColorOnTabButtons(_TabButtonHeroes);
             await _PanelScene.PanelCollection.PanelCollectionViewer.InstantiateCollectionAsync();
@@ -79,11 +79,11 @@ namespace Assets.GameData.Scenes.Collection
         /// <summary> Кнопка "Экипировка". </summary>
         private async UniTask OnClickEquipment()
         {
-            if (_PanelScene.CollectionMode == CollectionMode.Equipment)
+            if (_PanelScene.CollectionMode == CollectionModeEnum.Equipment)
             {
                 return;
             }
-            _PanelScene.CollectionMode = CollectionMode.Equipment;
+            _PanelScene.CollectionMode = CollectionModeEnum.Equipment;
             _PanelScene.PanelCollection.PanelCollectionTopButtons.UpdateActiveButtons();
             SetColorOnTabButtons(_TabButtonEquipment);
             await _PanelScene.PanelCollection.PanelCollectionViewer.InstantiateCollectionAsync();
@@ -92,11 +92,11 @@ namespace Assets.GameData.Scenes.Collection
         /// <summary> Кнопка "Смена экипировки". </summary>
         private async UniTask OnClickChangingEquipment()
         {
-            if (_PanelScene.CollectionMode == CollectionMode.ChangingEquipment)
+            if (_PanelScene.CollectionMode == CollectionModeEnum.ChangingEquipment)
             {
                 return;
             }
-            _PanelScene.CollectionMode = CollectionMode.ChangingEquipment;
+            _PanelScene.CollectionMode = CollectionModeEnum.ChangingEquipment;
             SetColorOnTabButtons(_TabButtonChangingEquipment);
             _PanelScene.PanelCollection.PanelCollectionTopButtons.UpdateActiveButtons();
             await _PanelScene.PanelCollection.PanelCollectionViewer.InstantiateCollectionAsync();

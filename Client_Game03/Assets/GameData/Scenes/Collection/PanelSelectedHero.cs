@@ -1,4 +1,5 @@
 using Assets.GameData.Scripts;
+using Game03Client.Collection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,6 +61,9 @@ namespace Assets.GameData.Scenes.Collection
             _PanelTab1_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHeroBottomTab1 (id=kn3yl79k)");
             _ImageContainer_RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Container (id=1l6gscif)");
             _SlotWeapon = _Slots.First(a => a.Name == "Weapon");
+
+            _SelectedHero_Image = GameObjectFinder.FindByName<Image>("ImageHeroFull (id=m5kn2f6p)");
+            _SelectedHeroRarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity (id=xami3s9q)");
         }
 
         public PanelScene _PanelScene;
@@ -87,10 +91,20 @@ namespace Assets.GameData.Scenes.Collection
         private readonly RectTransform _ImageContainer_RectTransform;
         private readonly Slot _SlotWeapon;
 
-        public void Show(Guid heroId)
+        private readonly Image _SelectedHero_Image;
+        private readonly Image _SelectedHeroRarity_Image;
+
+        public void Show(CollectionElement collectionElement)
         {
             IsVisible = true;
-            HeroId = heroId;
+            HeroId = collectionElement.Id;
+            string tagUnique = collectionElement.IsUnique ? "Unique-" : string.Empty;
+            _LabelSelectedHero_TextMeshProUGUI.SetText(collectionElement.Name);
+            _SelectedHero_Image.sprite = AddressableCache.Heroes[$"{tagUnique}{collectionElement.Name}"];
+            _SelectedHero_Image.preserveAspect = true; // Сохраняет пропорции изображения
+
+            _SelectedHeroRarity_Image.sprite = AddressableCache.Rarityes[collectionElement.Rarity];
+            _SelectedHeroRarity_Image.preserveAspect = true;
             _GameObject.SetActive(true);
             _PanelScene.OnResized();
         }

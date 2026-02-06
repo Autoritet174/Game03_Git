@@ -141,10 +141,10 @@ namespace Assets.GameData.Scenes.Collection
             _ButtonCloseSelectedEquipment_RectTransform.gameObject.GetComponent<Button>().onClick.AddListener(() =>
             {
                 PanelSelectedEquipmentSetActive(false, false);
-                foreach (GroupDivider a in _GroupDividers)
+                foreach (PanelGroupDivider a in _GroupDividers)
                 {
                     bool founded = false;
-                    foreach (GroupDivider.DataCollectionElement b in a.ListDataCollectionElement)
+                    foreach (PanelGroupDivider.DataCollectionElement b in a._CollectionElementDataList)
                     {
                         if (b.Selected)
                         {
@@ -255,10 +255,10 @@ namespace Assets.GameData.Scenes.Collection
         {
             for (int i = 0; i < _GroupDividers.Count; i++)
             {
-                GroupDivider g = _GroupDividers[i];
+                PanelGroupDivider g = _GroupDividers[i];
                 for (int j = 0; j < g.ListDataCollectionElement.Count; j++)
                 {
-                    GroupDivider.DataCollectionElement el = g.ListDataCollectionElement[j];
+                    PanelGroupDivider.DataCollectionElement el = g._CollectionElementDataList[j];
                     el.Selected = false;
                     el.rectTransform.localScale = Vector3.one;
                 }

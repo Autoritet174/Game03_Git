@@ -62,15 +62,15 @@ namespace Assets.GameData.Scenes.Collection
         {
             switch (_PanelCollection.PanelScene.CollectionMode)
             {
-                case CollectionMode.Hero:
+                case CollectionModeEnum.Hero:
                     _FilterButtonHeroes.SetActive(true);
                     _FilterButtonEquipments.SetActive(false);
                     break;
-                case CollectionMode.Equipment:
+                case CollectionModeEnum.Equipment:
                     _FilterButtonHeroes.SetActive(false);
                     _FilterButtonEquipments.SetActive(true);
                     break;
-                case CollectionMode.ChangingEquipment:
+                case CollectionModeEnum.ChangingEquipment:
                     //_FilterButtonHeroes.SetActive(false);
                     //_FilterButtonEquipments.SetActive(false);
                     break;
@@ -133,9 +133,9 @@ namespace Assets.GameData.Scenes.Collection
         {
             int c = _PanelCollection.PanelScene.CollectionMode switch
             {
-                CollectionMode.Hero => Game03Client.Collection.CollectionProvider.GetCountHeroes(),
-                CollectionMode.Equipment => Game03Client.Collection.CollectionProvider.GetCountEquipments(),
-                CollectionMode.ChangingEquipment => _PanelCollection.PanelScene.PanelSelectedHero.IsVisible
+                CollectionModeEnum.Hero => Game03Client.Collection.CollectionProvider.GetCountHeroes(),
+                CollectionModeEnum.Equipment => Game03Client.Collection.CollectionProvider.GetCountEquipments(),
+                CollectionModeEnum.ChangingEquipment => _PanelCollection.PanelScene.PanelSelectedHero.IsVisible
                     ? Game03Client.Collection.CollectionProvider.GetCountEquipments()
                     : Game03Client.Collection.CollectionProvider.GetCountHeroes(),
                 _ => throw new Exception(),

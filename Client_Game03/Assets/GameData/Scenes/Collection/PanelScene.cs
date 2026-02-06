@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 namespace Assets.GameData.Scenes.Collection
 {
-    public enum CollectionMode { Hero, Equipment, ChangingEquipment }
+    public enum CollectionModeEnum { Hero, Equipment, ChangingEquipment }
+    public enum CollectionElementEnum { Hero, Equipment }
 
     public class PanelScene : MonoBehaviour
     {
@@ -32,7 +33,7 @@ namespace Assets.GameData.Scenes.Collection
         public PanelSelectedHero PanelSelectedHero { get; }
         public PanelSelectedEquipment PanelSelectedEquipment { get; }
 
-        public CollectionMode CollectionMode { get; set; } = CollectionMode.Hero;
+        public CollectionModeEnum CollectionMode { get; set; } = CollectionModeEnum.Hero;
 
         private float _Width, _Height;
         private readonly float _ImageBackgroundCoef;

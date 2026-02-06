@@ -1,5 +1,9 @@
 using Assets.GameData.Scripts;
+using Cysharp.Threading.Tasks;
+using Game03Client.Collection;
+using General;
 using System;
+using System.Xml.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -47,11 +51,15 @@ namespace Assets.GameData.Scenes.Collection
 
             _ButtonTakeOnOff_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonTakeOnOff (id=fllqlepl)");
             _ButtonTakeOnOff_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonTakeOnOffText (id=xfqoucqj)");
+
             _ButtonSell_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonSell (id=sp1vha3z)");
             _ButtonSell_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonSellText (id=b68za6o5)");
             _ButtonSell_TextMeshProUGUI.text = Game03Client.LocalizationManager.GetValue(L.UI.Button.Sell);
 
             _SelectedContainer_RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Container (id=bqxjhczr)");
+
+            _SelectedEquipment_Image = GameObjectFinder.FindByName<Image>("ImageEquipmentFull (id=gu7wtz83)");
+            _SelectedEquipmentRarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity (id=qje8dq78)");
         }
 
         public PanelScene _PanelScene;
@@ -77,11 +85,24 @@ namespace Assets.GameData.Scenes.Collection
         private readonly RectTransform _ButtonSell_RectTransform;
         private readonly TextMeshProUGUI _ButtonSell_TextMeshProUGUI;
         private readonly RectTransform _SelectedContainer_RectTransform;
+        private readonly Image _SelectedEquipment_Image;
+        private readonly Image _SelectedEquipmentRarity_Image;
 
-        public void Show(Guid equipmentId)
+        public void Show(CollectionElement collectionElement)
         {
             IsVisible = true;
-            EquipmentId = equipmentId;
+            EquipmentId = collectionElement.Id;
+            _LabelSelectedEquipment_TextMeshProUGUI.SetText(collectionElement.Name);
+            string tagUnique = collectionElement.IsUnique ? "Unique-" : string.Empty;
+            _SelectedEquipment_Image.sprite = AddressableCache.Equipments[$"{tagUnique}{collectionElement.Name}"];
+            _SelectedEquipment_Image.preserveAspect = true; // Сохраняет пропорции изображения
+            _SelectedEquipmentRarity_Image.sprite = AddressableCache.Rarityes[collectionElement.Rarity];
+
+            _ButtonTakeOnOff_RectTransform.gameObject.SetClickEvent(OnClick, true);
+
+            // тут нужна логика одет предмет или снят
+            _ButtonTakeOnOff_TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(L.UI.Button.TakeOn));
+
             _GameObject.SetActive(true);
             _PanelScene.OnResized();
         }
@@ -145,6 +166,9 @@ namespace Assets.GameData.Scenes.Collection
             float imageWidth = Width - (buttonWidth * 2) - (buttonSpacing * 4);
             _SelectedContainer_RectTransform.anchoredPosition.Set(-buttonSpacing, buttonSpacing);
             _SelectedContainer_RectTransform.sizeDelta.Set(imageWidth, imageWidth);
+        }
+        private async UniTask OnClick() {
+            await UniTask.Delay(1);
         }
     }
 }
