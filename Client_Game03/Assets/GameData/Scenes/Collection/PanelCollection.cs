@@ -30,7 +30,7 @@ namespace Assets.GameData.Scenes.Collection
             Height = Screen.height - PanelScene.PanelTop.Height;
             Width = Screen.width - PanelScene.PanelSelectedHero.Width - PanelScene.PanelSelectedEquipment.Width;
 
-            _RectTransform.sizeDelta.Set(Width, Height);
+            _RectTransform.sizeDelta = new Vector2(Width, Height);
 
             PanelCollectionTopButtons.OnResized();
             PanelCollectionViewer.OnResized();

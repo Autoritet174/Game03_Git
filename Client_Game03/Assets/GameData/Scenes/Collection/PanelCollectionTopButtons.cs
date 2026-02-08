@@ -89,7 +89,7 @@ namespace Assets.GameData.Scenes.Collection
         {
             float coefHeight = G.GetCoefHeight();
             Height = HEIGHT * coefHeight;
-            _RectTransform.sizeDelta.Set(_PanelCollection.Width, Height);
+            _RectTransform.sizeDelta = new Vector2(_PanelCollection.Width, Height);
 
             _FilterButtonHeroes.OnResized(0);
             _FilterButtonEquipments.OnResized(0);
@@ -99,14 +99,15 @@ namespace Assets.GameData.Scenes.Collection
 
             float panelRangeLeft = (((FilterButton.SIZE + FilterButton.SPACING) * 4) + (FilterButton.SPACING_ADDITIONAL * 2)) * coefHeight;
 
-            _RangePanel_RectTransform.anchoredPosition.Set(panelRangeLeft, FilterButton.SPACING * coefHeight);
-            _RangePanel_RectTransform.sizeDelta.Set(RANGE_PANEL_WIDTH * coefHeight, RANGE_PANEL_HEIGHT * coefHeight);
+            _RangePanel_RectTransform.anchoredPosition = new Vector2(panelRangeLeft, FilterButton.SPACING * coefHeight);
+            //_RangePanel_RectTransform.anchoredPosition = new Vector2(panelRangeLeft, FilterButton.SPACING * coefHeight);
+            _RangePanel_RectTransform.sizeDelta = new Vector2(RANGE_PANEL_WIDTH * coefHeight, RANGE_PANEL_HEIGHT * coefHeight);
 
             float buttonPageWidth = BUTTON_PAGE_WIDTH * coefHeight;
             float buttonPageHeight = BUTTON_PAGE_HEIGHT * coefHeight;
-            _ButtonPrevPage_RectTransform.sizeDelta.Set(buttonPageWidth, buttonPageHeight);
-            _ButtonNextPage_RectTransform.sizeDelta.Set(buttonPageWidth, buttonPageHeight);
-            _LabelRangePage_RectTransform.sizeDelta.Set(RANGE_PANEL_WIDTH * coefHeight, LABEL_HEIGHT * coefHeight);
+            _ButtonPrevPage_RectTransform.sizeDelta = new Vector2(buttonPageWidth, buttonPageHeight);
+            _ButtonNextPage_RectTransform.sizeDelta = new Vector2(buttonPageWidth, buttonPageHeight);
+            _LabelRangePage_RectTransform.sizeDelta = new Vector2(RANGE_PANEL_WIDTH * coefHeight, LABEL_HEIGHT * coefHeight);
             _LabelRangePage_TextMeshProUGUI.fontSize = LABEL_FONTSIZE * coefHeight;
         }
 

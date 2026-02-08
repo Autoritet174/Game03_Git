@@ -42,25 +42,25 @@ namespace Assets.GameData.Scenes.Collection
         {
             float coefHeight = G.GetCoefHeight();
             Height = HEIGHT_BASE * coefHeight;
-            _RectTransform.sizeDelta.Set(Screen.width, 0f);
+            _RectTransform.sizeDelta = new Vector2(Screen.width, 0f);
 
             // Кнопки вкладок
             float tabButtonWidth = 240f * coefHeight;
             float fontSize = Height / 4f * coefHeight;
 
-            _TabButtonHeroes.rectTransform.sizeDelta.Set(tabButtonWidth, Height);
+            _TabButtonHeroes.rectTransform.sizeDelta = new Vector2(tabButtonWidth, Height);
             _TabButtonHeroes.textMeshProUGUI.fontSize = fontSize;
 
-            _TabButtonEquipment.rectTransform.sizeDelta.Set(tabButtonWidth, Height);
-            _TabButtonEquipment.rectTransform.anchoredPosition.Set(tabButtonWidth, Height);
+            _TabButtonEquipment.rectTransform.sizeDelta = new Vector2(tabButtonWidth, Height);
+            _TabButtonEquipment.rectTransform.anchoredPosition = new Vector2(tabButtonWidth, 0f);
             _TabButtonEquipment.textMeshProUGUI.fontSize = fontSize;
 
-            _TabButtonChangingEquipment.rectTransform.sizeDelta.Set(tabButtonWidth, Height);
-            _TabButtonChangingEquipment.rectTransform.anchoredPosition.Set(tabButtonWidth * 2f, Height);
+            _TabButtonChangingEquipment.rectTransform.sizeDelta = new Vector2(tabButtonWidth, Height);
+            _TabButtonChangingEquipment.rectTransform.anchoredPosition = new Vector2(tabButtonWidth * 2f, 0f);
             _TabButtonChangingEquipment.textMeshProUGUI.fontSize = fontSize;
 
             // Кнопка "Закрыть"
-            _ButtonClose_RectTransform.sizeDelta.Set(Height, Height);
+            _ButtonClose_RectTransform.sizeDelta = new Vector2(Height, Height);
         }
 
         /// <summary> Кнопка "Герои". </summary>

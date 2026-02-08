@@ -50,17 +50,17 @@ namespace Assets.GameData.Scenes.Collection
         {
             float coefHeight = G.GetCoefHeight();
             float size = SIZE * coefHeight;
-            _RectTransform.sizeDelta.Set(size, size);
+            _RectTransform.sizeDelta = new Vector2(size, size);
             float spacing = SPACING * coefHeight;
 
             float shiftX = position > 0 ? SPACING_ADDITIONAL : 0f;
-            _RectTransform.anchoredPosition.Set(spacing + shiftX + (position * (size + spacing)), -spacing);
+            _RectTransform.anchoredPosition = new Vector2(spacing + shiftX + (position * (size + spacing)), -spacing);
 
             float buttonSize = BUTTON_SIZE * coefHeight;
-            _Button_RectTransform.sizeDelta.Set(buttonSize, buttonSize);
+            _Button_RectTransform.sizeDelta = new Vector2(buttonSize, buttonSize);
 
-            _Label_RectTransform.sizeDelta.Set(size, LABEL_HEIGHT * coefHeight);
-            _Label_RectTransform.anchoredPosition.Set(0f, -size);
+            _Label_RectTransform.sizeDelta = new Vector2(size, LABEL_HEIGHT * coefHeight);
+            _Label_RectTransform.anchoredPosition = new Vector2(0f, -size);
 
             _TextMeshProUGUILabel.fontSize = LABEL_FONTSIZE * coefHeight;
         }

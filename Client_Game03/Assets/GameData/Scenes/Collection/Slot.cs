@@ -53,17 +53,17 @@ namespace Assets.GameData.Scenes.Collection
 
             Left = (((PANELSLOT_WIDTH + PANELSLOT_SPACING) * (posX - 1)) + PANELSLOT_LEFT) * coefHeight;
             Top = (((PANELSLOT_HEIGHT + PANELSLOT_SPACING) * (posY - 1)) + PANELSLOT_TOP) * coefHeight;
-            _RectTransform.anchoredPosition.Set(Left, -Top);
+            _RectTransform.anchoredPosition = new Vector2(Left, -Top);
             Width = PANELSLOT_WIDTH * coefHeight;
             Height = PANELSLOT_HEIGHT * coefHeight;
-            _RectTransform.sizeDelta.Set(Width, Height);
+            _RectTransform.sizeDelta = new Vector2(Width, Height);
             _TextMeshProUGUI.fontSize = PANELSLOTLABEL_FONTSIZE * coefHeight;
 
-            _Image_RectTransform.anchoredPosition.Set(0f, 0f);
-            _Image_RectTransform.sizeDelta.Set(Width, Width);
+            _Image_RectTransform.anchoredPosition = new Vector2(0f, 0f);
+            _Image_RectTransform.sizeDelta = new Vector2(Width, Width);
 
-            _LabelSlot_RectTransform.anchoredPosition.Set(0f, -Width);
-            _LabelSlot_RectTransform.sizeDelta.Set(Width, (PANELSLOT_HEIGHT- PANELSLOT_WIDTH) * coefHeight);
+            _LabelSlot_RectTransform.anchoredPosition = new Vector2(0f, -Width);
+            _LabelSlot_RectTransform.sizeDelta = new Vector2(Width, (PANELSLOT_HEIGHT- PANELSLOT_WIDTH) * coefHeight);
         }
     }
 

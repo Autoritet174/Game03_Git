@@ -1,8 +1,5 @@
 using Assets.GameData.Scripts;
-using Cysharp.Threading.Tasks;
 using Game03Client.Collection;
-using General;
-using General.DTO.Entities.Collection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +18,9 @@ namespace Assets.GameData.Scenes.Collection
     {
         private const float DIVIDER_BUTTON_HEIGHT = 45f;
         private const float DIVIDER_BUTTON_FONTSIZE = 24f;
-        private const float CELL_SIZE = 140f;
+        private const float CELL_SIZE = 120f;
         private const float SPACING = 9f;
         private const float PADDING = 22.5f;
-        private const float COLLECTION_ELEMENT_FONTSIZE = 14f;
 
         public PanelGroupDivider(PanelCollectionViewer panelCollectionViewer, GroupCollectionElement groupCollectionElement)
         {
@@ -44,10 +40,10 @@ namespace Assets.GameData.Scenes.Collection
             _DividerButton_Button = _DividerButton_GameObject.GetComponent<Button>();
             _CollectionElementList = groupCollectionElement.List;
 
-            OnResized();
+            _DividerButton_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _DividerButton_GameObject.transform);
+
 
             //DividerButton
-            _DividerButton_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _DividerButton_GameObject.transform);
             if (string.IsNullOrWhiteSpace(_GroupName))
             {
                 _DividerButton_TextMeshProUGUI.text = Game03Client.LocalizationManager.GetValue(L.UI.Label.NoGroup);
@@ -65,13 +61,14 @@ namespace Assets.GameData.Scenes.Collection
 
             CellsContainer_Transform = _CellsContainer_GameObject.transform;
 
-            _CollectionElementDataList = new();
+            _PanelIconCollectionElementList = new();
             foreach (CollectionElement collectionElement in _CollectionElementList)
             {
-                _CollectionElementDataList.Add(new(this, collectionElement));
+                _PanelIconCollectionElementList.Add(new(this, collectionElement));
             }
 
 
+            OnResized();
 
             // Если группа должна быть свернута по умолчанию, устанавливаем высоту в 0,
             // иначе сохраняем текущую высоту.
@@ -93,9 +90,9 @@ namespace Assets.GameData.Scenes.Collection
             //    //expandedHeight = _CellsContainer_RectTransform.rect.height;
             //}
         }
-        public Transform CellsContainer_Transform { get;}
+        public Transform CellsContainer_Transform { get; }
 
-        public PanelCollectionViewer PanelCollectionViewer { get;}
+        public PanelCollectionViewer PanelCollectionViewer { get; }
         private readonly PanelScene _PanelScene;
         private readonly string _GroupName;
 
@@ -120,7 +117,7 @@ namespace Assets.GameData.Scenes.Collection
         private readonly TextMeshProUGUI _DividerButton_TextMeshProUGUI;
 
         private readonly IEnumerable<CollectionElement> _CollectionElementList;
-        private readonly List<PanelIconCollectionElement> _CollectionElementDataList;
+        private readonly List<PanelIconCollectionElement> _PanelIconCollectionElementList;
 
         /// <summary>
         /// Флаг, переключаем в true при вызове OnDestroy для остановки анимаций.
@@ -131,8 +128,6 @@ namespace Assets.GameData.Scenes.Collection
         /// Текущее состояние группы (true - развернута, false - свернута).
         /// </summary>
         private bool _Expanded = true;
-
-
 
         /// <summary>
         /// Переключает состояние группы и запускает анимацию.
@@ -171,7 +166,7 @@ namespace Assets.GameData.Scenes.Collection
             float buttonHeight = DIVIDER_BUTTON_HEIGHT * coefHeight;
             float height = buttonHeight;
 
-            _DividerButton_RectTransform.sizeDelta.Set(width, buttonHeight);
+            _DividerButton_RectTransform.sizeDelta = new Vector2(width, buttonHeight);
             _DividerButton_TextMeshProUGUI.fontSize = DIVIDER_BUTTON_FONTSIZE * coefHeight;
 
             if (_Expanded)
@@ -196,8 +191,8 @@ namespace Assets.GameData.Scenes.Collection
                 _CellsContainer_GridLayoutGroup.padding.right = padding;
                 _CellsContainer_GridLayoutGroup.padding.top = padding;
                 _CellsContainer_GridLayoutGroup.padding.bottom = padding;
-                _CellsContainer_GridLayoutGroup.spacing.Set(spacing, spacing);
-                _CellsContainer_GridLayoutGroup.cellSize.Set(cellSize, cellSize);
+                _CellsContainer_GridLayoutGroup.spacing = new Vector2(spacing, spacing);
+                _CellsContainer_GridLayoutGroup.cellSize = new Vector2(cellSize, cellSize);
 
 
                 // вычисляем количество строк
@@ -208,17 +203,17 @@ namespace Assets.GameData.Scenes.Collection
                     countRows = 1;
                 }
 
-                float heightContainer = (countRows * cellSize) + ((countRows - 1) * spacing) + (padding * 4);// по сути нужно 2 но чтобы сделать низ длиннее поставил 4
-                _CellsContainer_RectTransform.sizeDelta .Set(width, heightContainer);
-                _CellsContainer_RectTransform.anchoredPosition.Set(0f, -DIVIDER_BUTTON_HEIGHT * coefHeight);
+                float heightContainer = (countRows * cellSize) + ((countRows - 1) * spacing)
+                    + (padding * 4);// по сути нужно 2 но чтобы сделать низ длиннее поставил 4
+                _CellsContainer_RectTransform.sizeDelta = new Vector2(width, heightContainer);
+                _CellsContainer_RectTransform.anchoredPosition = new Vector2(0f, -DIVIDER_BUTTON_HEIGHT * coefHeight);
+
+                _PanelIconCollectionElementList.ForEach(a => a.OnResized());
 
                 height += heightContainer;
-
-                float collectionElementFontsize = COLLECTION_ELEMENT_FONTSIZE * coefHeight;
-                _CollectionElementDataList.ForEach(a=>a.textMeshPro.fontSize = collectionElementFontsize);
             }
 
-            _RectTransform.sizeDelta.Set(width, height);
+            _RectTransform.sizeDelta = new Vector2(width, height);
         }
 
         public void Destroy()
@@ -227,91 +222,93 @@ namespace Assets.GameData.Scenes.Collection
             UnityEngine.Object.Destroy(_GameObject);
         }
 
-        public void UnselectAll() {
-
-        }
-        async UniTask ShowEquipment()
+        public void UnselectAll()
         {
-           
 
-            _Init_Collection.ButtonTakeOnOff_RectTransform.gameObject.SetClickEvent(async () =>
-            {
-                if (collectionElement.TypeCollectionElement != TypeCollectionElement.Equipment)
-                {
-                    await UniTask.Yield();
-                    throw new Exception();
-                }
-
-                IEnumerable<DtoEquipment> equipments = CollectionProvider.GetCollectionEquipmentsFromCache();
-                DtoEquipment equipment = equipments.FirstOrDefault(a => a.Id == collectionElement.Id);
-                if (equipment == null || _Init_Collection.SelectedHeroId == Guid.Empty)
-                {
-                    return;
-                }
-
-                DtoHero hero = CollectionProvider.GetCollectionHeroesFromCache().FirstOrDefault(a => a.Id == _Init_Collection.SelectedHeroId);
-                if (hero == null)
-                {
-                    return;
-                }
-
-                if (equipment.HeroId != null && equipment.SlotId != null)
-                {
-                    _Init_Collection.ButtonTakeOnOff_TextMeshProUGUI.text = Game03Client.LocalizationManager.GetValue(L.UI.Button.TakeOff);
-                }
-                else if (equipment.HeroId == null && equipment.SlotId == null)
-                {
-                    // Предмет ни на кого не одет
-                    _Init_Collection.ButtonTakeOnOff_TextMeshProUGUI.text = Game03Client.LocalizationManager.GetValue(L.UI.Button.TakeOn);
-                    int slotTypeId = equipment.BaseEquipment.EquipmentType.SlotTypeId;
-                    switch (slotTypeId)
-                    {
-                        case 1://Оружие
-                            break;
-                        case 14://Кольцо
-                            break;
-                        case 16://Аксессуар
-                            break;
-                        default:
-                            {
-                                int slotId = Game03Client.GameData.Container.Slots.First(a => a.SlotTypeId == slotTypeId).Id;
-                                DtoEquipment equipmentOnHero = equipments.FirstOrDefault(a => a.SlotId == slotId && a.HeroId == hero.Id);
-                                if (equipmentOnHero != null)
-                                {
-                                    // слот занят, через вебсокет снимаем
-
-                                }
-                                else
-                                {
-
-
-                                }
-                                // надеваем экипировку на героя
-                                // через вебсокет команда на сервер, на сервере такая же проверка так как не верим клиенту
-                                // ждем ответ от сервера с токеном на 3 секунды
-                                // по ответу ориентируемся одели шмотку или нет
-                                break;
-                            }
-                    }
-
-
-                }
-                else
-                {
-                    throw new Exception();
-                }
-
-
-                string slotName = equipment.BaseEquipment.EquipmentType.SlotType.Name;
-                if (Initializator.Slots1by1.Any(a => string.Compare(slotName, a, StringComparison.InvariantCultureIgnoreCase) == 0))
-                {
-
-                }
-
-            }, true);
-            await UniTask.Yield();
         }
-        
-      
+
+        //private async UniTask ShowEquipment()
+        //{
+
+
+        //    _Init_Collection.ButtonTakeOnOff_RectTransform.gameObject.SetClickEvent(async () =>
+        //    {
+        //        if (collectionElement.TypeCollectionElement != TypeCollectionElement.Equipment)
+        //        {
+        //            await UniTask.Yield();
+        //            throw new Exception();
+        //        }
+
+        //        IEnumerable<DtoEquipment> equipments = CollectionProvider.GetCollectionEquipmentsFromCache();
+        //        DtoEquipment equipment = equipments.FirstOrDefault(a => a.Id == collectionElement.Id);
+        //        if (equipment == null || _Init_Collection.SelectedHeroId == Guid.Empty)
+        //        {
+        //            return;
+        //        }
+
+        //        DtoHero hero = CollectionProvider.GetCollectionHeroesFromCache().FirstOrDefault(a => a.Id == _Init_Collection.SelectedHeroId);
+        //        if (hero == null)
+        //        {
+        //            return;
+        //        }
+
+        //        if (equipment.HeroId != null && equipment.SlotId != null)
+        //        {
+        //            _Init_Collection.ButtonTakeOnOff_TextMeshProUGUI.text = Game03Client.LocalizationManager.GetValue(L.UI.Button.TakeOff);
+        //        }
+        //        else if (equipment.HeroId == null && equipment.SlotId == null)
+        //        {
+        //            // Предмет ни на кого не одет
+        //            _Init_Collection.ButtonTakeOnOff_TextMeshProUGUI.text = Game03Client.LocalizationManager.GetValue(L.UI.Button.TakeOn);
+        //            int slotTypeId = equipment.BaseEquipment.EquipmentType.SlotTypeId;
+        //            switch (slotTypeId)
+        //            {
+        //                case 1://Оружие
+        //                    break;
+        //                case 14://Кольцо
+        //                    break;
+        //                case 16://Аксессуар
+        //                    break;
+        //                default:
+        //                    {
+        //                        int slotId = Game03Client.GameData.Container.Slots.First(a => a.SlotTypeId == slotTypeId).Id;
+        //                        DtoEquipment equipmentOnHero = equipments.FirstOrDefault(a => a.SlotId == slotId && a.HeroId == hero.Id);
+        //                        if (equipmentOnHero != null)
+        //                        {
+        //                            // слот занят, через вебсокет снимаем
+
+        //                        }
+        //                        else
+        //                        {
+
+
+        //                        }
+        //                        // надеваем экипировку на героя
+        //                        // через вебсокет команда на сервер, на сервере такая же проверка так как не верим клиенту
+        //                        // ждем ответ от сервера с токеном на 3 секунды
+        //                        // по ответу ориентируемся одели шмотку или нет
+        //                        break;
+        //                    }
+        //            }
+
+
+        //        }
+        //        else
+        //        {
+        //            throw new Exception();
+        //        }
+
+
+        //        string slotName = equipment.BaseEquipment.EquipmentType.SlotType.Name;
+        //        if (Initializator.Slots1by1.Any(a => string.Compare(slotName, a, StringComparison.InvariantCultureIgnoreCase) == 0))
+        //        {
+
+        //        }
+
+        //    }, true);
+        //    await UniTask.Yield();
+        //}
+
+
     }
 }

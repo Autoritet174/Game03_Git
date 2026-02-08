@@ -15,10 +15,10 @@ namespace Assets.GameData.Scenes.Collection
     {
         private const float TEXT_COLLECTION_ELEMENT_FONTSIZE = 14f;
 
-        public PanelIconCollectionElement(PanelGroupDivider panelGroupDivider, CollectionElement _CollectionElement)
+        public PanelIconCollectionElement(PanelGroupDivider panelGroupDivider, CollectionElement collectionElement)
         {
             _PanelGroupDivider = panelGroupDivider;
-            _CollectionElement = _CollectionElement;
+            _CollectionElement = collectionElement;
             _PanelScene = panelGroupDivider.PanelCollectionViewer.PanelCollection.PanelScene;
             _PanelCollectionViewer = panelGroupDivider.PanelCollectionViewer;
             _PanelSelectedHero = _PanelScene.PanelSelectedHero;
@@ -28,8 +28,8 @@ namespace Assets.GameData.Scenes.Collection
             _GameObject.transform.SetParent(panelGroupDivider.CellsContainer_Transform);
 
             _RectTransform = _GameObject.GetComponent<RectTransform>();
-            _RectTransform.anchoredPosition3D.Set(0f, 0f, 0f);
-            _RectTransform.localScale.Set(1f, 1f, 1f);
+            _RectTransform.anchoredPosition3D = Vector3.zero;
+            _RectTransform.localScale = Vector3.one;
 
             Transform childImageMaskCollectionElement = _GameObject.transform.Find("ImageMaskCollectionElement");
             Transform childImageMaskRarity = _GameObject.transform.Find("ImageMaskRarity");
@@ -84,18 +84,28 @@ namespace Assets.GameData.Scenes.Collection
         private readonly Image _ImageRarity;
         private bool _Selected = false;
 
+        public void SetText(string text) {
+            _TextMeshPro.SetText(text);
+        }
+
+        public void OnResized() {
+            _TextMeshPro.fontSize = TEXT_COLLECTION_ELEMENT_FONTSIZE * G.GetCoefHeight();
+        }
+
         private async UniTask OnClick()
         {
             _PanelCollectionViewer.UnselectAll();
             _Selected = true;
-            _RectTransform.localScale = Initializator.Vector3Selected;// ИСПРАВИТЬ
+            //_RectTransform.localScale = Initializator.Vector3Selected;// ИСПРАВИТЬ
 
             switch (_PanelScene.CollectionMode)
             {
                 case CollectionModeEnum.Hero:
+                    _PanelSelectedEquipment.Hide();
                     _PanelSelectedHero.Show(_CollectionElement); break;
 
                 case CollectionModeEnum.Equipment:
+                    await _PanelSelectedHero.Hide();
                     _PanelSelectedEquipment.Show(_CollectionElement); break;
 
                 case CollectionModeEnum.ChangingEquipment:
@@ -107,7 +117,13 @@ namespace Assets.GameData.Scenes.Collection
                             break;
 
                         case TypeCollectionElement.Equipment:
-                            _PanelSelectedEquipment.Show(_CollectionElement); break;
+                            _PanelSelectedEquipment.Show(_CollectionElement);
+                            if (!_PanelScene.PanelSelectedHero.IsVisible)
+                            {
+                                await _PanelCollectionViewer.InstantiateCollectionAsync();
+                            }
+
+                            break;
 
                         default:
                             throw new NotImplementedException();
@@ -116,6 +132,8 @@ namespace Assets.GameData.Scenes.Collection
                 default:
                     throw new NotImplementedException();
             }
+
+            _PanelScene.OnResized();
         }
 
         private async UniTask OnPointerEnter()

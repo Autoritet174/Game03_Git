@@ -1,4 +1,5 @@
 using Assets.GameData.Scripts;
+using Cysharp.Threading.Tasks;
 using Game03Client.Collection;
 using System;
 using System.Collections.Generic;
@@ -30,17 +31,22 @@ namespace Assets.GameData.Scenes.Collection
         {
             _PanelScene = panelScene;
             _RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHero (id=vs2gi8c6)");
+            _RectTransform.anchoredPosition = new Vector2(0f, 0f);
             _GameObject = _RectTransform.gameObject;
 
             _PanelTop_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHeroTop (id=0y6mrhc2)");
             _ButtonClose_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose (id=0ursxw0e)");
-            _ButtonClose_RectTransform.gameObject.GetComponent<Button>().onClick.AddListener(Hide);
+            _ButtonClose_RectTransform.gameObject.SetClickEvent(Hide, false);
             _LabelSelectedHero_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label_SelectedHero (id=ahrtgg43)");
 
             _PanelBottom_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHeroBottom (id=wejn6493)");
             _PanelBottomTabButton1_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonTab1 (id=uiufd2wv)");
             _PanelBottomTabButton1_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonTab1Text (id=lf8q2aas)");
             _PanelBottomTabButton1_TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(L.UI.Button.Equipment));
+
+            _PanelBottomTabButton2_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonTab2 (id=kzury0kd)");
+            _PanelBottomTabButton2_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonTab2Text (id=6bjw6hi4)");
+            _PanelBottomTabButton2_TextMeshProUGUI.SetText("{Tab2}");
 
             _Slots = new()
             {
@@ -64,6 +70,8 @@ namespace Assets.GameData.Scenes.Collection
 
             _SelectedHero_Image = GameObjectFinder.FindByName<Image>("ImageHeroFull (id=m5kn2f6p)");
             _SelectedHeroRarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity (id=xami3s9q)");
+
+            Hide().GetAwaiter().GetResult();
         }
 
         public PanelScene _PanelScene;
@@ -104,16 +112,21 @@ namespace Assets.GameData.Scenes.Collection
             _SelectedHero_Image.preserveAspect = true; // Сохраняет пропорции изображения
 
             _SelectedHeroRarity_Image.sprite = AddressableCache.Rarityes[collectionElement.Rarity];
-            _SelectedHeroRarity_Image.preserveAspect = true;
+            _SelectedHeroRarity_Image.preserveAspect = false;
             _GameObject.SetActive(true);
             _PanelScene.OnResized();
         }
 
-        public void Hide()
+        public async UniTask Hide()
         {
             IsVisible = false;
             HeroId = Guid.Empty;
             _GameObject.SetActive(false);
+
+            if (_PanelScene.CollectionMode == CollectionModeEnum.ChangingEquipment)
+            {
+                await _PanelScene.PanelCollection.PanelCollectionViewer.InstantiateCollectionAsync();
+            }
             _PanelScene.OnResized();
         }
 
@@ -130,17 +143,17 @@ namespace Assets.GameData.Scenes.Collection
             Width = WIDTH_BASE * coefHeight;
             float h1 = _PanelScene.PanelTop.Height;
             Height = Screen.height - h1;
-            _RectTransform.sizeDelta.Set(Width, Height);
+            _RectTransform.sizeDelta = new Vector2(Width, Height);
 
             // Верхняя панель где написано имя героя
-            _PanelTop_RectTransform.sizeDelta.Set(Width, h1);
-            _ButtonClose_RectTransform.sizeDelta.Set(h1, h1);
-            _LabelSelectedHero_TextMeshProUGUI.rectTransform.sizeDelta.Set(Width - h1, h1);
+            _PanelTop_RectTransform.sizeDelta = new Vector2(Width, h1);
+            _ButtonClose_RectTransform.sizeDelta = new Vector2(h1, h1);
+            _LabelSelectedHero_TextMeshProUGUI.rectTransform.sizeDelta = new Vector2(Width - h1, h1);
             _LabelSelectedHero_TextMeshProUGUI.fontSize = LABEL_HERO_NAME_FONTSIZE * coefHeight;
 
 
             // Нижняя панель с характеристиками героя
-            _PanelBottom_RectTransform.sizeDelta.Set(Width, Height - h1);
+            _PanelBottom_RectTransform.sizeDelta = new Vector2(Width, Height - h1);
 
 
             // Кнопки вкладок
@@ -149,26 +162,25 @@ namespace Assets.GameData.Scenes.Collection
             float tabButtonS = TAB_BUTTON_SPACING * coefHeight;
             float tabFontSize = TAB_BUTTON_FONTSIZE * coefHeight;
 
-            _PanelBottomTabButton1_RectTransform.sizeDelta.Set(tabButtonW, tabButtonH);
-            _PanelBottomTabButton1_RectTransform.anchoredPosition.Set(tabButtonS, -tabButtonS);
+            _PanelBottomTabButton1_RectTransform.sizeDelta = new Vector2(tabButtonW, tabButtonH);
+            _PanelBottomTabButton1_RectTransform.anchoredPosition = new Vector2(tabButtonS, -tabButtonS);
             _PanelBottomTabButton1_TextMeshProUGUI.fontSize = tabFontSize;
 
-            _PanelBottomTabButton2_RectTransform.sizeDelta.Set(tabButtonW, tabButtonH);
-            _PanelBottomTabButton2_RectTransform.anchoredPosition.Set((tabButtonS*2) + tabButtonW, -tabButtonS);
+            _PanelBottomTabButton2_RectTransform.sizeDelta = new Vector2(tabButtonW, tabButtonH);
+            _PanelBottomTabButton2_RectTransform.anchoredPosition = new Vector2((tabButtonS * 2) + tabButtonW, -tabButtonS);
             _PanelBottomTabButton2_TextMeshProUGUI.fontSize = tabFontSize;
 
 
             _Slots.ForEach(a => a.OnResized());
 
             float panelTabHeight = Height - h1 - tabButtonH - (tabButtonS * 2);
-            _PanelTab1_RectTransform.sizeDelta.Set(Width, panelTabHeight);
+            _PanelTab1_RectTransform.sizeDelta = new Vector2(Width, panelTabHeight);
 
             float imageContainerSpacing = IMAGECONTAINER_SPACING * coefHeight;
-            _ImageContainer_RectTransform.anchoredPosition.Set(imageContainerSpacing, imageContainerSpacing);
+            _ImageContainer_RectTransform.anchoredPosition = new Vector2(imageContainerSpacing, imageContainerSpacing);
 
             float imageContainerHeight = panelTabHeight - _SlotWeapon.Top - _SlotWeapon.Height - (Slot.PANELSLOT_SPACING * coefHeight);
-            _ImageContainer_RectTransform.sizeDelta.Set(imageContainerHeight / 1.75f, imageContainerHeight);
-
+            _ImageContainer_RectTransform.sizeDelta = new Vector2(imageContainerHeight / 1.75f, imageContainerHeight);
         }
 
     }

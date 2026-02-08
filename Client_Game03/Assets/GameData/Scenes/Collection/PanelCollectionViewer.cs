@@ -53,11 +53,13 @@ namespace Assets.GameData.Scenes.Collection
                 {
                     case CollectionModeEnum.Hero:
                         PanelCollection.PanelScene.PanelSelectedEquipment.Hide();
-                        await LoadCollectionElement(CollectionElementEnum.Hero); break;
+                        await LoadCollectionElement(CollectionElementEnum.Hero);
+                        break;
 
                     case CollectionModeEnum.Equipment:
-                        PanelCollection.PanelScene.PanelSelectedHero.Hide();
-                        await LoadCollectionElement(CollectionElementEnum.Equipment); break;
+                        await PanelCollection.PanelScene.PanelSelectedHero.Hide();
+                        await LoadCollectionElement(CollectionElementEnum.Equipment);
+                        break;
 
                     case CollectionModeEnum.ChangingEquipment:
                         {
@@ -81,6 +83,10 @@ namespace Assets.GameData.Scenes.Collection
                 _PanelCollectionTopButtons.SetPageDiapason();
                 OnResized();
             }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+            }
             finally
             {
                 GameMessage.Close();
@@ -91,18 +97,20 @@ namespace Assets.GameData.Scenes.Collection
         {
             float coefHeight = G.GetCoefHeight();
 
-            Width = PanelCollection.Width;
+            
             float height = PanelCollection.Height - _PanelCollectionTopButtons.Height;
 
-            _RectTransform.sizeDelta.Set(Width, height);
+            _RectTransform.sizeDelta = new Vector2(PanelCollection.Width, height);
 
             // ScrollbarVertical для коллекции героев
             float scrollBarWidth = SCROLLBAR_WIDTH * coefHeight;
-            _ScrollbarVertical_RectTransform.sizeDelta.Set(scrollBarWidth, height);
+            _ScrollbarVertical_RectTransform.sizeDelta = new Vector2(scrollBarWidth, height);
+
+            Width = PanelCollection.Width - scrollBarWidth;
 
             // Scroll View для коллекции героев
-            float viewportWidth = Width - scrollBarWidth;
-            _RectTransform.sizeDelta.Set(viewportWidth, height);
+            //float viewportWidth = Width - scrollBarWidth;
+            //_ScrollbarVertical_RectTransform.sizeDelta = new Vector2(viewportWidth, height);
 
             _Content_VerticalLayoutGroup.spacing = VIEWPORT_CONTENT_SPACING * coefHeight;
 
@@ -113,7 +121,8 @@ namespace Assets.GameData.Scenes.Collection
             }
         }
 
-        public void UnselectAll() {
+        public void UnselectAll()
+        {
             _GroupDividers.ForEach(a => a.UnselectAll());
         }
         private async UniTask LoadCollectionElement(CollectionElementEnum collectionElementEnum)
