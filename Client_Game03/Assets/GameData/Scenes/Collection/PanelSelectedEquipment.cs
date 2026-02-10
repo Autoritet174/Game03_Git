@@ -10,10 +10,9 @@ using L = General.LocalizationKeys;
 namespace Assets.GameData.Scenes.Collection
 {
     public class PanelSelectedEquipment
-    {/// <summary>
-     /// Ширина панели при разрешении 1920x1080.
-     /// </summary>
+    {
         private const float WIDTH_BASE = 535f;
+        public const float WIDTH_SPACING = 10f;
 
         private const float LABEL_HERO_NAME_FONTSIZE = 30f;
 
@@ -131,7 +130,7 @@ namespace Assets.GameData.Scenes.Collection
             float h1 = _PanelScene.PanelTop.Height;
             Height = Screen.height - h1;
             _RectTransform.sizeDelta = new Vector2(Width, Height);
-            _RectTransform.anchoredPosition = new Vector2(-_PanelScene.PanelSelectedHero.Width, 0f);
+            _RectTransform.anchoredPosition = new Vector2(-(_PanelScene.PanelSelectedHero.Width + WIDTH_SPACING), 0f);
 
             // Верхняя панель где написано название экипировки
             _PanelTop_RectTransform.sizeDelta = new Vector2(Width, h1);

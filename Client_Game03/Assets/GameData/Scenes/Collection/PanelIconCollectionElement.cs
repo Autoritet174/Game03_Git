@@ -2,10 +2,7 @@ using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using Game03Client.Collection;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -82,20 +79,21 @@ namespace Assets.GameData.Scenes.Collection
         private readonly CollectionElement _CollectionElement;
         private readonly TextMeshProUGUI _TextMeshPro;
         private readonly Image _ImageRarity;
-        private bool _Selected = false;
 
-        public void SetText(string text) {
+        public void SetText(string text)
+        {
             _TextMeshPro.SetText(text);
         }
 
-        public void OnResized() {
+        public void OnResized()
+        {
             _TextMeshPro.fontSize = TEXT_COLLECTION_ELEMENT_FONTSIZE * G.GetCoefHeight();
         }
 
         private async UniTask OnClick()
         {
             _PanelCollectionViewer.UnselectAll();
-            _Selected = true;
+
             //_RectTransform.localScale = Initializator.Vector3Selected;// ИСПРАВИТЬ
 
             switch (_PanelScene.CollectionMode)

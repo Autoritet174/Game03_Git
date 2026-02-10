@@ -2,6 +2,7 @@ using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -85,7 +86,7 @@ namespace Assets.GameData.Scenes.Collection
             }
             catch (Exception ex)
             {
-                Debug.LogException(ex);
+                UnityEngine.Debug.LogException(ex);
             }
             finally
             {
@@ -97,7 +98,7 @@ namespace Assets.GameData.Scenes.Collection
         {
             float coefHeight = G.GetCoefHeight();
 
-            
+
             float height = PanelCollection.Height - _PanelCollectionTopButtons.Height;
 
             _RectTransform.sizeDelta = new Vector2(PanelCollection.Width, height);

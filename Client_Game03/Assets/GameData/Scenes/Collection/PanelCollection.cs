@@ -1,7 +1,4 @@
 using Assets.GameData.Scripts;
-using Cysharp.Threading.Tasks;
-using System;
-using TMPro;
 using UnityEngine;
 
 namespace Assets.GameData.Scenes.Collection
@@ -28,7 +25,8 @@ namespace Assets.GameData.Scenes.Collection
         public void OnResized()
         {
             Height = Screen.height - PanelScene.PanelTop.Height;
-            Width = Screen.width - PanelScene.PanelSelectedHero.Width - PanelScene.PanelSelectedEquipment.Width;
+            float w1 = PanelScene.PanelSelectedEquipment.Width > 0 ? PanelScene.PanelSelectedEquipment.Width + (PanelSelectedEquipment.WIDTH_SPACING * 2) : 0;
+            Width = Screen.width - PanelScene.PanelSelectedHero.Width - w1;
 
             _RectTransform.sizeDelta = new Vector2(Width, Height);
 
