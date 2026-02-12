@@ -126,6 +126,7 @@ namespace Assets.GameData.Scenes.Collection
         {
             _GroupDividers.ForEach(a => a.UnselectAll());
         }
+
         private async UniTask LoadCollectionElement(CollectionElementEnum collectionElementEnum)
         {
             if (_PanelCollectionTopButtons.PageCurrent >= _PanelCollectionTopButtons.PageMax)
