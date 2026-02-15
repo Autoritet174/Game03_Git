@@ -27,6 +27,8 @@ namespace Assets.GameData.Scenes.Collection
 
         private const float IMAGECONTAINER_SPACING = 10f;
 
+        private const float BUTTON_CLOSE_SPACING = 5f;
+
         public PanelSelectedHero(PanelScene panelScene)
         {
             _PanelScene = panelScene;
@@ -117,16 +119,16 @@ namespace Assets.GameData.Scenes.Collection
             _PanelScene.OnResized();
         }
 
-        public async UniTask Hide()
+        private async UniTask Hide()
         {
             IsVisible = false;
             HeroId = Guid.Empty;
             _GameObject.SetActive(false);
 
-            if (_PanelScene.CollectionMode == CollectionModeEnum.ChangingEquipment)
-            {
-                await _PanelScene.PanelCollection.PanelCollectionViewer.InstantiateCollectionAsync();
-            }
+            //if (_PanelScene.CollectionMode == CollectionModeEnum.ChangingEquipment)
+            //{
+            //    await _PanelScene.PanelCollection.PanelCollectionViewer.InstantiateCollectionAsync();
+            //}
             _PanelScene.OnResized();
         }
 
@@ -147,7 +149,12 @@ namespace Assets.GameData.Scenes.Collection
 
             // Верхняя панель где написано имя героя
             _PanelTop_RectTransform.sizeDelta = new Vector2(Width, h1);
-            _ButtonClose_RectTransform.sizeDelta = new Vector2(h1, h1);
+
+            float button_close_spacing = BUTTON_CLOSE_SPACING * coefHeight;
+            float buttonCloseSize = h1 - (button_close_spacing * 2);
+            _ButtonClose_RectTransform.sizeDelta = new Vector2(buttonCloseSize, buttonCloseSize);
+            _ButtonClose_RectTransform.anchoredPosition = new Vector2(button_close_spacing, -button_close_spacing);
+
             _LabelSelectedHero_TextMeshProUGUI.rectTransform.sizeDelta = new Vector2(Width - h1, h1);
             _LabelSelectedHero_TextMeshProUGUI.fontSize = LABEL_HERO_NAME_FONTSIZE * coefHeight;
 

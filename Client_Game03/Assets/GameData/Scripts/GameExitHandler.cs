@@ -14,7 +14,7 @@ public static class GameExitHandler
             return;
         }
         CancellationTokenManager.CancelAllTokens();
-        await Game03Client.WebSocketClient.DisconnectAsync();
+        await Game03Client.WebSocketProvider.DisconnectAsync();
         // Сохраняем данные перед выходом
         //SaveSystem.SaveGame();
 

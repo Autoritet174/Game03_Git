@@ -53,29 +53,29 @@ namespace Assets.GameData.Scenes.Collection
                 switch (PanelCollection.PanelScene.CollectionMode)
                 {
                     case CollectionModeEnum.Hero:
-                        PanelCollection.PanelScene.PanelSelectedEquipment.Hide();
+                        //PanelCollection.PanelScene.PanelSelectedEquipment.Hide();
                         await LoadCollectionElement(CollectionElementEnum.Hero);
                         break;
 
                     case CollectionModeEnum.Equipment:
-                        await PanelCollection.PanelScene.PanelSelectedHero.Hide();
+                        //await PanelCollection.PanelScene.PanelSelectedHero.Hide();
                         await LoadCollectionElement(CollectionElementEnum.Equipment);
                         break;
 
-                    case CollectionModeEnum.ChangingEquipment:
-                        {
-                            bool h = PanelCollection.PanelScene.PanelSelectedHero.IsVisible;
-                            //bool e = PanelCollection.PanelScene.PanelSelectedEquipment.IsVisible;
-                            if (h)
-                            {
-                                await LoadCollectionElement(CollectionElementEnum.Equipment);
-                            }
-                            else
-                            {
-                                await LoadCollectionElement(CollectionElementEnum.Hero);
-                            }
-                            break;
-                        }
+                    //case CollectionModeEnum.ChangingEquipment:
+                    //    {
+                    //        bool h = PanelCollection.PanelScene.PanelSelectedHero.IsVisible;
+                    //        //bool e = PanelCollection.PanelScene.PanelSelectedEquipment.IsVisible;
+                    //        if (h)
+                    //        {
+                    //            await LoadCollectionElement(CollectionElementEnum.Equipment);
+                    //        }
+                    //        else
+                    //        {
+                    //            await LoadCollectionElement(CollectionElementEnum.Hero);
+                    //        }
+                    //        break;
+                    //    }
 
                     default:
                         throw new Exception();

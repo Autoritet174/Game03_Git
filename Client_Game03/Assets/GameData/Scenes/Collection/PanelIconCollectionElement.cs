@@ -1,8 +1,12 @@
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using Game03Client.Collection;
+using General.DTO.Entities.Collection;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -53,9 +57,9 @@ namespace Assets.GameData.Scenes.Collection
                     {
                         CollectionModeEnum.Hero => AddressableCache.Heroes[$"{_CollectionElement.Name}_face"],
                         CollectionModeEnum.Equipment => AddressableCache.Equipments[$"{tagUnique}{_CollectionElement.Name}_128"],
-                        CollectionModeEnum.ChangingEquipment => _PanelScene.PanelSelectedHero.IsVisible
-                            ? AddressableCache.Equipments[$"{tagUnique}{_CollectionElement.Name}_128"]
-                            : AddressableCache.Heroes[$"{_CollectionElement.Name}_face"],
+                        //CollectionModeEnum.ChangingEquipment => _PanelScene.PanelSelectedHero.IsVisible
+                        //    ? AddressableCache.Equipments[$"{tagUnique}{_CollectionElement.Name}_128"]
+                        //    : AddressableCache.Heroes[$"{_CollectionElement.Name}_face"],
                         _ => throw new NotImplementedException(),
                     };
                     imageCollectionElement.preserveAspect = true; // Сохраняет пропорции изображения
@@ -99,34 +103,34 @@ namespace Assets.GameData.Scenes.Collection
             switch (_PanelScene.CollectionMode)
             {
                 case CollectionModeEnum.Hero:
-                    _PanelSelectedEquipment.Hide();
+                    //_PanelSelectedEquipment.Hide();
                     _PanelSelectedHero.Show(_CollectionElement); break;
 
                 case CollectionModeEnum.Equipment:
-                    await _PanelSelectedHero.Hide();
+                    //await _PanelSelectedHero.Hide();
                     _PanelSelectedEquipment.Show(_CollectionElement); break;
 
-                case CollectionModeEnum.ChangingEquipment:
-                    switch (_CollectionElement.TypeCollectionElement)
-                    {
-                        case TypeCollectionElement.Hero:
-                            _PanelSelectedHero.Show(_CollectionElement);
-                            await _PanelCollectionViewer.InstantiateCollectionAsync();
-                            break;
+                //case CollectionModeEnum.ChangingEquipment:
+                //    switch (_CollectionElement.TypeCollectionElement)
+                //    {
+                //        case TypeCollectionElement.Hero:
+                //            _PanelSelectedHero.Show(_CollectionElement);
+                //            await _PanelCollectionViewer.InstantiateCollectionAsync();
+                //            break;
 
-                        case TypeCollectionElement.Equipment:
-                            _PanelSelectedEquipment.Show(_CollectionElement);
-                            if (!_PanelScene.PanelSelectedHero.IsVisible)
-                            {
-                                await _PanelCollectionViewer.InstantiateCollectionAsync();
-                            }
+                //        case TypeCollectionElement.Equipment:
+                //            _PanelSelectedEquipment.Show(_CollectionElement);
+                //            if (!_PanelScene.PanelSelectedHero.IsVisible)
+                //            {
+                //                await _PanelCollectionViewer.InstantiateCollectionAsync();
+                //            }
 
-                            break;
+                //            break;
 
-                        default:
-                            throw new NotImplementedException();
-                    }
-                    break;
+                //        default:
+                //            throw new NotImplementedException();
+                //    }
+                //    break;
                 default:
                     throw new NotImplementedException();
             }

@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 namespace Assets.GameData.Scenes.Collection
 {
-    public enum CollectionModeEnum { Hero, Equipment, ChangingEquipment }
+    public enum CollectionModeEnum { Hero, Equipment//, ChangingEquipment
+    }
     public enum CollectionElementEnum { Hero, Equipment }
 
     public class PanelScene : MonoBehaviour

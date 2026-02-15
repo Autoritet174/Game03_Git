@@ -19,8 +19,8 @@ namespace Assets.GameData.Scenes.Collection
             _TabButtonEquipment = new("ButtonEquipment (id=k5hqeyat)", "Text (TMP) (id=cklw2id1)", OnClickEquipment);
             _TabButtonEquipment.SetText($"{Game03Client.LocalizationManager.GetValue(L.UI.Button.Equipment)}\r\n{Game03Client.Collection.CollectionProvider.GetCountEquipments()}");
 
-            _TabButtonChangingEquipment = new("ButtonChangingEquipment (id=4r13hk1v)", "Text (TMP) (id=nzouq7ws)", OnClickChangingEquipment);
-            _TabButtonChangingEquipment.SetText(Game03Client.LocalizationManager.GetValue(L.UI.Button.ChangingEquipment));
+            //_TabButtonChangingEquipment = new("ButtonChangingEquipment (id=4r13hk1v)", "Text (TMP) (id=nzouq7ws)", OnClickChangingEquipment);
+            //_TabButtonChangingEquipment.SetText(Game03Client.LocalizationManager.GetValue(L.UI.Button.ChangingEquipment));
         }
 
         public float Height { get; private set; }
@@ -30,7 +30,7 @@ namespace Assets.GameData.Scenes.Collection
         private readonly PanelScene _PanelScene;
         private readonly RectTransform _RectTransform;
         private readonly RectTransform _ButtonClose_RectTransform;
-        private readonly TabButton _TabButtonHeroes, _TabButtonEquipment, _TabButtonChangingEquipment;
+        private readonly TabButton _TabButtonHeroes, _TabButtonEquipment;//, _TabButtonChangingEquipment;
 
         private const int COLOR_OFF_BUTTON_RGB_VALUE = 100;
         private static Color ColorOffButton = new(
@@ -55,9 +55,9 @@ namespace Assets.GameData.Scenes.Collection
             _TabButtonEquipment.rectTransform.anchoredPosition = new Vector2(tabButtonWidth, 0f);
             _TabButtonEquipment.textMeshProUGUI.fontSize = fontSize;
 
-            _TabButtonChangingEquipment.rectTransform.sizeDelta = new Vector2(tabButtonWidth, Height);
-            _TabButtonChangingEquipment.rectTransform.anchoredPosition = new Vector2(tabButtonWidth * 2f, 0f);
-            _TabButtonChangingEquipment.textMeshProUGUI.fontSize = fontSize;
+            //_TabButtonChangingEquipment.rectTransform.sizeDelta = new Vector2(tabButtonWidth, Height);
+            //_TabButtonChangingEquipment.rectTransform.anchoredPosition = new Vector2(tabButtonWidth * 2f, 0f);
+            //_TabButtonChangingEquipment.textMeshProUGUI.fontSize = fontSize;
 
             // Кнопка "Закрыть"
             _ButtonClose_RectTransform.sizeDelta = new Vector2(Height, Height);
@@ -71,7 +71,7 @@ namespace Assets.GameData.Scenes.Collection
                 return;
             }
             _PanelScene.CollectionMode = CollectionModeEnum.Hero;
-            _PanelScene.PanelCollection.PanelCollectionTopButtons.UpdateActiveButtons();
+            //_PanelScene.PanelCollection.PanelCollectionTopButtons.UpdateActiveButtons();
             SetColorOnTabButtons(_TabButtonHeroes);
             await _PanelScene.PanelCollection.PanelCollectionViewer.InstantiateCollectionAsync();
         }
@@ -84,27 +84,28 @@ namespace Assets.GameData.Scenes.Collection
                 return;
             }
             _PanelScene.CollectionMode = CollectionModeEnum.Equipment;
-            _PanelScene.PanelCollection.PanelCollectionTopButtons.UpdateActiveButtons();
+            //_PanelScene.PanelCollection.PanelCollectionTopButtons.UpdateActiveButtons();
             SetColorOnTabButtons(_TabButtonEquipment);
             await _PanelScene.PanelCollection.PanelCollectionViewer.InstantiateCollectionAsync();
         }
 
         /// <summary> Кнопка "Смена экипировки". </summary>
-        private async UniTask OnClickChangingEquipment()
-        {
-            if (_PanelScene.CollectionMode == CollectionModeEnum.ChangingEquipment)
-            {
-                return;
-            }
-            _PanelScene.CollectionMode = CollectionModeEnum.ChangingEquipment;
-            SetColorOnTabButtons(_TabButtonChangingEquipment);
-            _PanelScene.PanelCollection.PanelCollectionTopButtons.UpdateActiveButtons();
-            await _PanelScene.PanelCollection.PanelCollectionViewer.InstantiateCollectionAsync();
-        }
+        //private async UniTask OnClickChangingEquipment()
+        //{
+        //    if (_PanelScene.CollectionMode == CollectionModeEnum.ChangingEquipment)
+        //    {
+        //        return;
+        //    }
+        //    _PanelScene.CollectionMode = CollectionModeEnum.ChangingEquipment;
+        //    //SetColorOnTabButtons(_TabButtonChangingEquipment);
+        //    _PanelScene.PanelCollection.PanelCollectionTopButtons.UpdateActiveButtons();
+        //    await _PanelScene.PanelCollection.PanelCollectionViewer.InstantiateCollectionAsync();
+        //}
 
         private void SetColorOnTabButtons(TabButton tabButtonPressed)
         {
-            var array = new TabButton[] { _TabButtonHeroes, _TabButtonEquipment, _TabButtonChangingEquipment };
+            var array = new TabButton[] { _TabButtonHeroes, _TabButtonEquipment//, _TabButtonChangingEquipment
+            };
             foreach (TabButton item in array)
             {
                 item.image.color = tabButtonPressed.name == item.name ? Color.white : ColorOffButton;

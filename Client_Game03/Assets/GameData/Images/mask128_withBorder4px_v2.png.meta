@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 85224fe8fc4f8bb4aa98a514fba7d205
+guid: 7654ff4fa8aa6ba4fa95a28fc185f94d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7604920368049889392
-    second: mask256_0
+      213: -3602623911800785393
+    second: mask128_withBorder4px_v2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -72,12 +72,12 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 256
+    maxTextureSize: 128
     resizeAlgorithm: 0
     textureFormat: 4
-    textureCompression: 0
-    compressionQuality: 100
-    crunchedCompression: 1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
     ignorePlatformSupport: 0
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: mask256_0
+      name: mask128_withBorder4px_v2_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 256
-        height: 256
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 66, y: 66, z: 66, w: 66}
+      border: {x: 32, y: 32, z: 32, w: 32}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0702fba38ca1a8960800000000000000
-      internalID: 7604920368049889392
+      spriteID: f0639c5c3a8e00ec0800000000000000
+      internalID: -3602623911800785393
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 6bd45ee49fe460548b65fb82725b5755
+    spriteID: 79ad181b75e7ade48979ae4a9486eb96
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      mask256_0: 7604920368049889392
+      mask128_withBorder4px_v2_0: -3602623911800785393
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

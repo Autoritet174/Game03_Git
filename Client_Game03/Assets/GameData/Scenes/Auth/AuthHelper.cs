@@ -83,7 +83,7 @@ namespace Assets.GameData.Scenes.Auth
 
                 // Открываем веб сокет
                 GameMessage.ShowLocale(L.Info.OpeningWebSocket, false);
-                success = await Game03Client.WebSocketClient.ConnectAsync(
+                success = await Game03Client.WebSocketProvider.ConnectAsync(
                     CancellationTokenManager.Create("Game03Client.WebSocketClient.ConnectAsync", 5),
                     CancellationTokenManager.GlobalQuitToken);
                 if (!success)
@@ -102,7 +102,7 @@ namespace Assets.GameData.Scenes.Auth
                 if (!success)
                 {
                     ClearTokenInSecureStorageProvider();
-                    await Game03Client.WebSocketClient.DisconnectAsync();
+                    await Game03Client.WebSocketProvider.DisconnectAsync();
                     GameMessage.ShowLocale(L.Error.Server.LoadingCollectionFailed, true);
                     Debug.Log("Loading game data failed");
                     return false;

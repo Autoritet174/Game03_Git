@@ -132,19 +132,19 @@
             <param name="password">Пароль пользователя в plaintext.</param>
             <returns>Хэш пароля в формате Base64.</returns>
         </member>
-        <member name="M:Game03Client.WebSocketClient.ReceiveMessagesAsync(System.Threading.CancellationToken)">
+        <member name="M:Game03Client.WebSocketProvider.ReceiveMessagesAsync(System.Threading.CancellationToken)">
             <summary>
             Приём сообщений от сервера.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Game03Client.WebSocketClient.SendMessageAsync(System.String,System.Threading.CancellationToken)">
+        <member name="M:Game03Client.WebSocketProvider.SendMessageAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Отправить сообщение на сервер.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Game03Client.WebSocketClient.DisconnectAsync">
+        <member name="M:Game03Client.WebSocketProvider.DisconnectAsync">
             <summary>
             Корректно отключает клиента от сервера.
             </summary>

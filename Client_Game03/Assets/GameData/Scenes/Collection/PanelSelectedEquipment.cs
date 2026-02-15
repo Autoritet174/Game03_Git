@@ -1,7 +1,9 @@
-using Assets.GameData.Scripts;
+ using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using Game03Client.Collection;
+using General.DTO.Entities.Collection;
 using System;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,8 +25,13 @@ namespace Assets.GameData.Scenes.Collection
 
         private const float BUTTON_WIDTH = 121.25f;
         private const float BUTTON_HEIGHT = 50f;
-        private const float BUTTON_SPACING = 10f;
+        private const float BUTTON_SPACING = 5f;
+        private const float BUTTON_LEFT = 15f;
         private const float BUTTON_FONTSIZE = 15f;
+
+        private const float BUTTON_CLOSE_SPACING = 5f;
+
+        private const float IMAGE_CONTAINER_SPACING = 10f;
 
         public PanelSelectedEquipment(PanelScene panelScene)
         {
@@ -51,6 +58,10 @@ namespace Assets.GameData.Scenes.Collection
             _ButtonTakeOnOff_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonTakeOnOff (id=fllqlepl)");
             _ButtonTakeOnOff_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonTakeOnOffText (id=xfqoucqj)");
 
+            _ButtonTakeOnAlt_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonTakeOnAlt (id=t1aolr9g)");
+            _ButtonTakeOnAlt_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonTakeOnAltText (id=1kxgiw2d)");
+            _ButtonTakeOnAlt_TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(L.UI.Button.TakeOnAlt));
+
             _ButtonSell_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonSell (id=sp1vha3z)");
             _ButtonSell_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonSellText (id=b68za6o5)");
             _ButtonSell_TextMeshProUGUI.text = Game03Client.LocalizationManager.GetValue(L.UI.Button.Sell);
@@ -60,14 +71,21 @@ namespace Assets.GameData.Scenes.Collection
             _SelectedEquipment_Image = GameObjectFinder.FindByName<Image>("ImageEquipmentFull (id=gu7wtz83)");
             _SelectedEquipmentRarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity (id=qje8dq78)");
 
+            _ButtonTakeOnOff_RectTransform.gameObject.SetClickEvent(OnClick, true);
+            _ButtonTakeOnAlt_RectTransform.gameObject.SetClickEvent(OnClick, true);
+
             Hide();
+
+            _PanelSelectedHero = _PanelScene.PanelSelectedHero;
         }
 
         public PanelScene _PanelScene;
+        private readonly PanelSelectedHero _PanelSelectedHero;
         public Guid EquipmentId { get; private set; }
         public float Width { get; private set; }
         public float Height { get; private set; }
         public bool IsVisible { get; private set; }
+        public bool IsEquipped { get; private set; }
 
         private readonly RectTransform _RectTransform;
         private readonly GameObject _GameObject;
@@ -82,15 +100,19 @@ namespace Assets.GameData.Scenes.Collection
         private readonly TextMeshProUGUI _PanelBottomTabButton1_TextMeshProUGUI;
         private readonly TextMeshProUGUI _PanelBottomTabButton2_TextMeshProUGUI;
         private readonly RectTransform _ButtonTakeOnOff_RectTransform;
+        private readonly RectTransform _ButtonTakeOnAlt_RectTransform;
         private readonly TextMeshProUGUI _ButtonTakeOnOff_TextMeshProUGUI;
+        private readonly TextMeshProUGUI _ButtonTakeOnAlt_TextMeshProUGUI;
         private readonly RectTransform _ButtonSell_RectTransform;
         private readonly TextMeshProUGUI _ButtonSell_TextMeshProUGUI;
         private readonly RectTransform _SelectedContainer_RectTransform;
         private readonly Image _SelectedEquipment_Image;
         private readonly Image _SelectedEquipmentRarity_Image;
+        private CollectionElement _CollectionElement;
 
         public void Show(CollectionElement collectionElement)
         {
+            _CollectionElement = collectionElement;
             IsVisible = true;
             EquipmentId = collectionElement.Id;
             _LabelSelectedEquipment_TextMeshProUGUI.SetText(collectionElement.Name);
@@ -99,10 +121,19 @@ namespace Assets.GameData.Scenes.Collection
             _SelectedEquipment_Image.preserveAspect = true; // Сохраняет пропорции изображения
             _SelectedEquipmentRarity_Image.sprite = AddressableCache.Rarityes[collectionElement.Rarity];
 
-            _ButtonTakeOnOff_RectTransform.gameObject.SetClickEvent(OnClick, true);
+            IsEquipped = CollectionProvider.EquipmentIsEquipped(EquipmentId);
 
-            // тут нужна логика одет предмет или снят
-            _ButtonTakeOnOff_TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(L.UI.Button.TakeOn));
+            if (IsEquipped)
+            {
+                _ButtonTakeOnAlt_RectTransform.gameObject.SetActive(false);
+                _ButtonTakeOnOff_TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(L.UI.Button.TakeOff));
+            }
+            else
+            {
+                DtoEquipment equipment = CollectionProvider.GetCollectionEquipmentsFromCache().FirstOrDefault(a=>a.Id == collectionElement.Id);
+                _ButtonTakeOnAlt_RectTransform.gameObject.SetActive(equipment != null && equipment.BaseEquipment.EquipmentType.SlotType.HaveAltSlot);
+                _ButtonTakeOnOff_TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(L.UI.Button.TakeOn));
+            }
 
             _GameObject.SetActive(true);
             _PanelScene.OnResized();
@@ -134,7 +165,12 @@ namespace Assets.GameData.Scenes.Collection
 
             // Верхняя панель где написано название экипировки
             _PanelTop_RectTransform.sizeDelta = new Vector2(Width, h1);
-            _ButtonClose_RectTransform.sizeDelta = new Vector2(h1, h1);
+
+            float button_close_spacing = BUTTON_CLOSE_SPACING * coefHeight;
+            float buttonCloseSize = h1 - (button_close_spacing * 2);
+            _ButtonClose_RectTransform.sizeDelta = new Vector2(buttonCloseSize, buttonCloseSize);
+            _ButtonClose_RectTransform.anchoredPosition = new Vector2(button_close_spacing, -button_close_spacing);
+
             _LabelSelectedEquipment_TextMeshProUGUI.rectTransform.sizeDelta = new Vector2(Width - h1, h1);
             _LabelSelectedEquipment_TextMeshProUGUI.fontSize = LABEL_HERO_NAME_FONTSIZE * coefHeight;
 
@@ -157,23 +193,48 @@ namespace Assets.GameData.Scenes.Collection
             _PanelBottomTabButton2_RectTransform.anchoredPosition = new Vector2((tabButtonS * 2) + tabButtonW, -tabButtonS);
             _PanelBottomTabButton2_TextMeshProUGUI.fontSize = tabFontSize;
 
-            // Кнопки "Надеть" "Продать"
-            float buttonWidth = BUTTON_WIDTH * coefHeight;
-            float buttonHeight = BUTTON_HEIGHT * coefHeight;
-            float buttonSpacing = BUTTON_SPACING * coefHeight;
-            _ButtonTakeOnOff_RectTransform.sizeDelta = new Vector2(buttonWidth, buttonHeight);
-            _ButtonTakeOnOff_RectTransform.anchoredPosition = new Vector2(buttonSpacing, buttonSpacing);
 
-            _ButtonSell_RectTransform.sizeDelta = new Vector2(buttonWidth, buttonHeight);
-            _ButtonSell_RectTransform.anchoredPosition = new Vector2((buttonSpacing * 2) + buttonWidth, buttonSpacing);
-
-            float imageWidth = Width - (buttonWidth * 2) - (buttonSpacing * 4);
-            _SelectedContainer_RectTransform.anchoredPosition = new Vector2(-buttonSpacing, buttonSpacing);
+            float imageContainerSpacing = IMAGE_CONTAINER_SPACING * coefHeight;
+            float imageWidth = (Width - (imageContainerSpacing*3f))/2f;
+            _SelectedContainer_RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, imageContainerSpacing);
             _SelectedContainer_RectTransform.sizeDelta = new Vector2(imageWidth, imageWidth);
+
+
+            // Кнопки "Надеть" "Продать"
+            float buttonHeight = BUTTON_HEIGHT * coefHeight;
+
+            float buttonY = (imageContainerSpacing*2f)+ imageWidth;
+            _ButtonSell_RectTransform.sizeDelta = new Vector2(imageWidth, buttonHeight);
+            _ButtonSell_RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, buttonY);
+
+            buttonY += imageContainerSpacing + buttonHeight;
+            _ButtonTakeOnOff_RectTransform.sizeDelta = new Vector2(imageWidth, buttonHeight);
+            _ButtonTakeOnOff_RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, buttonY);
+
+            buttonY += imageContainerSpacing + buttonHeight;
+            _ButtonTakeOnAlt_RectTransform.sizeDelta = new Vector2(imageWidth, buttonHeight);
+            _ButtonTakeOnAlt_RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, buttonY);
+
+
         }
+
         private async UniTask OnClick()
         {
-            await UniTask.Delay(1);
+            if (IsEquipped)
+            {
+                //CollectionProvider.TakeOffEquipment(EquipmentId);
+            }
+            else
+            {
+                bool result = await CollectionProvider.EquipmentTakeOnAsync(EquipmentId, _PanelSelectedHero.HeroId, null, CancellationTokenManager.Create("CollectionProvider.EquipmentTakeOnAsync", 5));
+                if (result)
+                {
+                    Show(_CollectionElement);
+                }
+            }
+
+            //bool result = await Game03Client.WebSocketClient.SendMessageAsync("123", CancellationTokenManager.Create("Game03Client.WebSocketClient.SendMessageAsync", 5));
+            //Debug.Log(result);
         }
     }
 }

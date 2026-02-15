@@ -58,28 +58,28 @@ namespace Assets.GameData.Scenes.Collection
         private readonly RectTransform _LabelRangePage_RectTransform;
         private readonly TextMeshProUGUI _LabelRangePage_TextMeshProUGUI;
 
-        public void UpdateActiveButtons()
-        {
-            switch (_PanelCollection.PanelScene.CollectionMode)
-            {
-                case CollectionModeEnum.Hero:
-                    _FilterButtonHeroes.SetActive(true);
-                    _FilterButtonEquipments.SetActive(false);
-                    break;
-                case CollectionModeEnum.Equipment:
-                    _FilterButtonHeroes.SetActive(false);
-                    _FilterButtonEquipments.SetActive(true);
-                    break;
-                case CollectionModeEnum.ChangingEquipment:
-                    //_FilterButtonHeroes.SetActive(false);
-                    //_FilterButtonEquipments.SetActive(false);
-                    break;
-                    //throw new NotImplementedException();
-                default:
-                    throw new NotImplementedException();
-            }
+        //public void UpdateActiveButtons()
+        //{
+        //    switch (_PanelCollection.PanelScene.CollectionMode)
+        //    {
+        //        case CollectionModeEnum.Hero:
+        //            _FilterButtonHeroes.SetActive(true);
+        //            _FilterButtonEquipments.SetActive(false);
+        //            break;
+        //        case CollectionModeEnum.Equipment:
+        //            _FilterButtonHeroes.SetActive(false);
+        //            _FilterButtonEquipments.SetActive(true);
+        //            break;
+        //        case CollectionModeEnum.ChangingEquipment:
+        //            //_FilterButtonHeroes.SetActive(false);
+        //            //_FilterButtonEquipments.SetActive(false);
+        //            break;
+        //            //throw new NotImplementedException();
+        //        default:
+        //            throw new NotImplementedException();
+        //    }
 
-        }
+        //}
 
         public void SetPageDiapason() {
             _LabelRangePage_TextMeshProUGUI.text = $"{((PageCurrent - 1) * Game03Client.Collection.CollectionProvider.PAGE_SIZE) + 1} - {_PanelCollection.PanelCollectionViewer. MaxCollectionElements}";
@@ -136,9 +136,9 @@ namespace Assets.GameData.Scenes.Collection
             {
                 CollectionModeEnum.Hero => Game03Client.Collection.CollectionProvider.GetCountHeroes(),
                 CollectionModeEnum.Equipment => Game03Client.Collection.CollectionProvider.GetCountEquipments(),
-                CollectionModeEnum.ChangingEquipment => _PanelCollection.PanelScene.PanelSelectedHero.IsVisible
-                    ? Game03Client.Collection.CollectionProvider.GetCountEquipments()
-                    : Game03Client.Collection.CollectionProvider.GetCountHeroes(),
+                //CollectionModeEnum.ChangingEquipment => _PanelCollection.PanelScene.PanelSelectedHero.IsVisible
+                //    ? Game03Client.Collection.CollectionProvider.GetCountEquipments()
+                //    : Game03Client.Collection.CollectionProvider.GetCountHeroes(),
                 _ => throw new Exception(),
             };
             PageMax = (c / Game03Client.Collection.CollectionProvider.PAGE_SIZE) + (c % Game03Client.Collection.CollectionProvider.PAGE_SIZE > 0 ? 1 : 0);
