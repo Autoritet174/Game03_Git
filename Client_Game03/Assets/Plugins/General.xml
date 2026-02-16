@@ -61,33 +61,29 @@
             <param name="diceStr"></param>
             <exception cref="T:System.FormatException"></exception>
         </member>
-        <member name="T:General.DTO.EquipmentTakeOnMessage">
-            <summary>
-            Сообщение "Надеть экипировку"
-            </summary>
-            <param name="heroId"></param>
-            <param name="equipmentId"></param>
-            <param name="inAltSlot"></param>
+        <member name="P:General.DTO.DtoWS.MessageId">
+            <summary> Идентификатор сообщения. </summary>
         </member>
-        <member name="M:General.DTO.EquipmentTakeOnMessage.#ctor(System.Guid,System.Guid,System.Nullable{System.Boolean})">
-            <summary>
-            Сообщение "Надеть экипировку"
-            </summary>
-            <param name="heroId"></param>
-            <param name="equipmentId"></param>
-            <param name="inAltSlot"></param>
+        <member name="T:General.DTO.DtoWSResponseS2C">
+            <summary> Ответ сервера клиенту о том успешна ли была выполнена команда в предыдущем сообщениии. </summary>
         </member>
-        <member name="T:General.DTO.EquipmentTakeOffMessage">
-            <summary>
-            Сообщение "Снять экипировку"
-            </summary>
-            <param name="equipmentId"></param>
+        <member name="M:General.DTO.DtoWSResponseS2C.#ctor(System.Boolean,System.Guid,System.String)">
+            <summary> Ответ сервера клиенту о том успешна ли была выполнена команда в предыдущем сообщениии. </summary>
         </member>
-        <member name="M:General.DTO.EquipmentTakeOffMessage.#ctor(System.Guid)">
-            <summary>
-            Сообщение "Снять экипировку"
-            </summary>
-            <param name="equipmentId"></param>
+        <member name="P:General.DTO.DtoWSResponseS2C.InReplyTo">
+            <summary> Идентификатор сообщения на которое мы отвечаем. </summary>
+        </member>
+        <member name="T:General.DTO.DtoWSEquipmentTakeOnC2S">
+            <summary> Сообщение "Надеть экипировку". </summary>
+        </member>
+        <member name="M:General.DTO.DtoWSEquipmentTakeOnC2S.#ctor(System.Guid,System.Guid,System.Nullable{System.Boolean},System.Nullable{System.Guid})">
+            <summary> Сообщение "Надеть экипировку". </summary>
+        </member>
+        <member name="T:General.DTO.DtoWSEquipmentTakeOffC2S">
+            <summary> Сообщение "Снять экипировку". </summary>
+        </member>
+        <member name="M:General.DTO.DtoWSEquipmentTakeOffC2S.#ctor(System.Guid,System.Nullable{System.Guid})">
+            <summary> Сообщение "Снять экипировку". </summary>
         </member>
         <member name="T:General.DTO.Entities.Collection.DtoEquipment">
             <summary>

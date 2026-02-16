@@ -267,7 +267,8 @@ namespace Assets.GameData.Scenes.Collection
 
         }
 
-        private bool HaveAltSlot() {
+        private bool HaveAltSlot()
+        {
             DtoEquipment equipment = CollectionProvider.GetCollectionEquipmentsFromCache().FirstOrDefault(a => a.Id == _CollectionElement.Id);
             return equipment != null && equipment.BaseEquipment.EquipmentType.SlotType.HaveAltSlot;
         }
