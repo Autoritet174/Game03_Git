@@ -1,4 +1,4 @@
- using Assets.GameData.Scripts;
+using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using Game03Client.Collection;
 using General.DTO.Entities.Collection;
@@ -61,10 +61,16 @@ namespace Assets.GameData.Scenes.Collection
             _ButtonTakeOnAlt_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonTakeOnAlt (id=t1aolr9g)");
             _ButtonTakeOnAlt_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonTakeOnAltText (id=1kxgiw2d)");
             _ButtonTakeOnAlt_TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(L.UI.Button.TakeOnAlt));
+            _ButtonTakeOnAlt_Button = _ButtonTakeOnAlt_RectTransform.gameObject.GetComponent<Button>();
 
             _ButtonSell_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonSell (id=sp1vha3z)");
             _ButtonSell_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonSellText (id=b68za6o5)");
             _ButtonSell_TextMeshProUGUI.text = Game03Client.LocalizationManager.GetValue(L.UI.Button.Sell);
+
+            _ButtonShowHero_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonShowHero (id=1odbub2l)");
+            _ButtonShowHero_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonShowHeroText (id=9u9bz66s)");
+            _ButtonShowHero_TextMeshProUGUI.text = Game03Client.LocalizationManager.GetValue(L.UI.Button.ShowHero);
+            _ButtonShowHero_Button = _ButtonShowHero_RectTransform.gameObject.GetComponent<Button>();
 
             _SelectedContainer_RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Container (id=bqxjhczr)");
 
@@ -79,14 +85,14 @@ namespace Assets.GameData.Scenes.Collection
             _PanelSelectedHero = _PanelScene.PanelSelectedHero;
         }
 
-        public PanelScene _PanelScene;
-        private readonly PanelSelectedHero _PanelSelectedHero;
+        public PanelScene _PanelScene { get; private set; }
         public Guid EquipmentId { get; private set; }
         public float Width { get; private set; }
         public float Height { get; private set; }
         public bool IsVisible { get; private set; }
         public bool IsEquipped { get; private set; }
 
+        private readonly PanelSelectedHero _PanelSelectedHero;
         private readonly RectTransform _RectTransform;
         private readonly GameObject _GameObject;
 
@@ -95,16 +101,27 @@ namespace Assets.GameData.Scenes.Collection
         private readonly TextMeshProUGUI _LabelSelectedEquipment_TextMeshProUGUI;
 
         private readonly RectTransform _PanelBottom_RectTransform;
+
         private readonly RectTransform _PanelBottomTabButton1_RectTransform;
         private readonly RectTransform _PanelBottomTabButton2_RectTransform;
+
         private readonly TextMeshProUGUI _PanelBottomTabButton1_TextMeshProUGUI;
         private readonly TextMeshProUGUI _PanelBottomTabButton2_TextMeshProUGUI;
+
         private readonly RectTransform _ButtonTakeOnOff_RectTransform;
-        private readonly RectTransform _ButtonTakeOnAlt_RectTransform;
         private readonly TextMeshProUGUI _ButtonTakeOnOff_TextMeshProUGUI;
+
+        private readonly RectTransform _ButtonTakeOnAlt_RectTransform;
         private readonly TextMeshProUGUI _ButtonTakeOnAlt_TextMeshProUGUI;
+        private readonly Button _ButtonTakeOnAlt_Button;
+
         private readonly RectTransform _ButtonSell_RectTransform;
         private readonly TextMeshProUGUI _ButtonSell_TextMeshProUGUI;
+
+        private readonly RectTransform _ButtonShowHero_RectTransform;
+        private readonly TextMeshProUGUI _ButtonShowHero_TextMeshProUGUI;
+        private readonly Button _ButtonShowHero_Button;
+
         private readonly RectTransform _SelectedContainer_RectTransform;
         private readonly Image _SelectedEquipment_Image;
         private readonly Image _SelectedEquipmentRarity_Image;
@@ -123,17 +140,7 @@ namespace Assets.GameData.Scenes.Collection
 
             IsEquipped = CollectionProvider.EquipmentIsEquipped(EquipmentId);
 
-            if (IsEquipped)
-            {
-                _ButtonTakeOnAlt_RectTransform.gameObject.SetActive(false);
-                _ButtonTakeOnOff_TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(L.UI.Button.TakeOff));
-            }
-            else
-            {
-                DtoEquipment equipment = CollectionProvider.GetCollectionEquipmentsFromCache().FirstOrDefault(a=>a.Id == collectionElement.Id);
-                _ButtonTakeOnAlt_RectTransform.gameObject.SetActive(equipment != null && equipment.BaseEquipment.EquipmentType.SlotType.HaveAltSlot);
-                _ButtonTakeOnOff_TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(L.UI.Button.TakeOn));
-            }
+            UpdateButtons();
 
             _GameObject.SetActive(true);
             _PanelScene.OnResized();
@@ -195,15 +202,15 @@ namespace Assets.GameData.Scenes.Collection
 
 
             float imageContainerSpacing = IMAGE_CONTAINER_SPACING * coefHeight;
-            float imageWidth = (Width - (imageContainerSpacing*3f))/2f;
+            float imageWidth = (Width - (imageContainerSpacing * 3f)) / 2f;
             _SelectedContainer_RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, imageContainerSpacing);
             _SelectedContainer_RectTransform.sizeDelta = new Vector2(imageWidth, imageWidth);
 
 
-            // Кнопки "Надеть" "Продать"
+            // Кнопки
             float buttonHeight = BUTTON_HEIGHT * coefHeight;
 
-            float buttonY = (imageContainerSpacing*2f)+ imageWidth;
+            float buttonY = (imageContainerSpacing * 2f) + imageWidth;
             _ButtonSell_RectTransform.sizeDelta = new Vector2(imageWidth, buttonHeight);
             _ButtonSell_RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, buttonY);
 
@@ -214,6 +221,10 @@ namespace Assets.GameData.Scenes.Collection
             buttonY += imageContainerSpacing + buttonHeight;
             _ButtonTakeOnAlt_RectTransform.sizeDelta = new Vector2(imageWidth, buttonHeight);
             _ButtonTakeOnAlt_RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, buttonY);
+
+            buttonY += imageContainerSpacing + buttonHeight;
+            _ButtonShowHero_RectTransform.sizeDelta = new Vector2(imageWidth, buttonHeight);
+            _ButtonShowHero_RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, buttonY);
 
 
         }
@@ -236,5 +247,30 @@ namespace Assets.GameData.Scenes.Collection
             //bool result = await Game03Client.WebSocketClient.SendMessageAsync("123", CancellationTokenManager.Create("Game03Client.WebSocketClient.SendMessageAsync", 5));
             //Debug.Log(result);
         }
+
+        private void UpdateButtons()
+        {
+            string textLocalKey;
+            if (IsEquipped)
+            {
+                _ButtonTakeOnAlt_Button.interactable = false;
+                _ButtonShowHero_Button.interactable = true;
+                textLocalKey = L.UI.Button.TakeOff;
+            }
+            else
+            {
+                _ButtonTakeOnAlt_Button.interactable = HaveAltSlot();
+                _ButtonShowHero_Button.interactable = false;
+                textLocalKey = L.UI.Button.TakeOn;
+            }
+            _ButtonTakeOnOff_TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(textLocalKey));
+
+        }
+
+        private bool HaveAltSlot() {
+            DtoEquipment equipment = CollectionProvider.GetCollectionEquipmentsFromCache().FirstOrDefault(a => a.Id == _CollectionElement.Id);
+            return equipment != null && equipment.BaseEquipment.EquipmentType.SlotType.HaveAltSlot;
+        }
+
     }
 }
