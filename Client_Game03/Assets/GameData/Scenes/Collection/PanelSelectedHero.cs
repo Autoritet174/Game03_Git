@@ -1,6 +1,7 @@
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using Game03Client.Collection;
+using General.DTO.Entities.Collection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -104,16 +105,17 @@ namespace Assets.GameData.Scenes.Collection
         private readonly Image _SelectedHero_Image;
         private readonly Image _SelectedHeroRarity_Image;
 
-        public void Show(CollectionElement collectionElement)
+        public void Show(Guid heroId)
         {
             IsVisible = true;
-            HeroId = collectionElement.Id;
-            string tagUnique = collectionElement.IsUnique ? "Unique-" : string.Empty;
-            _LabelSelectedHero_TextMeshProUGUI.SetText(collectionElement.Name);
-            _SelectedHero_Image.sprite = AddressableCache.Heroes[$"{tagUnique}{collectionElement.Name}"];
+            HeroId = heroId;
+            DtoHero hero = CollectionProvider.GetCollectionHeroesFromCache().First(a=>a.Id == heroId);
+            string tagUnique = hero.BaseHero.IsUnique ? "Unique-" : string.Empty;
+            _LabelSelectedHero_TextMeshProUGUI.SetText(hero.BaseHero.Name);
+            _SelectedHero_Image.sprite = AddressableCache.Heroes[$"{tagUnique}{hero.BaseHero.Name}"];
             _SelectedHero_Image.preserveAspect = true; // Сохраняет пропорции изображения
 
-            _SelectedHeroRarity_Image.sprite = AddressableCache.Rarityes[collectionElement.Rarity];
+            _SelectedHeroRarity_Image.sprite = AddressableCache.Rarityes[hero.BaseHero.Rarity];
             _SelectedHeroRarity_Image.preserveAspect = false;
             _GameObject.SetActive(true);
             _PanelScene.OnResized();

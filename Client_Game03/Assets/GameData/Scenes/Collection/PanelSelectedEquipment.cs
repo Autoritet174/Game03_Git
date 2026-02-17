@@ -77,8 +77,9 @@ namespace Assets.GameData.Scenes.Collection
             _SelectedEquipment_Image = GameObjectFinder.FindByName<Image>("ImageEquipmentFull (id=gu7wtz83)");
             _SelectedEquipmentRarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity (id=qje8dq78)");
 
-            _ButtonTakeOnOff_RectTransform.gameObject.SetClickEvent(OnClick, true);
-            _ButtonTakeOnAlt_RectTransform.gameObject.SetClickEvent(OnClick, true);
+            _ButtonTakeOnOff_RectTransform.gameObject.SetClickEvent(TakeOnOffOnClick, true);
+            _ButtonTakeOnAlt_RectTransform.gameObject.SetClickEvent(TakeOnOffInAltSlotOnClick, true);
+            _ButtonShowHero_RectTransform.gameObject.SetClickEvent(ShowHeroOnClick, true);
 
             Hide();
 
@@ -125,18 +126,18 @@ namespace Assets.GameData.Scenes.Collection
         private readonly RectTransform _SelectedContainer_RectTransform;
         private readonly Image _SelectedEquipment_Image;
         private readonly Image _SelectedEquipmentRarity_Image;
-        private CollectionElement _CollectionElement;
+        private DtoEquipment _DtoEquipment;
 
-        public void Show(CollectionElement collectionElement)
+        public void Show(Guid equipmentId)
         {
-            _CollectionElement = collectionElement;
             IsVisible = true;
-            EquipmentId = collectionElement.Id;
-            _LabelSelectedEquipment_TextMeshProUGUI.SetText(collectionElement.Name);
-            string tagUnique = collectionElement.IsUnique ? "Unique-" : string.Empty;
-            _SelectedEquipment_Image.sprite = AddressableCache.Equipments[$"{tagUnique}{collectionElement.Name}"];
+            EquipmentId = equipmentId;
+            _DtoEquipment = CollectionProvider.GetCollectionEquipmentsFromCache().First(a=>a.Id == equipmentId);
+            _LabelSelectedEquipment_TextMeshProUGUI.SetText(_DtoEquipment.BaseEquipment.Name);
+            string tagUnique = _DtoEquipment.BaseEquipment.IsUnique ? "Unique-" : string.Empty;
+            _SelectedEquipment_Image.sprite = AddressableCache.Equipments[$"{tagUnique}{_DtoEquipment.BaseEquipment.Name}"];
             _SelectedEquipment_Image.preserveAspect = true; // Сохраняет пропорции изображения
-            _SelectedEquipmentRarity_Image.sprite = AddressableCache.Rarityes[collectionElement.Rarity];
+            _SelectedEquipmentRarity_Image.sprite = AddressableCache.Rarityes[_DtoEquipment.BaseEquipment.Rarity];
 
             IsEquipped = CollectionProvider.EquipmentIsEquipped(EquipmentId);
 
@@ -209,43 +210,63 @@ namespace Assets.GameData.Scenes.Collection
 
             // Кнопки
             float buttonHeight = BUTTON_HEIGHT * coefHeight;
+            float buttonY = 0f;
 
-            float buttonY = (imageContainerSpacing * 2f) + imageWidth;
-            _ButtonSell_RectTransform.sizeDelta = new Vector2(imageWidth, buttonHeight);
-            _ButtonSell_RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, buttonY);
+            buttonY += (imageContainerSpacing * 2f) + imageWidth;
+            _ButtonShowHero_RectTransform.sizeDelta = new Vector2(imageWidth, buttonHeight);
+            _ButtonShowHero_RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, buttonY);
 
             buttonY += imageContainerSpacing + buttonHeight;
-            _ButtonTakeOnOff_RectTransform.sizeDelta = new Vector2(imageWidth, buttonHeight);
-            _ButtonTakeOnOff_RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, buttonY);
+            _ButtonSell_RectTransform.sizeDelta = new Vector2(imageWidth, buttonHeight);
+            _ButtonSell_RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, buttonY);
 
             buttonY += imageContainerSpacing + buttonHeight;
             _ButtonTakeOnAlt_RectTransform.sizeDelta = new Vector2(imageWidth, buttonHeight);
             _ButtonTakeOnAlt_RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, buttonY);
 
             buttonY += imageContainerSpacing + buttonHeight;
-            _ButtonShowHero_RectTransform.sizeDelta = new Vector2(imageWidth, buttonHeight);
-            _ButtonShowHero_RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, buttonY);
+            _ButtonTakeOnOff_RectTransform.sizeDelta = new Vector2(imageWidth, buttonHeight);
+            _ButtonTakeOnOff_RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, buttonY);
+
 
 
         }
 
-        private async UniTask OnClick()
+        private async UniTask ShowHeroOnClick()
         {
+            if (_DtoEquipment.HeroId != null)
+            {
+                _PanelSelectedHero.Show(_DtoEquipment.HeroId.Value);
+            }
+        }
+        private async UniTask TakeOnOffOnClick()
+        {
+            await EquipmentTakeOnOff();
+        }
+
+        private async UniTask TakeOnOffInAltSlotOnClick()
+        {
+            await EquipmentTakeOnOff(true);
+        }
+
+        private async UniTask EquipmentTakeOnOff(bool? inAltSlot = null) {
+            bool result;
             if (IsEquipped)
             {
-                //CollectionProvider.TakeOffEquipment(EquipmentId);
+                result = await CollectionProvider.EquipmentTakeOffAsync(EquipmentId,
+                    CancellationTokenManager.Create("CollectionProvider.EquipmentTakeOffAsync", 5));
             }
             else
             {
-                bool result = await CollectionProvider.EquipmentTakeOnAsync(EquipmentId, _PanelSelectedHero.HeroId, null, CancellationTokenManager.Create("CollectionProvider.EquipmentTakeOnAsync", 5));
-                if (result)
-                {
-                    Show(_CollectionElement);
-                }
+                result = await CollectionProvider.EquipmentTakeOnAsync(EquipmentId,
+                    _PanelSelectedHero.HeroId, inAltSlot,
+                    CancellationTokenManager.Create("CollectionProvider.EquipmentTakeOnAsync", 5));
             }
 
-            //bool result = await Game03Client.WebSocketClient.SendMessageAsync("123", CancellationTokenManager.Create("Game03Client.WebSocketClient.SendMessageAsync", 5));
-            //Debug.Log(result);
+            if (result)
+            {
+                Show(EquipmentId);
+            }
         }
 
         private void UpdateButtons()
@@ -264,13 +285,11 @@ namespace Assets.GameData.Scenes.Collection
                 textLocalKey = L.UI.Button.TakeOn;
             }
             _ButtonTakeOnOff_TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(textLocalKey));
-
         }
 
         private bool HaveAltSlot()
         {
-            DtoEquipment equipment = CollectionProvider.GetCollectionEquipmentsFromCache().FirstOrDefault(a => a.Id == _CollectionElement.Id);
-            return equipment != null && equipment.BaseEquipment.EquipmentType.SlotType.HaveAltSlot;
+            return _DtoEquipment != null && _DtoEquipment.BaseEquipment.EquipmentType.SlotType.HaveAltSlot;
         }
 
     }

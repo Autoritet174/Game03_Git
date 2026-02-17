@@ -132,23 +132,35 @@
             <param name="password">Пароль пользователя в plaintext.</param>
             <returns>Хэш пароля в формате Base64.</returns>
         </member>
+        <member name="T:Game03Client.WebSocketProvider">
+            <summary>
+            Провайдер WebSocket: Zero-Allocation (по возможности), защита от утечек и Buffer Bloat.
+            </summary>
+        </member>
+        <member name="M:Game03Client.WebSocketProvider.GetIfExists(System.Guid)">
+            <summary>
+            Извлекает ответ из очереди.
+            </summary>
+        </member>
+        <member name="M:Game03Client.WebSocketProvider.ConnectAsync(System.Threading.CancellationToken,System.Threading.CancellationToken)">
+            <summary>
+            Подключение к серверу.
+            </summary>
+        </member>
+        <member name="M:Game03Client.WebSocketProvider.CleanupExpiredResponses(System.Object)">
+            <summary>
+            Удаление устаревших ответов.
+            </summary>
+        </member>
         <member name="M:Game03Client.WebSocketProvider.ReceiveMessagesAsync(System.Threading.CancellationToken)">
             <summary>
-            Приём сообщений от сервера.
+            Цикл приема сообщений с защитой от Buffer Bloat.
             </summary>
-            <returns></returns>
         </member>
-        <member name="M:Game03Client.WebSocketProvider.SendMessageAsync(System.String,System.Threading.CancellationToken)">
+        <member name="M:Game03Client.WebSocketProvider.ProcessMessageSpan(System.ReadOnlySpan{System.Byte})">
             <summary>
-            Отправить сообщение на сервер.
+            Десериализация из Span (Zero-Allocation строки).
             </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Game03Client.WebSocketProvider.DisconnectAsync">
-            <summary>
-            Корректно отключает клиента от сервера.
-            </summary>
-            <returns>Задача асинхронного отключения.</returns>
         </member>
     </members>
 </doc>

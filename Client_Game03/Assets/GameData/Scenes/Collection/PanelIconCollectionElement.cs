@@ -104,11 +104,11 @@ namespace Assets.GameData.Scenes.Collection
             {
                 case CollectionModeEnum.Hero:
                     //_PanelSelectedEquipment.Hide();
-                    _PanelSelectedHero.Show(_CollectionElement); break;
+                    _PanelSelectedHero.Show(_CollectionElement.Id); break;
 
                 case CollectionModeEnum.Equipment:
                     //await _PanelSelectedHero.Hide();
-                    _PanelSelectedEquipment.Show(_CollectionElement); break;
+                    _PanelSelectedEquipment.Show(_CollectionElement.Id); break;
 
                 //case CollectionModeEnum.ChangingEquipment:
                 //    switch (_CollectionElement.TypeCollectionElement)
