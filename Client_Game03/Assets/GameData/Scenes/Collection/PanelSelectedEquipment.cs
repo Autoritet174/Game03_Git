@@ -1,5 +1,6 @@
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
+using Game03Client;
 using Game03Client.Collection;
 using General.DTO.Entities.Collection;
 using System;
@@ -84,6 +85,7 @@ namespace Assets.GameData.Scenes.Collection
             Hide();
 
             _PanelSelectedHero = _PanelScene.PanelSelectedHero;
+            _PanelCollectionViewer = _PanelScene.PanelCollection.PanelCollectionViewer;
         }
 
         public PanelScene _PanelScene { get; private set; }
@@ -94,6 +96,7 @@ namespace Assets.GameData.Scenes.Collection
         public bool IsEquipped { get; private set; }
 
         private readonly PanelSelectedHero _PanelSelectedHero;
+        private readonly PanelCollectionViewer _PanelCollectionViewer;
         private readonly RectTransform _RectTransform;
         private readonly GameObject _GameObject;
 
@@ -132,7 +135,7 @@ namespace Assets.GameData.Scenes.Collection
         {
             IsVisible = true;
             EquipmentId = equipmentId;
-            _DtoEquipment = CollectionProvider.GetCollectionEquipmentsFromCache().First(a=>a.Id == equipmentId);
+            _DtoEquipment = CollectionProvider.GetCollectionEquipmentsFromCache().First(a => a.Id == equipmentId);
             _LabelSelectedEquipment_TextMeshProUGUI.SetText(_DtoEquipment.BaseEquipment.Name);
             string tagUnique = _DtoEquipment.BaseEquipment.IsUnique ? "Unique-" : string.Empty;
             _SelectedEquipment_Image.sprite = AddressableCache.Equipments[$"{tagUnique}{_DtoEquipment.BaseEquipment.Name}"];
@@ -249,23 +252,65 @@ namespace Assets.GameData.Scenes.Collection
             await EquipmentTakeOnOff(true);
         }
 
-        private async UniTask EquipmentTakeOnOff(bool? inAltSlot = null) {
+        private async UniTask EquipmentTakeOnOff(bool? inAltSlot = null)
+        {
             bool result;
             if (IsEquipped)
             {
+                _ = _DtoEquipment.SlotId.Value;
+                Guid heroId = _DtoEquipment.HeroId.Value;
+                // экипировка надета, снимаем
                 result = await CollectionProvider.EquipmentTakeOffAsync(EquipmentId,
                     CancellationTokenManager.Create("CollectionProvider.EquipmentTakeOffAsync", 5));
+                if (result)
+                {
+                    Show(EquipmentId);
+                    _PanelSelectedHero.Show(heroId);
+                    _PanelCollectionViewer.RefreshOwnerImage(EquipmentId);
+                }
+                else
+                {
+                    Debug.Log("Ошибка снятия экипировки");
+                }
             }
             else
             {
+                Guid heroId = _PanelSelectedHero.HeroId;
+                // экипировка не одета, одеваем
+                if (heroId == Guid.Empty)
+                {
+                    await _PanelScene.PanelTop.OnClickHeroes();
+                    GameMessage.Show(LocalizationManager.GetValue(L.Info.SelectHero), true);
+                    return;
+                }
+
+                // тут запоминаем экипировку которая может быть одета в этот же слот
+                DtoHero hero = CollectionProvider.GetCollectionHeroesFromCache().First(a => a.Id == heroId);
+                int slotId = CollectionProvider.GetSlotId(_DtoEquipment, inAltSlot);
+                DtoEquipment equipmentEquipped = CollectionProvider.GetCollectionEquipmentsFromCache().FirstOrDefault(a => a.HeroId == heroId && a.SlotId == slotId);
+
+
                 result = await CollectionProvider.EquipmentTakeOnAsync(EquipmentId,
                     _PanelSelectedHero.HeroId, inAltSlot,
                     CancellationTokenManager.Create("CollectionProvider.EquipmentTakeOnAsync", 5));
-            }
+                if (result)
+                {
+                    if (equipmentEquipped != null)
+                    {
+                        //Если была одетая экипировка в этот слот, то снимаем её
+                        equipmentEquipped.SlotId = null;
+                        equipmentEquipped.HeroId = null;
+                    }
+                    
 
-            if (result)
-            {
-                Show(EquipmentId);
+                    Show(EquipmentId);
+                    _PanelSelectedHero.Show(_DtoEquipment.HeroId.Value);
+                    _PanelCollectionViewer.RefreshOwnerImage(EquipmentId);
+                }
+                else
+                {
+                    Debug.Log("Ошибка одевания экипировки");
+                }
             }
         }
 
@@ -291,6 +336,5 @@ namespace Assets.GameData.Scenes.Collection
         {
             return _DtoEquipment != null && _DtoEquipment.BaseEquipment.EquipmentType.SlotType.HaveAltSlot;
         }
-
     }
 }

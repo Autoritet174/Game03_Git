@@ -64,7 +64,7 @@ namespace Assets.GameData.Scenes.Collection
         }
 
         /// <summary> Кнопка "Герои". </summary>
-        private async UniTask OnClickHeroes()
+        public async UniTask OnClickHeroes()
         {
             if (_PanelScene.CollectionMode == CollectionModeEnum.Hero)
             {

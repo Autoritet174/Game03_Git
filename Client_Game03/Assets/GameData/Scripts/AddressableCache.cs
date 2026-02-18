@@ -1,5 +1,7 @@
 using Cysharp.Threading.Tasks;
+using Game03Client.Collection;
 using General.DTO.Entities;
+using General.DTO.Entities.Collection;
 using General.DTO.Entities.GameData;
 using System;
 using System.Collections.Generic;
@@ -17,7 +19,6 @@ namespace Assets.GameData.Scripts
         public static Sprite UI_button_with_arrow_v2_reverse;
 
         public static Sprite[] Rarityes = new Sprite[7];
-        //public static Sprite[] Rarityes_v2 = new Sprite[7];
 
         public static Dictionary<string, Sprite> Heroes = new();
         public static Dictionary<string, Sprite> Equipments = new();
@@ -38,7 +39,7 @@ namespace Assets.GameData.Scripts
             int equipCount = dtoContainer.BaseEquipments.Count();
 
             Heroes = new Dictionary<string, Sprite>(heroesCount * 2);
-            Equipments = new Dictionary<string, Sprite>(equipCount * 2);
+            Equipments.Clear();
 
             // Список задач. Используем Capacity для избежания лишних аллокаций списка.
             // Примерное кол-во: 2 ui + heroes*2 + 7 rarities + equip*2 + 2 prefabs
@@ -127,11 +128,39 @@ namespace Assets.GameData.Scripts
             }
         }
 
-        /// <summary> Проверка существования ключа в каталоге Addressables. </summary>
-        public static async UniTask<bool> CheckIfKeyExists(object key)
+        ///// <summary> Проверка существования ключа в каталоге Addressables. </summary>
+        //public static async UniTask<bool> CheckIfKeyExists(object key)
+        //{
+        //    var locations = await Addressables.LoadResourceLocationsAsync(key).ToUniTask();
+        //    return locations != null && locations.Count > 0;
+        //}
+
+        public static Sprite GetRarity(int rarity)
         {
-            var locations = await Addressables.LoadResourceLocationsAsync(key).ToUniTask();
-            return locations != null && locations.Count > 0;
+            if (rarity < 1 || rarity >= Rarityes.Length)
+            {
+                Debug.LogError($"rarity = {rarity}");
+                throw new ArgumentOutOfRangeException(nameof(rarity));
+            }
+            return Rarityes[rarity];
         }
+
+        public static Sprite GetHeroSprite(DtoHero hero)
+        {
+            DtoBaseHero baseHero = hero.BaseHero!;
+            return Heroes[$"{(baseHero.IsUnique ? "Unique-" : string.Empty)}{baseHero.Name}"];
+        }
+        public static Sprite GetHeroFaceSprite(DtoHero hero)
+        {
+            DtoBaseHero baseHero = hero.BaseHero!;
+            return Heroes[$"{(baseHero.IsUnique ? "Unique-" : string.Empty)}{baseHero.Name}_face"];
+        }
+
+        public static Sprite GetEquipmentSprite(DtoEquipment equipment)
+        {
+            DtoBaseEquipment baseEquipment = equipment.BaseEquipment!;
+            return Equipments[$"{(baseEquipment.IsUnique ? "Unique-" : string.Empty)}{baseEquipment.Name}"];
+        }
+
     }
 }

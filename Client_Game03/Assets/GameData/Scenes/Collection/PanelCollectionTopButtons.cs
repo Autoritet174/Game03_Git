@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.GameData.Scenes.Collection
 {
@@ -150,7 +151,17 @@ namespace Assets.GameData.Scenes.Collection
             {
                 PageCurrent = PageMax;
             }
-            _RangePanel_GameObject.SetActive(PageMax > 1);
+
+            if (PageMax > 1)
+            {
+                _ButtonPrevPage_RectTransform.gameObject.GetComponent<Button>().interactable = PageCurrent > 1;
+                _ButtonNextPage_RectTransform.gameObject.GetComponent<Button>().interactable = PageMax > PageCurrent;
+            }
+            else
+            {
+                _ButtonPrevPage_RectTransform.gameObject.GetComponent<Button>().interactable = false;
+                _ButtonNextPage_RectTransform.gameObject.GetComponent<Button>().interactable = false;
+            }
         }
     }
 }

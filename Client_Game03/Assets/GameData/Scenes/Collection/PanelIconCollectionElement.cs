@@ -18,6 +18,7 @@ namespace Assets.GameData.Scenes.Collection
 
         public PanelIconCollectionElement(PanelGroupDivider panelGroupDivider, CollectionElement collectionElement)
         {
+            Id = collectionElement.Id;
             _PanelGroupDivider = panelGroupDivider;
             _CollectionElement = collectionElement;
             _PanelScene = panelGroupDivider.PanelCollectionViewer.PanelCollection.PanelScene;
@@ -35,44 +36,77 @@ namespace Assets.GameData.Scenes.Collection
             Transform childImageMaskCollectionElement = _GameObject.transform.Find("ImageMaskCollectionElement");
             Transform childImageMaskRarity = _GameObject.transform.Find("ImageMaskRarity");
             Transform childImageCollectionElement = childImageMaskCollectionElement.Find("ImageCollectionElement");
-            Transform childImageRarity = childImageMaskRarity.Find("ImageRarity");
-
-            if (childImageCollectionElement != null && childImageCollectionElement.TryGetComponent(out Image imageCollectionElement)
-                    && childImageRarity != null && childImageRarity.TryGetComponent(out Image imageRarity))
+            if (childImageCollectionElement == null)
             {
-                _ImageRarity = imageRarity;
-                Transform childText = _GameObject.transform.Find("TextCollectionElement");
-                if (childText != null && childText.TryGetComponent(out TextMeshProUGUI textMeshPro))
-                {
-                    _TextMeshPro = textMeshPro;
-
-                    textMeshPro.text = _CollectionElement.Name;//.ToUpper1Char();
-                    textMeshPro.fontSize = TEXT_COLLECTION_ELEMENT_FONTSIZE;
-                    imageRarity.sprite = AddressableCache.Rarityes[_CollectionElement.Rarity];
-                    imageRarity.preserveAspect = true; // Сохраняет пропорции изображения
-                    imageRarity.type = Image.Type.Simple; // Режим без растягивания;
-
-                    string tagUnique = _CollectionElement.IsUnique ? "Unique-" : string.Empty;
-                    imageCollectionElement.sprite = _PanelScene.CollectionMode switch
-                    {
-                        CollectionModeEnum.Hero => AddressableCache.Heroes[$"{_CollectionElement.Name}_face"],
-                        CollectionModeEnum.Equipment => AddressableCache.Equipments[$"{tagUnique}{_CollectionElement.Name}_128"],
-                        //CollectionModeEnum.ChangingEquipment => _PanelScene.PanelSelectedHero.IsVisible
-                        //    ? AddressableCache.Equipments[$"{tagUnique}{_CollectionElement.Name}_128"]
-                        //    : AddressableCache.Heroes[$"{_CollectionElement.Name}_face"],
-                        _ => throw new NotImplementedException(),
-                    };
-                    imageCollectionElement.preserveAspect = true; // Сохраняет пропорции изображения
-                    imageCollectionElement.type = Image.Type.Simple; // Режим без растягивания;
-
-
-                    EventHelper.SetClickEvent(_GameObject, OnClick, false);
-                    EventHelper.AddHoverEvents(_GameObject, OnPointerEnter, OnPointerExit);
-
-                }
+                Debug.LogError($"childImageCollectionElement = null");
+                return;
             }
-        }
+            if (!childImageCollectionElement.TryGetComponent(out Image imageCollectionElement))
+            {
+                Debug.LogError($"imageCollectionElement = null");
+                return;
+            }
 
+            Transform childImageRarity = childImageMaskRarity.Find("ImageRarity");
+            if (childImageRarity == null)
+            {
+                Debug.LogError($"childImageRarity = null");
+                return;
+            }
+            if (!childImageRarity.TryGetComponent(out Image imageRarity)) {
+                Debug.LogError($"imageRarity = null");
+                return;
+            }
+
+            _ImageRarity = imageRarity;
+            Transform childText = _GameObject.transform.Find("TextCollectionElement");
+            if (childText == null)
+            {
+                Debug.LogError($"childText = null");
+                return;
+            }
+
+            if (!childText.TryGetComponent(out TextMeshProUGUI textMeshPro))
+            {
+                Debug.LogError($"textMeshPro = null");
+                return;
+            }
+
+            _TextMeshPro = textMeshPro;
+
+            textMeshPro.text = _CollectionElement.Name;//.ToUpper1Char();
+            textMeshPro.fontSize = TEXT_COLLECTION_ELEMENT_FONTSIZE;
+            imageRarity.sprite = AddressableCache.Rarityes[_CollectionElement.Rarity];
+            imageRarity.preserveAspect = true;
+            imageRarity.type = Image.Type.Simple; // Режим без растягивания;
+
+            string tagUnique = _CollectionElement.IsUnique ? "Unique-" : string.Empty;
+            imageCollectionElement.sprite = _PanelScene.CollectionMode switch
+            {
+                CollectionModeEnum.Hero => AddressableCache.Heroes[$"{_CollectionElement.Name}_face"],
+                CollectionModeEnum.Equipment => AddressableCache.Equipments[$"{tagUnique}{_CollectionElement.Name}_128"],
+                //CollectionModeEnum.ChangingEquipment => _PanelScene.PanelSelectedHero.IsVisible
+                //    ? AddressableCache.Equipments[$"{tagUnique}{_CollectionElement.Name}_128"]
+                //    : AddressableCache.Heroes[$"{_CollectionElement.Name}_face"],
+                _ => throw new NotImplementedException(),
+            };
+            imageCollectionElement.preserveAspect = true;
+            imageCollectionElement.type = Image.Type.Simple; // Режим без растягивания;
+
+            EventHelper.SetClickEvent(_GameObject, OnClick, false);
+            EventHelper.AddHoverEvents(_GameObject, OnPointerEnter, OnPointerExit);
+
+            _OwnerHeroIcon_GameObject = GameObjectFinder.FindByName("OwnerHeroIcon", _GameObject.transform);
+            _OwnerImageRarity_Image = GameObjectFinder.FindByName<Image>("OwnerImageRarity", _GameObject.transform);
+            _OwnerImageHero_Image = GameObjectFinder.FindByName<Image>("OwnerImageHero", _GameObject.transform);
+
+
+            _Equipment = _CollectionElement.TypeCollectionElement == TypeCollectionElement.Equipment
+                ? CollectionProvider.GetCollectionEquipmentsFromCache().First(a => a.Id == _CollectionElement.Id) : null;
+
+            RefreshOwnerImage();
+        }
+        public Guid Id { get; private set; }
         private readonly PanelGroupDivider _PanelGroupDivider;
         private readonly PanelScene _PanelScene;
         private readonly PanelCollectionViewer _PanelCollectionViewer;
@@ -84,9 +118,31 @@ namespace Assets.GameData.Scenes.Collection
         private readonly TextMeshProUGUI _TextMeshPro;
         private readonly Image _ImageRarity;
 
+        private readonly GameObject _OwnerHeroIcon_GameObject;
+        private readonly Image _OwnerImageRarity_Image;
+        private readonly Image _OwnerImageHero_Image;
+        private readonly DtoEquipment _Equipment;
+
         public void SetText(string text)
         {
             _TextMeshPro.SetText(text);
+        }
+
+        public void RefreshOwnerImage() {
+            if (_Equipment != null)
+            {
+                if (_Equipment.HeroId != null)
+                {
+                    DtoHero hero = CollectionProvider.GetCollectionHeroesFromCache().First(a => a.Id == _Equipment.HeroId);
+                    _OwnerImageHero_Image.sprite = AddressableCache.GetHeroFaceSprite(hero);
+                    _OwnerImageRarity_Image.sprite = AddressableCache.GetRarity(hero.BaseHero.Rarity);
+                    _OwnerHeroIcon_GameObject.SetActive(true);
+                }
+                else {
+
+                    _OwnerHeroIcon_GameObject.SetActive(false);
+                }
+            }
         }
 
         public void OnResized()

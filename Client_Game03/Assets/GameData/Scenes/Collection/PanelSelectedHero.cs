@@ -53,18 +53,18 @@ namespace Assets.GameData.Scenes.Collection
 
             _Slots = new()
             {
-                new Slot("Head", 1, 1, _PanelBottom_RectTransform),
-                new Slot("Armor", 2, 1, _PanelBottom_RectTransform),
-                new Slot("Hands", 3, 1, _PanelBottom_RectTransform),
-                new Slot("Feet", 4, 1, _PanelBottom_RectTransform),
-                new Slot("Waist", 5, 1, _PanelBottom_RectTransform),
-                new Slot("Ring", 1, 2, _PanelBottom_RectTransform, "1"),
-                new Slot("Ring", 2, 2, _PanelBottom_RectTransform, "2"),
-                new Slot("Neck", 3, 2, _PanelBottom_RectTransform),
-                new Slot("Trinket", 4, 2, _PanelBottom_RectTransform, "1"),
-                new Slot("Trinket", 5, 2, _PanelBottom_RectTransform, "2"),
-                new Slot("Weapon", 1, 3, _PanelBottom_RectTransform),
-                new Slot("WeaponShield", 2, 3, _PanelBottom_RectTransform)
+                new Slot("Head", 1, 1, _PanelBottom_RectTransform, 3),
+                new Slot("Armor", 2, 1, _PanelBottom_RectTransform, 4),
+                new Slot("Hands", 3, 1, _PanelBottom_RectTransform, 5),
+                new Slot("Feet", 4, 1, _PanelBottom_RectTransform, 6),
+                new Slot("Waist", 5, 1, _PanelBottom_RectTransform, 7),
+                new Slot("Ring", 1, 2, _PanelBottom_RectTransform, 8, "1"),
+                new Slot("Ring", 2, 2, _PanelBottom_RectTransform, 9, "2"),
+                new Slot("Neck", 3, 2, _PanelBottom_RectTransform, 12),
+                new Slot("Trinket", 4, 2, _PanelBottom_RectTransform, 10, "1"),
+                new Slot("Trinket", 5, 2, _PanelBottom_RectTransform, 11, "2"),
+                new Slot("Weapon", 1, 3, _PanelBottom_RectTransform, 1),
+                new Slot("WeaponShield", 2, 3, _PanelBottom_RectTransform, 2)
             };
 
             _PanelTab1_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHeroBottomTab1 (id=kn3yl79k)");
@@ -109,16 +109,35 @@ namespace Assets.GameData.Scenes.Collection
         {
             IsVisible = true;
             HeroId = heroId;
-            DtoHero hero = CollectionProvider.GetCollectionHeroesFromCache().First(a=>a.Id == heroId);
-            string tagUnique = hero.BaseHero.IsUnique ? "Unique-" : string.Empty;
+            DtoHero hero = CollectionProvider.GetCollectionHeroesFromCache().First(a => a.Id == heroId);
             _LabelSelectedHero_TextMeshProUGUI.SetText(hero.BaseHero.Name);
-            _SelectedHero_Image.sprite = AddressableCache.Heroes[$"{tagUnique}{hero.BaseHero.Name}"];
-            _SelectedHero_Image.preserveAspect = true; // Сохраняет пропорции изображения
+            _SelectedHero_Image.sprite = AddressableCache.GetHeroSprite(hero);
+            _SelectedHero_Image.preserveAspect = true;
 
-            _SelectedHeroRarity_Image.sprite = AddressableCache.Rarityes[hero.BaseHero.Rarity];
+            _SelectedHeroRarity_Image.sprite = AddressableCache.GetRarity(hero.BaseHero.Rarity);
             _SelectedHeroRarity_Image.preserveAspect = false;
+
+            // отображаем всю одетую экипировку
+            foreach (Slot slot in _Slots)
+            {
+                DtoEquipment eqiup = CollectionProvider.GetCollectionEquipmentsFromCache()
+                    .FirstOrDefault(a => a.SlotId == slot.SlotId && a.HeroId == HeroId);
+                if (eqiup != null)
+                {
+                    slot.EquipmentTakeOn(eqiup.Id);
+                }
+                else
+                {
+                    slot.EquipmentTakeOff();
+                }
+            }
+
             _GameObject.SetActive(true);
             _PanelScene.OnResized();
+        }
+
+        public void Refresh() {
+            Show(HeroId);
         }
 
         private async UniTask Hide()

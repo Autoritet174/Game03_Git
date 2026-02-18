@@ -129,6 +129,19 @@ namespace Assets.GameData.Scenes.Collection
         /// </summary>
         private bool _Expanded = true;
 
+        public bool RefreshOwnerImage(Guid collectionElementId)
+        {
+            foreach (var item in _PanelIconCollectionElementList)
+            {
+                if (item.Id == collectionElementId)
+                {
+                    item.RefreshOwnerImage();
+                    return true;
+                }
+            }
+            return false;
+        }
+
         /// <summary>
         /// Переключает состояние группы и запускает анимацию.
         /// </summary>

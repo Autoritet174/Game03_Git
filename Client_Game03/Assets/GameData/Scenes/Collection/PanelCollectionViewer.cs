@@ -2,7 +2,6 @@ using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -35,6 +34,18 @@ namespace Assets.GameData.Scenes.Collection
         private readonly RectTransform _ScrollbarVertical_RectTransform;
         private readonly VerticalLayoutGroup _Content_VerticalLayoutGroup;
         private readonly List<PanelGroupDivider> _GroupDividers = new();
+
+        public void RefreshOwnerImage(Guid collectionElementId)
+        {
+            foreach (PanelGroupDivider group in _GroupDividers)
+            {
+                bool result = group.RefreshOwnerImage(collectionElementId);
+                if (result)
+                {
+                    break;
+                }
+            }
+        }
 
         public async UniTask InstantiateCollectionAsync()
         {
