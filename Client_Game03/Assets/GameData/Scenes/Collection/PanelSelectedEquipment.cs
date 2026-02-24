@@ -43,7 +43,7 @@ namespace Assets.GameData.Scenes.Collection
 
             _PanelTop_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedEquipmentTop (id=dp54agcp)");
             _ButtonClose_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose (id=va8d3lsz)");
-            _ButtonClose_RectTransform.gameObject.GetComponent<Button>().onClick.AddListener(Hide);
+            _ButtonClose_RectTransform.gameObject.SetClickEvent(Hide, false);
             _LabelSelectedEquipment_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label_SelectedEquipment (id=004gk90y)");
 
             _PanelBottom_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedEquipmentBottom (id=bj3zvapm)");
@@ -82,10 +82,10 @@ namespace Assets.GameData.Scenes.Collection
             _ButtonTakeOnAlt_RectTransform.gameObject.SetClickEvent(TakeOnOffInAltSlotOnClick, true);
             _ButtonShowHero_RectTransform.gameObject.SetClickEvent(ShowHeroOnClick, true);
 
-            Hide();
-
-            _PanelSelectedHero = _PanelScene.PanelSelectedHero;
             _PanelCollectionViewer = _PanelScene.PanelCollection.PanelCollectionViewer;
+            _PanelSelectedHero = _PanelScene.PanelSelectedHero;
+
+            Hide().GetAwaiter().GetResult();
         }
 
         public PanelScene _PanelScene { get; private set; }
@@ -146,13 +146,16 @@ namespace Assets.GameData.Scenes.Collection
 
             UpdateButtons();
 
+            _PanelCollectionViewer.GetElement(equipmentId)?.Selected(true);
+
             _GameObject.SetActive(true);
             _PanelScene.OnResized();
         }
 
-        public void Hide()
+        public async UniTask Hide()
         {
             IsVisible = false;
+            _PanelCollectionViewer.GetElement(EquipmentId)?.Selected(true);
             EquipmentId = Guid.Empty;
             _GameObject.SetActive(false);
             _PanelScene.OnResized();
@@ -257,16 +260,16 @@ namespace Assets.GameData.Scenes.Collection
             bool result;
             if (IsEquipped)
             {
+                // экипировка надета, снимаем
                 _ = _DtoEquipment.SlotId.Value;
                 Guid heroId = _DtoEquipment.HeroId.Value;
-                // экипировка надета, снимаем
                 result = await CollectionProvider.EquipmentTakeOffAsync(EquipmentId,
                     CancellationTokenManager.Create("CollectionProvider.EquipmentTakeOffAsync", 5));
                 if (result)
                 {
                     Show(EquipmentId);
                     _PanelSelectedHero.Show(heroId);
-                    _PanelCollectionViewer.RefreshOwnerImage(EquipmentId);
+                    _PanelCollectionViewer.GetElement(EquipmentId)?.RefreshOwnerImage();
                 }
                 else
                 {
@@ -275,8 +278,8 @@ namespace Assets.GameData.Scenes.Collection
             }
             else
             {
-                Guid heroId = _PanelSelectedHero.HeroId;
                 // экипировка не одета, одеваем
+                Guid heroId = _PanelSelectedHero.HeroId;
                 if (heroId == Guid.Empty)
                 {
                     await _PanelScene.PanelTop.OnClickHeroes();
@@ -300,12 +303,13 @@ namespace Assets.GameData.Scenes.Collection
                         //Если была одетая экипировка в этот слот, то снимаем её
                         equipmentEquipped.SlotId = null;
                         equipmentEquipped.HeroId = null;
+                        _PanelCollectionViewer.GetElement(equipmentEquipped.Id)?.RefreshOwnerImage();
                     }
-                    
+
 
                     Show(EquipmentId);
                     _PanelSelectedHero.Show(_DtoEquipment.HeroId.Value);
-                    _PanelCollectionViewer.RefreshOwnerImage(EquipmentId);
+                    _PanelCollectionViewer.GetElement(EquipmentId)?.RefreshOwnerImage();
                 }
                 else
                 {

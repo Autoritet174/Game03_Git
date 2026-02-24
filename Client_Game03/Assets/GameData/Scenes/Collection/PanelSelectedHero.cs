@@ -73,6 +73,7 @@ namespace Assets.GameData.Scenes.Collection
 
             _SelectedHero_Image = GameObjectFinder.FindByName<Image>("ImageHeroFull (id=m5kn2f6p)");
             _SelectedHeroRarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity (id=xami3s9q)");
+            _PanelCollectionViewer = _PanelScene.PanelCollection.PanelCollectionViewer;
 
             Hide().GetAwaiter().GetResult();
         }
@@ -105,6 +106,8 @@ namespace Assets.GameData.Scenes.Collection
         private readonly Image _SelectedHero_Image;
         private readonly Image _SelectedHeroRarity_Image;
 
+        private readonly PanelCollectionViewer _PanelCollectionViewer;
+
         public void Show(Guid heroId)
         {
             IsVisible = true;
@@ -131,7 +134,7 @@ namespace Assets.GameData.Scenes.Collection
                     slot.EquipmentTakeOff();
                 }
             }
-
+            _PanelCollectionViewer.GetElement(heroId)?.Selected(true);
             _GameObject.SetActive(true);
             _PanelScene.OnResized();
         }
@@ -143,6 +146,7 @@ namespace Assets.GameData.Scenes.Collection
         private async UniTask Hide()
         {
             IsVisible = false;
+            _PanelCollectionViewer.GetElement(HeroId)?.Selected(true);
             HeroId = Guid.Empty;
             _GameObject.SetActive(false);
 

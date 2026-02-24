@@ -24,6 +24,7 @@ namespace Assets.GameData.Scenes.Collection
             _PanelCollectionTopButtons = panelCollection.PanelCollectionTopButtons;
         }
 
+
         public PanelCollection PanelCollection { get; }
         public Transform CollectionContent_Transform { get; }
         public int MaxCollectionElements { get; private set; }
@@ -34,18 +35,18 @@ namespace Assets.GameData.Scenes.Collection
         private readonly RectTransform _ScrollbarVertical_RectTransform;
         private readonly VerticalLayoutGroup _Content_VerticalLayoutGroup;
         private readonly List<PanelGroupDivider> _GroupDividers = new();
+        private readonly Dictionary<Guid, PanelIconCollectionElement> _Elements = new();
 
-        public void RefreshOwnerImage(Guid collectionElementId)
+        public void AddElement(PanelIconCollectionElement e)
         {
-            foreach (PanelGroupDivider group in _GroupDividers)
-            {
-                bool result = group.RefreshOwnerImage(collectionElementId);
-                if (result)
-                {
-                    break;
-                }
-            }
+            _Elements.Add(e.Id, e);
         }
+
+        public PanelIconCollectionElement GetElement(Guid id)
+        {
+            return _Elements.TryGetValue(id, out PanelIconCollectionElement element) ? element : null;
+        }
+
 
         public async UniTask InstantiateCollectionAsync()
         {
@@ -53,6 +54,7 @@ namespace Assets.GameData.Scenes.Collection
             {
                 _GroupDividers.ForEach(a => a.Destroy());
                 _GroupDividers.Clear();
+                _Elements.Clear();
 
                 PanelCollection.PanelScene.OnResized();
                 await UniTask.Yield();
@@ -66,11 +68,19 @@ namespace Assets.GameData.Scenes.Collection
                     case CollectionModeEnum.Hero:
                         //PanelCollection.PanelScene.PanelSelectedEquipment.Hide();
                         await LoadCollectionElement(CollectionElementEnum.Hero);
+                        if (PanelCollection.PanelScene.PanelSelectedHero != null && PanelCollection.PanelScene.PanelSelectedHero.IsVisible)
+                        {
+                            GetElement(PanelCollection.PanelScene.PanelSelectedHero.HeroId)?.Selected(true);
+                        }
                         break;
 
                     case CollectionModeEnum.Equipment:
                         //await PanelCollection.PanelScene.PanelSelectedHero.Hide();
                         await LoadCollectionElement(CollectionElementEnum.Equipment);
+                        if (PanelCollection.PanelScene.PanelSelectedEquipment != null && PanelCollection.PanelScene.PanelSelectedEquipment.IsVisible)
+                        {
+                            GetElement(PanelCollection.PanelScene.PanelSelectedEquipment.EquipmentId)?.Selected(true);
+                        }
                         break;
 
                     //case CollectionModeEnum.ChangingEquipment:

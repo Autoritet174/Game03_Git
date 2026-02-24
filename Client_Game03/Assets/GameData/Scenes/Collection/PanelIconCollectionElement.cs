@@ -3,10 +3,8 @@ using Cysharp.Threading.Tasks;
 using Game03Client.Collection;
 using General.DTO.Entities.Collection;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,7 +26,7 @@ namespace Assets.GameData.Scenes.Collection
 
             _GameObject = AddressableCache.IconCollectionElementAddressableGameObject.SafeInstant();
             _GameObject.transform.SetParent(panelGroupDivider.CellsContainer_Transform);
-
+            _RarityImage_GameObject = GameObjectFinder.FindByName("ImageMaskRarity", _GameObject.transform);
             _RectTransform = _GameObject.GetComponent<RectTransform>();
             _RectTransform.anchoredPosition3D = Vector3.zero;
             _RectTransform.localScale = Vector3.one;
@@ -53,12 +51,13 @@ namespace Assets.GameData.Scenes.Collection
                 Debug.LogError($"childImageRarity = null");
                 return;
             }
-            if (!childImageRarity.TryGetComponent(out Image imageRarity)) {
+            if (!childImageRarity.TryGetComponent(out Image imageRarity))
+            {
                 Debug.LogError($"imageRarity = null");
                 return;
             }
 
-            _ImageRarity = imageRarity;
+            _Rarity_Image = imageRarity;
             Transform childText = _GameObject.transform.Find("TextCollectionElement");
             if (childText == null)
             {
@@ -100,12 +99,15 @@ namespace Assets.GameData.Scenes.Collection
             _OwnerImageRarity_Image = GameObjectFinder.FindByName<Image>("OwnerImageRarity", _GameObject.transform);
             _OwnerImageHero_Image = GameObjectFinder.FindByName<Image>("OwnerImageHero", _GameObject.transform);
 
+            _SelectedImage_GameObject = GameObjectFinder.FindByName("ImageSelected", _GameObject.transform);
 
             _Equipment = _CollectionElement.TypeCollectionElement == TypeCollectionElement.Equipment
                 ? CollectionProvider.GetCollectionEquipmentsFromCache().First(a => a.Id == _CollectionElement.Id) : null;
 
             RefreshOwnerImage();
+            _PanelCollectionViewer.AddElement(this);
         }
+
         public Guid Id { get; private set; }
         private readonly PanelGroupDivider _PanelGroupDivider;
         private readonly PanelScene _PanelScene;
@@ -116,19 +118,22 @@ namespace Assets.GameData.Scenes.Collection
         private readonly RectTransform _RectTransform;
         private readonly CollectionElement _CollectionElement;
         private readonly TextMeshProUGUI _TextMeshPro;
-        private readonly Image _ImageRarity;
+        private readonly Image _Rarity_Image;
 
         private readonly GameObject _OwnerHeroIcon_GameObject;
         private readonly Image _OwnerImageRarity_Image;
         private readonly Image _OwnerImageHero_Image;
         private readonly DtoEquipment _Equipment;
+        private readonly GameObject _SelectedImage_GameObject;
+        private readonly GameObject _RarityImage_GameObject;
 
         public void SetText(string text)
         {
             _TextMeshPro.SetText(text);
         }
 
-        public void RefreshOwnerImage() {
+        public void RefreshOwnerImage()
+        {
             if (_Equipment != null)
             {
                 if (_Equipment.HeroId != null)
@@ -138,8 +143,8 @@ namespace Assets.GameData.Scenes.Collection
                     _OwnerImageRarity_Image.sprite = AddressableCache.GetRarity(hero.BaseHero.Rarity);
                     _OwnerHeroIcon_GameObject.SetActive(true);
                 }
-                else {
-
+                else
+                {
                     _OwnerHeroIcon_GameObject.SetActive(false);
                 }
             }
@@ -150,10 +155,18 @@ namespace Assets.GameData.Scenes.Collection
             _TextMeshPro.fontSize = TEXT_COLLECTION_ELEMENT_FONTSIZE * G.GetCoefHeight();
         }
 
+        public void Selected(bool selected)
+        {
+            if (selected)
+            {
+                _PanelCollectionViewer.UnselectAll();
+            }
+            _SelectedImage_GameObject.SetActive(selected);
+            _RarityImage_GameObject.SetActive(!selected);
+        }
+
         private async UniTask OnClick()
         {
-            _PanelCollectionViewer.UnselectAll();
-
             //_RectTransform.localScale = Initializator.Vector3Selected;// ИСПРАВИТЬ
 
             switch (_PanelScene.CollectionMode)
@@ -191,18 +204,19 @@ namespace Assets.GameData.Scenes.Collection
                     throw new NotImplementedException();
             }
 
+            Selected(true);
             _PanelScene.OnResized();
         }
 
         private async UniTask OnPointerEnter()
         {
-            _ImageRarity.sprite = AddressableCache.Rarityes[0];
+            _Rarity_Image.sprite = AddressableCache.Rarityes[0];
             await UniTask.Yield();
         }
 
         private async UniTask OnPointerExit()
         {
-            _ImageRarity.sprite = AddressableCache.Rarityes[_CollectionElement.Rarity];
+            _Rarity_Image.sprite = AddressableCache.Rarityes[_CollectionElement.Rarity];
             await UniTask.Yield();
         }
     }
