@@ -50,7 +50,7 @@ namespace Assets.GameData.Scenes.Collection
 
             _PanelBottomTabButton1_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonTab1 (id=n94o21t8)");
             _PanelBottomTabButton1_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonTab1Text (id=yjb1gqbc)");
-            _PanelBottomTabButton1_TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(L.UI.Button.Item));
+            _PanelBottomTabButton1_TextMeshProUGUI.SetText(LocalizationManager.GetValue(L.UI.Button.Item));
 
             _PanelBottomTabButton2_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonTab2 (id=c1xjs5dr)");
             _PanelBottomTabButton2_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonTab2Text (id=pn28dhfr)");
@@ -61,16 +61,16 @@ namespace Assets.GameData.Scenes.Collection
 
             _ButtonTakeOnAlt_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonTakeOnAlt (id=t1aolr9g)");
             _ButtonTakeOnAlt_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonTakeOnAltText (id=1kxgiw2d)");
-            _ButtonTakeOnAlt_TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(L.UI.Button.TakeOnAlt));
+            _ButtonTakeOnAlt_TextMeshProUGUI.SetText(LocalizationManager.GetValue(L.UI.Button.TakeOnAlt));
             _ButtonTakeOnAlt_Button = _ButtonTakeOnAlt_RectTransform.gameObject.GetComponent<Button>();
 
             _ButtonSell_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonSell (id=sp1vha3z)");
             _ButtonSell_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonSellText (id=b68za6o5)");
-            _ButtonSell_TextMeshProUGUI.text = Game03Client.LocalizationManager.GetValue(L.UI.Button.Sell);
+            _ButtonSell_TextMeshProUGUI.text = LocalizationManager.GetValue(L.UI.Button.Sell);
 
             _ButtonShowHero_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonShowHero (id=1odbub2l)");
             _ButtonShowHero_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonShowHeroText (id=9u9bz66s)");
-            _ButtonShowHero_TextMeshProUGUI.text = Game03Client.LocalizationManager.GetValue(L.UI.Button.ShowHero);
+            _ButtonShowHero_TextMeshProUGUI.text = LocalizationManager.GetValue(L.UI.Button.ShowHero);
             _ButtonShowHero_Button = _ButtonShowHero_RectTransform.gameObject.GetComponent<Button>();
 
             _SelectedContainer_RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Container (id=bqxjhczr)");
@@ -333,7 +333,7 @@ namespace Assets.GameData.Scenes.Collection
                 _ButtonShowHero_Button.interactable = false;
                 textLocalKey = L.UI.Button.TakeOn;
             }
-            _ButtonTakeOnOff_TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(textLocalKey));
+            _ButtonTakeOnOff_TextMeshProUGUI.SetText(LocalizationManager.GetValue(textLocalKey));
         }
 
         private bool HaveAltSlot()
