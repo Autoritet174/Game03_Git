@@ -1,4 +1,5 @@
 using Assets.GameData.Scripts;
+using Cysharp.Threading.Tasks;
 using Game03Client.Collection;
 using General.DTO.Entities.Collection;
 using System;
@@ -23,12 +24,15 @@ namespace Assets.GameData.Scenes.Collection
         private readonly int posX;
         private readonly int posY;
         private readonly RectTransform _RectTransform;
+        private readonly GameObject _GameObject;
         private readonly RectTransform _ImageBackground_RectTransform;
         private readonly RectTransform _LabelSlot_RectTransform;
         private readonly TextMeshProUGUI _TextMeshProUGUI;
         private readonly GameObject _ImageContainer_GameObject;
-        private readonly Image _ImageRarity;
-        private readonly Image _ImageEquipmentFull;
+        private readonly Image _Rarity_Image;
+        private readonly Image _EquipmentFull_Image;
+        private DtoEquipment _Equipment;
+        private readonly PanelSelectedEquipment _PanelSelectedEquipment;
 
         public float Width { get; private set; }
         public float Height { get; private set; }
@@ -44,6 +48,7 @@ namespace Assets.GameData.Scenes.Collection
             SlotId = slotId;
 
             _RectTransform = GameObjectFinder.FindByName<RectTransform>($"PanelSlot{name}{suffix}", parent);
+            _GameObject = _RectTransform.gameObject;
             _ImageBackground_RectTransform = GameObjectFinder.FindByName<RectTransform>("ImageBackground", _RectTransform);
             _LabelSlot_RectTransform = GameObjectFinder.FindByName<RectTransform>("LabelSlot", _RectTransform);
 
@@ -52,13 +57,16 @@ namespace Assets.GameData.Scenes.Collection
             string text = Game03Client.LocalizationManager.GetValue(lKey);
             if (suffix != "")
             {
-                text += " " + suffix;
+                text += $" {suffix}";
             }
             _TextMeshProUGUI.text = text;
 
             _ImageContainer_GameObject = GameObjectFinder.FindByName("ImageContainer", _RectTransform.transform);
-            _ImageRarity = GameObjectFinder.FindByName<Image>("ImageRarity", _RectTransform.transform);
-            _ImageEquipmentFull = GameObjectFinder.FindByName<Image>("ImageEquipmentFull", _RectTransform.transform);
+            _Rarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity", _RectTransform.transform);
+            _EquipmentFull_Image = GameObjectFinder.FindByName<Image>("ImageEquipmentFull", _RectTransform.transform);
+
+            EventHelper.AddHoverEvents(_GameObject, OnPointerEnter, OnPointerExit);
+            EventHelper.SetClickEvent(_GameObject, OnClick, false);
         }
 
         public void OnResized()
@@ -85,16 +93,16 @@ namespace Assets.GameData.Scenes.Collection
             bool active = false;
             try
             {
-                DtoEquipment equipment = CollectionProvider.GetCollectionEquipmentsFromCache().FirstOrDefault(a => a.Id == equipmentId);
-                if (equipment == null)
+                _Equipment = CollectionProvider.GetCollectionEquipmentsFromCache().FirstOrDefault(a => a.Id == equipmentId);
+                if (_Equipment == null)
                 {
                     return;
                 }
-                
-                int rarity = equipment.BaseEquipment.Rarity;
-                _ImageRarity.sprite = AddressableCache.Rarityes[rarity];
-                string tagUnique = equipment.BaseEquipment.IsUnique ? "Unique-" : string.Empty;
-                _ImageEquipmentFull.sprite = AddressableCache.Equipments[$"{tagUnique}{equipment.BaseEquipment.Name}"];
+
+                int rarity = _Equipment.BaseEquipment.Rarity;
+                _Rarity_Image.sprite = AddressableCache.Rarityes[rarity];
+                string tagUnique = _Equipment.BaseEquipment.IsUnique ? "Unique-" : string.Empty;
+                _EquipmentFull_Image.sprite = AddressableCache.Equipments[$"{tagUnique}{_Equipment.BaseEquipment.Name}"];
                 active = true;
             }
             catch (Exception ex)
@@ -106,9 +114,34 @@ namespace Assets.GameData.Scenes.Collection
                 _ImageContainer_GameObject.SetActive(active);
             }
         }
+
         public void EquipmentTakeOff()
         {
+            _Equipment = null;
             _ImageContainer_GameObject.SetActive(false);
+        }
+
+        private async UniTask OnPointerEnter()
+        {
+            _Rarity_Image.sprite = AddressableCache.Rarityes[0];
+            await UniTask.Yield();
+        }
+
+        private async UniTask OnPointerExit()
+        {
+            if (_Equipment != null)
+            {
+                _Rarity_Image.sprite = AddressableCache.Rarityes[_Equipment.BaseEquipment.Rarity];
+            }
+            await UniTask.Yield();
+        }
+
+        private async UniTask OnClick()
+        {
+            if (_Equipment != null)
+            {
+                PanelScene.Instance.PanelSelectedEquipment.Show(_Equipment.Id);
+            }
         }
     }
 

@@ -11,6 +11,7 @@ namespace Assets.GameData.Scenes.Collection
 
     public class PanelScene : MonoBehaviour
     {
+        public static PanelScene Instance { get; private set; }
         private async void Start()
         {
             // Изображение заднего фона
@@ -24,6 +25,7 @@ namespace Assets.GameData.Scenes.Collection
             {
                 throw new Exception("Изображение заднего фона некорректно.");
             }
+            Instance = this;
             PanelTop = new(this);
             PanelCollection = new(this);
             PanelSelectedHero = new(this);
