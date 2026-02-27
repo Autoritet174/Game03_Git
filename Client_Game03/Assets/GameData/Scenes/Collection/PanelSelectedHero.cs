@@ -75,6 +75,26 @@ namespace Assets.GameData.Scenes.Collection
             _SelectedHeroRarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity (id=xami3s9q)");
             _PanelCollectionViewer = _PanelScene.PanelCollection.PanelCollectionViewer;
 
+            // Stats
+            _PanelStat_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelStats (id=aul0ak16)");
+
+            _StatLevel_GameObject = GameObjectFinder.FindByName("StatLevel (id=gq44hho7)");
+            _StatLevel = new Stat("Level", 1, _StatLevel_GameObject);
+            _StatHealth_GameObject = GameObjectFinder.FindByName("StatHealth (id=fd8ccppe)");
+            _StatHealth = new Stat("Health", 2, _StatHealth_GameObject);
+            _StatStrength_GameObject = GameObjectFinder.FindByName("StatStrength (id=mv49tk9s)");
+            _StatStrength = new Stat("Strength", 3, _StatStrength_GameObject);
+            _StatAgility_GameObject = GameObjectFinder.FindByName("StatAgility (id=jx4psf25)");
+            _StatAgility = new Stat("Agility", 4, _StatAgility_GameObject);
+            _StatIntelligence_GameObject = GameObjectFinder.FindByName("StatIntelligence (id=ydct7hbc)");
+            _StatIntelligence = new Stat("Intelligence", 5, _StatIntelligence_GameObject);
+            _StatCritChance_GameObject = GameObjectFinder.FindByName("StatCritChance (id=1l42t8mp)");
+            _StatCritChance = new Stat("CritChance", 6, _StatCritChance_GameObject);
+            _StatCritPower_GameObject = GameObjectFinder.FindByName("StatCritPower (id=1znqy1h2)");
+            _StatCritPower = new Stat("CritPower", 7, _StatCritPower_GameObject);
+
+
+
             Hide().GetAwaiter().GetResult();
         }
 
@@ -108,6 +128,23 @@ namespace Assets.GameData.Scenes.Collection
 
         private readonly PanelCollectionViewer _PanelCollectionViewer;
 
+        //Stats
+        private readonly RectTransform _PanelStat_RectTransform;
+        private readonly GameObject _StatLevel_GameObject;
+        private readonly Stat _StatLevel;
+        private readonly GameObject _StatHealth_GameObject;
+        private readonly Stat _StatHealth;
+        private readonly GameObject _StatStrength_GameObject;
+        private readonly Stat _StatStrength;
+        private readonly GameObject _StatAgility_GameObject;
+        private readonly Stat _StatAgility;
+        private readonly GameObject _StatIntelligence_GameObject;
+        private readonly Stat _StatIntelligence;
+        private readonly GameObject _StatCritChance_GameObject;
+        private readonly Stat _StatCritChance;
+        private readonly GameObject _StatCritPower_GameObject;
+        private readonly Stat _StatCritPower;
+
         public void Show(Guid heroId)
         {
             IsVisible = true;
@@ -134,12 +171,24 @@ namespace Assets.GameData.Scenes.Collection
                     slot.EquipmentTakeOff();
                 }
             }
+
+            // Статы
+            _StatLevel.SetValue(hero.Level);
+            _StatHealth.SetValue1000(hero.Health1000);
+            _StatStrength.SetValue(hero.Strength);
+            _StatAgility.SetValue(hero.Agility);
+            _StatIntelligence.SetValue(hero.Intelligence);
+            _StatCritChance.SetValue(hero.CritChance);
+            _StatCritPower.SetValue(hero.CritPower);
+
+
             _PanelCollectionViewer.GetElement(heroId)?.Selected(true);
             _GameObject.SetActive(true);
             _PanelScene.OnResized();
         }
 
-        public void Refresh() {
+        public void Refresh()
+        {
             Show(HeroId);
         }
 
@@ -211,8 +260,22 @@ namespace Assets.GameData.Scenes.Collection
             float imageContainerSpacing = IMAGECONTAINER_SPACING * coefHeight;
             _ImageContainer_RectTransform.anchoredPosition = new Vector2(imageContainerSpacing, imageContainerSpacing);
 
-            float imageContainerHeight = panelTabHeight - _SlotWeapon.Top - _SlotWeapon.Height - (Slot.PANELSLOT_SPACING * coefHeight);
-            _ImageContainer_RectTransform.sizeDelta = new Vector2(imageContainerHeight / 1.75f, imageContainerHeight);
+            float panelSlotSpacing = Slot.PANELSLOT_SPACING * coefHeight;
+            float imageContainerHeight = panelTabHeight - _SlotWeapon.Top - _SlotWeapon.Height - panelSlotSpacing;
+            float imageContainerWidth = imageContainerHeight / 1.75f;
+            _ImageContainer_RectTransform.sizeDelta = new Vector2(imageContainerWidth, imageContainerHeight);
+
+            // Stats
+            float panelStatWidth = Width - (3f * panelSlotSpacing) - imageContainerWidth;
+            _PanelStat_RectTransform.sizeDelta = new Vector2(panelStatWidth, panelStatWidth * 576f / 244.06f);
+            _PanelStat_RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, imageContainerSpacing);
+            _StatLevel.OnResized();
+            _StatHealth.OnResized();
+            _StatStrength.OnResized();
+            _StatAgility.OnResized();
+            _StatIntelligence.OnResized();
+            _StatCritChance.OnResized();
+            _StatCritPower.OnResized();
         }
 
     }

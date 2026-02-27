@@ -43,7 +43,7 @@ namespace Assets.GameData.Scenes.Collection
             _DividerButton_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _DividerButton_GameObject.transform);
 
 
-            //DividerButton
+            // DividerButton
             if (string.IsNullOrWhiteSpace(_GroupName))
             {
                 _DividerButton_TextMeshProUGUI.text = Game03Client.LocalizationManager.GetValue(L.UI.Label.NoGroup);
@@ -69,27 +69,8 @@ namespace Assets.GameData.Scenes.Collection
 
 
             OnResized();
-
-            // Если группа должна быть свернута по умолчанию, устанавливаем высоту в 0,
-            // иначе сохраняем текущую высоту.
-            //if (!_Expanded)
-            //{
-            //    // Установка начальной высоты в 0, но нужно сохранить полную высоту
-            //    // Для корректного расчета полной высоты, сначала активируем объект
-            //    //gameObjectCellsContainer.SetActive(true);
-            //    // Принудительная перестройка макета для получения корректной высоты
-            //    //LayoutRebuilder.ForceRebuildLayoutImmediate(_CellsContainer_RectTransform);
-            //    //expandedHeight = _CellsContainer_RectTransform.rect.height;
-            //    //_CellsContainer_RectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 0);
-            //    //gameObjectCellsContainer.SetActive(false);
-            //}
-            //else
-            //{
-            //    // Принудительная перестройка макета для получения корректной высоты
-            //    //LayoutRebuilder.ForceRebuildLayoutImmediate(_CellsContainer_RectTransform);
-            //    //expandedHeight = _CellsContainer_RectTransform.rect.height;
-            //}
         }
+
         public Transform CellsContainer_Transform { get; }
 
         public PanelCollectionViewer PanelCollectionViewer { get; }

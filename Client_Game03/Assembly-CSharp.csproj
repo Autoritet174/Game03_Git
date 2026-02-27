@@ -84,6 +84,7 @@
     <Compile Include="Assets\GameData\Scripts\CancellationTokenManager.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Button_Close.cs" />
     <Compile Include="Assets\GameData\Scripts\GameObjectExtensions.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\Stat.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\PanelCollectionTopButtons.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\PanelSelectedHero.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\PanelSelectedEquipment.cs" />
