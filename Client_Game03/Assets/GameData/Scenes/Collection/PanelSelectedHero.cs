@@ -175,11 +175,11 @@ namespace Assets.GameData.Scenes.Collection
             // Статы
             _StatLevel.SetValue(hero.Level);
             _StatHealth.SetValue1000(hero.Health1000);
-            _StatStrength.SetValue(hero.Strength);
-            _StatAgility.SetValue(hero.Agility);
-            _StatIntelligence.SetValue(hero.Intelligence);
-            _StatCritChance.SetValue(hero.CritChance);
-            _StatCritPower.SetValue(hero.CritPower);
+            _StatStrength.SetValue1000(hero.Strength1000);
+            _StatAgility.SetValue1000(hero.Agility1000);
+            _StatIntelligence.SetValue1000(hero.Intelligence1000);
+            _StatCritChance.SetValue1000(hero.CritChance1000);
+            _StatCritPower.SetValue1000(hero.CritPower1000);
 
 
             _PanelCollectionViewer.GetElement(heroId)?.Selected(true);
