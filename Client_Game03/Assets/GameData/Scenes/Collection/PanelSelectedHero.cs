@@ -91,7 +91,7 @@ namespace Assets.GameData.Scenes.Collection
             _StatCritChance_GameObject = GameObjectFinder.FindByName("StatCritChance (id=1l42t8mp)");
             _StatCritChance = new Stat("CritChance", 6, _StatCritChance_GameObject);
             _StatCritPower_GameObject = GameObjectFinder.FindByName("StatCritPower (id=1znqy1h2)");
-            _StatCritPower = new Stat("CritPower", 7, _StatCritPower_GameObject);
+            _StatCritMultiplier = new Stat("CritMultiplier", 7, _StatCritPower_GameObject);
 
 
 
@@ -143,7 +143,7 @@ namespace Assets.GameData.Scenes.Collection
         private readonly GameObject _StatCritChance_GameObject;
         private readonly Stat _StatCritChance;
         private readonly GameObject _StatCritPower_GameObject;
-        private readonly Stat _StatCritPower;
+        private readonly Stat _StatCritMultiplier;
 
         public void Show(Guid heroId)
         {
@@ -178,8 +178,8 @@ namespace Assets.GameData.Scenes.Collection
             _StatStrength.SetValue1000(hero.Strength1000);
             _StatAgility.SetValue1000(hero.Agility1000);
             _StatIntelligence.SetValue1000(hero.Intelligence1000);
-            _StatCritChance.SetValue1000(hero.CritChance1000);
-            _StatCritPower.SetValue1000(hero.CritPower1000);
+            _StatCritChance.SetValue1000Percent(hero.CritChance1000);
+            _StatCritMultiplier.SetValue1000Percent(hero.CritPower1000);
 
 
             _PanelCollectionViewer.GetElement(heroId)?.Selected(true);
@@ -275,7 +275,7 @@ namespace Assets.GameData.Scenes.Collection
             _StatAgility.OnResized();
             _StatIntelligence.OnResized();
             _StatCritChance.OnResized();
-            _StatCritPower.OnResized();
+            _StatCritMultiplier.OnResized();
         }
 
     }

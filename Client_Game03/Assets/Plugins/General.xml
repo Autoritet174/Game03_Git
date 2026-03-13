@@ -80,7 +80,7 @@
             Герой из коллекции игрока.
             </summary>
         </member>
-        <member name="M:General.DTO.Entities.Collection.DtoHero.#ctor(System.Guid,System.Guid,System.Int32,System.String,System.Int32,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,General.DTO.Entities.GameData.DtoBaseHero)">
+        <member name="M:General.DTO.Entities.Collection.DtoHero.#ctor(System.Guid,System.Guid,System.Int32,System.String,System.Int32,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,General.DTO.Entities.GameData.DtoBaseHero)">
             <summary>
             Герой из коллекции игрока.
             </summary>
@@ -114,7 +114,7 @@
         <member name="T:General.DTO.Entities.GameData.DtoBaseHero">
             <summary> Data Transfer Object. Представляет базовую сущность игрового героя с основными характеристиками. </summary>
         </member>
-        <member name="M:General.DTO.Entities.GameData.DtoBaseHero.#ctor(System.Int32,System.String,System.Int32,System.Boolean,System.Int32,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice)">
+        <member name="M:General.DTO.Entities.GameData.DtoBaseHero.#ctor(System.Int32,System.String,System.Int32,System.Boolean,System.Int32,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice)">
             <summary> Data Transfer Object. Представляет базовую сущность игрового героя с основными характеристиками. </summary>
         </member>
         <member name="T:General.DTO.RestRequest.DtoRequestAuthReg">

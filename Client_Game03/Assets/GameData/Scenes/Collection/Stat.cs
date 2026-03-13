@@ -52,7 +52,7 @@ namespace Assets.GameData.Scenes.Collection
         }
         public void SetValue1000(long value)
         {
-            _Value_TextMeshProUGUI.SetText((value/1000L).ToString());
+            _Value_TextMeshProUGUI.SetText((value / 1000L).ToString());
         }
         public void SetValue(double value)
         {
@@ -64,7 +64,11 @@ namespace Assets.GameData.Scenes.Collection
         }
         public void SetValuePercent(double value)
         {
-            _Value_TextMeshProUGUI.SetText($"{value}%");
+            _Value_TextMeshProUGUI.SetText($"{value:0.0}%");
+        }
+        public void SetValue1000Percent(long value)
+        {
+            _Value_TextMeshProUGUI.SetText($"{value / 1000d:0.0}%");
         }
     }
 }

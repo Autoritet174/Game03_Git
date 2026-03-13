@@ -11,7 +11,7 @@
         "dependencies": {
           "General": "1.0.0",
           "System.Net.Http": "4.3.4",
-          "System.Text.Encodings.Web": "10.0.2",
+          "System.Text.Encodings.Web": "10.0.5",
           "System.Text.RegularExpressions": "4.3.1",
           "ini-parser-netstandard": "2.5.3"
         },
@@ -27,11 +27,11 @@
           }
         }
       },
-      "Microsoft.Bcl.AsyncInterfaces/10.0.2": {
+      "Microsoft.Bcl.AsyncInterfaces/10.0.5": {
         "runtime": {
           "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll": {
-            "assemblyVersion": "10.0.0.2",
-            "fileVersion": "10.0.225.61305"
+            "assemblyVersion": "10.0.0.5",
+            "fileVersion": "10.0.526.15411"
           }
         }
       },
@@ -112,11 +112,11 @@
           }
         }
       },
-      "System.IO.Pipelines/10.0.2": {
+      "System.IO.Pipelines/10.0.5": {
         "runtime": {
           "lib/netstandard2.0/System.IO.Pipelines.dll": {
             "assemblyVersion": "10.0.0.0",
-            "fileVersion": "10.0.225.61305"
+            "fileVersion": "10.0.526.15411"
           }
         }
       },
@@ -229,28 +229,28 @@
           "runtime.native.System.Security.Cryptography.OpenSsl": "4.3.2"
         }
       },
-      "System.Text.Encodings.Web/10.0.2": {
+      "System.Text.Encodings.Web/10.0.5": {
         "dependencies": {
           "System.Runtime.CompilerServices.Unsafe": "6.1.2"
         },
         "runtime": {
           "lib/netstandard2.0/System.Text.Encodings.Web.dll": {
             "assemblyVersion": "10.0.0.0",
-            "fileVersion": "10.0.225.61305"
+            "fileVersion": "10.0.526.15411"
           }
         }
       },
-      "System.Text.Json/10.0.2": {
+      "System.Text.Json/10.0.5": {
         "dependencies": {
-          "Microsoft.Bcl.AsyncInterfaces": "10.0.2",
-          "System.IO.Pipelines": "10.0.2",
+          "Microsoft.Bcl.AsyncInterfaces": "10.0.5",
+          "System.IO.Pipelines": "10.0.5",
           "System.Runtime.CompilerServices.Unsafe": "6.1.2",
-          "System.Text.Encodings.Web": "10.0.2"
+          "System.Text.Encodings.Web": "10.0.5"
         },
         "runtime": {
           "lib/netstandard2.0/System.Text.Json.dll": {
             "assemblyVersion": "10.0.0.0",
-            "fileVersion": "10.0.225.61305"
+            "fileVersion": "10.0.526.15411"
           }
         }
       },
@@ -277,7 +277,7 @@
         "dependencies": {
           "Newtonsoft.Json": "13.0.4",
           "System.ComponentModel.Annotations": "5.0.0",
-          "System.Text.Json": "10.0.2"
+          "System.Text.Json": "10.0.5"
         },
         "runtime": {
           "General.dll": {
@@ -301,12 +301,12 @@
       "path": "ini-parser-netstandard/2.5.3",
       "hashPath": "ini-parser-netstandard.2.5.3.nupkg.sha512"
     },
-    "Microsoft.Bcl.AsyncInterfaces/10.0.2": {
+    "Microsoft.Bcl.AsyncInterfaces/10.0.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-qE5JhRoeJbAipLqpUCZyNfNwnpAvUttXgIQDnTiJ15d8ji+/bPgoPkB3xLzK5cQTobN2D2ditUesUlDHb7p3Pg==",
-      "path": "microsoft.bcl.asyncinterfaces/10.0.2",
-      "hashPath": "microsoft.bcl.asyncinterfaces.10.0.2.nupkg.sha512"
+      "sha512": "sha512-hQB3Hq1LlF0NkGVNyZIvwIQIY3LM7Cw1oYjNiTvdNqmzzipVAWEK1c5sj2H5aFX0udnjgPLxSYKq2fupueS8ow==",
+      "path": "microsoft.bcl.asyncinterfaces/10.0.5",
+      "hashPath": "microsoft.bcl.asyncinterfaces.10.0.5.nupkg.sha512"
     },
     "Newtonsoft.Json/13.0.4": {
       "type": "package",
@@ -441,12 +441,12 @@
       "path": "system.io.filesystem.primitives/4.3.0",
       "hashPath": "system.io.filesystem.primitives.4.3.0.nupkg.sha512"
     },
-    "System.IO.Pipelines/10.0.2": {
+    "System.IO.Pipelines/10.0.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-EqMsn9r18ABvTDxrDce4OWDhBE3y+rR23ilG7Y3BudDKrDKrLG/hkD/JmeFZbctAPxSkCjyJ/Ddwbn/g7ufRJA==",
-      "path": "system.io.pipelines/10.0.2",
-      "hashPath": "system.io.pipelines.10.0.2.nupkg.sha512"
+      "sha512": "sha512-8/ZHN/j2y1t+7McdCf1wXku2/c7wtrGLz3WQabIoPuLAn3bHDWT6YOJYreJq8sCMPSo6c8iVYXUdLlFGX5PEqw==",
+      "path": "system.io.pipelines/10.0.5",
+      "hashPath": "system.io.pipelines.10.0.5.nupkg.sha512"
     },
     "System.Linq/4.3.0": {
       "type": "package",
@@ -525,19 +525,19 @@
       "path": "system.security.cryptography.x509certificates/4.3.0",
       "hashPath": "system.security.cryptography.x509certificates.4.3.0.nupkg.sha512"
     },
-    "System.Text.Encodings.Web/10.0.2": {
+    "System.Text.Encodings.Web/10.0.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Ro4cLT4qpRy64crfLAy3ekihtXckeXrD5eI6qb6NDSEVyHcHsmH7KgN4dbnIuiBmXIoaCslx4SynLYxag1SLSQ==",
-      "path": "system.text.encodings.web/10.0.2",
-      "hashPath": "system.text.encodings.web.10.0.2.nupkg.sha512"
+      "sha512": "sha512-opvD/nKTzGKA7GVntZ9L823kN6IxgHQfuxY+VI9gv8VE1Y7CSKoi/QS1EYDQiA63MqtZsD7X6zkISd2ZQJohTQ==",
+      "path": "system.text.encodings.web/10.0.5",
+      "hashPath": "system.text.encodings.web.10.0.5.nupkg.sha512"
     },
-    "System.Text.Json/10.0.2": {
+    "System.Text.Json/10.0.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-zy8ey7I16G9neZ6uzxrnYwS7pidElzN8XarsBjGu7lE2m7afTKMEe18KbY3ZSmh/z/bR40oxjd6hlUcmOEaMHw==",
-      "path": "system.text.json/10.0.2",
-      "hashPath": "system.text.json.10.0.2.nupkg.sha512"
+      "sha512": "sha512-vW2zhkWziyfhoSXNf42mTWyilw+vfwBGOsODDsHSFtOIY6LCgfRVUyaAilLEL4Kc1fzhaxcep5pS0VWYPSDW0w==",
+      "path": "system.text.json/10.0.5",
+      "hashPath": "system.text.json.10.0.5.nupkg.sha512"
     },
     "System.Text.RegularExpressions/4.3.1": {
       "type": "package",
