@@ -132,6 +132,7 @@ public class AllHeroes : MonoBehaviour
         //var raritySprite = await Addressables.LoadAssetAsync<Sprite>($"rarity{hero.Rarity}").ToUniTask();
         //var selectedSprite = await Addressables.LoadAssetAsync<Sprite>($"raritySelected").ToUniTask();
 
+
         imageHero.sprite = AddressableCache.Heroes[hero.Name + "_face"];
         imageHero.preserveAspect = true; // Сохраняет пропорции изображения
         imageHero.type = Image.Type.Simple; // Режим без растягивания;

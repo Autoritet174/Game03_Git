@@ -22,16 +22,16 @@
         <member name="P:General.DTO.Dice.Sides">
             <summary> Sides. Размер кубика (число граней). </summary>
         </member>
-        <member name="P:General.DTO.Dice.Modificator1000">
+        <member name="P:General.DTO.Dice.Modificator_1000">
             <summary> Modificator. Модификатор к броску кубиков. Первые три знака, тысячные доли от единицы видимой игроку. </summary>
         </member>
-        <member name="P:General.DTO.Dice.Min">
+        <member name="P:General.DTO.Dice.Min_1000">
             <summary> Минимальное значение. </summary>
         </member>
-        <member name="P:General.DTO.Dice.Max">
+        <member name="P:General.DTO.Dice.Max_1000">
             <summary> Максимальное значение. </summary>
         </member>
-        <member name="P:General.DTO.Dice.Expected">
+        <member name="P:General.DTO.Dice.Expected_1000">
             <summary> Ожидаемое значение. </summary>
         </member>
         <member name="M:General.DTO.Dice.#ctor(System.String)">

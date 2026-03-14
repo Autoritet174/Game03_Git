@@ -25,6 +25,7 @@ namespace Assets.GameData.Scenes.Collection
             _PanelSelectedEquipment = _PanelScene.PanelSelectedEquipment;
 
             _GameObject = AddressableCache.IconCollectionElementAddressableGameObject.SafeInstant();
+            _GameObject.name = $"IconCollectionElement [{Id}]";
             _GameObject.transform.SetParent(panelGroupDivider.CellsContainer_Transform);
             _RarityImage_GameObject = GameObjectFinder.FindByName("ImageMaskRarity", _GameObject.transform);
             _RectTransform = _GameObject.GetComponent<RectTransform>();
@@ -79,11 +80,10 @@ namespace Assets.GameData.Scenes.Collection
             imageRarity.preserveAspect = true;
             imageRarity.type = Image.Type.Simple; // Режим без растягивания;
 
-            string tagUnique = _CollectionElement.IsUnique ? "Unique-" : string.Empty;
             imageCollectionElement.sprite = _PanelScene.CollectionMode switch
             {
                 CollectionModeEnum.Hero => AddressableCache.Heroes[$"{_CollectionElement.Name}_face"],
-                CollectionModeEnum.Equipment => AddressableCache.Equipments[$"{tagUnique}{_CollectionElement.Name}_128"],
+                CollectionModeEnum.Equipment => AddressableCache.Equipments[$"{_CollectionElement.Name}_128"],
                 //CollectionModeEnum.ChangingEquipment => _PanelScene.PanelSelectedHero.IsVisible
                 //    ? AddressableCache.Equipments[$"{tagUnique}{_CollectionElement.Name}_128"]
                 //    : AddressableCache.Heroes[$"{_CollectionElement.Name}_face"],
@@ -162,7 +162,7 @@ namespace Assets.GameData.Scenes.Collection
                 _PanelCollectionViewer.UnselectAll();
             }
             _SelectedImage_GameObject.SetActive(selected);
-            _RarityImage_GameObject.SetActive(!selected);
+            //_RarityImage_GameObject.SetActive(!selected);
         }
 
         private async UniTask OnClick()

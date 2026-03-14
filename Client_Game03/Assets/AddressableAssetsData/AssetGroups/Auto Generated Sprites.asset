@@ -71,7 +71,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 17953aa48bff3ab4eac2491bb12dfa88
-    m_Address: Equipments-Unique-Thunderfury
+    m_Address: Equipments-Thunderfury
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -80,8 +80,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1bd86fce33822d145bc26f08dfa6c257
+    m_Address: Heroes-Midnight assassin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1ffa01b6db2fed04a86449ed31300224
     m_Address: SmithingMaterials-Pyronite_original
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 29ea66910387aa24eac82bf885eb38be
+    m_Address: UI-mask256Reverse
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -110,6 +120,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3c772811f5e81b44d857b263d1bbb292
+    m_Address: UI-CollectionElementSelected
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 400e49e4baa5e9840984a3b37d76a9d2
     m_Address: UI-cursors-cursor_green_64x64
     m_ReadOnly: 0
@@ -122,6 +137,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4206d7027ab08bc4b9d3c5f4eaec23d2
     m_Address: SmithingMaterials-Ebonite_Original
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4a09d948b2c31744db288cb1c87593f1
+    m_Address: UI-CollectionElementSelected_Original
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4c5a046a013aa2842981c2e4af5325d0
+    m_Address: Heroes-Raymorax
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -145,6 +170,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5a6c79ef1e3a8914199e0e7610ce6daf
+    m_Address: Heroes-Raymoraxia
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5de5cfb59a0169943ab36f672c3626e7
     m_Address: Equipments-Iron armor_128
     m_ReadOnly: 0
@@ -155,8 +185,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5f1dd90288baab94daf0b09983a08985
+    m_Address: Heroes-Raymoraxia_face
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 64982dffceb1e7441a21a760de8230c9
     m_Address: SmithingMaterials-Ostenium
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 694d3b0e6f7e2e5489428fd8b4479141
+    m_Address: Heroes-Midnight assassin_face
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -316,7 +356,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ae30cd18f536dfa48881786e1d2bde5a
-    m_Address: Equipments-Unique-Thunderfury_128
+    m_Address: Equipments-Thunderfury_128
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -332,6 +372,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b0335cb78e02466438dcda0fe5b520e1
     m_Address: SmithingMaterials-Fulgurite
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b1c36fbcc60818644a502e2e6701cbf2
+    m_Address: Heroes-Raymorax_face
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

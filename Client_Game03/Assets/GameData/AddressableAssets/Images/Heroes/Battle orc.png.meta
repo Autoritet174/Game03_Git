@@ -3,8 +3,8 @@ guid: 2fb794e92c2a55e40a3d5f32c05e05e0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2556219727768566519
-    second: orc with axes_0
+      213: -1485666042547221841
+    second: Battle orc_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -72,10 +72,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 1024
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: 3
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: orc with axes_0
+      name: Battle orc_0
       rect:
         serializedVersion: 2
         x: 0
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7fabd798c44897320800000000000000
-      internalID: 2556219727768566519
+      spriteID: faacc1f0b9ad16be0800000000000000
+      internalID: -1485666042547221841
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      orc with axes_0: 2556219727768566519
+      Battle orc_0: -1485666042547221841
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

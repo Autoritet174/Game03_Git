@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7656264df9f9cf048b48a4b102d0633b
+guid: b1c36fbcc60818644a502e2e6701cbf2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2772426659137173350
-    second: Hammerman_0
+      213: 8477235991066099422
+    second: Raymorax_face_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -72,7 +72,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 256
     resizeAlgorithm: 0
     textureFormat: 3
     textureCompression: 1
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Hammerman_0
+      name: Raymorax_face_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1024
-        height: 1024
+        width: 380
+        height: 380
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a984e4874ac5689d0800000000000000
-      internalID: -2772426659137173350
+      spriteID: edeb6a4383135a570800000000000000
+      internalID: 8477235991066099422
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Hammerman_0: -2772426659137173350
+      Raymorax_face_0: 8477235991066099422
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

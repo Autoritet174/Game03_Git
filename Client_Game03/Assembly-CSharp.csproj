@@ -99,6 +99,7 @@
     <Compile Include="Assets\GameData\Scenes\Auth\AuthHelper.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\Slot.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Button_Auth.cs" />
+    <Compile Include="Assets\GameData\Scripts\RichTextBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

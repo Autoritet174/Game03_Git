@@ -3,8 +3,8 @@ guid: 009cfadacfc9bdd4f9b5ef3e06b2f711
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 461497789758405960
-    second: novice huntress_0
+      213: 5126121102192863849
+    second: Huntress_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -72,11 +72,11 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 1024
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: 3
-    textureCompression: 0
-    compressionQuality: 100
+    textureCompression: 1
+    compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: novice huntress_0
+      name: Huntress_0
       rect:
         serializedVersion: 2
         x: 0
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 84d7d2f6bc1976600800000000000000
-      internalID: 461497789758405960
+      spriteID: 96ae6dbabf3a32740800000000000000
+      internalID: 5126121102192863849
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      novice huntress_0: 461497789758405960
+      Huntress_0: 5126121102192863849
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

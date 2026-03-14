@@ -54,10 +54,9 @@ namespace Assets.GameData.Scripts
             // Heroes
             foreach (DtoBaseHero hero in dtoContainer.BaseHeroes)
             {
-                string tagUnique = hero.IsUnique ? "Unique-" : string.Empty;
                 // Используем TryAdd для избежания крэша при дубликатах в конфиге
-                tasks.Add(SafeLoadAsync($"Heroes-{tagUnique}{hero.Name}", s => Heroes.TryAdd($"{tagUnique}{hero.Name}", s)));
-                tasks.Add(SafeLoadAsync($"Heroes-{tagUnique}{hero.Name}_face", s => Heroes.TryAdd($"{tagUnique}{hero.Name}_face", s)));
+                tasks.Add(SafeLoadAsync($"Heroes-{hero.Name}", s => Heroes.TryAdd(hero.Name, s)));
+                tasks.Add(SafeLoadAsync($"Heroes-{hero.Name}_face", s => Heroes.TryAdd($"{hero.Name}_face", s)));
             }
             
 
@@ -79,9 +78,8 @@ namespace Assets.GameData.Scripts
             // Equipments
             foreach (DtoBaseEquipment equipment in dtoContainer.BaseEquipments)
             {
-                string tagUnique = equipment.IsUnique ? "Unique-" : string.Empty;
-                tasks.Add(SafeLoadAsync($"Equipments-{tagUnique}{equipment.Name}", s => Equipments.TryAdd($"{tagUnique}{equipment.Name}", s)));
-                tasks.Add(SafeLoadAsync($"Equipments-{tagUnique}{equipment.Name}_128", s => Equipments.TryAdd($"{tagUnique}{equipment.Name}_128", s)));
+                tasks.Add(SafeLoadAsync($"Equipments-{equipment.Name}", s => Equipments.TryAdd(equipment.Name, s)));
+                tasks.Add(SafeLoadAsync($"Equipments-{equipment.Name}_128", s => Equipments.TryAdd($"{equipment.Name}_128", s)));
             }
             
 
@@ -148,18 +146,18 @@ namespace Assets.GameData.Scripts
         public static Sprite GetHeroSprite(DtoHero hero)
         {
             DtoBaseHero baseHero = hero.BaseHero!;
-            return Heroes[$"{(baseHero.IsUnique ? "Unique-" : string.Empty)}{baseHero.Name}"];
+            return Heroes[baseHero.Name];
         }
         public static Sprite GetHeroFaceSprite(DtoHero hero)
         {
             DtoBaseHero baseHero = hero.BaseHero!;
-            return Heroes[$"{(baseHero.IsUnique ? "Unique-" : string.Empty)}{baseHero.Name}_face"];
+            return Heroes[$"{baseHero.Name}_face"];
         }
 
         public static Sprite GetEquipmentSprite(DtoEquipment equipment)
         {
             DtoBaseEquipment baseEquipment = equipment.BaseEquipment!;
-            return Equipments[$"{(baseEquipment.IsUnique ? "Unique-" : string.Empty)}{baseEquipment.Name}"];
+            return Equipments[baseEquipment.Name];
         }
 
     }
