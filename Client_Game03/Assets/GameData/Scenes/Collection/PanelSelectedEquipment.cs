@@ -137,8 +137,7 @@ namespace Assets.GameData.Scenes.Collection
             EquipmentId = equipmentId;
             _DtoEquipment = CollectionProvider.GetCollectionEquipmentsFromCache().First(a => a.Id == equipmentId);
             _LabelSelectedEquipment_TextMeshProUGUI.SetText(_DtoEquipment.BaseEquipment.Name);
-            string tagUnique = _DtoEquipment.BaseEquipment.IsUnique ? "Unique-" : string.Empty;
-            _SelectedEquipment_Image.sprite = AddressableCache.Equipments[$"{tagUnique}{_DtoEquipment.BaseEquipment.Name}"];
+            _SelectedEquipment_Image.sprite = AddressableCache.Equipments[_DtoEquipment.BaseEquipment.Name];
             _SelectedEquipment_Image.preserveAspect = true; // Сохраняет пропорции изображения
             _SelectedEquipmentRarity_Image.sprite = AddressableCache.Rarityes[_DtoEquipment.BaseEquipment.Rarity];
 

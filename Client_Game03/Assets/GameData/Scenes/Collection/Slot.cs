@@ -101,8 +101,7 @@ namespace Assets.GameData.Scenes.Collection
 
                 int rarity = _Equipment.BaseEquipment.Rarity;
                 _Rarity_Image.sprite = AddressableCache.Rarityes[rarity];
-                string tagUnique = _Equipment.BaseEquipment.IsUnique ? "Unique-" : string.Empty;
-                _EquipmentFull_Image.sprite = AddressableCache.Equipments[$"{tagUnique}{_Equipment.BaseEquipment.Name}"];
+                _EquipmentFull_Image.sprite = AddressableCache.Equipments[_Equipment.BaseEquipment.Name];
                 active = true;
             }
             catch (Exception ex)

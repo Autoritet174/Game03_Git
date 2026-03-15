@@ -12,6 +12,7 @@ namespace Assets.GameData.Scenes.Collection
     public class PanelScene : MonoBehaviour
     {
         public static PanelScene Instance { get; private set; }
+
         private async void Start()
         {
             // Изображение заднего фона
@@ -34,6 +35,7 @@ namespace Assets.GameData.Scenes.Collection
             initialized = true;
             OnResized();
         }
+
         public PanelTop PanelTop { get; private set; }
         public PanelCollection PanelCollection { get; private set; }
         public PanelSelectedHero PanelSelectedHero { get; private set; }

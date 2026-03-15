@@ -43,7 +43,7 @@ namespace Assets.GameData.Scripts
 
             // Список задач. Используем Capacity для избежания лишних аллокаций списка.
             // Примерное кол-во: 2 ui + heroes*2 + 7 rarities + equip*2 + 2 prefabs
-            int estimatedTasks = 15 + (heroesCount * 2) + (equipCount * 2);
+            int estimatedTasks = 15 + (heroesCount * 2) + equipCount;
             var tasks = new List<UniTask>(estimatedTasks)
             {
                 // UI Elements
@@ -79,7 +79,6 @@ namespace Assets.GameData.Scripts
             foreach (DtoBaseEquipment equipment in dtoContainer.BaseEquipments)
             {
                 tasks.Add(SafeLoadAsync($"Equipments-{equipment.Name}", s => Equipments.TryAdd(equipment.Name, s)));
-                tasks.Add(SafeLoadAsync($"Equipments-{equipment.Name}_128", s => Equipments.TryAdd($"{equipment.Name}_128", s)));
             }
             
 

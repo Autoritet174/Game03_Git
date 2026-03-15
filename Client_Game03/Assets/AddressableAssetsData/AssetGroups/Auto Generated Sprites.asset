@@ -15,18 +15,8 @@ MonoBehaviour:
   m_GroupName: Auto Generated Sprites
   m_GUID: 8c14f41b6e0949f4dbf52eb50dbb73aa
   m_SerializeEntries:
-  - m_GUID: 009cfadacfc9bdd4f9b5ef3e06b2f711
-    m_Address: Heroes-Huntress
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 00caff6fe4096094682436eb6eddb396
     m_Address: SmithingMaterials-Somnir
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 0550a5ce164f5b74ab200b6b71b0c6e1
-    m_Address: Equipments-Iron sword_128
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -50,8 +40,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 0cfa8047a8268e247913986af736334c
-    m_Address: Equipments-Iron axe_128
+  - m_GUID: 0e229c7eda9a9ba428d5c28b1b744b06
+    m_Address: Heroes-Hammerman
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -62,6 +52,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 11f6154acccf7174c9ca350dc9a175c9
     m_Address: UI-raritySelected
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 12e30db8f5f1a4a4dace02db7e6d1341
+    m_Address: Heroes-Huntress_face
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -80,13 +75,13 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1bd86fce33822d145bc26f08dfa6c257
-    m_Address: Heroes-Midnight assassin
+  - m_GUID: 1ffa01b6db2fed04a86449ed31300224
+    m_Address: SmithingMaterials-Pyronite_original
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1ffa01b6db2fed04a86449ed31300224
-    m_Address: SmithingMaterials-Pyronite_original
+  - m_GUID: 2272df6a2c45c034193216c6fa08e37e
+    m_Address: Heroes-Midnight assassin_face
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -95,18 +90,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2a44617b38138404595827501fbf6083
-    m_Address: Heroes-Rogue
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2c2ff1008f246a146bf8ae425519af97
     m_Address: UI-cursors-cursor_var2_red_64x64
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2fb794e92c2a55e40a3d5f32c05e05e0
-    m_Address: Heroes-Battle orc
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -145,13 +130,13 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4c5a046a013aa2842981c2e4af5325d0
-    m_Address: Heroes-Raymorax
+  - m_GUID: 4eae2cbddc4a7c043a4eed46e102ce75
+    m_Address: SmithingMaterials-Mortium
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4eae2cbddc4a7c043a4eed46e102ce75
-    m_Address: SmithingMaterials-Mortium
+  - m_GUID: 4f051aa58cb2c8748b9dde8a66899d78
+    m_Address: Heroes-Raymorax
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -160,23 +145,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 509b1620981370848b45e316e9d73fc0
-    m_Address: Heroes-Warrior
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 55d0239afc2448e4ebae6a8eb592733c
     m_Address: SmithingMaterials-Discord
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 5a6c79ef1e3a8914199e0e7610ce6daf
-    m_Address: Heroes-Raymoraxia
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 5de5cfb59a0169943ab36f672c3626e7
-    m_Address: Equipments-Iron armor_128
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -185,18 +155,13 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 5f1dd90288baab94daf0b09983a08985
-    m_Address: Heroes-Raymoraxia_face
+  - m_GUID: 6106270495acb424c8ece60b503c1b8d
+    m_Address: Heroes-Huntress
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 64982dffceb1e7441a21a760de8230c9
     m_Address: SmithingMaterials-Ostenium
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 694d3b0e6f7e2e5489428fd8b4479141
-    m_Address: Heroes-Midnight assassin_face
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -225,6 +190,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7306268d2c27af94785e8eb945aed2f7
+    m_Address: Heroes-Dolgrim
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7412a12c4a1b7f84791e148a45f1332e
     m_Address: UI-rarity3
     m_ReadOnly: 0
@@ -245,11 +215,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7656264df9f9cf048b48a4b102d0633b
-    m_Address: Heroes-Hammerman
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 77addb0177093d5419fb29d978bc9405
     m_Address: UI-cursors-cursor_var2_pink_64x64
     m_ReadOnly: 0
@@ -262,6 +227,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7d10b6cf3b23c534a9ac8c79603446f1
     m_Address: SmithingMaterials-Solarium
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8339683eb19491c479eec39bd771f9c3
+    m_Address: Heroes-Rogue_face
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -280,13 +250,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 904361aed096ca14aa97e33719b9fde9
-    m_Address: Heroes-Huntress_face
+  - m_GUID: 905d24b210cc9764091bfd9633d1dc74
+    m_Address: Heroes-Midnight assassin
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 90e57df933640f644990d458111210be
     m_Address: SmithingMaterials-Cryonite_original
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 920d90bf0025ba8409e077d3c9fe1219
+    m_Address: Heroes-Warrior
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -315,8 +290,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9b90b7f4d83d76d44b9acb9325f543a0
-    m_Address: Heroes-Hammerman_face
+  - m_GUID: 9aabbb53c65fa7141a3e48dcae6ccfa4
+    m_Address: Heroes-Battle orc_face
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -325,13 +300,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9ff9eaf6ae5ba1440abb2a42d6072689
-    m_Address: Equipments-Iron gloves_128
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a06e3d2e860c07746b9d3deb402f84e0
-    m_Address: Heroes-Rogue_face
+  - m_GUID: a1ee9bd8b388d41419ac09b670569187
+    m_Address: Heroes-Raymoraxia_face
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -345,18 +315,13 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a84aaa375a3f5ec428b3965f3d79eb92
-    m_Address: Equipments-Iron boots_128
+  - m_GUID: a5c0fe6dfb680fa4d810359bbf693570
+    m_Address: Heroes-Hammerman_face
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ac9e3da8239d7a243a2b845d601b10ac
     m_Address: UI-rarity6_v2
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ae30cd18f536dfa48881786e1d2bde5a
-    m_Address: Equipments-Thunderfury_128
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -375,11 +340,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b1c36fbcc60818644a502e2e6701cbf2
-    m_Address: Heroes-Raymorax_face
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b59a25938a707bb4fa87959509d1515a
     m_Address: SmithingMaterials-Vibranium_original
     m_ReadOnly: 0
@@ -390,6 +350,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bf7a482badcbe604fa906fdf14ca2089
+    m_Address: Heroes-Raymoraxia
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c042be5377abc0a4d929b53ea1186a70
+    m_Address: Heroes-Dolgrim_face
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c0487f14e6b84314b87e85af66c5a17c
     m_Address: UI-cursors-cursor_var2_yellow_64x64
     m_ReadOnly: 0
@@ -397,11 +367,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c169085e4ca7c624a9de8681c9f22118
     m_Address: SmithingMaterials-Discord_original
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c3df6a83196df564fb228b2604755abc
-    m_Address: Heroes-Battle orc_face
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -425,13 +390,13 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d66faa5e6a0599047a3ebf2807884436
-    m_Address: SmithingMaterials-Iron_original
+  - m_GUID: d5ffb1e735bc97444bced66253ebce3d
+    m_Address: Heroes-Rogue
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d79c6f200e26baf43a596d24a0aaffa1
-    m_Address: Equipments-Iron helmet_128
+  - m_GUID: d66faa5e6a0599047a3ebf2807884436
+    m_Address: SmithingMaterials-Iron_original
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -442,6 +407,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d9e9fc398fcd87a4fb8436ebb01e70f2
     m_Address: Equipments-Iron axe
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dae354e67e8f12946a90c1ff44a43d4d
+    m_Address: Heroes-Raymorax_face
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -470,11 +440,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: f4b85e8f901e6c0418f515d4cc2f1c71
-    m_Address: Heroes-Warrior_face
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f6c4fd6e6a299a84c8165c3f250c55f9
     m_Address: UI-buttons-button_with_arrow_v2
     m_ReadOnly: 0
@@ -482,6 +447,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f9e11d18d47e8fc46bb982cbd472e7dd
     m_Address: Equipments-Iron sword
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa0055a9e159d0e46a29836e3d136973
+    m_Address: Heroes-Warrior_face
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fd9e548e4ec1a2344b9d76c55450b611
+    m_Address: Heroes-Battle orc
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

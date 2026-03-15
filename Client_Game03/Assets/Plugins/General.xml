@@ -263,6 +263,56 @@
             </summary>
             <value>Строка, описывающая уровень поддержки NPOT (например, 'Full', 'Restricted', 'None').</value>
         </member>
+        <member name="F:General.SlotTypeName.Weapon">
+            <summary>
+            Оружие
+            </summary>
+        </member>
+        <member name="F:General.SlotTypeName.Shield">
+            <summary>
+            Щит
+            </summary>
+        </member>
+        <member name="F:General.SlotTypeName.Head">
+            <summary>
+            Голова
+            </summary>
+        </member>
+        <member name="F:General.SlotTypeName.Armor">
+            <summary>
+            Доспех
+            </summary>
+        </member>
+        <member name="F:General.SlotTypeName.Hands">
+            <summary>
+            Руки
+            </summary>
+        </member>
+        <member name="F:General.SlotTypeName.Feet">
+            <summary>
+            Ступни
+            </summary>
+        </member>
+        <member name="F:General.SlotTypeName.Waist">
+            <summary>
+            Пояс
+            </summary>
+        </member>
+        <member name="F:General.SlotTypeName.Ring">
+            <summary>
+            Кольцо
+            </summary>
+        </member>
+        <member name="F:General.SlotTypeName.Trinket">
+            <summary>
+            Аксессуар
+            </summary>
+        </member>
+        <member name="F:General.SlotTypeName.Neck">
+            <summary>
+            Шея
+            </summary>
+        </member>
         <member name="T:General.GlobalHelper">
             <summary>
             Глобальный статический класс, содержащий константы и вспомогательные функции,

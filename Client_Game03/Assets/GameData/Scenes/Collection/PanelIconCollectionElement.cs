@@ -83,10 +83,7 @@ namespace Assets.GameData.Scenes.Collection
             imageCollectionElement.sprite = _PanelScene.CollectionMode switch
             {
                 CollectionModeEnum.Hero => AddressableCache.Heroes[$"{_CollectionElement.Name}_face"],
-                CollectionModeEnum.Equipment => AddressableCache.Equipments[$"{_CollectionElement.Name}_128"],
-                //CollectionModeEnum.ChangingEquipment => _PanelScene.PanelSelectedHero.IsVisible
-                //    ? AddressableCache.Equipments[$"{tagUnique}{_CollectionElement.Name}_128"]
-                //    : AddressableCache.Heroes[$"{_CollectionElement.Name}_face"],
+                CollectionModeEnum.Equipment => AddressableCache.Equipments[_CollectionElement.Name],
                 _ => throw new NotImplementedException(),
             };
             imageCollectionElement.preserveAspect = true;

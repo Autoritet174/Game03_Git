@@ -2,6 +2,7 @@ using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using Game03Client;
 using System;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using TMPro;
 using UnityEngine;
@@ -190,5 +191,10 @@ namespace Assets.GameData.Scenes.Auth
             _InputTextWithLabelPassword_RectTransform.gameObject.SetActive(visible);
             await UniTask.Yield();
         }
+
+
+
+
+
     }
 }
