@@ -53,11 +53,11 @@ namespace Assets.GameData.Scenes.Collection
         }
         public void SetValue(float value)
         {
-            _Value_TextMeshProUGUI.SetText(value.ToString());
+            _Value_TextMeshProUGUI.SetText(NumberToStringManager.ToStr3(value));
         }
         public void SetValuePercent(float value)
         {
-            _Value_TextMeshProUGUI.SetText($"{value:0.0}%");
+            _Value_TextMeshProUGUI.SetText($"{NumberToStringManager.ToStr3(value)}%");
         }
     }
 }
