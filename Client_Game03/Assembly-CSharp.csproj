@@ -78,6 +78,7 @@
     <Compile Include="Assets\GameData\Scripts\AddressableCache.cs" />
     <Compile Include="Assets\GameData\Scripts\InputManager.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\PanelGroupDivider.cs" />
+    <Compile Include="Assets\GameData\Scripts\NumberToStringManager.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\AuthManager.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\PanelCollection.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\PanelTop.cs" />

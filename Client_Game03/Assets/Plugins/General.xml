@@ -22,16 +22,16 @@
         <member name="P:General.DTO.Dice.Sides">
             <summary> Sides. Размер кубика (число граней). </summary>
         </member>
-        <member name="P:General.DTO.Dice.Modificator_1000">
-            <summary> Modificator. Модификатор к броску кубиков. Первые три знака, тысячные доли от единицы видимой игроку. </summary>
+        <member name="P:General.DTO.Dice.Modificator">
+            <summary> Modificator. Модификатор к броску кубиков. </summary>
         </member>
-        <member name="P:General.DTO.Dice.Min_1000">
+        <member name="P:General.DTO.Dice.Min">
             <summary> Минимальное значение. </summary>
         </member>
-        <member name="P:General.DTO.Dice.Max_1000">
+        <member name="P:General.DTO.Dice.Max">
             <summary> Максимальное значение. </summary>
         </member>
-        <member name="P:General.DTO.Dice.Expected_1000">
+        <member name="P:General.DTO.Dice.Expected">
             <summary> Ожидаемое значение. </summary>
         </member>
         <member name="M:General.DTO.Dice.#ctor(System.String)">
@@ -80,7 +80,7 @@
             Герой из коллекции игрока.
             </summary>
         </member>
-        <member name="M:General.DTO.Entities.Collection.DtoHero.#ctor(System.Guid,System.Guid,System.Int32,System.String,System.Int32,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,System.Int64,General.DTO.Entities.GameData.DtoBaseHero)">
+        <member name="M:General.DTO.Entities.Collection.DtoHero.#ctor(System.Guid,System.Guid,System.Int32,System.String,System.Int32,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,General.DTO.Entities.GameData.DtoBaseHero)">
             <summary>
             Герой из коллекции игрока.
             </summary>
@@ -108,7 +108,7 @@
         <member name="T:General.DTO.Entities.GameData.DtoBaseEquipment">
             <summary> Представляет базовую сущность предмета. </summary>
         </member>
-        <member name="M:General.DTO.Entities.GameData.DtoBaseEquipment.#ctor(System.Int32,System.String,System.Int32,System.Boolean,System.Int32,General.DTO.Dice,General.DTO.Dice,General.DTO.Entities.GameData.DtoEquipmentType)">
+        <member name="M:General.DTO.Entities.GameData.DtoBaseEquipment.#ctor(System.Int32,System.String,System.Int32,System.Boolean,System.Int32,General.DTO.Entities.GameData.DtoEquipmentType)">
             <summary> Представляет базовую сущность предмета. </summary>
         </member>
         <member name="T:General.DTO.Entities.GameData.DtoBaseHero">
@@ -348,6 +348,16 @@
             </summary>
         </member>
         <member name="P:General.GlobalJsonContext.NullableBoolean">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:General.GlobalJsonContext.Single">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:General.GlobalJsonContext.NullableSingle">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
