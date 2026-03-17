@@ -2,8 +2,29 @@ namespace Assets.GameData.Scripts
 {
     public static class NumberToStringManager
     {
+        public static int mode = 1;
+        public static string ToStr(float n) {
+            return mode switch
+            {
+                1 => n.ToString("0"),
+                2 => ToStr3(n),
+                _ => n.ToString(),
+            };
+        }
+        public static string ToStrPercent(float n)
+        {
+            return (mode switch
+            {
+                1 => n.ToString("0.0"),
+                2 => ToStr3(n),
+                _ => n.ToString() ,
+            }) + "%";
+        }
+
+
         private static readonly char[] suffix = { 'K', 'M', 'B', 'T', 'Q' };
         private static readonly int suffix_Length = suffix.Length;
+
         public static string ToStr3(float n)
         {
             // Обработка специальных случаев
@@ -69,5 +90,6 @@ namespace Assets.GameData.Scripts
 
             return negative ? $"-{formatted}" : formatted;
         }
+
     }
 }

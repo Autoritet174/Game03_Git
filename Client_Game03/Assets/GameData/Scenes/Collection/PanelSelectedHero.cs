@@ -174,21 +174,23 @@ namespace Assets.GameData.Scenes.Collection
             }
 
             //Экипировка этого героя
-            var equipments = CollectionProvider.GetCollectionEquipmentsFromCache().Where(a => a.HeroId != heroId).ToList();
+            var equipments = CollectionProvider.GetCollectionEquipmentsFromCache().Where(a => a.HeroId == heroId && a.Stats != null).ToList();
 
-            var v1 = equipments.Where(a => a.Stats != null && a.Stats.Any(b => b.Key == EStatType.Health)).ToList();
-            var v2 = v1.Select(a => a.Stats[EStatType.Health]).ToList();
-            float bonus_health = v2.Sum();
-
+            float bonus_Health = equipments.SelectMany(e => e.Stats.Where(s => s.Key == EStatType.Health).SelectMany(s => s.Value)).Sum();
+            float bonus_Strength = equipments.SelectMany(e => e.Stats.Where(s => s.Key == EStatType.Strength).SelectMany(s => s.Value)).Sum();
+            float bonus_Agility = equipments.SelectMany(e => e.Stats.Where(s => s.Key == EStatType.Agility).SelectMany(s => s.Value)).Sum();
+            float bonus_Intelligence = equipments.SelectMany(e => e.Stats.Where(s => s.Key == EStatType.Intelligence).SelectMany(s => s.Value)).Sum();
+            float bonus_CritChance = equipments.SelectMany(e => e.Stats.Where(s => s.Key == EStatType.CritChance).SelectMany(s => s.Value)).Sum();
+            float bonus_CritMultiplier = equipments.SelectMany(e => e.Stats.Where(s => s.Key == EStatType.CritMultiplier).SelectMany(s => s.Value)).Sum();
 
             // Статы
             _StatLevel.SetValue(hero.Level);
-            _StatHealth.SetValue(hero.Health + bonus_health);
-            _StatStrength.SetValue(hero.Strength);
-            _StatAgility.SetValue(hero.Agility);
-            _StatIntelligence.SetValue(hero.Intelligence);
-            _StatCritChance.SetValuePercent(hero.CritChance);
-            _StatCritMultiplier.SetValuePercent(hero.CritMultiplier);
+            _StatHealth.SetValue(hero.Health + bonus_Health);
+            _StatStrength.SetValue(hero.Strength + bonus_Strength);
+            _StatAgility.SetValue(hero.Agility + bonus_Agility);
+            _StatIntelligence.SetValue(hero.Intelligence + bonus_Intelligence);
+            _StatCritChance.SetValuePercent(hero.CritChance + bonus_CritChance);
+            _StatCritMultiplier.SetValuePercent(hero.CritMultiplier + bonus_CritMultiplier);
 
 
             _PanelCollectionViewer.GetElement(heroId)?.Selected(true);
