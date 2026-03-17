@@ -1,6 +1,7 @@
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using Game03Client.Collection;
+using General;
 using General.DTO.Entities.Collection;
 using System;
 using System.Collections.Generic;
@@ -53,18 +54,18 @@ namespace Assets.GameData.Scenes.Collection
 
             _Slots = new()
             {
-                new Slot("Head", 1, 1, _PanelBottom_RectTransform, 3),
-                new Slot("Armor", 2, 1, _PanelBottom_RectTransform, 4),
-                new Slot("Hands", 3, 1, _PanelBottom_RectTransform, 5),
-                new Slot("Feet", 4, 1, _PanelBottom_RectTransform, 6),
-                new Slot("Waist", 5, 1, _PanelBottom_RectTransform, 7),
-                new Slot("Ring", 1, 2, _PanelBottom_RectTransform, 8, "1"),
-                new Slot("Ring", 2, 2, _PanelBottom_RectTransform, 9, "2"),
-                new Slot("Neck", 3, 2, _PanelBottom_RectTransform, 12),
-                new Slot("Trinket", 4, 2, _PanelBottom_RectTransform, 10, "1"),
-                new Slot("Trinket", 5, 2, _PanelBottom_RectTransform, 11, "2"),
-                new Slot("Weapon", 1, 3, _PanelBottom_RectTransform, 1),
-                new Slot("WeaponShield", 2, 3, _PanelBottom_RectTransform, 2)
+                new Slot("Head", 1, 1, _PanelBottom_RectTransform, ESlot.Head),
+                new Slot("Armor", 2, 1, _PanelBottom_RectTransform, ESlot.Armor),
+                new Slot("Hands", 3, 1, _PanelBottom_RectTransform, ESlot.Hands),
+                new Slot("Feet", 4, 1, _PanelBottom_RectTransform, ESlot.Feet),
+                new Slot("Waist", 5, 1, _PanelBottom_RectTransform, ESlot.Waist),
+                new Slot("Ring", 1, 2, _PanelBottom_RectTransform, ESlot.Ring1, "1"),
+                new Slot("Ring", 2, 2, _PanelBottom_RectTransform, ESlot.Ring2, "2"),
+                new Slot("Neck", 3, 2, _PanelBottom_RectTransform, ESlot.Neck),
+                new Slot("Trinket", 4, 2, _PanelBottom_RectTransform, ESlot.Trinket1, "1"),
+                new Slot("Trinket", 5, 2, _PanelBottom_RectTransform, ESlot.Trinket2, "2"),
+                new Slot("Weapon", 1, 3, _PanelBottom_RectTransform, ESlot.RightHand),
+                new Slot("WeaponShield", 2, 3, _PanelBottom_RectTransform, ESlot.LeftHand)
             };
 
             _PanelTab1_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHeroBottomTab1 (id=kn3yl79k)");
@@ -172,9 +173,17 @@ namespace Assets.GameData.Scenes.Collection
                 }
             }
 
+            //Экипировка этого героя
+            var equipments = CollectionProvider.GetCollectionEquipmentsFromCache().Where(a => a.HeroId != heroId).ToList();
+
+            var v1 = equipments.Where(a => a.Stats != null && a.Stats.Any(b => b.Key == EStatType.Health)).ToList();
+            var v2 = v1.Select(a => a.Stats[EStatType.Health]).ToList();
+            float bonus_health = v2.Sum();
+
+
             // Статы
             _StatLevel.SetValue(hero.Level);
-            _StatHealth.SetValue(hero.Health);
+            _StatHealth.SetValue(hero.Health + bonus_health);
             _StatStrength.SetValue(hero.Strength);
             _StatAgility.SetValue(hero.Agility);
             _StatIntelligence.SetValue(hero.Intelligence);

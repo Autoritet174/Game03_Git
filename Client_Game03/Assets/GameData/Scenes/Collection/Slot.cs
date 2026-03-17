@@ -1,6 +1,7 @@
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using Game03Client.Collection;
+using General;
 using General.DTO.Entities.Collection;
 using System;
 using System.Linq;
@@ -38,9 +39,9 @@ namespace Assets.GameData.Scenes.Collection
         public float Height { get; private set; }
         public float Left { get; private set; }
         public float Top { get; private set; }
-        public int SlotId { get; private set; }
+        public ESlot SlotId { get; private set; }
 
-        public Slot(string name, int posX, int posY, Transform parent, int slotId, string suffix = "")
+        public Slot(string name, int posX, int posY, Transform parent, ESlot slotId, string suffix = "")
         {
             Name = name;
             this.posX = posX;

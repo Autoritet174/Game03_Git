@@ -70,7 +70,7 @@
             Предмет экипировки из коллекции игрока. (MongoDb).
             </summary>
         </member>
-        <member name="M:General.DTO.Entities.Collection.DtoEquipment.#ctor(System.Guid,System.Guid,System.Int32,System.String,System.Nullable{System.Guid},System.Nullable{System.Int32})">
+        <member name="M:General.DTO.Entities.Collection.DtoEquipment.#ctor(System.Guid,System.Guid,System.Int32,System.String,System.Nullable{System.Guid},System.Nullable{General.ESlot},System.Collections.Generic.Dictionary{General.EStatType,System.Collections.Generic.List{System.Single}})">
             <summary>
             Предмет экипировки из коллекции игрока. (MongoDb).
             </summary>
@@ -263,55 +263,35 @@
             </summary>
             <value>Строка, описывающая уровень поддержки NPOT (например, 'Full', 'Restricted', 'None').</value>
         </member>
-        <member name="F:General.SlotTypeName.Weapon">
-            <summary>
-            Оружие
-            </summary>
+        <member name="F:General.ESlotType.Weapon">
+            <summary> Оружие </summary>
         </member>
-        <member name="F:General.SlotTypeName.Shield">
-            <summary>
-            Щит
-            </summary>
+        <member name="F:General.ESlotType.Shield">
+            <summary> Щит </summary>
         </member>
-        <member name="F:General.SlotTypeName.Head">
-            <summary>
-            Голова
-            </summary>
+        <member name="F:General.ESlotType.Head">
+            <summary> Голова </summary>
         </member>
-        <member name="F:General.SlotTypeName.Armor">
-            <summary>
-            Доспех
-            </summary>
+        <member name="F:General.ESlotType.Armor">
+            <summary> Доспех </summary>
         </member>
-        <member name="F:General.SlotTypeName.Hands">
-            <summary>
-            Руки
-            </summary>
+        <member name="F:General.ESlotType.Hands">
+            <summary> Руки </summary>
         </member>
-        <member name="F:General.SlotTypeName.Feet">
-            <summary>
-            Ступни
-            </summary>
+        <member name="F:General.ESlotType.Feet">
+            <summary> Ступни </summary>
         </member>
-        <member name="F:General.SlotTypeName.Waist">
-            <summary>
-            Пояс
-            </summary>
+        <member name="F:General.ESlotType.Waist">
+            <summary> Пояс </summary>
         </member>
-        <member name="F:General.SlotTypeName.Ring">
-            <summary>
-            Кольцо
-            </summary>
+        <member name="F:General.ESlotType.Ring">
+            <summary> Кольцо </summary>
         </member>
-        <member name="F:General.SlotTypeName.Trinket">
-            <summary>
-            Аксессуар
-            </summary>
+        <member name="F:General.ESlotType.Trinket">
+            <summary> Аксессуар </summary>
         </member>
-        <member name="F:General.SlotTypeName.Neck">
-            <summary>
-            Шея
-            </summary>
+        <member name="F:General.ESlotType.Neck">
+            <summary> Шея </summary>
         </member>
         <member name="T:General.GlobalHelper">
             <summary>
@@ -442,12 +422,47 @@
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
         </member>
+        <member name="P:General.GlobalJsonContext.ItemExp">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
         <member name="P:General.GlobalJsonContext.DtoRequestAuthReg">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
         </member>
         <member name="P:General.GlobalJsonContext.DtoResponseAuthReg">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:General.GlobalJsonContext.ESlot">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:General.GlobalJsonContext.NullableESlot">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:General.GlobalJsonContext.ESlotType">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:General.GlobalJsonContext.EStatType">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:General.GlobalJsonContext.DictionaryEStatTypeListSingle">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:General.GlobalJsonContext.DictionaryGuidItemExp">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
@@ -513,6 +528,11 @@
             </summary>
         </member>
         <member name="P:General.GlobalJsonContext.IEnumerableDtoXHeroCreatureType">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:General.GlobalJsonContext.ListSingle">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>

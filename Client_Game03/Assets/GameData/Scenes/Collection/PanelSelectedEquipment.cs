@@ -2,6 +2,7 @@ using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using Game03Client;
 using Game03Client.Collection;
+using General;
 using General.DTO.Entities.Collection;
 using System;
 using System.Linq;
@@ -288,7 +289,7 @@ namespace Assets.GameData.Scenes.Collection
 
                 // тут запоминаем экипировку которая может быть одета в этот же слот
                 DtoHero hero = CollectionProvider.GetCollectionHeroesFromCache().First(a => a.Id == heroId);
-                int slotId = CollectionProvider.GetSlotId(_DtoEquipment, inAltSlot);
+                ESlot slotId = CollectionProvider.GetSlotId(_DtoEquipment, inAltSlot);
                 DtoEquipment equipmentEquipped = CollectionProvider.GetCollectionEquipmentsFromCache().FirstOrDefault(a => a.HeroId == heroId && a.SlotId == slotId);
 
 
