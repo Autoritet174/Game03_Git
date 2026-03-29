@@ -70,7 +70,7 @@
             Предмет экипировки из коллекции игрока. (MongoDb).
             </summary>
         </member>
-        <member name="M:General.DTO.Entities.Collection.DtoEquipment.#ctor(System.Guid,System.Guid,System.Int32,System.String,System.Nullable{System.Guid},System.Nullable{General.ESlot},System.Collections.Generic.Dictionary{General.EStatType,System.Collections.Generic.List{System.Single}})">
+        <member name="M:General.DTO.Entities.Collection.DtoEquipment.#ctor(System.Guid,System.Guid,System.Int32,System.String,System.Nullable{System.Guid},System.Nullable{General.ESlot},System.Collections.Generic.Dictionary{General.EStatType,System.Collections.Generic.List{System.Single}},System.Int32)">
             <summary>
             Предмет экипировки из коллекции игрока. (MongoDb).
             </summary>
@@ -281,8 +281,8 @@
         <member name="F:General.ESlotType.Feet">
             <summary> Ступни </summary>
         </member>
-        <member name="F:General.ESlotType.Waist">
-            <summary> Пояс </summary>
+        <member name="F:General.ESlotType.Bracelet">
+            <summary> Браслет </summary>
         </member>
         <member name="F:General.ESlotType.Ring">
             <summary> Кольцо </summary>
@@ -422,11 +422,6 @@
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
         </member>
-        <member name="P:General.GlobalJsonContext.ItemExp">
-            <summary>
-            Defines the source generated JSON serialization contract metadata for a given type.
-            </summary>
-        </member>
         <member name="P:General.GlobalJsonContext.DtoRequestAuthReg">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
@@ -458,11 +453,6 @@
             </summary>
         </member>
         <member name="P:General.GlobalJsonContext.DictionaryEStatTypeListSingle">
-            <summary>
-            Defines the source generated JSON serialization contract metadata for a given type.
-            </summary>
-        </member>
-        <member name="P:General.GlobalJsonContext.DictionaryGuidItemExp">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>

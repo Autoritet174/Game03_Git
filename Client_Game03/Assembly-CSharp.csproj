@@ -91,7 +91,6 @@
     <Compile Include="Assets\GameData\Scenes\Collection\PanelSelectedEquipment.cs" />
     <Compile Include="Assets\GameData\Scripts\EventHelper.cs" />
     <Compile Include="Assets\GameData\Scripts\GameServerPinger.cs" />
-    <Compile Include="Assets\GameData\Scripts\Tests\Spawner.cs" />
     <Compile Include="Assets\GameData\Scripts\HardwareIdentifier.cs" />
     <Compile Include="Assets\GameData\Scripts\GameObjectFinder.cs" />
     <Compile Include="Assets\GameData\Scenes\TEST_01\TestScript.cs" />

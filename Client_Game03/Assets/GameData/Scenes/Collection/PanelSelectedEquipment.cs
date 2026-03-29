@@ -74,17 +74,23 @@ namespace Assets.GameData.Scenes.Collection
             _ButtonShowHero_TextMeshProUGUI.text = LocalizationManager.GetValue(L.UI.Button.ShowHero);
             _ButtonShowHero_Button = _ButtonShowHero_RectTransform.gameObject.GetComponent<Button>();
 
-            _SelectedContainer_RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Container (id=bqxjhczr)");
+            _ImageContainer_RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Container (id=bqxjhczr)");
 
             _SelectedEquipment_Image = GameObjectFinder.FindByName<Image>("ImageEquipmentFull (id=gu7wtz83)");
             _SelectedEquipmentRarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity (id=qje8dq78)");
-
             _ButtonTakeOnOff_RectTransform.gameObject.SetClickEvent(TakeOnOffOnClick, true);
             _ButtonTakeOnAlt_RectTransform.gameObject.SetClickEvent(TakeOnOffInAltSlotOnClick, true);
             _ButtonShowHero_RectTransform.gameObject.SetClickEvent(ShowHeroOnClick, true);
 
             _PanelCollectionViewer = _PanelScene.PanelCollection.PanelCollectionViewer;
             _PanelSelectedHero = _PanelScene.PanelSelectedHero;
+
+            _PanelTab1_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedEquipmentBottomTab1 (id=9nwzj7p8)");
+
+            // Stats
+            _PanelStat_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelStats (id=hqmporj6)");
+
+
 
             Hide().GetAwaiter().GetResult();
         }
@@ -127,10 +133,14 @@ namespace Assets.GameData.Scenes.Collection
         private readonly TextMeshProUGUI _ButtonShowHero_TextMeshProUGUI;
         private readonly Button _ButtonShowHero_Button;
 
-        private readonly RectTransform _SelectedContainer_RectTransform;
+        private readonly RectTransform _ImageContainer_RectTransform;
         private readonly Image _SelectedEquipment_Image;
         private readonly Image _SelectedEquipmentRarity_Image;
         private DtoEquipment _DtoEquipment;
+
+        private readonly RectTransform _PanelTab1_RectTransform;
+
+        private readonly RectTransform _PanelStat_RectTransform;
 
         public void Show(Guid equipmentId)
         {
@@ -209,33 +219,38 @@ namespace Assets.GameData.Scenes.Collection
 
 
             float imageContainerSpacing = IMAGE_CONTAINER_SPACING * coefHeight;
-            float imageWidth = (Width - (imageContainerSpacing * 3f)) / 2f;
-            _SelectedContainer_RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, imageContainerSpacing);
-            _SelectedContainer_RectTransform.sizeDelta = new Vector2(imageWidth, imageWidth);
+            float imageContainerWidth = (Width - (imageContainerSpacing * 3f)) / 2f;
+            _ImageContainer_RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, imageContainerSpacing);
+            _ImageContainer_RectTransform.sizeDelta = new Vector2(imageContainerWidth, imageContainerWidth);
 
 
             // Кнопки
             float buttonHeight = BUTTON_HEIGHT * coefHeight;
             float buttonY = 0f;
 
-            buttonY += (imageContainerSpacing * 2f) + imageWidth;
-            _ButtonShowHero_RectTransform.sizeDelta = new Vector2(imageWidth, buttonHeight);
+            buttonY += (imageContainerSpacing * 2f) + imageContainerWidth;
+            _ButtonShowHero_RectTransform.sizeDelta = new Vector2(imageContainerWidth, buttonHeight);
             _ButtonShowHero_RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, buttonY);
 
             buttonY += imageContainerSpacing + buttonHeight;
-            _ButtonSell_RectTransform.sizeDelta = new Vector2(imageWidth, buttonHeight);
+            _ButtonSell_RectTransform.sizeDelta = new Vector2(imageContainerWidth, buttonHeight);
             _ButtonSell_RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, buttonY);
 
             buttonY += imageContainerSpacing + buttonHeight;
-            _ButtonTakeOnAlt_RectTransform.sizeDelta = new Vector2(imageWidth, buttonHeight);
+            _ButtonTakeOnAlt_RectTransform.sizeDelta = new Vector2(imageContainerWidth, buttonHeight);
             _ButtonTakeOnAlt_RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, buttonY);
 
             buttonY += imageContainerSpacing + buttonHeight;
-            _ButtonTakeOnOff_RectTransform.sizeDelta = new Vector2(imageWidth, buttonHeight);
+            _ButtonTakeOnOff_RectTransform.sizeDelta = new Vector2(imageContainerWidth, buttonHeight);
             _ButtonTakeOnOff_RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, buttonY);
 
 
+            float panelTabHeight = Height - h1 - tabButtonH - (tabButtonS * 2);
+            _PanelTab1_RectTransform.sizeDelta = new Vector2(Width, panelTabHeight);
 
+            // Stats
+            _PanelStat_RectTransform.anchoredPosition = new Vector2(imageContainerSpacing, imageContainerSpacing);
+            _PanelStat_RectTransform.sizeDelta = new Vector2(_PanelSelectedHero.PanelStatWidth, _PanelSelectedHero.PanelStatHeight);
         }
 
         private async UniTask ShowHeroOnClick()

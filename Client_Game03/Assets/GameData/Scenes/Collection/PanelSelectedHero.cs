@@ -27,7 +27,7 @@ namespace Assets.GameData.Scenes.Collection
         private const float TAB_BUTTON_SPACING = 5f;
         private const float TAB_BUTTON_FONTSIZE = 15f;
 
-        private const float IMAGECONTAINER_SPACING = 10f;
+        private const float IMAGE_CONTAINER_SPACING = 10f;
 
         private const float BUTTON_CLOSE_SPACING = 5f;
 
@@ -58,7 +58,7 @@ namespace Assets.GameData.Scenes.Collection
                 new Slot("Armor", 2, 1, _PanelBottom_RectTransform, ESlot.Armor),
                 new Slot("Hands", 3, 1, _PanelBottom_RectTransform, ESlot.Hands),
                 new Slot("Feet", 4, 1, _PanelBottom_RectTransform, ESlot.Feet),
-                new Slot("Waist", 5, 1, _PanelBottom_RectTransform, ESlot.Waist),
+                new Slot("Bracelet", 5, 1, _PanelBottom_RectTransform, ESlot.Bracelet),
                 new Slot("Ring", 1, 2, _PanelBottom_RectTransform, ESlot.Ring1, "1"),
                 new Slot("Ring", 2, 2, _PanelBottom_RectTransform, ESlot.Ring2, "2"),
                 new Slot("Neck", 3, 2, _PanelBottom_RectTransform, ESlot.Neck),
@@ -104,6 +104,8 @@ namespace Assets.GameData.Scenes.Collection
         public float Width { get; private set; }
         public float Height { get; private set; }
         public bool IsVisible { get; private set; }
+        public float PanelStatWidth { get; private set; }
+        public float PanelStatHeight { get; private set; }
 
         private readonly RectTransform _RectTransform;
         private readonly GameObject _GameObject;
@@ -268,7 +270,7 @@ namespace Assets.GameData.Scenes.Collection
             float panelTabHeight = Height - h1 - tabButtonH - (tabButtonS * 2);
             _PanelTab1_RectTransform.sizeDelta = new Vector2(Width, panelTabHeight);
 
-            float imageContainerSpacing = IMAGECONTAINER_SPACING * coefHeight;
+            float imageContainerSpacing = IMAGE_CONTAINER_SPACING * coefHeight;
             _ImageContainer_RectTransform.anchoredPosition = new Vector2(imageContainerSpacing, imageContainerSpacing);
 
             float panelSlotSpacing = Slot.PANELSLOT_SPACING * coefHeight;
@@ -277,8 +279,9 @@ namespace Assets.GameData.Scenes.Collection
             _ImageContainer_RectTransform.sizeDelta = new Vector2(imageContainerWidth, imageContainerHeight);
 
             // Stats
-            float panelStatWidth = Width - (3f * panelSlotSpacing) - imageContainerWidth;
-            _PanelStat_RectTransform.sizeDelta = new Vector2(panelStatWidth, panelStatWidth * 576f / 244.06f);
+            PanelStatWidth = Width - (3f * panelSlotSpacing) - imageContainerWidth;
+            PanelStatHeight = PanelStatWidth * 576f / 244.06f;
+            _PanelStat_RectTransform.sizeDelta = new Vector2(PanelStatWidth, PanelStatHeight);
             _PanelStat_RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, imageContainerSpacing);
             _StatLevel.OnResized();
             _StatHealth.OnResized();
