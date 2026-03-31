@@ -28,11 +28,16 @@ namespace Assets.GameData.Scenes.Collection
             _PosY = posY;
             _GameObject = gameObject;
             _RectTransform = _GameObject.GetComponent<RectTransform>();
-            TextMeshProUGUI desc = GameObjectFinder.FindByName<TextMeshProUGUI>("LabelDesc", gameObject.transform);
-            desc.SetText(Game03Client.LocalizationManager.GetValue(L.UI.Label.Stat.GetKey(name)));
             _Desc_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("LabelDesc", gameObject.transform);
             _Value_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("LabelValue", gameObject.transform);
             _Value2_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("LabelValue2", gameObject.transform);
+
+            _Desc_TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(L.UI.Label.Stat.GetKey(name)));
+            _Value2_TextMeshProUGUI.SetText(string.Empty);
+        }
+
+        public void SetActive(bool active) {
+            _GameObject.SetActive(active);
         }
 
         public void OnResized()
@@ -47,20 +52,22 @@ namespace Assets.GameData.Scenes.Collection
             _Value2_TextMeshProUGUI.fontSize = VALUE2_FONT_SIZE * coefHeight;
         }
 
+        public void SetDesc(string value)
+        {
+            _Desc_TextMeshProUGUI.SetText(value);
+        }
+
         public void SetValue(string value)
         {
             _Value_TextMeshProUGUI.SetText(value);
-            _Value2_TextMeshProUGUI.SetText(string.Empty);
         }
         public void SetValue(int value)
         {
             _Value_TextMeshProUGUI.SetText(value.ToString());
-            _Value2_TextMeshProUGUI.SetText(string.Empty);
         }
         public void SetValue(float value)
         {
             _Value_TextMeshProUGUI.SetText(NumberToStringManager.ToStr3(value));
-            _Value2_TextMeshProUGUI.SetText(string.Empty);
         }
         public void SetValuePercent(float value)
         {

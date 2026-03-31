@@ -79,20 +79,13 @@ namespace Assets.GameData.Scenes.Collection
             // Stats
             _PanelStat_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelStats (id=aul0ak16)");
 
-            _StatLevel_GameObject = GameObjectFinder.FindByName("StatLevel (id=gq44hho7)");
-            _StatLevel = new Stat("Level", 1, _StatLevel_GameObject);
-            _StatHealth_GameObject = GameObjectFinder.FindByName("StatHealth (id=fd8ccppe)");
-            _StatHealth = new Stat("Health", 2, _StatHealth_GameObject);
-            _StatStrength_GameObject = GameObjectFinder.FindByName("StatStrength (id=mv49tk9s)");
-            _StatStrength = new Stat("Strength", 3, _StatStrength_GameObject);
-            _StatAgility_GameObject = GameObjectFinder.FindByName("StatAgility (id=jx4psf25)");
-            _StatAgility = new Stat("Agility", 4, _StatAgility_GameObject);
-            _StatIntelligence_GameObject = GameObjectFinder.FindByName("StatIntelligence (id=ydct7hbc)");
-            _StatIntelligence = new Stat("Intelligence", 5, _StatIntelligence_GameObject);
-            _StatCritChance_GameObject = GameObjectFinder.FindByName("StatCritChance (id=1l42t8mp)");
-            _StatCritChance = new Stat("CritChance", 6, _StatCritChance_GameObject);
-            _StatCritPower_GameObject = GameObjectFinder.FindByName("StatCritPower (id=1znqy1h2)");
-            _StatCritMultiplier = new Stat("CritMultiplier", 7, _StatCritPower_GameObject);
+            _StatLevel = new Stat("Level", 1, GameObjectFinder.FindByName("StatLevel (id=gq44hho7)"));
+            _StatHealth = new Stat("Health", 2, GameObjectFinder.FindByName("StatHealth (id=fd8ccppe)"));
+            _StatStrength = new Stat("Strength", 3, GameObjectFinder.FindByName("StatStrength (id=mv49tk9s)"));
+            _StatAgility = new Stat("Agility", 4, GameObjectFinder.FindByName("StatAgility (id=jx4psf25)"));
+            _StatIntelligence = new Stat("Intelligence", 5, GameObjectFinder.FindByName("StatIntelligence (id=ydct7hbc)"));
+            _StatCritChance = new Stat("CritChance", 6, GameObjectFinder.FindByName("StatCritChance (id=1l42t8mp)"));
+            _StatCritMultiplier = new Stat("CritMultiplier", 7, GameObjectFinder.FindByName("StatCritPower (id=1znqy1h2)"));
 
 
 
@@ -133,19 +126,13 @@ namespace Assets.GameData.Scenes.Collection
 
         //Stats
         private readonly RectTransform _PanelStat_RectTransform;
-        private readonly GameObject _StatLevel_GameObject;
+
         private readonly Stat _StatLevel;
-        private readonly GameObject _StatHealth_GameObject;
         private readonly Stat _StatHealth;
-        private readonly GameObject _StatStrength_GameObject;
         private readonly Stat _StatStrength;
-        private readonly GameObject _StatAgility_GameObject;
         private readonly Stat _StatAgility;
-        private readonly GameObject _StatIntelligence_GameObject;
         private readonly Stat _StatIntelligence;
-        private readonly GameObject _StatCritChance_GameObject;
         private readonly Stat _StatCritChance;
-        private readonly GameObject _StatCritPower_GameObject;
         private readonly Stat _StatCritMultiplier;
 
         public void Show(Guid heroId)

@@ -5,6 +5,7 @@ using Game03Client.Collection;
 using General;
 using General.DTO.Entities.Collection;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -90,6 +91,12 @@ namespace Assets.GameData.Scenes.Collection
             // Stats
             _PanelStat_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelStats (id=hqmporj6)");
 
+            _StatLevel = new Stat("Level", 1, GameObjectFinder.FindByName("StatLevel", _PanelStat_RectTransform.transform));
+            for (int i = 0; i < _Stats.Length; i++)
+            {
+                string name = $"Stat{i+1}";
+                _Stats[i] = new Stat(name, i + 1, GameObjectFinder.FindByName(name, _PanelStat_RectTransform.transform));
+            }
 
 
             Hide().GetAwaiter().GetResult();
@@ -139,8 +146,9 @@ namespace Assets.GameData.Scenes.Collection
         private DtoEquipment _DtoEquipment;
 
         private readonly RectTransform _PanelTab1_RectTransform;
-
         private readonly RectTransform _PanelStat_RectTransform;
+        private readonly Stat _StatLevel;
+        private readonly Stat[] _Stats = new Stat[7];
 
         public void Show(Guid equipmentId)
         {
@@ -153,6 +161,29 @@ namespace Assets.GameData.Scenes.Collection
             _SelectedEquipmentRarity_Image.sprite = AddressableCache.Rarityes[_DtoEquipment.BaseEquipment.Rarity];
 
             IsEquipped = CollectionProvider.EquipmentIsEquipped(EquipmentId);
+
+            _StatLevel.SetValue(_DtoEquipment.Level);
+
+            int i = 0;
+            if (_DtoEquipment.Stats != null)
+            {
+                foreach (KeyValuePair<EStatType, List<float>> stat in _DtoEquipment.Stats)
+                {
+                    foreach (float value in stat.Value)
+                    {
+                        Stat statLocal = _Stats[i];
+                        statLocal.SetActive(true);
+                        statLocal.SetDesc(stat.Key.ToString());
+                        statLocal.SetValue(value);
+                        i++;
+                    }
+                }
+            }
+            for (; i < _Stats.Length; i++)
+            {
+                _Stats[i].SetActive(false);
+            }
+
 
             UpdateButtons();
 
