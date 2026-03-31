@@ -185,7 +185,7 @@ namespace Assets.GameData.Scenes.Collection
             float h1 = _PanelScene.PanelTop.Height;
             Height = Screen.height - h1;
             _RectTransform.sizeDelta = new Vector2(Width, Height);
-            _RectTransform.anchoredPosition = new Vector2(-(_PanelScene.PanelSelectedHero.Width + WIDTH_SPACING), 0f);
+            _RectTransform.anchoredPosition = new Vector2(-_PanelScene.PanelSelectedHero.Width - WIDTH_SPACING, 0f);
 
             // Верхняя панель где написано название экипировки
             _PanelTop_RectTransform.sizeDelta = new Vector2(Width, h1);

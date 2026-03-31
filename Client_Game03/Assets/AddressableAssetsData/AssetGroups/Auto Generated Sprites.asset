@@ -260,6 +260,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8dee932e17998ab46927e83b601cf616
+    m_Address: Equipments-Silver bracelet
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 905d24b210cc9764091bfd9633d1dc74
     m_Address: Heroes-Midnight assassin
     m_ReadOnly: 0
