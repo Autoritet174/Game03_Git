@@ -34,6 +34,7 @@ namespace Assets.GameData.Scenes.Collection
         public PanelSelectedHero(PanelScene panelScene)
         {
             _PanelScene = panelScene;
+            _PanelSelectedEquipment = panelScene.PanelSelectedEquipment;
             _RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHero (id=vs2gi8c6)");
             _RectTransform.anchoredPosition = new Vector2(0f, 0f);
             _GameObject = _RectTransform.gameObject;
@@ -93,6 +94,8 @@ namespace Assets.GameData.Scenes.Collection
         }
 
         public PanelScene _PanelScene;
+        public PanelSelectedEquipment _PanelSelectedEquipment;
+
         public Guid HeroId { get; private set; }
         public float Width { get; private set; }
         public float Height { get; private set; }
@@ -162,6 +165,8 @@ namespace Assets.GameData.Scenes.Collection
                 }
             }
 
+
+
             //Экипировка этого героя
             var equipments = CollectionProvider.GetCollectionEquipmentsFromCache().Where(a => a.HeroId == heroId && a.Stats != null).ToList();
 
@@ -180,6 +185,17 @@ namespace Assets.GameData.Scenes.Collection
             _StatIntelligence.SetValue(hero.Intelligence + bonus_Intelligence);
             _StatCritChance.SetValuePercent(hero.CritChance + bonus_CritChance);
             _StatCritMultiplier.SetValuePercent(hero.CritMultiplier + bonus_CritMultiplier);
+
+
+            // Изменения статов если выбран предмет
+            if (_PanelSelectedEquipment.EquipmentId != Guid.Empty)
+            {
+                // Создаем виртуального героя
+                DtoHero vHero = new(hero.Id, hero.UserId, hero.BaseHeroId, hero.GroupName, hero.Level, hero.ExperienceNow, hero.Strength, hero.Agility, hero.Intelligence, hero.CritChance, hero.CritMultiplier, hero.Haste, hero.Versality, hero.EndurancePhysical, hero.EnduranceMagical, hero.Health, hero.Initiative, hero.BaseHero);
+
+
+            }
+
 
 
             _PanelCollectionViewer.GetElement(heroId)?.Selected(true);

@@ -1,9 +1,11 @@
 namespace Assets.GameData.Scripts
 {
-    public static class NumberToStringManager
+    public static class ToStringService
     {
-        public static int mode = 1;
-        public static string ToStr(float n) {
+        public static int mode = 0;
+
+        public static string Get(float n)
+        {
             return mode switch
             {
                 1 => n.ToString("0"),
@@ -11,13 +13,14 @@ namespace Assets.GameData.Scripts
                 _ => n.ToString(),
             };
         }
+
         public static string ToStrPercent(float n)
         {
             return (mode switch
             {
                 1 => n.ToString("0.0"),
                 2 => ToStr3(n),
-                _ => n.ToString() ,
+                _ => n.ToString(),
             }) + "%";
         }
 
@@ -25,7 +28,7 @@ namespace Assets.GameData.Scripts
         private static readonly char[] suffix = { 'K', 'M', 'B', 'T', 'Q' };
         private static readonly int suffix_Length = suffix.Length;
 
-        public static string ToStr3(float n)
+        private static string ToStr3(float n)
         {
             // Обработка специальных случаев
             if (float.IsNaN(n) || float.IsInfinity(n))

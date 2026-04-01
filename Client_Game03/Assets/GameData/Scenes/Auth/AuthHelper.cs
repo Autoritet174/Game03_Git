@@ -24,6 +24,10 @@ namespace Assets.GameData.Scenes.Auth
 
         public static void ClearTokenInSecureStorageProvider()
         {
+            if (string.Empty == "")
+            {
+                return;
+            }
             SecureStorageProvider.SetValue(SecureStorageKey.RefreshToken, string.Empty);
             SecureStorageProvider.SetValue(SecureStorageKey.RefreshTokenExpirationAt, string.Empty);
         }

@@ -65,6 +65,7 @@
     <Compile Include="Assets\GameData\Scenes\Auth\Button_Reg.cs" />
     <Compile Include="Assets\GameData\AddressableAssets\GameMessage\Init_PrefabGameMessage.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\PanelIconCollectionElement.cs" />
+    <Compile Include="Assets\GameData\Scripts\ToStringService.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_Collection.cs" />
     <Compile Include="Assets\GameData\Scripts\Redactor\AddressableNamesGenerator.cs" />
     <Compile Include="Assets\GameData\Scripts\Redactor\SpriteGenerator.cs" />
@@ -78,7 +79,6 @@
     <Compile Include="Assets\GameData\Scripts\AddressableCache.cs" />
     <Compile Include="Assets\GameData\Scripts\InputManager.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\PanelGroupDivider.cs" />
-    <Compile Include="Assets\GameData\Scripts\NumberToStringManager.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\AuthManager.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\PanelCollection.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\PanelTop.cs" />

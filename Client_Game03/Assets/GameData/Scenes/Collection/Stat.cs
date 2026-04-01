@@ -36,7 +36,8 @@ namespace Assets.GameData.Scenes.Collection
             _Value2_TextMeshProUGUI.SetText(string.Empty);
         }
 
-        public void SetActive(bool active) {
+        public void SetActive(bool active)
+        {
             _GameObject.SetActive(active);
         }
 
@@ -67,11 +68,11 @@ namespace Assets.GameData.Scenes.Collection
         }
         public void SetValue(float value)
         {
-            _Value_TextMeshProUGUI.SetText(NumberToStringManager.ToStr3(value));
+            _Value_TextMeshProUGUI.SetText(ToStringService.Get(value));
         }
         public void SetValuePercent(float value)
         {
-            _Value_TextMeshProUGUI.SetText($"{NumberToStringManager.ToStr3(value)}%");
+            _Value_TextMeshProUGUI.SetText($"{ToStringService.Get(value)}%");
             _Value2_TextMeshProUGUI.SetText(string.Empty);
         }
     }
