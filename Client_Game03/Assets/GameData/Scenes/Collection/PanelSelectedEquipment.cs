@@ -111,6 +111,7 @@ namespace Assets.GameData.Scenes.Collection
 
         private readonly PanelSelectedHero _PanelSelectedHero;
         private readonly PanelCollectionViewer _PanelCollectionViewer;
+
         private readonly RectTransform _RectTransform;
         private readonly GameObject _GameObject;
 
@@ -173,7 +174,7 @@ namespace Assets.GameData.Scenes.Collection
                     {
                         Stat statLocal = _Stats[i];
                         statLocal.SetActive(true);
-                        statLocal.SetDesc(stat.Key.ToString());
+                        statLocal.RefreshName(stat.Key.ToString());
                         statLocal.SetValue(value);
                         i++;
                     }
@@ -196,7 +197,7 @@ namespace Assets.GameData.Scenes.Collection
         public async UniTask Hide()
         {
             IsVisible = false;
-            _PanelCollectionViewer.GetElement(EquipmentId)?.Selected(true);
+            _PanelCollectionViewer.GetElement(EquipmentId)?.Selected(false);
             EquipmentId = Guid.Empty;
             _GameObject.SetActive(false);
             _PanelScene.OnResized();

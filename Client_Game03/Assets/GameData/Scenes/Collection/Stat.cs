@@ -1,4 +1,5 @@
 using Assets.GameData.Scripts;
+using System.Xml.Linq;
 using TMPro;
 using UnityEngine;
 using L = General.LocalizationKeys;
@@ -14,7 +15,6 @@ namespace Assets.GameData.Scenes.Collection
         private const float VALUE_FONT_SIZE = 20f;
         private const float VALUE2_FONT_SIZE = 16f;
 
-        private readonly string _Name;
         private readonly int _PosY;
         private readonly GameObject _GameObject;
         private readonly RectTransform _RectTransform;
@@ -24,7 +24,6 @@ namespace Assets.GameData.Scenes.Collection
 
         public Stat(string name, int posY, GameObject gameObject)
         {
-            _Name = name;
             _PosY = posY;
             _GameObject = gameObject;
             _RectTransform = _GameObject.GetComponent<RectTransform>();
@@ -34,8 +33,13 @@ namespace Assets.GameData.Scenes.Collection
 
             _Desc_TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(L.UI.Label.Stat.GetKey(name)));
             _Value2_TextMeshProUGUI.SetText(string.Empty);
+            OnResized();
         }
 
+        public void RefreshName(string name)
+        {
+            _Desc_TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(L.UI.Label.Stat.GetKey(name)));
+        }
         public void SetActive(bool active)
         {
             _GameObject.SetActive(active);
@@ -53,10 +57,6 @@ namespace Assets.GameData.Scenes.Collection
             _Value2_TextMeshProUGUI.fontSize = VALUE2_FONT_SIZE * coefHeight;
         }
 
-        public void SetDesc(string value)
-        {
-            _Desc_TextMeshProUGUI.SetText(value);
-        }
 
         public void SetValue(string value)
         {

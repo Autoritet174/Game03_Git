@@ -188,13 +188,25 @@ namespace Assets.GameData.Scenes.Collection
 
 
             // Изменения статов если выбран предмет
-            if (_PanelSelectedEquipment.EquipmentId != Guid.Empty)
+            /*if (_PanelSelectedEquipment != null && _PanelSelectedEquipment.EquipmentId != Guid.Empty)
             {
-                // Создаем виртуального героя
-                DtoHero vHero = new(hero.Id, hero.UserId, hero.BaseHeroId, hero.GroupName, hero.Level, hero.ExperienceNow, hero.Strength, hero.Agility, hero.Intelligence, hero.CritChance, hero.CritMultiplier, hero.Haste, hero.Versality, hero.EndurancePhysical, hero.EnduranceMagical, hero.Health, hero.Initiative, hero.BaseHero);
+                // Создаем виртуальный предмет который сейчас выбран
+                DtoEquipment equipmentNow = CollectionProvider.GetCollectionEquipmentsFromCache().First(a => a.Id == _PanelSelectedEquipment.EquipmentId);
+                if (equipmentNow.HeroId != hero.Id)
+                {
+                    DtoEquipment vEquipment = equipmentNow.CreateCopy();
 
+                    // Создаем виртуального героя
+                    DtoHero vHero = hero.CreateCopy();
 
-            }
+                    // Создаем виртуальные предметы надетые в данный момент на реального героя
+                    var vEquipments = new DtoEquipment[equipments.Count];
+                    for (int i = 0; i < equipments.Count; i++)
+                    {
+                        vEquipments[i] = equipments[i].CreateCopy();
+                    }
+                }
+            }*/
 
 
 
@@ -211,7 +223,7 @@ namespace Assets.GameData.Scenes.Collection
         private async UniTask Hide()
         {
             IsVisible = false;
-            _PanelCollectionViewer.GetElement(HeroId)?.Selected(true);
+            _PanelCollectionViewer.GetElement(HeroId)?.Selected(false);
             HeroId = Guid.Empty;
             _GameObject.SetActive(false);
 
