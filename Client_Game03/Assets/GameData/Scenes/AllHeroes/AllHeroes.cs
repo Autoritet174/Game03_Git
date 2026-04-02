@@ -217,7 +217,7 @@ public class AllHeroes : MonoBehaviour
             textMeshProUGUI.fontSize = cellWidth * 0.16f;
         }
 
-        ButtonCloseHelper.UpdateSize(_lastWidth, _lastHeight, buttonClose);
+        ButtonCloseHelper.UpdateSize(buttonClose);
 
         OnResizeAllDictotaries();
     }
@@ -227,7 +227,7 @@ public class AllHeroes : MonoBehaviour
 
         foreach (KeyValuePair<string, RectTransform> item in dictOnResizeButtonClose)
         {
-            ButtonCloseHelper.UpdateSize(_lastWidth, _lastHeight, item.Value);
+            ButtonCloseHelper.UpdateSize(item.Value);
         }
 
         foreach (KeyValuePair<string, RectTransform> item in dictOnResizeHeroName)

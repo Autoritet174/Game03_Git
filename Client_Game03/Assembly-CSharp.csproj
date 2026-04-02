@@ -57,6 +57,7 @@
     <Compile Include="Assets\GameData\Scenes\Auth\Init_Auth.cs" />
     <Compile Include="Assets\GameData\Scripts\ButtonClose_Click_MoveToMainMenu.cs" />
     <Compile Include="Assets\GameData\Scripts\SecureStorageProvider.cs" />
+    <Compile Include="Assets\GameData\Scenes\BattleField\ButtonClose_Click_EndBattle.cs" />
     <Compile Include="Assets\GameData\Scripts\MainThreadDispatcher.cs" />
     <Compile Include="Assets\GameData\Prefabs\Buttons\Button_01_Init.cs" />
     <Compile Include="Assets\GameData\Scripts\LoggerException.cs" />
