@@ -253,12 +253,12 @@ GameObject:
   - component: {fileID: 312110392}
   - component: {fileID: 312110391}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Image_Damage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &312110390
 RectTransform:
   m_ObjectHideFlags: 0
@@ -964,7 +964,7 @@ GameObject:
   - component: {fileID: 1440207226}
   - component: {fileID: 1440207225}
   m_Layer: 5
-  m_Name: Location_Forest_1
+  m_Name: Location_Poligon_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1009,7 +1009,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 6584028309150183553, guid: fa0af3a8fcab8b6458f3cdcb85e464cf, type: 3}
+  m_Sprite: {fileID: -1187919724317182675, guid: fa0af3a8fcab8b6458f3cdcb85e464cf, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1

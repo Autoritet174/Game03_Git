@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using Game03Client.Collection;
+using General;
 using General.DTO.Entities;
 using General.DTO.Entities.Collection;
 using General.DTO.Entities.GameData;
@@ -18,7 +19,10 @@ namespace Assets.GameData.Scripts
         public static Sprite UI_button_with_arrow_v2;
         public static Sprite UI_button_with_arrow_v2_reverse;
 
-        public static Sprite[] Rarityes = new Sprite[7];
+        //public static Sprite[] Rarityes = new Sprite[7];
+        static Dictionary<int, Sprite> Rarityes = new();
+        public static Sprite RaritySelected { get; private set; }
+
 
         public static Dictionary<string, Sprite> Heroes = new();
         public static Dictionary<string, Sprite> Equipments = new();
@@ -61,7 +65,7 @@ namespace Assets.GameData.Scripts
             
 
             // Rarityes
-            tasks.Add(SafeLoadAsync("UI-raritySelected", s => Rarityes[0] = s));
+            tasks.Add(SafeLoadAsync("UI-raritySelected", s => RaritySelected = s));
             for (int i = 1; i <= 6; i++)
             {
                 int index = i; // capture index
@@ -131,14 +135,8 @@ namespace Assets.GameData.Scripts
         //    var locations = await Addressables.LoadResourceLocationsAsync(key).ToUniTask();
         //    return locations != null && locations.Count > 0;
         //}
-
         public static Sprite GetRarity(int rarity)
         {
-            if (rarity < 1 || rarity >= Rarityes.Length)
-            {
-                Debug.LogError($"rarity = {rarity}");
-                throw new ArgumentOutOfRangeException(nameof(rarity));
-            }
             return Rarityes[rarity];
         }
 
@@ -158,6 +156,5 @@ namespace Assets.GameData.Scripts
             DtoBaseEquipment baseEquipment = equipment.BaseEquipment!;
             return Equipments[baseEquipment.Name];
         }
-
     }
 }

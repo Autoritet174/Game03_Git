@@ -76,7 +76,7 @@ namespace Assets.GameData.Scenes.Collection
 
             textMeshPro.text = _CollectionElement.Name;//.ToUpper1Char();
             textMeshPro.fontSize = TEXT_COLLECTION_ELEMENT_FONTSIZE;
-            imageRarity.sprite = AddressableCache.Rarityes[_CollectionElement.Rarity];
+            imageRarity.sprite = AddressableCache.GetRarity(_CollectionElement.Rarity);
             imageRarity.preserveAspect = true;
             imageRarity.type = Image.Type.Simple; // Режим без растягивания;
 
@@ -207,13 +207,13 @@ namespace Assets.GameData.Scenes.Collection
 
         private async UniTask OnPointerEnter()
         {
-            _Rarity_Image.sprite = AddressableCache.Rarityes[0];
+            _Rarity_Image.sprite = AddressableCache.RaritySelected;
             await UniTask.Yield();
         }
 
         private async UniTask OnPointerExit()
         {
-            _Rarity_Image.sprite = AddressableCache.Rarityes[_CollectionElement.Rarity];
+            _Rarity_Image.sprite = AddressableCache.GetRarity(_CollectionElement.Rarity);
             await UniTask.Yield();
         }
     }

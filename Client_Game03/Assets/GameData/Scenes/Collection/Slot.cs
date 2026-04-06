@@ -101,7 +101,7 @@ namespace Assets.GameData.Scenes.Collection
                 }
 
                 int rarity = _Equipment.BaseEquipment.Rarity;
-                _Rarity_Image.sprite = AddressableCache.Rarityes[rarity];
+                _Rarity_Image.sprite = AddressableCache.GetRarity(rarity);
                 _EquipmentFull_Image.sprite = AddressableCache.Equipments[_Equipment.BaseEquipment.Name];
                 active = true;
             }
@@ -123,7 +123,7 @@ namespace Assets.GameData.Scenes.Collection
 
         private async UniTask OnPointerEnter()
         {
-            _Rarity_Image.sprite = AddressableCache.Rarityes[0];
+            _Rarity_Image.sprite = AddressableCache.RaritySelected;
             await UniTask.Yield();
         }
 
@@ -131,7 +131,7 @@ namespace Assets.GameData.Scenes.Collection
         {
             if (_Equipment != null)
             {
-                _Rarity_Image.sprite = AddressableCache.Rarityes[_Equipment.BaseEquipment.Rarity];
+                _Rarity_Image.sprite = AddressableCache.GetRarity(_Equipment.BaseEquipment.Rarity);
             }
             await UniTask.Yield();
         }

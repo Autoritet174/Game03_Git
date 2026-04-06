@@ -137,7 +137,7 @@ public class AllHeroes : MonoBehaviour
         imageHero.preserveAspect = true; // Сохраняет пропорции изображения
         imageHero.type = Image.Type.Simple; // Режим без растягивания;
 
-        imageRarity.sprite = AddressableCache.Rarityes[hero.Rarity];
+        imageRarity.sprite = AddressableCache.GetRarity(hero.Rarity);
         imageRarity.preserveAspect = true; // Сохраняет пропорции изображения
         imageRarity.type = Image.Type.Simple; // Режим без растягивания;
 
@@ -149,12 +149,12 @@ public class AllHeroes : MonoBehaviour
 
         async UniTask OnPoinerEnter()
         {
-            imageRarity.sprite = AddressableCache.Rarityes[0];
+            imageRarity.sprite = AddressableCache.RaritySelected;
             await UniTask.Yield();
         }
         async UniTask OnPoinerExit()
         {
-            imageRarity.sprite = AddressableCache.Rarityes[hero.Rarity];
+            imageRarity.sprite = AddressableCache.GetRarity(hero.Rarity);
             await UniTask.Yield();
         }
         _prefabIconHero.AddHoverEvents(OnPoinerEnter, OnPoinerExit);

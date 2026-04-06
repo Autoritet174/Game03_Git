@@ -3,8 +3,8 @@ guid: fa0af3a8fcab8b6458f3cdcb85e464cf
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6584028309150183553
-    second: Forest_2_0
+      213: -1187919724317182675
+    second: Poligon_1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -76,8 +76,8 @@ TextureImporter:
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
+    compressionQuality: 100
+    crunchedCompression: 1
     allowsAlphaSplitting: 0
     overridden: 0
     ignorePlatformSupport: 0
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Forest_2_0
+      name: Poligon_1_0
       rect:
         serializedVersion: 2
         x: 0
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 180330e0dda2f5b50800000000000000
-      internalID: 6584028309150183553
+      spriteID: d25f46afd49a38fe0800000000000000
+      internalID: -1187919724317182675
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Forest_2_0: 6584028309150183553
+      Poligon_1_0: -1187919724317182675
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

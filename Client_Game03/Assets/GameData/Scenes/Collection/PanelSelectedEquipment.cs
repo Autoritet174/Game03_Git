@@ -159,7 +159,7 @@ namespace Assets.GameData.Scenes.Collection
             _LabelSelectedEquipment_TextMeshProUGUI.SetText(_DtoEquipment.BaseEquipment.Name);
             _SelectedEquipment_Image.sprite = AddressableCache.Equipments[_DtoEquipment.BaseEquipment.Name];
             _SelectedEquipment_Image.preserveAspect = true; // Сохраняет пропорции изображения
-            _SelectedEquipmentRarity_Image.sprite = AddressableCache.Rarityes[_DtoEquipment.BaseEquipment.Rarity];
+            _SelectedEquipmentRarity_Image.sprite = AddressableCache.GetRarity(_DtoEquipment.BaseEquipment.Rarity);
 
             IsEquipped = CollectionProvider.EquipmentIsEquipped(EquipmentId);
 
@@ -387,5 +387,7 @@ namespace Assets.GameData.Scenes.Collection
         {
             return _DtoEquipment != null && _DtoEquipment.BaseEquipment.EquipmentType.SlotType.HaveAltSlot;
         }
+
+
     }
 }
