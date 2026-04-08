@@ -14,7 +14,7 @@ namespace Assets.GameData.Scripts.Redactor
 
         private const string START_DIR = "Assets/GameData/AddressableAssets/Images";
         private const string GROUP_NAME_GENERATED_SPRITES = "Auto Generated Sprites";
-        private static readonly string[] Dirs = { "Heroes", "Equipment", "UI", "SmithingMaterials" };
+        private static readonly string[] Dirs = { "Heroes", "Equipment", "UI", "SmithingMaterials", "Npcs" };
         private static readonly string[] Formats = { ".jpg", ".png" };
 
         [MenuItem("_Game03/Генерировать имена addressable")]

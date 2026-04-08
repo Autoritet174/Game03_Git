@@ -1,6 +1,4 @@
 using Cysharp.Threading.Tasks;
-using Game03Client.Collection;
-using General;
 using General.DTO.Entities;
 using General.DTO.Entities.Collection;
 using General.DTO.Entities.GameData;
@@ -19,8 +17,7 @@ namespace Assets.GameData.Scripts
         public static Sprite UI_button_with_arrow_v2;
         public static Sprite UI_button_with_arrow_v2_reverse;
 
-        //public static Sprite[] Rarityes = new Sprite[7];
-        static Dictionary<int, Sprite> Rarityes = new();
+        private static readonly Sprite[] Rarityes = new Sprite[7];
         public static Sprite RaritySelected { get; private set; }
 
 
@@ -62,7 +59,7 @@ namespace Assets.GameData.Scripts
                 tasks.Add(SafeLoadAsync($"Heroes-{hero.Name}", s => Heroes.TryAdd(hero.Name, s)));
                 tasks.Add(SafeLoadAsync($"Heroes-{hero.Name}_face", s => Heroes.TryAdd($"{hero.Name}_face", s)));
             }
-            
+
 
             // Rarityes
             tasks.Add(SafeLoadAsync("UI-raritySelected", s => RaritySelected = s));
@@ -84,7 +81,7 @@ namespace Assets.GameData.Scripts
             {
                 tasks.Add(SafeLoadAsync($"Equipments-{equipment.Name}", s => Equipments.TryAdd(equipment.Name, s)));
             }
-            
+
 
             // GameObjects
             tasks.Add(LoadGameObjectAsync("GroupDividerPrefab", go => GroupDividerPrefabAddressableGameObject = go));

@@ -95,6 +95,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 31fd3ee4cced6504fb6bfb3881bdcb95
+    m_Address: Npcs-Bear
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 37b258c0912cdb6428f1343fa9f51129
     m_Address: SmithingMaterials-Penetron
     m_ReadOnly: 0
@@ -202,6 +207,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7412a12c4a1b7f84791e148a45f1332e
     m_Address: UI-rarity3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7453756b23a3ca646a6a1fa073358a02
+    m_Address: Npcs-Bear_face
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
