@@ -41,30 +41,6 @@
             <param name="diceStr"></param>
             <exception cref="T:System.FormatException"></exception>
         </member>
-        <member name="P:General.DTO.DtoWS.MessageId">
-            <summary> Идентификатор сообщения. </summary>
-        </member>
-        <member name="T:General.DTO.DtoWSResponseS2C">
-            <summary> Ответ сервера клиенту о том успешна ли была выполнена команда в предыдущем сообщениии. </summary>
-        </member>
-        <member name="M:General.DTO.DtoWSResponseS2C.#ctor(System.Boolean,System.Guid,System.String)">
-            <summary> Ответ сервера клиенту о том успешна ли была выполнена команда в предыдущем сообщениии. </summary>
-        </member>
-        <member name="P:General.DTO.DtoWSResponseS2C.InReplyTo">
-            <summary> Идентификатор сообщения на которое мы отвечаем. </summary>
-        </member>
-        <member name="T:General.DTO.DtoWSEquipmentTakeOnC2S">
-            <summary> Сообщение "Надеть экипировку". </summary>
-        </member>
-        <member name="M:General.DTO.DtoWSEquipmentTakeOnC2S.#ctor(System.Guid,System.Guid,System.Nullable{System.Boolean},System.Nullable{System.Guid})">
-            <summary> Сообщение "Надеть экипировку". </summary>
-        </member>
-        <member name="T:General.DTO.DtoWSEquipmentTakeOffC2S">
-            <summary> Сообщение "Снять экипировку". </summary>
-        </member>
-        <member name="M:General.DTO.DtoWSEquipmentTakeOffC2S.#ctor(System.Guid,System.Nullable{System.Guid})">
-            <summary> Сообщение "Снять экипировку". </summary>
-        </member>
         <member name="T:General.DTO.Entities.Collection.DtoEquipment">
             <summary>
             Предмет экипировки из коллекции игрока. (MongoDb).
@@ -728,11 +704,6 @@
             которые должны быть получены из системы локализации.
             </summary>
         </member>
-        <member name="F:General.LocalizationKeys.DATE_TIME_EXPIRES_AT">
-            <summary>
-            Ключ-заполнитель для указания даты и времени истечения срока действия.
-            </summary>
-        </member>
         <member name="F:General.LocalizationKeys.DATETIME_EXPIRATION">
             <summary>
             Ключ-заполнитель для указания даты и времени истечения срока.
@@ -1024,12 +995,7 @@
             Класс предоставляющий ссылки на API сервера.
             </summary>
         </member>
-        <member name="F:General.Url.URL_HEADER">
-            <summary>
-            URL API старт
-            </summary>
-        </member>
-        <member name="F:General.Url.GAME_DATA">
+        <member name="P:General.Url.GAME_DATA">
             <summary> URL. Все игровые данные нужные на клиенте игры. </summary>
         </member>
     </members>

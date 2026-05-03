@@ -13,6 +13,8 @@ namespace Assets.GameData.Scripts
     /// </summary>
     public static class G
     {
+        public const float PANELTOP_HEIGHT = 90f;
+
         /// <summary>
         /// Флаг, указывающий на то, что приложение находится в процессе завершения работы.
         /// Должен быть установлен извне.
@@ -36,6 +38,7 @@ namespace Assets.GameData.Scripts
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Initialize_BeforeSceneLoad()
         {
+            General.Url.Init("https://localhost:7227");
             LoadCursorTexture();
             GameLanguage lang = GameLanguage.Ru;
 

@@ -41,11 +41,22 @@
 				"Agility": "Ловкость",
 				"Intelligence": "Интеллект",
 				"CritChance": "Критический удар (шанс)",
-				"CritMultiplier": "Критический удар (множитель)",
-				"Versality": "Универсальность",
+				"CritMultiplier": "Критический удар (множ.)",
+				"Versality": "Универсальность", 
+				"Initiative": "Инициатива", 
+				"Haste": "Скорость", 
 			},
 			"NoGroup": "Нет группы",
 			"EndBattle": "Завершить бой",
+			
+			"BattleField_TestPlatforms": "Испытательные площадки",
+			"BattleField_TestPlatforms_Polygon": "Полигон",
+			
+			"BattleField_Mines": "Шахты",
+			"BattleField_Mines_Iron": "Железо",
+			
+			"BattleField_Dungeons": "Подземелья",
+			
 		}
 	},
 	"Error": {

@@ -134,32 +134,32 @@
         </member>
         <member name="T:Game03Client.WebSocketProvider">
             <summary>
-            Провайдер WebSocket: Zero-Allocation (по возможности), защита от утечек и Buffer Bloat.
+            Провайдер для общения с сервером через SignalR.
             </summary>
         </member>
-        <member name="M:Game03Client.WebSocketProvider.GetIfExists(System.Guid)">
+        <member name="M:Game03Client.WebSocketProvider.RegisterServerEvents">
             <summary>
-            Извлекает ответ из очереди.
+            Регистрация событий от сервера.
             </summary>
         </member>
-        <member name="M:Game03Client.WebSocketProvider.ConnectAsync(System.Threading.CancellationToken,System.Threading.CancellationToken)">
+        <member name="M:Game03Client.WebSocketProvider.InvokeAsync``1(System.String,System.Threading.CancellationToken,System.Object[])">
             <summary>
-            Подключение к серверу.
+            Вызов серверного метода с возвратом результата.
             </summary>
         </member>
-        <member name="M:Game03Client.WebSocketProvider.CleanupExpiredResponses(System.Object)">
+        <member name="M:Game03Client.WebSocketProvider.SendAsync(System.String,System.Threading.CancellationToken,System.Object[])">
             <summary>
-            Удаление устаревших ответов.
+            Вызов серверного метода без возврата результата (fire-and-forget).
             </summary>
         </member>
-        <member name="M:Game03Client.WebSocketProvider.ReceiveMessagesAsync(System.Threading.CancellationToken)">
+        <member name="M:Game03Client.WebSocketProvider.DisconnectAsync">
             <summary>
-            Цикл приема сообщений с защитой от Buffer Bloat.
+            Отключение от сервера.
             </summary>
         </member>
-        <member name="M:Game03Client.WebSocketProvider.ProcessMessageSpan(System.ReadOnlySpan{System.Byte})">
+        <member name="T:Game03Client.RetryPolicy">
             <summary>
-            Десериализация из Span (Zero-Allocation строки).
+            Политика автоматического переподключения.
             </summary>
         </member>
     </members>
