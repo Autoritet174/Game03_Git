@@ -9,10 +9,8 @@ namespace Assets.GameData.Scenes.SelectBattlefield
     {
         public const float SCROLLVIEW_WIDTH = 32f;
 
-        private RectTransform PanelTop__RectTransform;
         private RectTransform ScrollViewCollectionMain__RectTransform;
         private RectTransform PanelPrepareBattle__RectTransform;
-        private RectTransform ButtonClose__RectTransform;
 
         private RectTransform ScrollbarVertical__RectTransform;
         private RectTransform ViewportMain__RectTransform;
@@ -22,11 +20,9 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
         private float _Width, _Height;
         private bool initialized = false;
+
         private void Start()
         {
-            PanelTop__RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelTop (id=g8z1if5y)");
-            ButtonClose__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose", PanelTop__RectTransform.transform);
-
             ScrollbarVertical__RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollbarVertical (id=gez98o51)");
             ViewportMain__RectTransform = GameObjectFinder.FindByName<RectTransform>("ViewportMain (id=sno6hebj)");
 
@@ -86,9 +82,6 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             _Width = Screen.width;
 
             float coefHeight = G.GetCoefHeight();
-            float panelTop_Height = G.PANELTOP_HEIGHT * coefHeight;
-            PanelTop__RectTransform.sizeDelta = new Vector2(0f, panelTop_Height);
-            ButtonClose__RectTransform.sizeDelta = new Vector2(panelTop_Height, panelTop_Height);
 
             ScrollViewCollectionMain__RectTransform.sizeDelta = new Vector2(_Width, (1080f - G.PANELTOP_HEIGHT) * coefHeight);
 

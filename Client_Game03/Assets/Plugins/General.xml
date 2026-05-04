@@ -76,7 +76,7 @@
             Data Transfer Object. Корневой контейнер для данных.
             </summary>
         </member>
-        <member name="M:General.DTO.Entities.DtoContainerGameData.#ctor(System.Collections.Generic.List{General.DTO.Entities.GameData.DtoBaseEquipment},System.Collections.Generic.List{General.DTO.Entities.GameData.DtoBaseHero},System.Collections.Generic.List{General.DTO.Entities.GameData.DtoCreatureType},System.Collections.Generic.List{General.DTO.Entities.GameData.DtoDamageType},System.Collections.Generic.List{General.DTO.Entities.GameData.DtoEquipmentType},System.Collections.Generic.List{General.DTO.Entities.GameData.DtoMaterialDamagePercent},System.Collections.Generic.List{General.DTO.Entities.GameData.DtoSlotType},System.Collections.Generic.List{General.DTO.Entities.GameData.DtoSmithingMaterial},System.Collections.Generic.List{General.DTO.Entities.GameData.DtoXEquipmentTypeDamageType},System.Collections.Generic.List{General.DTO.Entities.GameData.DtoXHeroCreatureType},System.Collections.Generic.List{General.DTO.Entities.GameData.DtoSlot})">
+        <member name="M:General.DTO.Entities.DtoContainerGameData.#ctor(System.Collections.Generic.IEnumerable{General.DTO.Entities.GameData.DtoBaseEquipment},System.Collections.Generic.IEnumerable{General.DTO.Entities.GameData.DtoBaseHero},System.Collections.Generic.IEnumerable{General.DTO.Entities.GameData.DtoCreatureType},System.Collections.Generic.IEnumerable{General.DTO.Entities.GameData.DtoDamageType},System.Collections.Generic.IEnumerable{General.DTO.Entities.GameData.DtoEquipmentType},System.Collections.Generic.IEnumerable{General.DTO.Entities.GameData.DtoMaterialDamagePercent},System.Collections.Generic.IEnumerable{General.DTO.Entities.GameData.DtoSlotType},System.Collections.Generic.IEnumerable{General.DTO.Entities.GameData.DtoSmithingMaterial},System.Collections.Generic.IEnumerable{General.DTO.Entities.GameData.DtoXEquipmentTypeDamageType},System.Collections.Generic.IEnumerable{General.DTO.Entities.GameData.DtoXHeroCreatureType},System.Collections.Generic.IEnumerable{General.DTO.Entities.GameData.DtoSlot},System.Collections.Generic.IEnumerable{General.DTO.Entities.GameData.DtoXBattlefieldNpc})">
             <summary>
             Data Transfer Object. Корневой контейнер для данных.
             </summary>
@@ -92,6 +92,21 @@
         </member>
         <member name="M:General.DTO.Entities.GameData.DtoBaseHero.#ctor(System.Int32,System.String,System.Int32,System.Boolean,General.EMainStat,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice,General.DTO.Dice)">
             <summary> Data Transfer Object. Представляет базовую сущность игрового героя с основными характеристиками. </summary>
+        </member>
+        <member name="T:General.DTO.Entities.GameData.DtoBattlefield">
+            <summary> Data Transfer Object. Представляет базовую сущность игрового героя с основными характеристиками. </summary>
+        </member>
+        <member name="M:General.DTO.Entities.GameData.DtoBattlefield.#ctor(System.Int32,System.String)">
+            <summary> Data Transfer Object. Представляет базовую сущность игрового героя с основными характеристиками. </summary>
+        </member>
+        <member name="P:General.DTO.Entities.GameData.DtoXBattlefieldNpc.GuarantSpawn">
+            <summary> Гарантированное появление на поле боя. </summary>
+        </member>
+        <member name="P:General.DTO.Entities.GameData.DtoXBattlefieldNpc.ProbabilitySpawn">
+            <summary> Вероятность появления на поле боя. Чем выше число тем выше шанс. Игнорируется при GuarantSpawn=true. </summary>
+        </member>
+        <member name="P:General.DTO.Entities.GameData.DtoXBattlefieldNpc.PossibleRank">
+            <summary> При респауне может иметь ранг. </summary>
         </member>
         <member name="T:General.DTO.RestRequest.DtoRequestAuthReg">
             <summary>
@@ -353,6 +368,16 @@
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
         </member>
+        <member name="P:General.GlobalJsonContext.DtoBaseNpc">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:General.GlobalJsonContext.DtoBattlefield">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
         <member name="P:General.GlobalJsonContext.DtoCreatureType">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
@@ -384,6 +409,11 @@
             </summary>
         </member>
         <member name="P:General.GlobalJsonContext.DtoSmithingMaterial">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:General.GlobalJsonContext.DtoXBattlefieldNpc">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
@@ -498,6 +528,11 @@
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
         </member>
+        <member name="P:General.GlobalJsonContext.IEnumerableDtoXBattlefieldNpc">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
         <member name="P:General.GlobalJsonContext.IEnumerableDtoXEquipmentTypeDamageType">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
@@ -519,61 +554,6 @@
             </summary>
         </member>
         <member name="P:General.GlobalJsonContext.ListDtoHero">
-            <summary>
-            Defines the source generated JSON serialization contract metadata for a given type.
-            </summary>
-        </member>
-        <member name="P:General.GlobalJsonContext.ListDtoBaseEquipment">
-            <summary>
-            Defines the source generated JSON serialization contract metadata for a given type.
-            </summary>
-        </member>
-        <member name="P:General.GlobalJsonContext.ListDtoBaseHero">
-            <summary>
-            Defines the source generated JSON serialization contract metadata for a given type.
-            </summary>
-        </member>
-        <member name="P:General.GlobalJsonContext.ListDtoCreatureType">
-            <summary>
-            Defines the source generated JSON serialization contract metadata for a given type.
-            </summary>
-        </member>
-        <member name="P:General.GlobalJsonContext.ListDtoDamageType">
-            <summary>
-            Defines the source generated JSON serialization contract metadata for a given type.
-            </summary>
-        </member>
-        <member name="P:General.GlobalJsonContext.ListDtoEquipmentType">
-            <summary>
-            Defines the source generated JSON serialization contract metadata for a given type.
-            </summary>
-        </member>
-        <member name="P:General.GlobalJsonContext.ListDtoMaterialDamagePercent">
-            <summary>
-            Defines the source generated JSON serialization contract metadata for a given type.
-            </summary>
-        </member>
-        <member name="P:General.GlobalJsonContext.ListDtoSlot">
-            <summary>
-            Defines the source generated JSON serialization contract metadata for a given type.
-            </summary>
-        </member>
-        <member name="P:General.GlobalJsonContext.ListDtoSlotType">
-            <summary>
-            Defines the source generated JSON serialization contract metadata for a given type.
-            </summary>
-        </member>
-        <member name="P:General.GlobalJsonContext.ListDtoSmithingMaterial">
-            <summary>
-            Defines the source generated JSON serialization contract metadata for a given type.
-            </summary>
-        </member>
-        <member name="P:General.GlobalJsonContext.ListDtoXEquipmentTypeDamageType">
-            <summary>
-            Defines the source generated JSON serialization contract metadata for a given type.
-            </summary>
-        </member>
-        <member name="P:General.GlobalJsonContext.ListDtoXHeroCreatureType">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>

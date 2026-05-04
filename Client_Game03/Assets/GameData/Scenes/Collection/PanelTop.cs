@@ -11,7 +11,7 @@ namespace Assets.GameData.Scenes.Collection
         {
             _PanelScene = panelScene;
             _RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelTop (id=ibal8ya0)");
-            _ButtonClose_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose (id=4nretdab)");
+            _ButtonClose_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose");
 
             _TabButtonHeroes = new("ButtonHeroes (id=40jhb51a)", "Text (TMP) (id=wl92ls1m)", OnClickHeroes);
             _TabButtonHeroes.SetText($"{Game03Client.LocalizationManager.GetValue(L.UI.Button.Heroes)}\r\n{Game03Client.Collection.CollectionProvider.GetCountHeroes()}");
@@ -42,7 +42,7 @@ namespace Assets.GameData.Scenes.Collection
         {
             float coefHeight = G.GetCoefHeight();
             Height = HEIGHT_BASE * coefHeight;
-            _RectTransform.sizeDelta = new Vector2(Screen.width, 0f);
+            //_RectTransform.sizeDelta = new Vector2(Screen.width, 0f);
 
             // Кнопки вкладок
             float tabButtonWidth = 240f * coefHeight;
@@ -60,7 +60,7 @@ namespace Assets.GameData.Scenes.Collection
             //_TabButtonChangingEquipment.textMeshProUGUI.fontSize = fontSize;
 
             // Кнопка "Закрыть"
-            _ButtonClose_RectTransform.sizeDelta = new Vector2(Height, Height);
+            //_ButtonClose_RectTransform.sizeDelta = new Vector2(Height, Height);
         }
 
         /// <summary> Кнопка "Герои". </summary>
