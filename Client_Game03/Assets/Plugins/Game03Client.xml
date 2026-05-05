@@ -134,32 +134,32 @@
         </member>
         <member name="T:Game03Client.WebSocketProvider">
             <summary>
-            Провайдер для общения с сервером через SignalR.
+            Provider for communicating with the server via SignalR.
             </summary>
         </member>
         <member name="M:Game03Client.WebSocketProvider.RegisterServerEvents">
             <summary>
-            Регистрация событий от сервера.
+            Registers server-to-client event handlers.
             </summary>
         </member>
-        <member name="M:Game03Client.WebSocketProvider.InvokeAsync``1(System.String,System.Threading.CancellationToken,System.Object[])">
+        <member name="M:Game03Client.WebSocketProvider.InvokeAsync``1(General.HubMethodNames.EMethod,System.Threading.CancellationToken,System.Object[])">
             <summary>
-            Вызов серверного метода с возвратом результата.
+            Invokes a server hub method with a return value.
             </summary>
         </member>
         <member name="M:Game03Client.WebSocketProvider.SendAsync(System.String,System.Threading.CancellationToken,System.Object[])">
             <summary>
-            Вызов серверного метода без возврата результата (fire-and-forget).
+            Invokes a server hub method without a return value (fire-and-forget).
             </summary>
         </member>
         <member name="M:Game03Client.WebSocketProvider.DisconnectAsync">
             <summary>
-            Отключение от сервера.
+            Disconnects from the server.
             </summary>
         </member>
         <member name="T:Game03Client.RetryPolicy">
             <summary>
-            Политика автоматического переподключения.
+            Custom retry policy for automatic reconnection.
             </summary>
         </member>
     </members>

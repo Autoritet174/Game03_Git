@@ -1,6 +1,5 @@
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
-using Game03Client;
 using General;
 using System;
 using TMPro;

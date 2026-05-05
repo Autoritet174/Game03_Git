@@ -1,5 +1,6 @@
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -71,7 +72,12 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
         private async UniTask OnClick()
         {
-            Debug.Log($"click {Name}");
+            //Debug.Log($"click {Name}");
+            await Game03Client.BattleField.BattleFieldProvider.LoadBattleFieldAsync(
+                General.EBattleFiled.Polygon,
+                new Guid[] {
+                    Guid.Parse("019d60de-eb9a-7e06-89e3-1d937ed9fae1")
+                }, default);
         }
 
     }
