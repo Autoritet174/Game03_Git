@@ -73,11 +73,11 @@ namespace Assets.GameData.Scenes.SelectBattlefield
         private async UniTask OnClick()
         {
             //Debug.Log($"click {Name}");
-            await Game03Client.BattleField.BattleFieldProvider.LoadBattleFieldAsync(
+            bool result = await Game03Client.BattleField.BattleFieldProvider.LoadBattleFieldAsync(
                 General.EBattleFiled.Polygon,
-                new Guid[] {
-                    Guid.Parse("019d60de-eb9a-7e06-89e3-1d937ed9fae1")
-                }, default);
+                new Guid[] { Guid.Parse("019d60de-eb9a-7e06-89e3-1d937ed9fae1") }, default);
+            //bool result = await Game03Client.WebSocketProvider.InvokeAsync<bool>(General.HubMethodNames.EMethod.PING, default, new object[] { });
+            Debug.Log(result);
         }
 
     }
