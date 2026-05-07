@@ -36,7 +36,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
                 BattleFieldCategory scrollViewCollection_TestPlatforms = new("TestPlatforms");
                 dictBattleFieldCategory.Add(scrollViewCollection_TestPlatforms.Name, scrollViewCollection_TestPlatforms);
 
-                scrollViewCollection_TestPlatforms.ButtonsAdd("Polygon");
+                scrollViewCollection_TestPlatforms.ButtonsAdd(General.EBattleFiled.Polygon);
             }
 
 
@@ -45,7 +45,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
                 BattleFieldCategory scrollViewCollection_Mines = new("Mines");
                 dictBattleFieldCategory.Add(scrollViewCollection_Mines.Name, scrollViewCollection_Mines);
 
-                scrollViewCollection_Mines.ButtonsAdd("Iron");
+                scrollViewCollection_Mines.ButtonsAdd(General.EBattleFiled.Iron);
             }
 
             //EventHelper.SetClickEvent(dungeonButton_Polygon_GameObject, DungeonButtonPolygonOnClick, false);

@@ -1,4 +1,5 @@
 using Assets.GameData.Scripts;
+using General;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -20,7 +21,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
         private const float DUNGEON_BUTTON_HEIGHT = 121.7602f;
 
-        private readonly Dictionary<string, BattleFieldButton> buttons = new();
+        private readonly Dictionary<General.EBattleFiled, BattleFieldButton> buttons = new();
 
         public string Name { get; }
         public string LocalizationKey { get; }
@@ -46,7 +47,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             buttons.Clear();
         }
 
-        public void ButtonsAdd(string name)
+        public void ButtonsAdd(General.EBattleFiled name)
         {
             BattleFieldButton button = new(name, this);
             buttons.Add(button.Name, button);
@@ -99,7 +100,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
                 );
 
 
-            foreach (KeyValuePair<string, BattleFieldButton> item in buttons)
+            foreach (KeyValuePair<EBattleFiled, BattleFieldButton> item in buttons)
             {
                 item.Value.OnResize(dungeonButtonWidth, dungeonButtonHeight);
             }

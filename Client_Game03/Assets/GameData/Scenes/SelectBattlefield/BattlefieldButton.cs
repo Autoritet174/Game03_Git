@@ -21,9 +21,9 @@ namespace Assets.GameData.Scenes.SelectBattlefield
         private readonly RectTransform imageSelected__RectTransform;
         private readonly TextMeshProUGUI label__TextMeshProUGUI;
 
-        public string Name { get; }
+        public General.EBattleFiled Name { get; }
 
-        public BattleFieldButton(string name, BattleFieldCategory parentBattleFieldCategory)
+        public BattleFieldButton(General.EBattleFiled name, BattleFieldCategory parentBattleFieldCategory)
         {
             Name = name;
             this.parentBattleFieldCategory = parentBattleFieldCategory;
