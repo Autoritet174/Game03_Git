@@ -2,9 +2,10 @@ namespace Assets.GameData.Scripts
 {
     public static class ToStringService
     {
-        public static int mode = 0;
+        public static int mode = 2;
+        public static int modePercent = 1;
 
-        public static string Get(float n)
+        public static string ToStr(this float n)
         {
             return mode switch
             {
@@ -14,9 +15,9 @@ namespace Assets.GameData.Scripts
             };
         }
 
-        public static string ToStrPercent(float n)
+        public static string ToStrPercent(this float n)
         {
-            return (mode switch
+            return (modePercent switch
             {
                 1 => n.ToString("0.0"),
                 2 => ToStr3(n),

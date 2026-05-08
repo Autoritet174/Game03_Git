@@ -337,7 +337,7 @@ GameObject:
   - component: {fileID: 4883746088010170105}
   - component: {fileID: 2368398221629487301}
   m_Layer: 5
-  m_Name: ImageMask
+  m_Name: ImageHeroMask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -539,7 +539,7 @@ GameObject:
   - component: {fileID: 686268560309879417}
   - component: {fileID: 527520365974253689}
   m_Layer: 5
-  m_Name: ImageMask
+  m_Name: ImageRarityMask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

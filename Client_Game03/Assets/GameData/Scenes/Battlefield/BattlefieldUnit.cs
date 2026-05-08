@@ -1,9 +1,12 @@
 using Assets.GameData.Scripts;
+using Game03Client.Collection;
 using General.DTO.Battlefield;
 using General.DTO.Entities.Collection;
 using General.DTO.Entities.GameData;
 using System.Linq;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.GameData.Scenes.Battlefield
 {
@@ -12,10 +15,13 @@ namespace Assets.GameData.Scenes.Battlefield
         private static readonly float[] yShiftArray = new float[] { -89f, 92f, -265f, 269f };
         private static readonly float xShift = 200f;
         private static readonly Vector2 vector2_05 = new(0.5f, 0.5f);
+        private static readonly float width = 153f;
+        private static readonly float height = 219f;
+        private static readonly float textHealthFontSize = 25f;
 
         private readonly SpawnedHero spawnedHeroes;
-        private readonly GameObject gameObject;
         private readonly RectTransform rectTransform;
+        private readonly TextMeshProUGUI textHealth_TextMeshProUGUI;
         private readonly bool isMyUnit;
         private int Position { get; set; }
 
@@ -26,7 +32,7 @@ namespace Assets.GameData.Scenes.Battlefield
             this.isMyUnit = isMyUnit;
 
             GameObject canvasUnits = GameObjectFinder.FindByName("CanvasUnits");
-            gameObject = AddressableCache.BattleFieldUnit.SafeInstant(canvasUnits.transform);
+            GameObject gameObject = AddressableCache.BattleFieldUnit.SafeInstant(canvasUnits.transform);
             DtoHero dtoHero = Game03Client.Collection.CollectionProvider.GetCollectionHeroesFromCache().FirstOrDefault(a => a.Id == spawnedHeroes.HeroId);
             DtoBaseHero dtoBaseHero = dtoHero.BaseHero;
 
@@ -36,6 +42,24 @@ namespace Assets.GameData.Scenes.Battlefield
             rectTransform.anchorMin = vector2_05;
             rectTransform.anchorMax = vector2_05;
             rectTransform.pivot = vector2_05;
+            rectTransform.localScale = new Vector3(0.8f, 0.8f, 1);
+
+            {
+                Image rarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity", gameObject.transform);
+                rarity_Image.sprite = AddressableCache.GetRarity(dtoBaseHero.Rarity);
+                rarity_Image.preserveAspect = true;
+                rarity_Image.type = Image.Type.Simple;
+            }
+            {
+                Image hero_Image = GameObjectFinder.FindByName<Image>("ImageHero", gameObject.transform);
+                hero_Image.sprite = AddressableCache.Heroes[$"{dtoBaseHero.Name}_face"];
+                hero_Image.preserveAspect = true;
+                hero_Image.type = Image.Type.Simple;
+            }
+            {
+                textHealth_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("TextHealth", gameObject.transform);
+                textHealth_TextMeshProUGUI.SetText(spawnedHeroes.Health.ToStr());
+            }
 
             OnResize();
         }
@@ -52,6 +76,9 @@ namespace Assets.GameData.Scenes.Battlefield
             float y = yShiftArray[Position % 4];
             float coefHeight = G.GetCoefHeight();
             rectTransform.anchoredPosition = new Vector2(x * coefHeight, y * coefHeight);
+            rectTransform.sizeDelta = new Vector2(width * coefHeight, height * coefHeight);
+
+            textHealth_TextMeshProUGUI.fontSize = textHealthFontSize * coefHeight;
         }
 
     }
