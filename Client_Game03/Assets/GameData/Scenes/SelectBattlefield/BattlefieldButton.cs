@@ -1,8 +1,11 @@
+using Assets.GameData.Scenes.BattleField;
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
+using General;
 using System;
 using TMPro;
 using UnityEngine;
+using L = General.LocalizationKeys;
 
 namespace Assets.GameData.Scenes.SelectBattlefield
 {
@@ -21,9 +24,9 @@ namespace Assets.GameData.Scenes.SelectBattlefield
         private readonly RectTransform imageSelected__RectTransform;
         private readonly TextMeshProUGUI label__TextMeshProUGUI;
 
-        public General.EBattleFiled Name { get; }
+        public EBattleFiled Name { get; }
 
-        public BattleFieldButton(General.EBattleFiled name, BattleFieldCategory parentBattleFieldCategory)
+        public BattleFieldButton(EBattleFiled name, BattleFieldCategory parentBattleFieldCategory)
         {
             Name = name;
             this.parentBattleFieldCategory = parentBattleFieldCategory;
@@ -38,7 +41,8 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
             label__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label", parentTransform);
 
-            label__TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue($"{parentBattleFieldCategory.LocalizationKey}_{name}"));
+            string localizationKey = $"{L.UI.Label.BattleField}_{name}";
+            label__TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(localizationKey));
 
             EventHelper.AddHoverEvents(imageMask__RectTransform.gameObject, OnPointerEnter, OnPointerExit);
             EventHelper.SetClickEvent(imageMask__RectTransform.gameObject, OnClick, false);
@@ -72,12 +76,18 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
         private async UniTask OnClick()
         {
-            //Debug.Log($"click {Name}");
-            bool result = await Game03Client.BattleField.BattleFieldProvider.LoadBattleFieldAsync(
-                General.EBattleFiled.Polygon,
-                new Guid[] { Guid.Parse("019d60de-eb9a-7e06-89e3-1d937ed9fae1") }, default);
-            //bool result = await Game03Client.WebSocketProvider.InvokeAsync<bool>(General.HubMethodNames.EMethod.PING, default, new object[] { });
-            Debug.Log(result);
+            BattlefieldSceneInitializator.spawnedBattlefield = await Game03Client.BattleField.BattleFieldProvider.LoadBattleFieldAsync(Name,
+                new Guid[] {
+                    Guid.Parse("019d60de-eb9a-7e06-89e3-1d937ed9fae1"),
+                }, default);
+            if (BattlefieldSceneInitializator.spawnedBattlefield != null)
+            {
+                GameSceneManager.Load(GameSceneManager.SceneName.Battlefield);
+            }
+            else
+            {
+                Debug.Log($"spawnedBattlefield is null");
+            }
         }
 
     }

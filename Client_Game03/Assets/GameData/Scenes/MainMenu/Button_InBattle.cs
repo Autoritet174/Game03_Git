@@ -1,9 +1,10 @@
+using Assets.GameData.Scripts;
 using UnityEngine;
 
 public class Button_InBattle : MonoBehaviour
 {
     public void OnClick()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("SelectBattlefield");
+        GameSceneManager.Load(GameSceneManager.SceneName.SelectBattlefield);
     }
 }

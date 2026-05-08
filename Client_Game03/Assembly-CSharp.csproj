@@ -71,13 +71,15 @@
     <Compile Include="Assets\GameData\Scenes\Auth\Init_Auth.cs" />
     <Compile Include="Assets\GameData\Scripts\ButtonClose_Click_MoveToMainMenu.cs" />
     <Compile Include="Assets\GameData\Scripts\SecureStorageProvider.cs" />
-    <Compile Include="Assets\GameData\Scenes\BattleField\ButtonClose_Click_EndBattle.cs" />
     <Compile Include="Assets\GameData\Scripts\MainThreadDispatcher.cs" />
+    <Compile Include="Assets\GameData\Scenes\Battlefield\BattlefieldUnit.cs" />
     <Compile Include="Assets\GameData\Prefabs\Buttons\Button_01_Init.cs" />
+    <Compile Include="Assets\GameData\Scenes\Battlefield\ButtonClose_Click_EndBattle.cs" />
     <Compile Include="Assets\GameData\Scenes\SelectBattlefield\BattlefieldCategory.cs" />
     <Compile Include="Assets\GameData\Scripts\LoggerException.cs" />
     <Compile Include="Assets\GameData\Prefabs\InputFields\InputField.cs" />
     <Compile Include="Assets\GameData\Scenes\SelectBattlefield\BattlefieldButton.cs" />
+    <Compile Include="Assets\GameData\Scenes\SelectBattlefield\SelectBattlefieldSceneInitializator.cs" />
     <Compile Include="Assets\GameData\Scripts\GameExitHandler.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Button_Reg.cs" />
     <Compile Include="Assets\GameData\AddressableAssets\GameMessage\Init_PrefabGameMessage.cs" />
@@ -94,7 +96,6 @@
     <Compile Include="Assets\GameData\Scenes\Collection\FilterButton.cs" />
     <Compile Include="Assets\GameData\Scripts\UnityObject.cs" />
     <Compile Include="Assets\GameData\Scripts\AddressableCache.cs" />
-    <Compile Include="Assets\GameData\Scenes\BattleField\BattleFieldInitializator.cs" />
     <Compile Include="Assets\GameData\Scripts\InputManager.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\PanelGroupDivider.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\AuthManager.cs" />
@@ -102,9 +103,9 @@
     <Compile Include="Assets\GameData\Scenes\Collection\PanelTop.cs" />
     <Compile Include="Assets\GameData\Scripts\CancellationTokenManager.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Button_Close.cs" />
-    <Compile Include="Assets\GameData\Scenes\SelectBattlefield\SelectBattlefieldScene.cs" />
     <Compile Include="Assets\GameData\Scripts\GameObjectExtensions.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\Stat.cs" />
+    <Compile Include="Assets\GameData\Scripts\GameSceneManager.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\PanelCollectionTopButtons.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\PanelSelectedHero.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\PanelSelectedEquipment.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="Assets\GameData\Scripts\G.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\AuthHelper.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\Slot.cs" />
+    <Compile Include="Assets\GameData\Scenes\Battlefield\BattlefieldSceneInitializator.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Button_Auth.cs" />
     <Compile Include="Assets\GameData\Scripts\RichTextBuilder.cs" />
   </ItemGroup>

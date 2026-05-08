@@ -222,7 +222,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6707704114597184544}
   m_Layer: 5
-  m_Name: Unit
+  m_Name: BattlefieldUnitPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

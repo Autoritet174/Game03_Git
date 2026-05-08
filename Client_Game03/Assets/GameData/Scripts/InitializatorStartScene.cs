@@ -17,7 +17,7 @@ namespace Assets.GameData.Scripts
             // Если игра запускается (перед входом в Play Mode)
             if (state == PlayModeStateChange.ExitingEditMode)
             {
-                const string StartScenePath = "Assets/GameData/Scenes/Auth/Auth.unity";
+                string StartScenePath = $"Assets/GameData/Scenes/Auth/{GameSceneManager.SceneName.Auth}Scene.unity";
 
                 string path = EditorSceneManager.GetActiveScene().path;
                 // Проверяем, не загружена ли уже нужная сцена

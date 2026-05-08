@@ -1,3 +1,4 @@
+using Assets.GameData.Scripts;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -5,14 +6,13 @@ public class ButtonClose_Click_MoveToMainMenu : MonoBehaviour
 {
     public void OnClick()
     {
-        string main ="MainMenu";
-        if (SceneManager.GetActiveScene().name == main)
+        if (SceneManager.GetActiveScene().name == GameSceneManager.SceneName.MainMenu.ToString())
         {
             GameExitHandler.ExitGame();
         }
         else
         {
-            SceneManager.LoadScene(main);
+            GameSceneManager.Load(GameSceneManager.SceneName.MainMenu);
         }
     }
 }

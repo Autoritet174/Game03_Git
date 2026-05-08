@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Assets.GameData.Scenes.SelectBattlefield
 {
-    public class SelectDungeonScene : MonoBehaviour
+    public class SelectBattlefieldSceneInitializator : MonoBehaviour
     {
         public const float SCROLLVIEW_WIDTH = 32f;
 
@@ -36,7 +36,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
                 BattleFieldCategory scrollViewCollection_TestPlatforms = new("TestPlatforms");
                 dictBattleFieldCategory.Add(scrollViewCollection_TestPlatforms.Name, scrollViewCollection_TestPlatforms);
 
-                scrollViewCollection_TestPlatforms.ButtonsAdd(General.EBattleFiled.Polygon);
+                scrollViewCollection_TestPlatforms.ButtonsAdd(General.EBattleFiled.TestPlatforms__Polygon);
             }
 
 
@@ -45,7 +45,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
                 BattleFieldCategory scrollViewCollection_Mines = new("Mines");
                 dictBattleFieldCategory.Add(scrollViewCollection_Mines.Name, scrollViewCollection_Mines);
 
-                scrollViewCollection_Mines.ButtonsAdd(General.EBattleFiled.Iron);
+                scrollViewCollection_Mines.ButtonsAdd(General.EBattleFiled.Mines__Iron);
             }
 
             //EventHelper.SetClickEvent(dungeonButton_Polygon_GameObject, DungeonButtonPolygonOnClick, false);

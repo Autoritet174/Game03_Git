@@ -1,8 +1,10 @@
+using Assets.GameData.Scripts;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class Button_AllHeroes : MonoBehaviour {
-    public void OnClick() {
-        SceneManager.LoadScene("AllHeroes");
+public class Button_AllHeroes : MonoBehaviour
+{
+    public void OnClick()
+    {
+        GameSceneManager.Load(GameSceneManager.SceneName.AllHeroes);
     }
 }

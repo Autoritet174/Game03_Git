@@ -47,7 +47,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             buttons.Clear();
         }
 
-        public void ButtonsAdd(General.EBattleFiled name)
+        public void ButtonsAdd(EBattleFiled name)
         {
             BattleFieldButton button = new(name, this);
             buttons.Add(button.Name, button);
@@ -68,7 +68,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             float dungeonButtonHeight = DUNGEON_BUTTON_HEIGHT * coefHeight;
             float dungeonButtonWidth = dungeonButtonHeight / 0.5625f;
 
-            float ScrollView_Width = SelectDungeonScene.SCROLLVIEW_WIDTH * coefHeight;
+            float ScrollView_Width = SelectBattlefieldSceneInitializator.SCROLLVIEW_WIDTH * coefHeight;
             float contentSpacing = CONTENT_SPACING * coefHeight;
 
             // Ширина для кнопок после первой

@@ -1,6 +1,5 @@
 using Assets.GameData.Scripts;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using L = General.LocalizationKeys;
 
 public class ButtonClose_Click_EndBattle : MonoBehaviour
@@ -12,6 +11,7 @@ public class ButtonClose_Click_EndBattle : MonoBehaviour
         {
             return;
         }
-        SceneManager.LoadScene("MainMenu");
+
+        GameSceneManager.Load(GameSceneManager.SceneName.MainMenu);
     }
 }

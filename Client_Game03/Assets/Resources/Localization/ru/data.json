@@ -50,10 +50,10 @@
 			"EndBattle": "Завершить бой",
 			
 			"BattleField_TestPlatforms": "Испытательные площадки",
-			"BattleField_TestPlatforms_Polygon": "Полигон",
+			"BattleField_TestPlatforms__Polygon": "Полигон",
 			
 			"BattleField_Mines": "Шахты",
-			"BattleField_Mines_Iron": "Железо",
+			"BattleField_Mines__Iron": "Железо",
 			
 			"BattleField_Dungeons": "Подземелья",
 			

@@ -1,6 +1,5 @@
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
-using Game03Client;
 using General.DTO.RestRequest;
 using System;
 using System.Security.Cryptography;
@@ -25,10 +24,6 @@ namespace Assets.GameData.Scenes.Auth
 
         public static void ClearTokenInSecureStorageProvider()
         {
-            if (string.Empty == "")
-            {
-                return;
-            }
             SecureStorageProvider.SetValue(SecureStorageKey.RefreshToken, string.Empty);
             SecureStorageProvider.SetValue(SecureStorageKey.RefreshTokenExpirationAt, string.Empty);
         }
@@ -44,7 +39,7 @@ namespace Assets.GameData.Scenes.Auth
             try
             {
                 Game03Client.Auth.AuthType type;
-                if (email != null && password != null && refreshToken == null)
+                if (email != null && password != null)
                 {
                     type = Game03Client.Auth.AuthType.Login;
                 }
@@ -63,7 +58,7 @@ namespace Assets.GameData.Scenes.Auth
                 success = await GameServerPinger.PingAsync();
                 if (!success)
                 {
-                    ClearTokenInSecureStorageProvider();
+                    // ClearTokenInSecureStorageProvider();
                     GameMessage.ShowLocale(L.Error.Server.Unavailable, true);
                     return false;
                 }
@@ -79,10 +74,6 @@ namespace Assets.GameData.Scenes.Auth
                     {
                         GameMessage.ShowLocale(L.Error.Server.InvalidResponse, true);
                     }
-                    else
-                    {
-                        GameMessage.Close();
-                    }
                     return false;
                 }
 
@@ -97,8 +88,6 @@ namespace Assets.GameData.Scenes.Auth
                     GameMessage.ShowLocale(L.Error.Server.OpeningWebSocketFailed, true);
                     return false;
                 }
-
-                //await Game03Client.WebSocketClient.SendMessageAsync("Да это жёстко!", CancellationTokenManager.Create("test"));
 
 
                 // Загрузка игровых данных не связанных с конкретным пользователем
@@ -132,12 +121,12 @@ namespace Assets.GameData.Scenes.Auth
 
                 SaveTokenInSecureStorageProvider();
 
-                UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+                GameSceneManager.Load(GameSceneManager.SceneName.MainMenu);
                 return true;
             }
             catch (Exception ex)
             {
-                UnityEngine.Debug.LogError(ex);
+                Debug.LogError(ex);
                 ClearTokenInSecureStorageProvider();
                 GameMessage.ShowError(ex);
                 return false;

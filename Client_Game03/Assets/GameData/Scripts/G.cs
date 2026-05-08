@@ -20,11 +20,13 @@ namespace Assets.GameData.Scripts
         /// Должен быть установлен извне.
         /// </summary>
         public static bool IsApplicationQuitting { get; private set; } = false;
+
         static G()
         {
             // Мониторим состояние через AppDomain
             AppDomain.CurrentDomain.DomainUnload += (s, e) => IsApplicationQuitting = true;
         }
+
         private class AppStateMonitor : MonoBehaviour
         {
             private void OnApplicationQuit()
@@ -43,13 +45,13 @@ namespace Assets.GameData.Scripts
             GameLanguage lang = GameLanguage.Ru;
 
             string path = $"localization/{lang.NameShort}/data";
-            UnityEngine.TextAsset jsonFile = UnityEngine.Resources.Load<UnityEngine.TextAsset>(path);
+            TextAsset jsonFile = Resources.Load<TextAsset>(path);
             General.StringCapsule capsule = new()
             {
                 Value = jsonFile.text,
             };
 
-            Game03.Init(Path.Combine(UnityEngine.Application.dataPath, @"GameData\Config\Main.ini"), capsule, LogError, LogInfo);
+            Game03.Init(Path.Combine(Application.dataPath, @"GameData\Config\Main.ini"), capsule, LogError, LogInfo);
 
             Application.targetFrameRate = 60;
         }
