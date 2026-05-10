@@ -15,7 +15,7 @@
 			"TakeOnAlt": "Одеть в другой слот",
 			"TakeOff": "Снять",
 			"Sell": "Продать",
-			"ShowHero": "Показать героя",
+			"ShowHero": "Показать героя"
 		},
 		"Label": {
 			"ExitGame": "Выйти из игры?",
@@ -32,7 +32,7 @@
 				"Neck": "Шея",
 				"Ring": "Кольцо",
 				"Earring": "Серьга",
-				"Trinket": "Аксессуар",
+				"Trinket": "Аксессуар"
 			},
 			"Stat": {
 				"Level": "Уровень",
@@ -42,9 +42,9 @@
 				"Intelligence": "Интеллект",
 				"CritChance": "Критический удар (шанс)",
 				"CritMultiplier": "Критический удар (множ.)",
-				"Versality": "Универсальность", 
-				"Initiative": "Инициатива", 
-				"Haste": "Скорость", 
+				"Versality": "Универсальность",
+				"Initiative": "Инициатива",
+				"Haste": "Скорость"
 			},
 			"NoGroup": "Нет группы",
 			"EndBattle": "Завершить бой",
@@ -55,7 +55,7 @@
 			"BattleField_Mines": "Шахты",
 			"BattleField_Mines__Iron": "Железо",
 			
-			"BattleField_Dungeons": "Подземелья",
+			"BattleField_Dungeons": "Подземелья"
 			
 		}
 	},
@@ -64,7 +64,7 @@
 		"User": {
 			"NotEmail" : "Введённый текст не емаил",
 			"EmailEmpty" : "Не введен email",
-			"PasswordEmpty" : "Не введен пароль",
+			"PasswordEmpty" : "Не введен пароль"
 		},
 		"Server": {
 			"Timeout" : "Время ожидания ответа от сервера истекло",
@@ -79,7 +79,7 @@
 			"LoadingCollectionFailed" : "Ошибка при загрузке коллекции",
 			"UserAlreadyExists" : "Пользователь уже существует",
 			"Required2FA" : "Требуется двухфакторная аутентификация",
-			"RefreshTokenErrorCreating" : "Ошибка при создании обновляемого токена",
+			"RefreshTokenErrorCreating" : "Ошибка при создании обновляемого токена"
 		}
 	},
 	
@@ -90,6 +90,6 @@
 		"LoadingData" : "Загрузка данных",
 		"LoadingCollection" : "Загрузка коллекции",
 		"CheckingServerAvailability" : "Проверка доступности сервера",
-		"SelectHero" : "Выбери героя",
+		"SelectHero" : "Выбери героя"
 	}
 }

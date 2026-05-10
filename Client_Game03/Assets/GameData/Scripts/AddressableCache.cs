@@ -55,7 +55,7 @@ namespace Assets.GameData.Scripts
             };
 
             // Heroes
-            foreach (DtoBaseHero hero in dtoContainer.BaseHeroes)
+            foreach (BaseHero hero in dtoContainer.BaseHeroes)
             {
                 // Используем TryAdd для избежания крэша при дубликатах в конфиге
                 tasks.Add(SafeLoadAsync($"Heroes-{hero.Name}", s => Heroes.TryAdd(hero.Name, s)));
@@ -79,7 +79,7 @@ namespace Assets.GameData.Scripts
 
 
             // Equipments
-            foreach (DtoBaseEquipment equipment in dtoContainer.BaseEquipments)
+            foreach (BaseEquipment equipment in dtoContainer.BaseEquipments)
             {
                 tasks.Add(SafeLoadAsync($"Equipments-{equipment.Name}", s => Equipments.TryAdd(equipment.Name, s)));
             }
@@ -140,20 +140,20 @@ namespace Assets.GameData.Scripts
             return Rarityes[rarity];
         }
 
-        public static Sprite GetHeroSprite(DtoHero hero)
+        public static Sprite GetHeroSprite(Hero hero)
         {
-            DtoBaseHero baseHero = hero.BaseHero!;
+            BaseHero baseHero = hero.BaseHero!;
             return Heroes[baseHero.Name];
         }
-        public static Sprite GetHeroFaceSprite(DtoHero hero)
+        public static Sprite GetHeroFaceSprite(Hero hero)
         {
-            DtoBaseHero baseHero = hero.BaseHero!;
+            BaseHero baseHero = hero.BaseHero!;
             return Heroes[$"{baseHero.Name}_face"];
         }
 
-        public static Sprite GetEquipmentSprite(DtoEquipment equipment)
+        public static Sprite GetEquipmentSprite(Equipment equipment)
         {
-            DtoBaseEquipment baseEquipment = equipment.BaseEquipment!;
+            BaseEquipment baseEquipment = equipment.BaseEquipment!;
             return Equipments[baseEquipment.Name];
         }
     }

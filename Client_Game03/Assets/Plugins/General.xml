@@ -51,11 +51,6 @@
             Data Transfer Object. Корневой контейнер для данных.
             </summary>
         </member>
-        <member name="M:General.DTO.Entities.DtoContainerCollection.#ctor(System.Collections.Generic.List{General.DTO.Entities.Collection.Equipment},System.Collections.Generic.List{General.DTO.Entities.Collection.Hero})">
-            <summary>
-            Data Transfer Object. Корневой контейнер для данных.
-            </summary>
-        </member>
         <member name="T:General.DTO.Entities.DtoContainerGameData">
             <summary>
             Data Transfer Object. Корневой контейнер для данных.
@@ -459,12 +454,7 @@
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
         </member>
-        <member name="P:General.GlobalJsonContext.IEnumerableEquipment">
-            <summary>
-            Defines the source generated JSON serialization contract metadata for a given type.
-            </summary>
-        </member>
-        <member name="P:General.GlobalJsonContext.IEnumerableHero">
+        <member name="P:General.GlobalJsonContext.DictionaryInt32ListSingle">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
@@ -608,20 +598,6 @@
         <member name="M:General.GlobalJsonContext.GetTypeInfo(System.Type)">
             <inheritdoc/>
         </member>
-        <member name="M:General.JtokenExt.GetString(Newtonsoft.Json.Linq.JToken)">
-            <summary>
-            Получить строковое представление JToken или пустую строку, если токен равен null.
-            </summary>
-            <param name="token"></param>
-            <returns></returns>
-        </member>
-        <member name="M:General.JtokenExt.GetInt(Newtonsoft.Json.Linq.JToken)">
-            <summary>
-            Получить целочисленное значение JToken или 0, если токен равен null.
-            </summary>
-            <param name="token"></param>
-            <returns></returns>
-        </member>
         <member name="T:General.LocalizationKeys">
             <summary>
             Статический класс, содержащий строковые ключи для доступа к текстовым ресурсам
@@ -683,6 +659,11 @@
         <member name="F:General.LocalizationKeys.SECONDS_REMAINING">
             <summary>
             Ключ-заполнитель для указания оставшегося времени (в секундах).
+            </summary>
+        </member>
+        <member name="T:General.RandomShared">
+            <summary>
+            Высокопроизводительный потокобезопасный аналог "Random.Shared" для .NET Standard 2.1.
             </summary>
         </member>
         <member name="T:General.StringCapsule">

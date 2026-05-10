@@ -214,14 +214,6 @@
           }
         }
       },
-      "Newtonsoft.Json/13.0.4": {
-        "runtime": {
-          "lib/netstandard2.0/Newtonsoft.Json.dll": {
-            "assemblyVersion": "13.0.0.0",
-            "fileVersion": "13.0.4.30916"
-          }
-        }
-      },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2": {},
       "runtime.fedora.23-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2": {},
       "runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2": {},
@@ -475,7 +467,6 @@
         "dependencies": {
           "Microsoft.AspNetCore.SignalR.Client": "10.0.7",
           "Microsoft.AspNetCore.SignalR.Client.Core": "10.0.7",
-          "Newtonsoft.Json": "13.0.4",
           "System.ComponentModel.Annotations": "5.0.0",
           "System.Text.Json": "10.0.7"
         },
@@ -612,13 +603,6 @@
       "sha512": "sha512-D5M0Jr551iTgwkZMN9rm0pSkgNLj5quUWQUmQPMZh7k/bnvZTnXRGfE2KuvXf1EEjt/ofD9yw9IumpgdP9QCnw==",
       "path": "microsoft.extensions.primitives/10.0.7",
       "hashPath": "microsoft.extensions.primitives.10.0.7.nupkg.sha512"
-    },
-    "Newtonsoft.Json/13.0.4": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-pdgNNMai3zv51W5aq268sujXUyx7SNdE2bj1wZcWjAQrKMFZV260lbqYop1d2GM67JI1huLRwxo9ZqnfF/lC6A==",
-      "path": "newtonsoft.json/13.0.4",
-      "hashPath": "newtonsoft.json.13.0.4.nupkg.sha512"
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2": {
       "type": "package",

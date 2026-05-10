@@ -108,24 +108,21 @@
             Реализация провайдера для управления локализацией, загружающая данные из JSON.
             </summary>
         </member>
-        <member name="F:Game03Client.LocalizationManager.localization">
-            <summary>
-            Словарь, хранящий ключи локализации (путь в JSON) и соответствующие им строковые значения.
-            </summary>
-        </member>
         <member name="M:Game03Client.LocalizationManager.GetValue(System.String)">
             <summary>
             Получает локализованное строковое значение по ключу.
             </summary>
-            <param name="key">Ключ локализации (например, "UI.Menu.StartGame").</param>
             <returns>Локализованная строка, или сам ключ, если значение не найдено.</returns>
         </member>
-        <member name="M:Game03Client.LocalizationManager.GetTextByJObject(Newtonsoft.Json.Linq.JObject)">
+        <member name="M:Game03Client.LocalizationManager.GetTextByJson(System.String)">
             <summary>
-            Получить локализованную строку текста ошибки на основе данных из <see cref="T:Newtonsoft.Json.Linq.JObject"/>.
+            Получить локализованную строку текста ошибки на основе данных из JSON-строки.
             </summary>
-            <param name="jObject">Объект JSON, содержащий ключ ошибки ("keyError") и дополнительные данные.</param>
-            <returns>Локализованная строка ошибки с подставленными данными, или пустая строка, если <paramref name="jObject"/> равен null.</returns>
+        </member>
+        <member name="M:Game03Client.LocalizationManager.GetTextByElement(System.Text.Json.JsonElement)">
+            <summary>
+            Получить локализованную строку текста ошибки на основе данных из <see cref="T:System.Text.Json.JsonElement"/>.
+            </summary>
         </member>
         <member name="M:Game03Client.Password.HashSha512(System.String)">
             <summary>Хэширует пароль SHA512.</summary>

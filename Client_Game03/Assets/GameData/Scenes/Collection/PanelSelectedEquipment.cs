@@ -144,7 +144,7 @@ namespace Assets.GameData.Scenes.Collection
         private readonly RectTransform _ImageContainer_RectTransform;
         private readonly Image _SelectedEquipment_Image;
         private readonly Image _SelectedEquipmentRarity_Image;
-        private DtoEquipment _DtoEquipment;
+        private Equipment _DtoEquipment;
 
         private readonly RectTransform _PanelTab1_RectTransform;
         private readonly RectTransform _PanelStat_RectTransform;
@@ -335,9 +335,9 @@ namespace Assets.GameData.Scenes.Collection
                 }
 
                 // тут запоминаем экипировку которая может быть одета в этот же слот
-                DtoHero hero = CollectionProvider.GetCollectionHeroesFromCache().First(a => a.Id == heroId);
+                Hero hero = CollectionProvider.GetCollectionHeroesFromCache().First(a => a.Id == heroId);
                 ESlot slotId = CollectionProvider.GetSlotId(_DtoEquipment, inAltSlot);
-                DtoEquipment equipmentEquipped = CollectionProvider.GetCollectionEquipmentsFromCache().FirstOrDefault(a => a.HeroId == heroId && a.SlotId == slotId);
+                Equipment equipmentEquipped = CollectionProvider.GetCollectionEquipmentsFromCache().FirstOrDefault(a => a.HeroId == heroId && a.SlotId == slotId);
 
 
                 result = await CollectionProvider.EquipmentTakeOnAsync(EquipmentId,

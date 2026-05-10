@@ -89,7 +89,7 @@ public class AllHeroes : MonoBehaviour
     private async UniTask AddAllImageOnContent()
     {
         List<UniTask> list = new();
-        foreach (DtoBaseHero heroStats in Game03Client.GameData.Container.BaseHeroes.OrderByDescending(static a => a.Rarity))
+        foreach (BaseHero heroStats in Game03Client.GameData.Container.BaseHeroes.OrderByDescending(static a => a.Rarity))
         {
             list.Add(LoadHeroByName(heroStats));
         }
@@ -97,7 +97,7 @@ public class AllHeroes : MonoBehaviour
         await UniTask.WhenAll(list);
     }
 
-    private async UniTask LoadHeroByName(DtoBaseHero hero)
+    private async UniTask LoadHeroByName(BaseHero hero)
     {
         GameObject _prefabIconHero = prefabIconHero.SafeInstant();
         _prefabIconHero.name = hero.Name;
@@ -242,7 +242,7 @@ public class AllHeroes : MonoBehaviour
 
     }
 
-    public async UniTask HeroView(DtoBaseHero hero)
+    public async UniTask HeroView(BaseHero hero)
     {
 
         GameObject prefabHeroViewer;

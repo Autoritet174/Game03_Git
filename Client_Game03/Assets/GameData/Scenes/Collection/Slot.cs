@@ -32,7 +32,7 @@ namespace Assets.GameData.Scenes.Collection
         private readonly GameObject _ImageContainer_GameObject;
         private readonly Image _Rarity_Image;
         private readonly Image _EquipmentFull_Image;
-        private DtoEquipment _Equipment;
+        private Equipment _Equipment;
         private readonly PanelSelectedEquipment _PanelSelectedEquipment;
 
         public float Width { get; private set; }

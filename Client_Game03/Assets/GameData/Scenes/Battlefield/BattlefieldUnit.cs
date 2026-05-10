@@ -33,8 +33,7 @@ namespace Assets.GameData.Scenes.Battlefield
 
             GameObject canvasUnits = GameObjectFinder.FindByName("CanvasUnits");
             GameObject gameObject = AddressableCache.BattleFieldUnit.SafeInstant(canvasUnits.transform);
-            DtoHero dtoHero = Game03Client.Collection.CollectionProvider.GetCollectionHeroesFromCache().FirstOrDefault(a => a.Id == spawnedHeroes.HeroId);
-            DtoBaseHero dtoBaseHero = dtoHero.BaseHero;
+            BaseHero dtoBaseHero = Game03Client.GameData.Container.BaseHeroes.First(a=>a.Id == spawnedHeroes.BaseHeroId);
 
             gameObject.name = $"UnitPlayer_{dtoBaseHero.Name}";
 

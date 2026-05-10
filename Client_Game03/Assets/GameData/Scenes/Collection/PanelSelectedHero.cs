@@ -142,7 +142,7 @@ namespace Assets.GameData.Scenes.Collection
         {
             IsVisible = true;
             HeroId = heroId;
-            DtoHero hero = CollectionProvider.GetCollectionHeroesFromCache().First(a => a.Id == heroId);
+            Hero hero = CollectionProvider.GetCollectionHeroesFromCache().First(a => a.Id == heroId);
             _LabelSelectedHero_TextMeshProUGUI.SetText(hero.BaseHero.Name);
             _SelectedHero_Image.sprite = AddressableCache.GetHeroSprite(hero);
             _SelectedHero_Image.preserveAspect = true;
@@ -153,7 +153,7 @@ namespace Assets.GameData.Scenes.Collection
             // отображаем всю одетую экипировку
             foreach (Slot slot in _Slots)
             {
-                DtoEquipment eqiup = CollectionProvider.GetCollectionEquipmentsFromCache()
+                Equipment eqiup = CollectionProvider.GetCollectionEquipmentsFromCache()
                     .FirstOrDefault(a => a.SlotId == slot.SlotId && a.HeroId == HeroId);
                 if (eqiup != null)
                 {

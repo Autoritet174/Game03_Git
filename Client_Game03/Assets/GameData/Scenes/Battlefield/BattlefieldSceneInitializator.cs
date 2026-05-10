@@ -15,7 +15,7 @@ namespace Assets.GameData.Scenes.BattleField
 
         public void Start()
         {
-            if (SpawnedBattlefield == null || SpawnedBattlefield.SpawnedHeroes == null)
+            if (SpawnedBattlefield == null || SpawnedBattlefield.SpawnedHeroPlayerList == null)
             {
                 GameMessage.Show("spawnedBattlefield == null || spawnedBattlefield.SpawnedHeroes == null", true);
                 return;
@@ -25,9 +25,9 @@ namespace Assets.GameData.Scenes.BattleField
             battlefieldUnits.Clear();
 
             // размещение героев игрока
-            for (int i = 0; i < SpawnedBattlefield.SpawnedHeroes.Count; i++)
+            for (int i = 0; i < SpawnedBattlefield.SpawnedHeroPlayerList.Count; i++)
             {
-                SpawnedHero spawnedHeroes = SpawnedBattlefield.SpawnedHeroes[i];
+                SpawnedHero spawnedHeroes = SpawnedBattlefield.SpawnedHeroPlayerList[i];
                 battlefieldUnits.Add(spawnedHeroes.SpawnedId, new(spawnedHeroes, i, true));
             }
 

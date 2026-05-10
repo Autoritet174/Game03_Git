@@ -120,7 +120,7 @@ namespace Assets.GameData.Scenes.Collection
         private readonly GameObject _OwnerHeroIcon_GameObject;
         private readonly Image _OwnerImageRarity_Image;
         private readonly Image _OwnerImageHero_Image;
-        private readonly DtoEquipment _Equipment;
+        private readonly Equipment _Equipment;
         private readonly GameObject _SelectedImage_GameObject;
         private readonly GameObject _RarityImage_GameObject;
 
@@ -135,7 +135,7 @@ namespace Assets.GameData.Scenes.Collection
             {
                 if (_Equipment.HeroId != null)
                 {
-                    DtoHero hero = CollectionProvider.GetCollectionHeroesFromCache().First(a => a.Id == _Equipment.HeroId);
+                    Hero hero = CollectionProvider.GetCollectionHeroesFromCache().First(a => a.Id == _Equipment.HeroId);
                     _OwnerImageHero_Image.sprite = AddressableCache.GetHeroFaceSprite(hero);
                     _OwnerImageRarity_Image.sprite = AddressableCache.GetRarity(hero.BaseHero.Rarity);
                     _OwnerHeroIcon_GameObject.SetActive(true);
