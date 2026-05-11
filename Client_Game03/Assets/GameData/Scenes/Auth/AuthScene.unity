@@ -1244,7 +1244,7 @@ GameObject:
   - component: {fileID: 1833226925}
   - component: {fileID: 1833226926}
   m_Layer: 0
-  m_Name: _Initializator
+  m_Name: Initializator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1533,9 +1533,9 @@ RectTransform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1833226925}
   - {fileID: 617763950}
   - {fileID: 434498846}
   - {fileID: 1025962083}
   - {fileID: 1228003612}
-  - {fileID: 1833226925}
   - {fileID: 2032354757}

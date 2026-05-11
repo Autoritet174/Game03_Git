@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using L = General.LocalizationKeys;
+using I = CollectionSceneInitializator;
 
 namespace Assets.GameData.Scenes.Collection
 {
@@ -22,13 +23,10 @@ namespace Assets.GameData.Scenes.Collection
         private const float SPACING = 9f;
         private const float PADDING = 22.5f;
 
-        public PanelGroupDivider(PanelCollectionViewer panelCollectionViewer, GroupCollectionElement groupCollectionElement)
+        public PanelGroupDivider(GroupCollectionElement groupCollectionElement)
         {
-            PanelCollectionViewer = panelCollectionViewer;
-            _PanelScene = PanelCollectionViewer.PanelCollection.PanelScene;
-
             _GameObject = AddressableCache.GroupDividerPrefabAddressableGameObject.SafeInstant();
-            _GameObject.transform.SetParent(panelCollectionViewer.CollectionContent_Transform, false);
+            _GameObject.transform.SetParent(I.PanelCollectionViewerInstance.CollectionContent_Transform, false);
 
             _GroupName = groupCollectionElement.Name;
             _RectTransform = _GameObject.GetComponent<RectTransform>();
@@ -73,8 +71,6 @@ namespace Assets.GameData.Scenes.Collection
 
         public Transform CellsContainer_Transform { get; }
 
-        public PanelCollectionViewer PanelCollectionViewer { get; }
-        private readonly PanelScene _PanelScene;
         private readonly string _GroupName;
 
         private readonly GameObject _GameObject;
@@ -143,7 +139,7 @@ namespace Assets.GameData.Scenes.Collection
 
         public void OnResized()
         {
-            float width = PanelCollectionViewer.Width;
+            float width = I.PanelCollectionViewerInstance.Width;
             float coefHeight = G.GetCoefHeight();
             float buttonHeight = DIVIDER_BUTTON_HEIGHT * coefHeight;
             float height = buttonHeight;

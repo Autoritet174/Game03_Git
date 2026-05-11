@@ -10,6 +10,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using I = CollectionSceneInitializator;
 using L = General.LocalizationKeys;
 
 namespace Assets.GameData.Scenes.Collection
@@ -36,9 +37,8 @@ namespace Assets.GameData.Scenes.Collection
 
         private const float IMAGE_CONTAINER_SPACING = 10f;
 
-        public PanelSelectedEquipment(PanelScene panelScene)
+        public PanelSelectedEquipment()
         {
-            _PanelScene = panelScene;
             _RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedEquipment (id=ta39338e)");
             _RectTransform.anchoredPosition = new Vector2(0f, 0f);
             _GameObject = _RectTransform.gameObject;
@@ -83,9 +83,6 @@ namespace Assets.GameData.Scenes.Collection
             _ButtonTakeOnAlt_RectTransform.gameObject.SetClickEvent(TakeOnOffInAltSlotOnClick, true);
             _ButtonShowHero_RectTransform.gameObject.SetClickEvent(ShowHeroOnClick, true);
 
-            _PanelCollectionViewer = _PanelScene.PanelCollection.PanelCollectionViewer;
-            _PanelSelectedHero = _PanelScene.PanelSelectedHero;
-
             _PanelTab1_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedEquipmentBottomTab1 (id=9nwzj7p8)");
 
             // Stats
@@ -94,7 +91,7 @@ namespace Assets.GameData.Scenes.Collection
             _StatLevel = new Stat("Level", 1, GameObjectFinder.FindByName("StatLevel", _PanelStat_RectTransform.transform));
             for (int i = 0; i < _Stats.Length; i++)
             {
-                string name = $"Stat{i+1}";
+                string name = $"Stat{i + 1}";
                 _Stats[i] = new Stat(name, i + 1, GameObjectFinder.FindByName(name, _PanelStat_RectTransform.transform));
             }
 
@@ -108,9 +105,6 @@ namespace Assets.GameData.Scenes.Collection
         public float Height { get; private set; }
         public bool IsVisible { get; private set; }
         public bool IsEquipped { get; private set; }
-
-        private readonly PanelSelectedHero _PanelSelectedHero;
-        private readonly PanelCollectionViewer _PanelCollectionViewer;
 
         private readonly RectTransform _RectTransform;
         private readonly GameObject _GameObject;
@@ -188,19 +182,19 @@ namespace Assets.GameData.Scenes.Collection
 
             UpdateButtons();
 
-            _PanelCollectionViewer.GetElement(equipmentId)?.Selected(true);
+            I.PanelCollectionViewerInstance.GetElement(equipmentId)?.Selected(true);
 
             _GameObject.SetActive(true);
-            _PanelScene.OnResized();
+            I.OnResized();
         }
 
         public async UniTask Hide()
         {
             IsVisible = false;
-            _PanelCollectionViewer.GetElement(EquipmentId)?.Selected(false);
+            I.PanelCollectionViewerInstance.GetElement(EquipmentId)?.Selected(false);
             EquipmentId = Guid.Empty;
             _GameObject.SetActive(false);
-            _PanelScene.OnResized();
+            I.OnResized();
         }
 
         public void OnResized()
@@ -214,10 +208,10 @@ namespace Assets.GameData.Scenes.Collection
 
             float coefHeight = G.GetCoefHeight();
             Width = WIDTH_BASE * coefHeight;
-            float h1 = _PanelScene.PanelTop.Height;
+            float h1 = I.PanelTopInstance.Height;
             Height = Screen.height - h1;
             _RectTransform.sizeDelta = new Vector2(Width, Height);
-            _RectTransform.anchoredPosition = new Vector2(-_PanelScene.PanelSelectedHero.Width - WIDTH_SPACING, 0f);
+            _RectTransform.anchoredPosition = new Vector2(-I.PanelSelectedHeroInstance.Width - WIDTH_SPACING, 0f);
 
             // Верхняя панель где написано название экипировки
             _PanelTop_RectTransform.sizeDelta = new Vector2(Width, h1);
@@ -282,14 +276,14 @@ namespace Assets.GameData.Scenes.Collection
 
             // Stats
             _PanelStat_RectTransform.anchoredPosition = new Vector2(imageContainerSpacing, imageContainerSpacing);
-            _PanelStat_RectTransform.sizeDelta = new Vector2(_PanelSelectedHero.PanelStatWidth, _PanelSelectedHero.PanelStatHeight);
+            _PanelStat_RectTransform.sizeDelta = new Vector2(I.PanelSelectedHeroInstance.PanelStatWidth, I.PanelSelectedHeroInstance.PanelStatHeight);
         }
 
         private async UniTask ShowHeroOnClick()
         {
             if (_DtoEquipment.HeroId != null)
             {
-                _PanelSelectedHero.Show(_DtoEquipment.HeroId.Value);
+                I.PanelSelectedHeroInstance.Show(_DtoEquipment.HeroId.Value);
             }
         }
         private async UniTask TakeOnOffOnClick()
@@ -315,8 +309,8 @@ namespace Assets.GameData.Scenes.Collection
                 if (result)
                 {
                     Show(EquipmentId);
-                    _PanelSelectedHero.Show(heroId);
-                    _PanelCollectionViewer.GetElement(EquipmentId)?.RefreshOwnerImage();
+                    I.PanelSelectedHeroInstance.Show(heroId);
+                    I.PanelCollectionViewerInstance.GetElement(EquipmentId)?.RefreshOwnerImage();
                 }
                 else
                 {
@@ -326,10 +320,10 @@ namespace Assets.GameData.Scenes.Collection
             else
             {
                 // экипировка не одета, одеваем
-                Guid heroId = _PanelSelectedHero.HeroId;
+                Guid heroId = I.PanelSelectedHeroInstance.HeroId;
                 if (heroId == Guid.Empty)
                 {
-                    await _PanelScene.PanelTop.OnClickHeroes();
+                    await I.PanelTopInstance.OnClickHeroes();
                     GameMessage.Show(LocalizationManager.GetValue(L.Info.SelectHero), true);
                     return;
                 }
@@ -341,7 +335,7 @@ namespace Assets.GameData.Scenes.Collection
 
 
                 result = await CollectionProvider.EquipmentTakeOnAsync(EquipmentId,
-                    _PanelSelectedHero.HeroId, inAltSlot,
+                    I.PanelSelectedHeroInstance.HeroId, inAltSlot,
                     CancellationTokenManager.Create("CollectionProvider.EquipmentTakeOnAsync", 5));
                 if (result)
                 {
@@ -350,13 +344,13 @@ namespace Assets.GameData.Scenes.Collection
                         //Если была одетая экипировка в этот слот, то снимаем её
                         equipmentEquipped.SlotId = null;
                         equipmentEquipped.HeroId = null;
-                        _PanelCollectionViewer.GetElement(equipmentEquipped.Id)?.RefreshOwnerImage();
+                        I.PanelCollectionViewerInstance.GetElement(equipmentEquipped.Id)?.RefreshOwnerImage();
                     }
 
 
                     Show(EquipmentId);
-                    _PanelSelectedHero.Show(_DtoEquipment.HeroId.Value);
-                    _PanelCollectionViewer.GetElement(EquipmentId)?.RefreshOwnerImage();
+                    I.PanelSelectedHeroInstance.Show(_DtoEquipment.HeroId.Value);
+                    I.PanelCollectionViewerInstance.GetElement(EquipmentId)?.RefreshOwnerImage();
                 }
                 else
                 {

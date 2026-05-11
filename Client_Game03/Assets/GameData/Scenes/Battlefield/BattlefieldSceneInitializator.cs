@@ -31,7 +31,12 @@ namespace Assets.GameData.Scenes.BattleField
                 battlefieldUnits.Add(spawnedHeroes.SpawnedId, new(spawnedHeroes, i, true));
             }
 
-            
+            // размещение героев врага
+            for (int i = 0; i < SpawnedBattlefield.SpawnedHeroEnemyList.Count; i++)
+            {
+                SpawnedHero spawnedHeroes = SpawnedBattlefield.SpawnedHeroEnemyList[i];
+                battlefieldUnits.Add(spawnedHeroes.SpawnedId, new(spawnedHeroes, i, false));
+            }
         }
     }
 }

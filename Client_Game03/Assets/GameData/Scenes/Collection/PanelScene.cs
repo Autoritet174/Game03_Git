@@ -2,18 +2,19 @@ using Assets.GameData.Scripts;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using I = CollectionSceneInitializator;
 
 namespace Assets.GameData.Scenes.Collection
 {
-    public enum CollectionModeEnum { Hero, Equipment//, ChangingEquipment
+    public enum CollectionModeEnum
+    {
+        Hero, Equipment//, ChangingEquipment
     }
     public enum CollectionElementEnum { Hero, Equipment }
 
-    public class PanelScene : MonoBehaviour
+    public class PanelScene
     {
-        public static PanelScene Instance { get; private set; }
-
-        private async void Start()
+        public PanelScene()
         {
             // Изображение заднего фона
             _Background_Image = GameObjectFinder.FindByName<Image>("Image_Background (id=688x18dt)");
@@ -26,69 +27,23 @@ namespace Assets.GameData.Scenes.Collection
             {
                 throw new Exception("Изображение заднего фона некорректно.");
             }
-            Instance = this;
-            PanelTop = new(this);
-            PanelCollection = new(this);
-            PanelSelectedHero = new(this);
-            PanelSelectedEquipment = new(this);
-            await PanelCollection.PanelCollectionViewer.InstantiateCollectionAsync();
-            initialized = true;
-            OnResized();
         }
-
-        public PanelTop PanelTop { get; private set; }
-        public PanelCollection PanelCollection { get; private set; }
-        public PanelSelectedHero PanelSelectedHero { get; private set; }
-        public PanelSelectedEquipment PanelSelectedEquipment { get; private set; }
 
         public CollectionModeEnum CollectionMode { get; set; } = CollectionModeEnum.Hero;
 
-        private float _Width, _Height;
-        private float _ImageBackgroundCoef;
-        private Image _Background_Image;
-        private bool initialized = false;
+        private readonly float _ImageBackgroundCoef;
+        private readonly Image _Background_Image;
 
         public void OnResized()
         {
-            if (!initialized)
-            {
-                return;
-            }
-
-            _Height = Screen.height;
-            _Width = Screen.width;
-
             // Изображение заднего фона
-            if (_Width / _Height > _ImageBackgroundCoef)//_Width / _Height;// 10000/1000 = 10 // 1920 / 1080 = 1,7778
+            if (I.Width / I.Height > _ImageBackgroundCoef)//_Width / _Height;// 10000/1000 = 10 // 1920 / 1080 = 1,7778
             {
-                _Background_Image.rectTransform.sizeDelta = new Vector2(_Width, _Width / _ImageBackgroundCoef);
+                _Background_Image.rectTransform.sizeDelta = new Vector2(I.Width, I.Width / _ImageBackgroundCoef);
             }
             else
             {
-                _Background_Image.rectTransform.sizeDelta = new Vector2(_Height * _ImageBackgroundCoef, _Height);
-            }
-
-            // Вызваем OnResized у всех дочерних объектов
-            PanelTop.OnResized();
-            PanelSelectedHero.OnResized();
-            PanelSelectedEquipment.OnResized();
-            PanelCollection.OnResized();
-        }
-
-        private void Update()
-        {
-            //bool resize = false;
-            //if (!resize && (!Mathf.Approximately(Screen.height, _height) || !Mathf.Approximately(Screen.width, _width)))
-            //{
-            //    resize = true;
-            //}
-            //if (resize)
-            //{
-            //    OnResized();
-            //}
-            if (!Mathf.Approximately(Screen.height, _Height) || !Mathf.Approximately(Screen.width, _Width))
-            {
-                OnResized();
+                _Background_Image.rectTransform.sizeDelta = new Vector2(I.Height * _ImageBackgroundCoef, I.Height);
             }
         }
 

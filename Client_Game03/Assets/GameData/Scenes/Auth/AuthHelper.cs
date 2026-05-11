@@ -18,7 +18,7 @@ namespace Assets.GameData.Scenes.Auth
             {
                 using var sha256 = SHA256.Create();
                 byte[] hashBytes = sha256.ComputeHash(Convert.FromBase64String(refreshToken));
-                UnityEngine.Debug.Log(string.Join(' ', hashBytes));
+                Debug.Log(string.Join(' ', hashBytes));
             }
         }
 

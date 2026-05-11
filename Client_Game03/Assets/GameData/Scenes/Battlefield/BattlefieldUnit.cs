@@ -12,11 +12,11 @@ namespace Assets.GameData.Scenes.Battlefield
 {
     public class BattlefieldUnit
     {
-        private static readonly float[] yShiftArray = new float[] { -89f, 92f, -265f, 269f };
+        private static readonly float width = 153f;
+        private static readonly float height = 220f;
+        private static readonly float[] yShiftArray = new float[] { -height / 2, height / 2, -height * 3 / 2, -height * 3 / 2 };
         private static readonly float xShift = 200f;
         private static readonly Vector2 vector2_05 = new(0.5f, 0.5f);
-        private static readonly float width = 153f;
-        private static readonly float height = 219f;
         private static readonly float textHealthFontSize = 25f;
 
         private readonly SpawnedHero spawnedHeroes;
@@ -35,7 +35,7 @@ namespace Assets.GameData.Scenes.Battlefield
             GameObject gameObject = AddressableCache.BattleFieldUnit.SafeInstant(canvasUnits.transform);
             BaseHero dtoBaseHero = Game03Client.GameData.Container.BaseHeroes.First(a=>a.Id == spawnedHeroes.BaseHeroId);
 
-            gameObject.name = $"UnitPlayer_{dtoBaseHero.Name}";
+            gameObject.name = $"Unit{(isMyUnit ? "Player" : "Enemy")}_{dtoBaseHero.Name}";
 
             rectTransform = gameObject.GetComponent<RectTransform>();
             rectTransform.anchorMin = vector2_05;

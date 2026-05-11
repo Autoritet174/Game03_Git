@@ -9,6 +9,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using I = CollectionSceneInitializator;
 using L = General.LocalizationKeys;
 
 namespace Assets.GameData.Scenes.Collection
@@ -31,10 +32,8 @@ namespace Assets.GameData.Scenes.Collection
 
         private const float BUTTON_CLOSE_SPACING = 5f;
 
-        public PanelSelectedHero(PanelScene panelScene)
+        public PanelSelectedHero()
         {
-            _PanelScene = panelScene;
-            _PanelSelectedEquipment = panelScene.PanelSelectedEquipment;
             _RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHero (id=vs2gi8c6)");
             _RectTransform.anchoredPosition = new Vector2(0f, 0f);
             _GameObject = _RectTransform.gameObject;
@@ -75,7 +74,6 @@ namespace Assets.GameData.Scenes.Collection
 
             _SelectedHero_Image = GameObjectFinder.FindByName<Image>("ImageHeroFull (id=m5kn2f6p)");
             _SelectedHeroRarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity (id=xami3s9q)");
-            _PanelCollectionViewer = _PanelScene.PanelCollection.PanelCollectionViewer;
 
             // Stats
             _PanelStat_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelStats (id=aul0ak16)");
@@ -88,13 +86,9 @@ namespace Assets.GameData.Scenes.Collection
             _StatCritChance = new Stat("CritChance", 6, GameObjectFinder.FindByName("StatCritChance (id=1l42t8mp)"));
             _StatCritMultiplier = new Stat("CritMultiplier", 7, GameObjectFinder.FindByName("StatCritPower (id=1znqy1h2)"));
 
-
-
             Hide().GetAwaiter().GetResult();
         }
 
-        public PanelScene _PanelScene;
-        public PanelSelectedEquipment _PanelSelectedEquipment;
 
         public Guid HeroId { get; private set; }
         public float Width { get; private set; }
@@ -125,7 +119,6 @@ namespace Assets.GameData.Scenes.Collection
         private readonly Image _SelectedHero_Image;
         private readonly Image _SelectedHeroRarity_Image;
 
-        private readonly PanelCollectionViewer _PanelCollectionViewer;
 
         //Stats
         private readonly RectTransform _PanelStat_RectTransform;
@@ -210,9 +203,9 @@ namespace Assets.GameData.Scenes.Collection
 
 
 
-            _PanelCollectionViewer.GetElement(heroId)?.Selected(true);
+            I.PanelCollectionViewerInstance.GetElement(heroId)?.Selected(true);
             _GameObject.SetActive(true);
-            _PanelScene.OnResized();
+            I.OnResized();
         }
 
         public void Refresh()
@@ -223,7 +216,7 @@ namespace Assets.GameData.Scenes.Collection
         private async UniTask Hide()
         {
             IsVisible = false;
-            _PanelCollectionViewer.GetElement(HeroId)?.Selected(false);
+            I.PanelCollectionViewerInstance.GetElement(HeroId)?.Selected(false);
             HeroId = Guid.Empty;
             _GameObject.SetActive(false);
 
@@ -231,7 +224,7 @@ namespace Assets.GameData.Scenes.Collection
             //{
             //    await _PanelScene.PanelCollection.PanelCollectionViewer.InstantiateCollectionAsync();
             //}
-            _PanelScene.OnResized();
+            I.OnResized();
         }
 
         public void OnResized()
@@ -245,7 +238,7 @@ namespace Assets.GameData.Scenes.Collection
 
             float coefHeight = G.GetCoefHeight();
             Width = WIDTH_BASE * coefHeight;
-            float h1 = _PanelScene.PanelTop.Height;
+            float h1 = I.PanelTopInstance.Height;
             Height = Screen.height - h1;
             _RectTransform.sizeDelta = new Vector2(Width, Height);
 

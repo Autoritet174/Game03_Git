@@ -9,6 +9,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using L = General.LocalizationKeys;
+using I = CollectionSceneInitializator;
 
 namespace Assets.GameData.Scenes.Collection
 {
@@ -140,7 +141,7 @@ namespace Assets.GameData.Scenes.Collection
         {
             if (_Equipment != null)
             {
-                PanelScene.Instance.PanelSelectedEquipment.Show(_Equipment.Id);
+                I.PanelSelectedEquipmentInstance.Show(_Equipment.Id);
             }
         }
     }

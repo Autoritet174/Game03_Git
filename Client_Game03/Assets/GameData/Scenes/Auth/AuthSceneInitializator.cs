@@ -1,9 +1,6 @@
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
-using Game03Client;
 using System;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,9 +8,9 @@ using L = General.LocalizationKeys;
 
 namespace Assets.GameData.Scenes.Auth
 {
-    public class Init_Auth : MonoBehaviour
+    public class AuthSceneInitializator : MonoBehaviour
     {
-        
+
         private bool _initialized = false;
         private float _width, _height;
 

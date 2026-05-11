@@ -4,6 +4,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using I = CollectionSceneInitializator;
 
 namespace Assets.GameData.Scenes.Collection
 {
@@ -17,9 +18,8 @@ namespace Assets.GameData.Scenes.Collection
         private const float LABEL_HEIGHT = 30f;
         private const float LABEL_FONTSIZE = 18f;
 
-        public PanelCollectionTopButtons(PanelCollection panelCollection)
+        public PanelCollectionTopButtons()
         {
-            _PanelCollection = panelCollection;
             _RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelCollectionTopButtons (id=gmzb0h9f)");
 
             _FilterButtonHeroes = new("ImageButtonHeroes (id=pakco5ud)");
@@ -44,7 +44,6 @@ namespace Assets.GameData.Scenes.Collection
         public float Height { get; private set; }
 
         private readonly RectTransform _RectTransform;
-        private readonly PanelCollection _PanelCollection;
 
         private readonly FilterButton _FilterButtonHeroes;
         private readonly FilterButton _FilterButtonEquipments;
@@ -82,15 +81,16 @@ namespace Assets.GameData.Scenes.Collection
 
         //}
 
-        public void SetPageDiapason() {
-            _LabelRangePage_TextMeshProUGUI.text = $"{((PageCurrent - 1) * Game03Client.Collection.CollectionProvider.PAGE_SIZE) + 1} - {_PanelCollection.PanelCollectionViewer. MaxCollectionElements}";
+        public void SetPageDiapason()
+        {
+            _LabelRangePage_TextMeshProUGUI.text = $"{((PageCurrent - 1) * Game03Client.Collection.CollectionProvider.PAGE_SIZE) + 1} - {I.PanelCollectionViewerInstance.MaxCollectionElements}";
         }
 
         public void OnResized()
         {
             float coefHeight = G.GetCoefHeight();
             Height = HEIGHT * coefHeight;
-            _RectTransform.sizeDelta = new Vector2(_PanelCollection.Width, Height);
+            _RectTransform.sizeDelta = new Vector2(I.PanelCollectionInstance.Width, Height);
 
             _FilterButtonHeroes.OnResized(0);
             _FilterButtonEquipments.OnResized(0);
@@ -118,7 +118,7 @@ namespace Assets.GameData.Scenes.Collection
             if (PageCurrent > 1)
             {
                 PageCurrent--;
-                await _PanelCollection.PanelCollectionViewer.InstantiateCollectionAsync();
+                await I.PanelCollectionViewerInstance.InstantiateCollectionAsync();
             }
         }
 
@@ -127,13 +127,13 @@ namespace Assets.GameData.Scenes.Collection
             if (PageCurrent < PageMax)
             {
                 PageCurrent++;
-                await _PanelCollection.PanelCollectionViewer.InstantiateCollectionAsync();
+                await I.PanelCollectionViewerInstance.InstantiateCollectionAsync();
             }
         }
 
         public void UpdatePageMax()
         {
-            int c = _PanelCollection.PanelScene.CollectionMode switch
+            int c = I.PanelSceneInstance.CollectionMode switch
             {
                 CollectionModeEnum.Hero => Game03Client.Collection.CollectionProvider.GetCountHeroes(),
                 CollectionModeEnum.Equipment => Game03Client.Collection.CollectionProvider.GetCountEquipments(),

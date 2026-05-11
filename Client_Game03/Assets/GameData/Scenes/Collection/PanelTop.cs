@@ -2,14 +2,14 @@ using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using L = General.LocalizationKeys;
+using I = CollectionSceneInitializator;
 
 namespace Assets.GameData.Scenes.Collection
 {
     public class PanelTop
     {
-        public PanelTop(PanelScene panelScene)
+        public PanelTop()
         {
-            _PanelScene = panelScene;
             _RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelTop (id=ibal8ya0)");
             _ButtonClose_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose");
 
@@ -27,7 +27,6 @@ namespace Assets.GameData.Scenes.Collection
 
         private const float HEIGHT_BASE = 90f;
 
-        private readonly PanelScene _PanelScene;
         private readonly RectTransform _RectTransform;
         private readonly RectTransform _ButtonClose_RectTransform;
         private readonly TabButton _TabButtonHeroes, _TabButtonEquipment;//, _TabButtonChangingEquipment;
@@ -66,40 +65,40 @@ namespace Assets.GameData.Scenes.Collection
         /// <summary> Кнопка "Герои". </summary>
         public async UniTask OnClickHeroes()
         {
-            if (_PanelScene.CollectionMode == CollectionModeEnum.Hero)
+            if (I.PanelSceneInstance.CollectionMode == CollectionModeEnum.Hero)
             {
                 return;
             }
-            _PanelScene.CollectionMode = CollectionModeEnum.Hero;
-            //_PanelScene.PanelCollection.PanelCollectionTopButtons.UpdateActiveButtons();
+            I.PanelSceneInstance.CollectionMode = CollectionModeEnum.Hero;
+            //I.PanelSceneInstance.PanelCollection.PanelCollectionTopButtons.UpdateActiveButtons();
             SetColorOnTabButtons(_TabButtonHeroes);
-            await _PanelScene.PanelCollection.PanelCollectionViewer.InstantiateCollectionAsync();
+            await I.PanelCollectionViewerInstance.InstantiateCollectionAsync();
         }
 
         /// <summary> Кнопка "Экипировка". </summary>
         private async UniTask OnClickEquipment()
         {
-            if (_PanelScene.CollectionMode == CollectionModeEnum.Equipment)
+            if (I.PanelSceneInstance.CollectionMode == CollectionModeEnum.Equipment)
             {
                 return;
             }
-            _PanelScene.CollectionMode = CollectionModeEnum.Equipment;
-            //_PanelScene.PanelCollection.PanelCollectionTopButtons.UpdateActiveButtons();
+            I.PanelSceneInstance.CollectionMode = CollectionModeEnum.Equipment;
+            //I.PanelSceneInstance.PanelCollection.PanelCollectionTopButtons.UpdateActiveButtons();
             SetColorOnTabButtons(_TabButtonEquipment);
-            await _PanelScene.PanelCollection.PanelCollectionViewer.InstantiateCollectionAsync();
+            await I.PanelCollectionViewerInstance.InstantiateCollectionAsync();
         }
 
         /// <summary> Кнопка "Смена экипировки". </summary>
         //private async UniTask OnClickChangingEquipment()
         //{
-        //    if (_PanelScene.CollectionMode == CollectionModeEnum.ChangingEquipment)
+        //    if (I.PanelSceneInstance.CollectionMode == CollectionModeEnum.ChangingEquipment)
         //    {
         //        return;
         //    }
-        //    _PanelScene.CollectionMode = CollectionModeEnum.ChangingEquipment;
+        //    I.PanelSceneInstance.CollectionMode = CollectionModeEnum.ChangingEquipment;
         //    //SetColorOnTabButtons(_TabButtonChangingEquipment);
-        //    _PanelScene.PanelCollection.PanelCollectionTopButtons.UpdateActiveButtons();
-        //    await _PanelScene.PanelCollection.PanelCollectionViewer.InstantiateCollectionAsync();
+        //    I.PanelSceneInstance.PanelCollection.PanelCollectionTopButtons.UpdateActiveButtons();
+        //    await I.PanelSceneInstance.PanelCollection.PanelCollectionViewer.InstantiateCollectionAsync();
         //}
 
         private void SetColorOnTabButtons(TabButton tabButtonPressed)

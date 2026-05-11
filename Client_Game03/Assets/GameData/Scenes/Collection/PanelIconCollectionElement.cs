@@ -7,6 +7,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using I = CollectionSceneInitializator;
 
 namespace Assets.GameData.Scenes.Collection
 {
@@ -19,10 +20,6 @@ namespace Assets.GameData.Scenes.Collection
             Id = collectionElement.Id;
             _PanelGroupDivider = panelGroupDivider;
             _CollectionElement = collectionElement;
-            _PanelScene = panelGroupDivider.PanelCollectionViewer.PanelCollection.PanelScene;
-            _PanelCollectionViewer = panelGroupDivider.PanelCollectionViewer;
-            _PanelSelectedHero = _PanelScene.PanelSelectedHero;
-            _PanelSelectedEquipment = _PanelScene.PanelSelectedEquipment;
 
             _GameObject = AddressableCache.IconCollectionElementAddressableGameObject.SafeInstant();
             _GameObject.name = $"IconCollectionElement [{Id}]";
@@ -80,7 +77,7 @@ namespace Assets.GameData.Scenes.Collection
             imageRarity.preserveAspect = true;
             imageRarity.type = Image.Type.Simple; // Режим без растягивания;
 
-            imageCollectionElement.sprite = _PanelScene.CollectionMode switch
+            imageCollectionElement.sprite = I.PanelSceneInstance.CollectionMode switch
             {
                 CollectionModeEnum.Hero => AddressableCache.Heroes[$"{_CollectionElement.Name}_face"],
                 CollectionModeEnum.Equipment => AddressableCache.Equipments[_CollectionElement.Name],
@@ -102,15 +99,11 @@ namespace Assets.GameData.Scenes.Collection
                 ? CollectionProvider.GetCollectionEquipmentsFromCache().First(a => a.Id == _CollectionElement.Id) : null;
 
             RefreshOwnerImage();
-            _PanelCollectionViewer.AddElement(this);
+            I.PanelCollectionViewerInstance.AddElement(this);
         }
 
         public Guid Id { get; private set; }
         private readonly PanelGroupDivider _PanelGroupDivider;
-        private readonly PanelScene _PanelScene;
-        private readonly PanelCollectionViewer _PanelCollectionViewer;
-        private readonly PanelSelectedHero _PanelSelectedHero;
-        private readonly PanelSelectedEquipment _PanelSelectedEquipment;
         private readonly GameObject _GameObject;
         private readonly RectTransform _RectTransform;
         private readonly CollectionElement _CollectionElement;
@@ -156,7 +149,7 @@ namespace Assets.GameData.Scenes.Collection
         {
             if (selected)
             {
-                _PanelCollectionViewer.UnselectAll();
+                I.PanelCollectionViewerInstance.UnselectAll();
             }
             _SelectedImage_GameObject.SetActive(selected);
             //_RarityImage_GameObject.SetActive(!selected);
@@ -166,15 +159,15 @@ namespace Assets.GameData.Scenes.Collection
         {
             //_RectTransform.localScale = Initializator.Vector3Selected;// ИСПРАВИТЬ
 
-            switch (_PanelScene.CollectionMode)
+            switch (I.PanelSceneInstance.CollectionMode)
             {
                 case CollectionModeEnum.Hero:
                     //_PanelSelectedEquipment.Hide();
-                    _PanelSelectedHero.Show(_CollectionElement.Id); break;
+                    I.PanelSelectedHeroInstance.Show(_CollectionElement.Id); break;
 
                 case CollectionModeEnum.Equipment:
                     //await _PanelSelectedHero.Hide();
-                    _PanelSelectedEquipment.Show(_CollectionElement.Id); break;
+                    I.PanelSelectedEquipmentInstance.Show(_CollectionElement.Id); break;
 
                 //case CollectionModeEnum.ChangingEquipment:
                 //    switch (_CollectionElement.TypeCollectionElement)
@@ -202,7 +195,7 @@ namespace Assets.GameData.Scenes.Collection
             }
 
             Selected(true);
-            _PanelScene.OnResized();
+            I.OnResized();
         }
 
         private async UniTask OnPointerEnter()

@@ -68,7 +68,6 @@
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_AllHeroes.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\PanelScene.cs" />
     <Compile Include="Assets\GameData\Scripts\ButtonCloseHelper.cs" />
-    <Compile Include="Assets\GameData\Scenes\Auth\Init_Auth.cs" />
     <Compile Include="Assets\GameData\Scripts\ButtonClose_Click_MoveToMainMenu.cs" />
     <Compile Include="Assets\GameData\Scripts\SecureStorageProvider.cs" />
     <Compile Include="Assets\GameData\Scenes\BattleField\ButtonClose_Click_EndBattle.cs" />
@@ -82,6 +81,7 @@
     <Compile Include="Assets\GameData\Scripts\GameExitHandler.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Button_Reg.cs" />
     <Compile Include="Assets\GameData\AddressableAssets\GameMessage\Init_PrefabGameMessage.cs" />
+    <Compile Include="Assets\GameData\Scenes\Auth\AuthSceneInitializator.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\PanelIconCollectionElement.cs" />
     <Compile Include="Assets\GameData\Scripts\ToStringService.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_Collection.cs" />
@@ -90,9 +90,9 @@
     <Compile Include="Assets\GameData\Scenes\Collection\TabButton.cs" />
     <Compile Include="Assets\GameData\Scenes\BattleField\BattlefieldSceneInitializator.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\PanelCollectionViewer.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\CollectionSceneInitializator.cs" />
     <Compile Include="Assets\GameData\Scripts\GameMessage.cs" />
     <Compile Include="Assets\GameData\Scripts\InitializatorStartScene.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\Initializator.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\FilterButton.cs" />
     <Compile Include="Assets\GameData\Scripts\UnityObject.cs" />
     <Compile Include="Assets\GameData\Scripts\AddressableCache.cs" />

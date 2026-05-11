@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using I = CollectionSceneInitializator;
 
 namespace Assets.GameData.Scenes.Collection
 {
@@ -13,24 +14,17 @@ namespace Assets.GameData.Scenes.Collection
         private const float SCROLLBAR_WIDTH = 32f;
         private const float VIEWPORT_CONTENT_SPACING = 5f;
 
-        public PanelCollectionViewer(PanelCollection panelCollection)
+        public PanelCollectionViewer()
         {
-            PanelCollection = panelCollection;
-
             _RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollViewCollection (id=ph1oh7dk)");
             _ScrollbarVertical_RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollbarVertical (id=ti32ix3l)");
             CollectionContent_Transform = GameObjectFinder.FindByName("Content (id=ddmjr9vy)").transform;
             _Content_VerticalLayoutGroup = CollectionContent_Transform.GetComponent<VerticalLayoutGroup>();
-            _PanelCollectionTopButtons = panelCollection.PanelCollectionTopButtons;
         }
-
-
-        public PanelCollection PanelCollection { get; }
         public Transform CollectionContent_Transform { get; }
         public int MaxCollectionElements { get; private set; }
         public float Width { get; private set; }
 
-        private readonly PanelCollectionTopButtons _PanelCollectionTopButtons;
         private readonly RectTransform _RectTransform;
         private readonly RectTransform _ScrollbarVertical_RectTransform;
         private readonly VerticalLayoutGroup _Content_VerticalLayoutGroup;
@@ -56,58 +50,41 @@ namespace Assets.GameData.Scenes.Collection
                 _GroupDividers.Clear();
                 _Elements.Clear();
 
-                PanelCollection.PanelScene.OnResized();
+                I.OnResized();
                 await UniTask.Yield();
 
-                MaxCollectionElements = Game03Client.Collection.CollectionProvider.PAGE_SIZE * _PanelCollectionTopButtons.PageCurrent;
+                MaxCollectionElements = Game03Client.Collection.CollectionProvider.PAGE_SIZE * I.PanelCollectionTopButtonsInstance.PageCurrent;
 
-                _PanelCollectionTopButtons.UpdatePageMax();
+                I.PanelCollectionTopButtonsInstance.UpdatePageMax();
 
-                switch (PanelCollection.PanelScene.CollectionMode)
+                switch (I.PanelSceneInstance.CollectionMode)
                 {
                     case CollectionModeEnum.Hero:
-                        //PanelCollection.PanelScene.PanelSelectedEquipment.Hide();
                         await LoadCollectionElement(CollectionElementEnum.Hero);
-                        if (PanelCollection.PanelScene.PanelSelectedHero != null && PanelCollection.PanelScene.PanelSelectedHero.IsVisible)
+                        if (I.PanelSelectedHeroInstance != null && I.PanelSelectedHeroInstance.IsVisible)
                         {
-                            GetElement(PanelCollection.PanelScene.PanelSelectedHero.HeroId)?.Selected(true);
+                            GetElement(I.PanelSelectedHeroInstance.HeroId)?.Selected(true);
                         }
                         break;
 
                     case CollectionModeEnum.Equipment:
-                        //await PanelCollection.PanelScene.PanelSelectedHero.Hide();
                         await LoadCollectionElement(CollectionElementEnum.Equipment);
-                        if (PanelCollection.PanelScene.PanelSelectedEquipment != null && PanelCollection.PanelScene.PanelSelectedEquipment.IsVisible)
+                        if (I.PanelSelectedEquipmentInstance != null && I.PanelSelectedEquipmentInstance.IsVisible)
                         {
-                            GetElement(PanelCollection.PanelScene.PanelSelectedEquipment.EquipmentId)?.Selected(true);
+                            GetElement(I.PanelSelectedEquipmentInstance.EquipmentId)?.Selected(true);
                         }
                         break;
-
-                    //case CollectionModeEnum.ChangingEquipment:
-                    //    {
-                    //        bool h = PanelCollection.PanelScene.PanelSelectedHero.IsVisible;
-                    //        //bool e = PanelCollection.PanelScene.PanelSelectedEquipment.IsVisible;
-                    //        if (h)
-                    //        {
-                    //            await LoadCollectionElement(CollectionElementEnum.Equipment);
-                    //        }
-                    //        else
-                    //        {
-                    //            await LoadCollectionElement(CollectionElementEnum.Hero);
-                    //        }
-                    //        break;
-                    //    }
 
                     default:
                         throw new Exception();
                 }
 
-                _PanelCollectionTopButtons.SetPageDiapason();
-                OnResized();
+                I.PanelCollectionTopButtonsInstance.SetPageDiapason();
+                I.OnResized();
             }
             catch (Exception ex)
             {
-                UnityEngine.Debug.LogException(ex);
+                Debug.LogException(ex);
             }
             finally
             {
@@ -120,19 +97,16 @@ namespace Assets.GameData.Scenes.Collection
             float coefHeight = G.GetCoefHeight();
 
 
-            float height = PanelCollection.Height - _PanelCollectionTopButtons.Height;
+            float height = I.PanelCollectionInstance.Height - I.PanelCollectionTopButtonsInstance.Height;
 
-            _RectTransform.sizeDelta = new Vector2(PanelCollection.Width, height);
+            _RectTransform.sizeDelta = new Vector2(I.PanelCollectionInstance.Width, height);
 
             // ScrollbarVertical для коллекции героев
             float scrollBarWidth = SCROLLBAR_WIDTH * coefHeight;
             _ScrollbarVertical_RectTransform.sizeDelta = new Vector2(scrollBarWidth, height);
 
-            Width = PanelCollection.Width - scrollBarWidth;
+            Width = I.PanelCollectionInstance.Width - scrollBarWidth;
 
-            // Scroll View для коллекции героев
-            //float viewportWidth = Width - scrollBarWidth;
-            //_ScrollbarVertical_RectTransform.sizeDelta = new Vector2(viewportWidth, height);
 
             _Content_VerticalLayoutGroup.spacing = VIEWPORT_CONTENT_SPACING * coefHeight;
 
@@ -150,7 +124,7 @@ namespace Assets.GameData.Scenes.Collection
 
         private async UniTask LoadCollectionElement(CollectionElementEnum collectionElementEnum)
         {
-            if (_PanelCollectionTopButtons.PageCurrent >= _PanelCollectionTopButtons.PageMax)
+            if (I.PanelCollectionTopButtonsInstance.PageCurrent >= I.PanelCollectionTopButtonsInstance.PageMax)
             {
                 MaxCollectionElements = collectionElementEnum switch
                 {
@@ -162,8 +136,8 @@ namespace Assets.GameData.Scenes.Collection
 
             IEnumerable<Game03Client.Collection.GroupCollectionElement> grouped = collectionElementEnum switch
             {
-                CollectionElementEnum.Hero => Game03Client.Collection.CollectionProvider.GetCollectionHeroesGroupedByGroupNames(_PanelCollectionTopButtons.PageCurrent),
-                CollectionElementEnum.Equipment => Game03Client.Collection.CollectionProvider.GetCollectionEquipmentesGroupByGroups(_PanelCollectionTopButtons.PageCurrent),
+                CollectionElementEnum.Hero => Game03Client.Collection.CollectionProvider.GetCollectionHeroesGroupedByGroupNames(I.PanelCollectionTopButtonsInstance.PageCurrent),
+                CollectionElementEnum.Equipment => Game03Client.Collection.CollectionProvider.GetCollectionEquipmentesGroupByGroups(I.PanelCollectionTopButtonsInstance.PageCurrent),
                 _ => throw new NotImplementedException(),
             };
 
@@ -173,7 +147,7 @@ namespace Assets.GameData.Scenes.Collection
 
             foreach (Game03Client.Collection.GroupCollectionElement item in sorted)
             {
-                _GroupDividers.Add(new(this, item));
+                _GroupDividers.Add(new(item));
             }
         }
     }
