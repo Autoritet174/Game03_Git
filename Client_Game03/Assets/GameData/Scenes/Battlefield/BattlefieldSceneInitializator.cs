@@ -24,18 +24,20 @@ namespace Assets.GameData.Scenes.BattleField
             Debug.Log(Newtonsoft.Json.JsonConvert.SerializeObject(SpawnedBattlefield));
             battlefieldUnits.Clear();
 
+            Transform canvasUnits__Transform = GameObjectFinder.FindByName("CanvasUnits").transform;
+
             // размещение героев игрока
             for (int i = 0; i < SpawnedBattlefield.SpawnedHeroPlayerList.Count; i++)
             {
                 SpawnedHero spawnedHeroes = SpawnedBattlefield.SpawnedHeroPlayerList[i];
-                battlefieldUnits.Add(spawnedHeroes.SpawnedId, new(spawnedHeroes, i, true));
+                battlefieldUnits.Add(spawnedHeroes.SpawnedId, new(spawnedHeroes, i, true, canvasUnits__Transform));
             }
 
             // размещение героев врага
             for (int i = 0; i < SpawnedBattlefield.SpawnedHeroEnemyList.Count; i++)
             {
                 SpawnedHero spawnedHeroes = SpawnedBattlefield.SpawnedHeroEnemyList[i];
-                battlefieldUnits.Add(spawnedHeroes.SpawnedId, new(spawnedHeroes, i, false));
+                battlefieldUnits.Add(spawnedHeroes.SpawnedId, new(spawnedHeroes, i, false, canvasUnits__Transform));
             }
         }
     }
