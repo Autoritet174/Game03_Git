@@ -70,10 +70,7 @@ namespace Assets.GameData.Scenes.Auth
                 if (!success)
                 {
                     ClearTokenInSecureStorageProvider();
-                    if (type == Game03Client.Auth.AuthType.Login)
-                    {
-                        GameMessage.ShowLocale(L.Error.Server.InvalidResponse, true);
-                    }
+                    GameMessage.ShowLocale(L.Error.Server.InvalidResponse, true);
                     return false;
                 }
 

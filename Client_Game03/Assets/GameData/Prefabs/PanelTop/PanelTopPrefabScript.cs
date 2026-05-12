@@ -1,5 +1,6 @@
 using Assets.GameData.Scripts;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(RectTransform))]
 public class PanelTopPrefabScript : MonoBehaviour

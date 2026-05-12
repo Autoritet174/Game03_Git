@@ -15,8 +15,28 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 2ffd505fea132264fb92065a7554e0cf
   m_SerializeEntries:
+  - m_GUID: 876cad62861cbd14eb0f8a8136458faa
+    m_Address: Assets/GameData/AddressableAssets/Images/IconStats/IconHealth.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9039b5dd133a8dc46b0dd2e300a3abf5
+    m_Address: Assets/GameData/AddressableAssets/Images/IconStats/IconHealth_v2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c889753dc6561c64fa0c9d0d6f599257
+    m_Address: Assets/GameData/AddressableAssets/Images/Planes/Forest_1.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ca418bef7f8098449a59e1dc949968c3
     m_Address: Null
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa0af3a8fcab8b6458f3cdcb85e464cf
+    m_Address: Assets/GameData/AddressableAssets/Images/Planes/Poligon_1.jpg
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

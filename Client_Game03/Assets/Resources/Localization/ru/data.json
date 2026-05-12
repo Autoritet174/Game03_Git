@@ -15,12 +15,28 @@
 			"TakeOnAlt": "Одеть в другой слот",
 			"TakeOff": "Снять",
 			"Sell": "Продать",
-			"ShowHero": "Показать героя"
+			"ShowHero": "Показать героя",
+			"Cancel": "Отмена"
 		},
 		"Label": {
 			"ExitGame": "Выйти из игры?",
 			"Email": "Электронная почта",
 			"Password": "Пароль",
+			"NoGroup": "Нет группы",
+			"EndBattle": "Завершить бой",
+			
+			"BattleField_TestPlatforms": "Испытательные площадки",
+			"BattleField_TestPlatforms__Polygon": "Полигон",
+			
+			"BattleField_Mines": "Шахты",
+			"BattleField_Mines__Iron": "Железо",
+			
+			"BattleField_Dungeons": "Подземелья",
+			"ConnectionLost": "Соединение прервано",
+			"Reconnecting": "Переподключение",
+			"Try": "Попытка",
+			"After": "Через",
+			
 			"Slot":{
 				"Head": "Голова",
 				"Armor": "Доспех",
@@ -34,6 +50,7 @@
 				"Earring": "Серьга",
 				"Trinket": "Аксессуар"
 			},
+			
 			"Stat": {
 				"Level": "Уровень",
 				"Health": "Здоровье",
@@ -45,17 +62,8 @@
 				"Versality": "Универсальность",
 				"Initiative": "Инициатива",
 				"Haste": "Скорость"
-			},
-			"NoGroup": "Нет группы",
-			"EndBattle": "Завершить бой",
+			}
 			
-			"BattleField_TestPlatforms": "Испытательные площадки",
-			"BattleField_TestPlatforms__Polygon": "Полигон",
-			
-			"BattleField_Mines": "Шахты",
-			"BattleField_Mines__Iron": "Железо",
-			
-			"BattleField_Dungeons": "Подземелья"
 			
 		}
 	},

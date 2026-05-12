@@ -14,7 +14,7 @@ namespace Assets.GameData.Scenes.Battlefield
     {
         private static readonly float width = 153f;
         private static readonly float height = 220f;
-        private static readonly float[] yShiftArray = new float[] { -height / 2, height / 2, -height * 3 / 2, -height * 3 / 2 };
+        private static readonly float[] yShiftArray = new float[] { -height / 2, height / 2, -height * 3 / 2, height * 3 / 2 };
         private static readonly float xShift = 200f;
         private static readonly Vector2 vector2_05 = new(0.5f, 0.5f);
         private static readonly float textHealthFontSize = 25f;
@@ -22,6 +22,7 @@ namespace Assets.GameData.Scenes.Battlefield
         private readonly SpawnedHero spawnedHeroes;
         private readonly RectTransform rectTransform;
         private readonly TextMeshProUGUI textHealth_TextMeshProUGUI;
+        private readonly TextMeshProUGUI textLevel_TextMeshProUGUI;
         private readonly bool isMyUnit;
         private int Position { get; set; }
 
@@ -59,7 +60,10 @@ namespace Assets.GameData.Scenes.Battlefield
                 textHealth_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("TextHealth", gameObject.transform);
                 textHealth_TextMeshProUGUI.SetText(spawnedHeroes.Health.ToStr());
             }
-
+            {
+                textLevel_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("TextLevel", gameObject.transform);
+                //textLevel_TextMeshProUGUI.SetText(spawnedHeroes.Le.ToStr());
+            }
             OnResize();
         }
 

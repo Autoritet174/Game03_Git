@@ -75,20 +75,7 @@ namespace Assets.GameData.Scenes.Auth
                 //AuthHelper.LogRefreshToken();
 
             }
-
-            // Пример использования
-            //string payloadJson = DecodeJwtPayload(accessToken);
-            //Debug.Log(payloadJson);
-            //InputManager.Register(KeyCode.Escape, GameExitHandler.ExitGame);
-            //InputManager.Register(KeyCode.Return, PressLogin, key2: KeyCode.KeypadEnter);
-
-            //GameMessage.Show("", true);
         }
-        //private void OnDestroy()
-        //{
-        //    InputManager.Unregister(GameExitHandler.ExitGame);
-        //    InputManager.Unregister(PressLogin);
-        //}
 
         private void Update()
         {
@@ -181,6 +168,7 @@ namespace Assets.GameData.Scenes.Auth
             _InputTextWithLabelEmail_RectTransform.gameObject.SetActive(visible);
             _InputTextWithLabelPassword_RectTransform.gameObject.SetActive(visible);
         }
+
         private async UniTask SetVisibleInputFieldsAsync(bool visible)
         {
             _ButtonLogin_Button.gameObject.SetActive(visible);
@@ -188,10 +176,6 @@ namespace Assets.GameData.Scenes.Auth
             _InputTextWithLabelPassword_RectTransform.gameObject.SetActive(visible);
             await UniTask.Yield();
         }
-
-
-
-
 
     }
 }
