@@ -5,6 +5,11 @@ namespace Assets.GameData.Scripts
         public static int mode = 2;
         public static int modePercent = 1;
 
+        /// <summary>
+        /// В строку формата Game03
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
         public static string ToStr(this float n)
         {
             return mode switch

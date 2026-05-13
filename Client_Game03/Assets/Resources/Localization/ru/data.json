@@ -87,7 +87,8 @@
 			"LoadingCollectionFailed" : "Ошибка при загрузке коллекции",
 			"UserAlreadyExists" : "Пользователь уже существует",
 			"Required2FA" : "Требуется двухфакторная аутентификация",
-			"RefreshTokenErrorCreating" : "Ошибка при создании обновляемого токена"
+			"RefreshTokenErrorCreating" : "Ошибка при создании обновляемого токена",
+			"CombatBreak" : "Ошибка прерывания боя"
 		}
 	},
 	

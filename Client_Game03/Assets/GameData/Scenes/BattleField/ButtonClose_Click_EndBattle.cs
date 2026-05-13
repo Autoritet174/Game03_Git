@@ -12,6 +12,16 @@ public class ButtonClose_Click_EndBattle : MonoBehaviour
             return;
         }
 
-        GameSceneManager.Load(GameSceneManager.SceneName.MainMenu);
+        bool result = await Game03Client.BattleField.BattleFieldProvider.CombatBreakAsync(CancellationTokenManager.Create("CombatBreakAsync"));
+        if (result)
+        {
+            GameSceneManager.Load(GameSceneManager.SceneName.MainMenu);
+        }
+        else
+        {
+            await GameMessage.ShowAndWaitCloseAsync(L.Error.Server.CombatBreak);
+        }
+
+       
     }
 }

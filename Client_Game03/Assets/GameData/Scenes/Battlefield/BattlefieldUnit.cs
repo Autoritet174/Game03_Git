@@ -1,6 +1,8 @@
 using Assets.GameData.Scripts;
+using General;
 using General.DTO.Battlefield;
 using General.DTO.Entities.GameData;
+using System;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -15,10 +17,16 @@ namespace Assets.GameData.Scenes.Battlefield
         private static readonly Color colorIntelligence = new(0, 160f / 255f, 255f / 255f);
         private static readonly Color colorUniversal = Color.white;
 
+        private static readonly float _Scale = 1f;
         private static readonly float _Width = 150;
         private static readonly float _Height = 200;
-        private static readonly float[] yShiftArray = new float[] { -_Height / 2/0.8f, _Height / 2 / 0.8f, -_Height * 3 / 2 / 0.8f, _Height * 3 / 2 / 0.8f };
-        private static readonly float xShift = 200 / 0.8f;
+        private static readonly float[] yShiftArray = new float[] {
+            -_Height / 2/0.8f* _Scale,
+            _Height / 2 / 0.8f* _Scale,
+            -_Height * 3 / 2 / 0.8f* _Scale,
+            _Height * 3 / 2 / 0.8f* _Scale
+        };
+        private static readonly float xShift = 200 / 0.8f* _Scale;
 
         private readonly RectTransform _RectTransform;
 
@@ -51,17 +59,22 @@ namespace Assets.GameData.Scenes.Battlefield
         private static readonly float _Level_FontSize = 22;
         private readonly TextMeshProUGUI _LevelText_TextMeshProUGUI;
 
+        private static readonly float _HealthChange_Height = 25;
+        private static readonly float _HealthChange_FontSize = 60;
+        private readonly RectTransform _HealthChange_RectTransform;
+        private readonly TextMeshProUGUI _HealthChange_TextMeshProUGUI;
+
+
         private readonly SpawnedHero _SpawnedHeroes;
 
-
         private readonly bool _IsMyUnit;
-
-        private int Position { get; set; }
+        private readonly int _Position;
+        
 
         public BattlefieldUnit(SpawnedHero spawnedHeroes, int position, bool isMyUnit, Transform canvasUnits__Transform)
         {
             _SpawnedHeroes = spawnedHeroes;
-            Position = position;
+            _Position = position;
             _IsMyUnit = isMyUnit;
 
             GameObject gameObject = AddressableCache.BattleFieldUnit.SafeInstant(canvasUnits__Transform);
@@ -73,7 +86,7 @@ namespace Assets.GameData.Scenes.Battlefield
             _RectTransform.anchorMin = new(0.5f, 0.5f);
             _RectTransform.anchorMax = new(0.5f, 0.5f);
             _RectTransform.pivot = new(0.5f, 0.5f);
-            //_RectTransform.localScale = new Vector3(1f, 1f, 1);
+            _RectTransform.localScale = new Vector3(_Scale, _Scale, 1);
 
 
             Image _ImageRarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity", gameObject.transform);
@@ -114,21 +127,29 @@ namespace Assets.GameData.Scenes.Battlefield
                 _ => throw new System.NotImplementedException()
             };
 
+
+            _HealthChange_RectTransform = GameObjectFinder.FindByName<RectTransform>("HealthChange", gameObject.transform);
+            _HealthChange_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("HealthChange", gameObject.transform);
+            _HealthChange_RectTransform.gameObject.SetActive(false);
             OnResize();
         }
 
-
-        public void OnResize()
+        public Vector2 GetCoords()
         {
-            float x = xShift * ((Position / 4) + 1);
+            float coefHeight = G.GetCoefHeight();
+            float x = xShift * ((_Position / 4) + 1);
             if (_IsMyUnit)
             {
                 x = -x;
             }
+            float y = yShiftArray[_Position % 4];
+            return new Vector2(x * coefHeight, y * coefHeight);
+        }
 
-            float y = yShiftArray[Position % 4];
+        public void OnResize()
+        {
             float coefHeight = G.GetCoefHeight();
-            _RectTransform.anchoredPosition = new Vector2(x * coefHeight, y * coefHeight);
+            _RectTransform.anchoredPosition = GetCoords();
             _RectTransform.sizeDelta = new Vector2(_Width * coefHeight, _Height * coefHeight);
 
 
@@ -138,7 +159,6 @@ namespace Assets.GameData.Scenes.Battlefield
 
             _Health__RectTransform.sizeDelta = new Vector2(0, _Health_Height * coefHeight);
             _Health__RectTransform.anchoredPosition = new Vector2(0, _HealthText_Y * coefHeight);
-            RefreshHealthPercent();
             _HealthImageGreenBar__RectTransform.sizeDelta = new Vector2(_Width * coefHeight, _Health_Height * coefHeight);
             _HealthImageStat__RectTransform.sizeDelta = new Vector2(_HealthImageStat_Size * coefHeight, _HealthImageStat_Size * coefHeight);
             _HealthImageStat__RectTransform.anchoredPosition = new Vector2(_HealthImageStat_X * coefHeight, 0);
@@ -150,6 +170,12 @@ namespace Assets.GameData.Scenes.Battlefield
 
             _Level_RectTransform.sizeDelta = new Vector2(_Level_Width * coefHeight, _Level_Height * coefHeight);
             _LevelText_TextMeshProUGUI.fontSize = _Level_FontSize * coefHeight;
+
+            RefreshHealthPercent();
+
+            _HealthChange_TextMeshProUGUI.fontSize = _HealthChange_FontSize * coefHeight;
+            _HealthImagePercent__RectTransform.anchoredPosition = new Vector2(0, -_HealthChange_Height * coefHeight);
+            _HealthImagePercent__RectTransform.sizeDelta = new Vector2(0, _HealthChange_Height * coefHeight);
         }
 
         public void RefreshHealthPercent()
@@ -157,7 +183,141 @@ namespace Assets.GameData.Scenes.Battlefield
             float coefHeight = G.GetCoefHeight();
             float width = (_Width - (_HealthImagePercent_Right * 2)) * _SpawnedHeroes.HealthPercent;
             _HealthImagePercent__RectTransform.sizeDelta = new Vector2(width, _Health_Height * coefHeight);
-            Debug.Log(_SpawnedHeroes.HealthPercent);
+        }
+
+
+        private static readonly double AnimationSpeed = 1;
+        private static readonly double AnimationAttackTimeStage1 = 0.2;
+        private static readonly double AnimationAttackTimeStage2 = 0.2;
+        private static readonly double AnimationAttackTimeStage3 = 0.3;
+        public int AnimationAttackStage { get; private set; } = 0;
+        private DateTime AtimationAttackStart = DateTime.Now;
+        private DateTime AtimationAttackEnd = DateTime.Now;
+        private BattlefieldUnit AtimationAttackUnitTarget;
+        private Vector2 AtimationAttackPosEnd = Vector2.zero;
+        public static float ShiftPower(float x, float p = 3f)
+        {
+            x = Math.Clamp(x, 0f, 1f);
+            return 1f - MathF.Pow(1f - x, p);
+        }
+        public void AnimationStartAttackUnit(BattlefieldUnit unitTarget)
+        {
+            AtimationAttackUnitTarget = unitTarget;
+            AnimationAttackStage = 1;
+            AtimationAttackStart = DateTime.Now;
+            AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage1 / AnimationSpeed);
+            _RectTransform.transform.SetAsLastSibling();
+        }
+        public void UpdateAnimationAttack()
+        {
+            if (AnimationAttackStage == 0)
+            {
+                return;
+            }
+
+            float animationPercent = Math.Clamp((float)((DateTime.Now - AtimationAttackStart).TotalSeconds / (AtimationAttackEnd - AtimationAttackStart).TotalSeconds), 0, 1);
+
+            if (AnimationAttackStage == 1) // увеличение масштаба
+            {
+                float coef = (1f + (0.3f * animationPercent))* _Scale;
+                _RectTransform.localScale = new(coef, coef, 1);
+                if (animationPercent == 1)
+                {
+                    AnimationAttackStage = 2;
+                    AtimationAttackStart = DateTime.Now;
+                    AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage2 / AnimationSpeed);
+                }
+            }
+            else if (AnimationAttackStage == 2) // движение от базовой точки до цели
+            {
+                float animationPercentForPos = ShiftPower(animationPercent*1.2f);
+
+
+                Vector2 posStart = GetCoords();
+                Vector2 posEnd = AtimationAttackUnitTarget.GetCoords();
+                float distX = posEnd.x - posStart.x;
+                float distY = posEnd.y - posStart.y;
+                float x = posStart.x + (distX * animationPercentForPos);
+                float y = posStart.y + (distY * animationPercentForPos);
+                AtimationAttackPosEnd = new Vector2(x, y);
+                _RectTransform.anchoredPosition = AtimationAttackPosEnd;
+                if (animationPercent == 1 || MathF.Sqrt(MathF.Pow(posEnd.x - x, 2) + MathF.Pow(posEnd.y - y, 2)) < _Width * G.GetCoefHeight())
+                {
+                    AnimationAttackStage = 3;
+                    AtimationAttackStart = DateTime.Now;
+                    AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage3 / AnimationSpeed);
+                    AtimationAttackUnitTarget.AnimationStartHealthChange(-RandomShared.NextInclusive(10, 99));
+                }
+            }
+            else if (AnimationAttackStage == 3) // движение от цели до базовой точки
+            {
+                Vector2 posStart = AtimationAttackPosEnd;
+                Vector2 posEnd = GetCoords();
+                float distX = posEnd.x - posStart.x;
+                float distY = posEnd.y - posStart.y;
+                float x = posStart.x + (distX * animationPercent);
+                float y = posStart.y + (distY * animationPercent);
+                _RectTransform.anchoredPosition = new Vector2(x, y);
+
+                float coef = (1f + (0.3f * (1-animationPercent)))* _Scale;
+                _RectTransform.localScale = new(coef, coef, 1);
+                if (animationPercent == 1)
+                {
+                    AnimationAttackStage = 0;
+                }
+            }
+
+        }
+
+        private static readonly double AnimationHealthChangeTime = 2;
+        private int AnimationHealthChangeStage = 0;
+        private DateTime AtimationHealthChangeStart = DateTime.Now;
+        private DateTime AtimationHealthChangeEnd = DateTime.Now;
+        public void AnimationStartHealthChange(float v)
+        {
+            if (v == 0)
+            {
+                return;
+            }
+            if (v < 0)
+            {
+                _HealthChange_TextMeshProUGUI.text = v.ToStr();
+                _HealthChange_TextMeshProUGUI.color = Color.red;
+            }
+            else
+            {
+                _HealthChange_TextMeshProUGUI.text = "+"+v.ToStr();
+                _HealthChange_TextMeshProUGUI.color = Color.green;
+            }
+
+            _HealthChange_RectTransform.anchoredPosition = new Vector2(0, -_HealthChange_Height * G.GetCoefHeight());
+            AnimationHealthChangeStage = 1;
+            AtimationHealthChangeStart = DateTime.Now;
+            AtimationHealthChangeEnd = AtimationHealthChangeStart.AddSeconds(AnimationHealthChangeTime / AnimationSpeed);
+            _HealthChange_RectTransform.gameObject.SetActive(true);
+        }
+
+
+        public void UpdateAnimationChangeHealth()
+        {
+            if (AnimationHealthChangeStage == 0)
+            {
+                return;
+            }
+
+            float animationPercent = Math.Clamp((float)((DateTime.Now - AtimationHealthChangeStart).TotalSeconds / (AtimationHealthChangeEnd - AtimationHealthChangeStart).TotalSeconds), 0, 1);
+
+            float yStart = -_HealthChange_Height;
+            float yEnd = _HealthChange_Height;
+            float yDist = yEnd - yStart;
+            float y = yStart + (yDist * animationPercent);
+            _HealthChange_RectTransform.anchoredPosition = new Vector2(0, y * G.GetCoefHeight());
+
+            if (animationPercent == 1)
+            {
+                AnimationHealthChangeStage = 0;
+                _HealthChange_RectTransform.gameObject.SetActive(false);
+            }
         }
     }
 }
