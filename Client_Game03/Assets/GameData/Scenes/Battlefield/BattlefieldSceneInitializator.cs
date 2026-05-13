@@ -16,7 +16,9 @@ namespace Assets.GameData.Scenes.BattleField
         private readonly Dictionary<Guid, BattlefieldUnit> battlefieldUnits = new();
         private readonly List<BattlefieldUnit> playerUnits = new();
         private readonly List<BattlefieldUnit> enemyUnits = new();
-
+        private bool _Initialized = false;
+        public static float Width { get; private set; } = 0f;
+        public static float Height { get; private set; } = 0f;
         private void Start()
         {
             if (SpawnedBattlefield == null || SpawnedBattlefield.SpawnedHeroPlayerList == null)
@@ -57,10 +59,15 @@ namespace Assets.GameData.Scenes.BattleField
                 myUnit.AnimationStartAttackUnit(enemyUnit);
             });
 
+            _Initialized = true;
         }
 
         private void Update()
         {
+            if (_Initialized && (!Mathf.Approximately(Screen.height, Height) || !Mathf.Approximately(Screen.width, Width)))
+            {
+                OnResized();
+            }
             //if (!playerUnits.Any(a => a.AnimationAttackStage > 0))
             //{
             //    BattlefieldUnit myUnit = playerUnits[RandomShared.Next(playerUnits.Count)];
@@ -86,6 +93,26 @@ namespace Assets.GameData.Scenes.BattleField
             {
                 unit.UpdateAnimationAttack();
                 unit.UpdateAnimationChangeHealth();
+            }
+        }
+
+        private void OnResized()
+        {
+            if (!_Initialized)
+            {
+                return;
+            }
+
+            Height = Screen.height;
+            Width = Screen.width;
+
+            foreach (BattlefieldUnit unit in playerUnits)
+            {
+                unit.OnResize();
+            }
+            foreach (BattlefieldUnit unit in enemyUnits)
+            {
+                unit.OnResize();
             }
         }
     }
