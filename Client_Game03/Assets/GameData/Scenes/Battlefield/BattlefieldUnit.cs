@@ -17,7 +17,7 @@ namespace Assets.GameData.Scenes.Battlefield
         private static readonly Color colorIntelligence = new(0, 160f / 255f, 255f / 255f);
         private static readonly Color colorUniversal = Color.white;
 
-        private static readonly float _Scale = 1f;
+        private static readonly float _Scale = 0.9f;
         private static readonly float _Width = 150;
         private static readonly float _Height = 200;
         private static readonly float[] yShiftArray = new float[] {
@@ -107,7 +107,6 @@ namespace Assets.GameData.Scenes.Battlefield
             _HealthImagePercent__RectTransform = GameObjectFinder.FindByName<RectTransform>("HealthImagePercent", gameObject.transform);
             _HealthImageGreenBar__RectTransform = GameObjectFinder.FindByName<RectTransform>("HealthImageGreenBar", gameObject.transform);
             _HealthText_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("HealthText", gameObject.transform);
-            _HealthText_TextMeshProUGUI.SetText(spawnedHeroes.Health.ToStr());
             _HealthText__RectTransform = _HealthText_TextMeshProUGUI.GetComponent<RectTransform>();
 
 
@@ -132,6 +131,18 @@ namespace Assets.GameData.Scenes.Battlefield
             _HealthChange_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("HealthChange", gameObject.transform);
             _HealthChange_RectTransform.gameObject.SetActive(false);
             OnResize();
+
+            RefreshHealth(_SpawnedHeroes.Health);
+        }
+
+        public void RefreshHealth(float newHealthValue)
+        {
+            _SpawnedHeroes.Health = newHealthValue;
+            _HealthText_TextMeshProUGUI.SetText(_SpawnedHeroes.Health.ToStr());
+
+            float coefHeight = G.GetCoefHeight();
+            float width = (_Width - (_HealthImagePercent_Right * 2)) * _SpawnedHeroes.HealthPercent;
+            _HealthImagePercent__RectTransform.sizeDelta = new Vector2(width, _Health_Height * coefHeight);
         }
 
         public Vector2 GetCoords()
@@ -171,31 +182,26 @@ namespace Assets.GameData.Scenes.Battlefield
             _Level_RectTransform.sizeDelta = new Vector2(_Level_Width * coefHeight, _Level_Height * coefHeight);
             _LevelText_TextMeshProUGUI.fontSize = _Level_FontSize * coefHeight;
 
-            RefreshHealthPercent();
+
+            RefreshHealth(_SpawnedHeroes.Health);
 
             _HealthChange_TextMeshProUGUI.fontSize = _HealthChange_FontSize * coefHeight;
-            _HealthImagePercent__RectTransform.anchoredPosition = new Vector2(0, -_HealthChange_Height * coefHeight);
-            _HealthImagePercent__RectTransform.sizeDelta = new Vector2(0, _HealthChange_Height * coefHeight);
+            _HealthChange_RectTransform.anchoredPosition = new Vector2(0, -_HealthChange_Height * coefHeight);
+            _HealthChange_RectTransform.sizeDelta = new Vector2(0, _HealthChange_Height * coefHeight);
         }
 
-        public void RefreshHealthPercent()
-        {
-            float coefHeight = G.GetCoefHeight();
-            float width = (_Width - (_HealthImagePercent_Right * 2)) * _SpawnedHeroes.HealthPercent;
-            _HealthImagePercent__RectTransform.sizeDelta = new Vector2(width, _Health_Height * coefHeight);
-        }
 
 
         private static readonly double AnimationSpeed = 1;
         private static readonly double AnimationAttackTimeStage1 = 0.2;
-        private static readonly double AnimationAttackTimeStage2 = 0.2;
+        private static readonly double AnimationAttackTimeStage2 = 0.3;
         private static readonly double AnimationAttackTimeStage3 = 0.3;
         public int AnimationAttackStage { get; private set; } = 0;
         private DateTime AtimationAttackStart = DateTime.Now;
         private DateTime AtimationAttackEnd = DateTime.Now;
         private BattlefieldUnit AtimationAttackUnitTarget;
         private Vector2 AtimationAttackPosEnd = Vector2.zero;
-        public static float ShiftPower(float x, float p = 3f)
+        public static float ShiftPower(float x, float p = 6f)
         {
             x = Math.Clamp(x, 0f, 1f);
             return 1f - MathF.Pow(1f - x, p);
@@ -295,6 +301,8 @@ namespace Assets.GameData.Scenes.Battlefield
             AtimationHealthChangeStart = DateTime.Now;
             AtimationHealthChangeEnd = AtimationHealthChangeStart.AddSeconds(AnimationHealthChangeTime / AnimationSpeed);
             _HealthChange_RectTransform.gameObject.SetActive(true);
+
+            RefreshHealth(_SpawnedHeroes.Health + v);
         }
 
 

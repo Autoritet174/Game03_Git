@@ -4,7 +4,6 @@ using General;
 using General.DTO.Battlefield;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,7 +25,7 @@ namespace Assets.GameData.Scenes.BattleField
                 return;
             }
 
-            Debug.Log(Newtonsoft.Json.JsonConvert.SerializeObject(SpawnedBattlefield));
+            //Debug.Log(Newtonsoft.Json.JsonConvert.SerializeObject(SpawnedBattlefield));
             battlefieldUnits.Clear();
 
             Transform canvasUnits__Transform = GameObjectFinder.FindByName("CanvasUnits").transform;
