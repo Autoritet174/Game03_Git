@@ -1,12 +1,15 @@
 using Assets.GameData.Scenes.Battlefield;
 using Assets.GameData.Scripts;
+using Cysharp.Threading.Tasks;
 using General;
 using General.DTO.Battlefield;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using L = General.LocalizationKeys;
+using LM = Game03Client.LocalizationManager;
 
 namespace Assets.GameData.Scenes.BattleField
 {
@@ -20,6 +23,19 @@ namespace Assets.GameData.Scenes.BattleField
         private bool _Initialized = false;
         public static float Width { get; private set; } = 0f;
         public static float Height { get; private set; } = 0f;
+
+        private readonly float _AbilityButton_Size = 150;
+        private readonly float _AbilityButton_Padding = 25;
+        private readonly float _AbilityButton_FontSize = 24;
+        private RectTransform _AttackButton__RectTransform;
+        private RectTransform _Ability1Button__RectTransform;
+        private RectTransform _Ability2Button__RectTransform;
+        private RectTransform _Ability3Button__RectTransform;
+        private TextMeshProUGUI _AttackButton__TextMeshProUGUI;
+        private TextMeshProUGUI _Ability1Button__TextMeshProUGUI;
+        private TextMeshProUGUI _Ability2Button__TextMeshProUGUI;
+        private TextMeshProUGUI _Ability3Button__TextMeshProUGUI;
+
         private void Start()
         {
             if (SpawnedBattlefield == null || SpawnedBattlefield.SpawnedHeroPlayerList == null)
@@ -51,14 +67,31 @@ namespace Assets.GameData.Scenes.BattleField
                 enemyUnits.Add(unit);
             }
 
-            Button testButton = GameObjectFinder.FindByName<Button>("TestButton");
-            testButton.onClick.RemoveAllListeners();
-            testButton.onClick.AddListener(() =>
-            {
-                BattlefieldUnit myUnit = playerUnits[RandomShared.Next(playerUnits.Count)];
-                BattlefieldUnit enemyUnit = enemyUnits[RandomShared.Next(enemyUnits.Count)];
-                myUnit.AnimationStartAttackUnit(enemyUnit);
-            });
+            _AttackButton__RectTransform = GameObjectFinder.FindByName<RectTransform>("AttackButton");
+            _AttackButton__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _AttackButton__RectTransform.transform);
+            _AttackButton__TextMeshProUGUI.text = LM.GetValue(L.UI.Button.Ability.Attack);
+            EventHelper.SetClickEvent(_AttackButton__RectTransform.gameObject, AbilityAttackOnClickAsync, true);
+
+            _Ability1Button__RectTransform = GameObjectFinder.FindByName<RectTransform>("Ability1Button");
+            _Ability1Button__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _Ability1Button__RectTransform.transform);
+            EventHelper.SetClickEvent(_Ability1Button__RectTransform.gameObject, Ability1OnClickAsync, true);
+
+            _Ability2Button__RectTransform = GameObjectFinder.FindByName<RectTransform>("Ability2Button");
+            _Ability2Button__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _Ability2Button__RectTransform.transform);
+            EventHelper.SetClickEvent(_Ability2Button__RectTransform.gameObject, Ability2OnClickAsync, true);
+
+            _Ability3Button__RectTransform = GameObjectFinder.FindByName<RectTransform>("Ability3Button");
+            _Ability3Button__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _Ability3Button__RectTransform.transform);
+            EventHelper.SetClickEvent(_Ability3Button__RectTransform.gameObject, Ability3OnClickAsync, true);
+
+
+            //testButton.onClick.RemoveAllListeners();
+            //testButton.onClick.AddListener(() =>
+            //{
+            //    BattlefieldUnit myUnit = playerUnits[RandomShared.Next(playerUnits.Count)];
+            //    BattlefieldUnit enemyUnit = enemyUnits[RandomShared.Next(enemyUnits.Count)];
+            //    myUnit.AnimationStartAttackUnit(enemyUnit);
+            //});
 
             _Initialized = true;
         }
@@ -119,6 +152,44 @@ namespace Assets.GameData.Scenes.BattleField
             {
                 unit.OnResize();
             }
+
+            float coefHeight = G.GetCoefHeight();
+            float abilityButton_Size = _AbilityButton_Size * coefHeight;
+            Vector2 abilityButton_SizeVector = new(abilityButton_Size, abilityButton_Size);
+
+            _AttackButton__RectTransform.sizeDelta = abilityButton_SizeVector;
+            _Ability1Button__RectTransform.sizeDelta = abilityButton_SizeVector;
+            _Ability2Button__RectTransform.sizeDelta = abilityButton_SizeVector;
+            _Ability3Button__RectTransform.sizeDelta = abilityButton_SizeVector;
+
+            float abilityButton_Padding = _AbilityButton_Padding * coefHeight;
+            _AttackButton__RectTransform.anchoredPosition = new Vector2(-abilityButton_Padding, abilityButton_Padding);
+            _Ability1Button__RectTransform.anchoredPosition = new Vector2((-abilityButton_Padding * 2) - abilityButton_Size, abilityButton_Padding);
+            _Ability2Button__RectTransform.anchoredPosition = new Vector2((-abilityButton_Padding * 3) - (abilityButton_Size * 2), abilityButton_Padding);
+            _Ability3Button__RectTransform.anchoredPosition = new Vector2((-abilityButton_Padding * 4) - (abilityButton_Size * 3), abilityButton_Padding);
+
+            _AttackButton__TextMeshProUGUI.fontSize = _AbilityButton_FontSize * coefHeight;
+            _Ability1Button__TextMeshProUGUI.fontSize = _AbilityButton_FontSize * coefHeight;
+            _Ability2Button__TextMeshProUGUI.fontSize = _AbilityButton_FontSize * coefHeight;
+            _Ability3Button__TextMeshProUGUI.fontSize = _AbilityButton_FontSize * coefHeight;
         }
+
+        private async UniTask AbilityAttackOnClickAsync()
+        {
+
+        }
+        private async UniTask Ability1OnClickAsync()
+        {
+
+        }
+        private async UniTask Ability2OnClickAsync()
+        {
+
+        }
+        private async UniTask Ability3OnClickAsync()
+        {
+
+        }
+
     }
 }

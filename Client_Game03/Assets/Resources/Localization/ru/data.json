@@ -16,7 +16,11 @@
 			"TakeOff": "Снять",
 			"Sell": "Продать",
 			"ShowHero": "Показать героя",
-			"Cancel": "Отмена"
+			"Cancel": "Отмена",
+			
+			"Ability": {
+				"Attack": "Атака"
+			}
 		},
 		"Label": {
 			"ExitGame": "Выйти из игры?",
