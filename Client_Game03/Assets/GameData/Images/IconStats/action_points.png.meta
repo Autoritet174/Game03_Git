@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 12e30db8f5f1a4a4dace02db7e6d1341
+guid: 8b1e672382842cb46aa6bedfb5feddff
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Huntress_face_0
+      name: action_points_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 484
-        height: 484
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -112,8 +112,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c66d9f75b040cfc4f9c6bee1de8d827f
-      internalID: -1980699415
+      spriteID: 4bee8d53cab81cc4da663d37ae4b4816
+      internalID: -1087246869
       vertices: []
       indices: 
       edges: []
@@ -122,7 +122,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: bd0b589da54bac746ae0d0a60ee76c25
+    spriteID: 49ae69ad56663394a9e6a90207b11152
     internalID: 0
     vertices: []
     indices: 
@@ -134,7 +134,7 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Huntress_face_0: -1980699415
+      action_points_0: -1087246869
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

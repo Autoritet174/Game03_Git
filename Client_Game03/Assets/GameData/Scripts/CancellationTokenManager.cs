@@ -84,6 +84,10 @@ namespace Assets.GameData.Scripts
             return linkedCts.Token;
         }
 
+        public static CancellationToken CreateAbility() {
+            return Create("UseAbility", 3);
+        }
+
         /// <summary>
         /// Отменяет глобальный токен выхода и все активные локальные токены.
         /// Должен быть вызван при завершении работы приложения.

@@ -76,7 +76,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
         private async UniTask OnClick()
         {
-            BattlefieldSceneInitializator.SpawnedBattlefield = await Game03Client.BattleField.BattleFieldProvider.LoadBattleFieldAsync(Name,
+            BattlefieldSceneInitializator.SpawnedBattlefield = await Game03Client.Battlefield.BattlefieldProvider.LoadBattleFieldAsync(Name,
                 new Guid[] {
                     Guid.Parse("019d60de-eb9a-7e06-89e3-1d937ed9fae1"),
                 }, default);

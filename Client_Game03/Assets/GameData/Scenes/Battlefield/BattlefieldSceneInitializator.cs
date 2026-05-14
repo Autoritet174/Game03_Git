@@ -4,6 +4,7 @@ using General;
 using General.DTO.Battlefield;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -68,12 +69,16 @@ namespace Assets.GameData.Scenes.BattleField
             {
                 OnResized();
             }
-            //if (!playerUnits.Any(a => a.AnimationAttackStage > 0))
-            //{
-            //    BattlefieldUnit myUnit = playerUnits[RandomShared.Next(playerUnits.Count)];
-            //    BattlefieldUnit enemyUnit = enemyUnits[RandomShared.Next(enemyUnits.Count)];
-            //    myUnit.AnimationStartAttackUnit(enemyUnit);
-            //}
+            if (!playerUnits.Any(a => a.AnimationAttackStage > 0))
+            {
+                var list = enemyUnits.Where(a => a.SpawnedHero.Health > 0).ToList();
+                if (list.Count > 0)
+                {
+                    BattlefieldUnit myUnit = playerUnits[RandomShared.Next(playerUnits.Count)];
+                    BattlefieldUnit enemyUnit = list[RandomShared.Next(list.Count)];
+                    myUnit.AnimationStartAttackUnit(enemyUnit);
+                }
+            }
 
             //foreach (BattlefieldUnit unit in playerUnits)
             //{

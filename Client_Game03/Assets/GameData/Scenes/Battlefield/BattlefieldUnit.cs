@@ -1,4 +1,5 @@
 using Assets.GameData.Scripts;
+using Cysharp.Threading.Tasks;
 using General;
 using General.DTO.Battlefield;
 using General.DTO.Entities.GameData;
@@ -17,16 +18,14 @@ namespace Assets.GameData.Scenes.Battlefield
         private static readonly Color colorIntelligence = new(0, 160f / 255f, 255f / 255f);
         private static readonly Color colorUniversal = Color.white;
 
-        private static readonly float _Scale = 0.9f;
+        private static readonly float _Scale = 0.8f;
         private static readonly float _Width = 150;
         private static readonly float _Height = 200;
-        private static readonly float[] yShiftArray = new float[] {
-            -_Height / 2/0.8f* _Scale,
-            _Height / 2 / 0.8f* _Scale,
-            -_Height * 3 / 2 / 0.8f* _Scale,
-            _Height * 3 / 2 / 0.8f* _Scale
-        };
-        private static readonly float xShift = 200 / 0.8f* _Scale;
+
+        private static readonly float yShift1 = _Height / 2 / 0.8f * _Scale;
+        private static readonly float yShift2 = yShift1 * 3;
+        private static readonly float[] yShiftArray = new float[] { -yShift1, yShift1, -yShift2, yShift2 };
+        private static readonly float xShift = 170 / 0.8f * _Scale;
 
         private readonly RectTransform _RectTransform;
 
@@ -44,7 +43,7 @@ namespace Assets.GameData.Scenes.Battlefield
         private readonly RectTransform _HealthText__RectTransform;
 
 
-        private static readonly float _ImageHeroMask_Padding = 5;
+        private static readonly float _ImageHeroMask_Padding = 10;
         private readonly RectTransform _ImageHeroMask__RectTransform;
 
 
@@ -65,15 +64,23 @@ namespace Assets.GameData.Scenes.Battlefield
         private readonly TextMeshProUGUI _HealthChange_TextMeshProUGUI;
 
 
-        private readonly SpawnedHero _SpawnedHeroes;
+        private readonly RectTransform _ActionPoints_RectTransform;
+        private readonly RectTransform _ActionPointsImage_RectTransform;
+        private readonly RectTransform _ActionPointsText_RectTransform;
+        private readonly TextMeshProUGUI _ActionPointsText_TextMeshProUGUI;
+        private static readonly float _ActionPointsText_FontSize = 22;
+
+
+        public SpawnedHero SpawnedHero { get; }
 
         private readonly bool _IsMyUnit;
         private readonly int _Position;
-        
+
+       
 
         public BattlefieldUnit(SpawnedHero spawnedHeroes, int position, bool isMyUnit, Transform canvasUnits__Transform)
         {
-            _SpawnedHeroes = spawnedHeroes;
+            SpawnedHero = spawnedHeroes;
             _Position = position;
             _IsMyUnit = isMyUnit;
 
@@ -119,42 +126,27 @@ namespace Assets.GameData.Scenes.Battlefield
             Image _Level_Image = _Level_RectTransform.GetComponent<Image>();
             _Level_Image.color = dtoBaseHero.MainStat switch
             {
-                General.EMainStat.Strength => colorStrength,
-                General.EMainStat.Agility => colorAgility,
-                General.EMainStat.Intelligence => colorIntelligence,
-                General.EMainStat.Universal => colorUniversal,
-                _ => throw new System.NotImplementedException()
+                EMainStat.Strength => colorStrength,
+                EMainStat.Agility => colorAgility,
+                EMainStat.Intelligence => colorIntelligence,
+                EMainStat.Universal => colorUniversal,
+                _ => throw new NotImplementedException()
             };
 
 
             _HealthChange_RectTransform = GameObjectFinder.FindByName<RectTransform>("HealthChange", gameObject.transform);
             _HealthChange_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("HealthChange", gameObject.transform);
             _HealthChange_RectTransform.gameObject.SetActive(false);
+
+            _ActionPoints_RectTransform = GameObjectFinder.FindByName<RectTransform>("ActionPoints", gameObject.transform);
+            _ActionPointsImage_RectTransform = GameObjectFinder.FindByName<RectTransform>("ActionPointsImage", gameObject.transform);
+            _ActionPointsText_RectTransform = GameObjectFinder.FindByName<RectTransform>("ActionPointsText", gameObject.transform);
+            _ActionPointsText_TextMeshProUGUI = _ActionPointsText_RectTransform.GetComponent<TextMeshProUGUI>();
+
             OnResize();
 
-            RefreshHealth(_SpawnedHeroes.Health);
-        }
-
-        public void RefreshHealth(float newHealthValue)
-        {
-            _SpawnedHeroes.Health = newHealthValue;
-            _HealthText_TextMeshProUGUI.SetText(_SpawnedHeroes.Health.ToStr());
-
-            float coefHeight = G.GetCoefHeight();
-            float width = (_Width - (_HealthImagePercent_Right * 2)) * _SpawnedHeroes.HealthPercent;
-            _HealthImagePercent__RectTransform.sizeDelta = new Vector2(width, _Health_Height * coefHeight);
-        }
-
-        public Vector2 GetCoords()
-        {
-            float coefHeight = G.GetCoefHeight();
-            float x = xShift * ((_Position / 4) + 1);
-            if (_IsMyUnit)
-            {
-                x = -x;
-            }
-            float y = yShiftArray[_Position % 4];
-            return new Vector2(x * coefHeight, y * coefHeight);
+            RefreshHealth(SpawnedHero.Health);
+            RefreshActionPoints(SpawnedHero.ActionPoints);
         }
 
         public void OnResize()
@@ -183,14 +175,65 @@ namespace Assets.GameData.Scenes.Battlefield
             _LevelText_TextMeshProUGUI.fontSize = _Level_FontSize * coefHeight;
 
 
-            RefreshHealth(_SpawnedHeroes.Health);
+            RefreshHealth(SpawnedHero.Health);
 
             _HealthChange_TextMeshProUGUI.fontSize = _HealthChange_FontSize * coefHeight;
             _HealthChange_RectTransform.anchoredPosition = new Vector2(0, -_HealthChange_Height * coefHeight);
             _HealthChange_RectTransform.sizeDelta = new Vector2(0, _HealthChange_Height * coefHeight);
+
+
+            _ActionPoints_RectTransform.anchoredPosition = new Vector2(0, _Health_Height * coefHeight);
+            _ActionPoints_RectTransform.sizeDelta = new Vector2(0, _Health_Height * coefHeight);
+            _ActionPointsImage_RectTransform.sizeDelta = new Vector2(_HealthImageStat_Size * coefHeight, _HealthImageStat_Size * coefHeight);
+            _ActionPointsImage_RectTransform.anchoredPosition = new Vector2(_HealthImageStat_X * coefHeight, 0);
+            _ActionPointsText_RectTransform.sizeDelta = new Vector2(_HealthText_Width * coefHeight, _Health_Height * coefHeight);
+            _ActionPointsText_TextMeshProUGUI.fontSize = _ActionPointsText_FontSize * coefHeight;
         }
 
+        public void RefreshHealth(float newHealthValue)
+        {
+            SpawnedHero.Health = newHealthValue;
+            _HealthText_TextMeshProUGUI.SetText(SpawnedHero.Health.ToStr());
 
+            float coefHeight = G.GetCoefHeight();
+            float width = (_Width - (_HealthImagePercent_Right * 2)) * SpawnedHero.HealthPercent;
+            _HealthImagePercent__RectTransform.sizeDelta = new Vector2(width, _Health_Height * coefHeight);
+        }
+
+        public void RefreshActionPoints(int ap)
+        {
+            SpawnedHero.ActionPoints = ap;
+            _ActionPointsText_TextMeshProUGUI.text = ap.ToString();
+        }
+
+        public Vector2 GetCoords()
+        {
+            float coefHeight = G.GetCoefHeight();
+            float x = xShift * ((_Position / 4) + 1);
+            if (_IsMyUnit)
+            {
+                x = -x;
+            }
+            float y = yShiftArray[_Position % 4];
+            return new Vector2(x * coefHeight, y * coefHeight);
+        }
+
+        public async UniTask UseAttack(BattlefieldUnit unitTarget)
+        {
+            bool r = await Game03Client.Battlefield.BattlefieldProvider.UseAbilityAsync(
+                EAbility.Attack,
+                SpawnedHero.SpawnedId,
+                unitTarget.SpawnedHero.SpawnedId,
+                CancellationTokenManager.CreateAbility()
+                );
+            if (r)
+            {
+                AnimationStartAttackUnit(unitTarget);
+            }
+            else {
+                Debug.LogError("UseAbilityAsync = false");
+            }
+        }
 
         private static readonly double AnimationSpeed = 1;
         private static readonly double AnimationAttackTimeStage1 = 0.2;
@@ -201,6 +244,7 @@ namespace Assets.GameData.Scenes.Battlefield
         private DateTime AtimationAttackEnd = DateTime.Now;
         private BattlefieldUnit AtimationAttackUnitTarget;
         private Vector2 AtimationAttackPosEnd = Vector2.zero;
+
         public static float ShiftPower(float x, float p = 6f)
         {
             x = Math.Clamp(x, 0f, 1f);
@@ -225,7 +269,7 @@ namespace Assets.GameData.Scenes.Battlefield
 
             if (AnimationAttackStage == 1) // увеличение масштаба
             {
-                float coef = (1f + (0.3f * animationPercent))* _Scale;
+                float coef = (1f + (0.3f * animationPercent)) * _Scale;
                 _RectTransform.localScale = new(coef, coef, 1);
                 if (animationPercent == 1)
                 {
@@ -236,7 +280,7 @@ namespace Assets.GameData.Scenes.Battlefield
             }
             else if (AnimationAttackStage == 2) // движение от базовой точки до цели
             {
-                float animationPercentForPos = ShiftPower(animationPercent*1.2f);
+                float animationPercentForPos = ShiftPower(animationPercent * 1.2f);
 
 
                 Vector2 posStart = GetCoords();
@@ -252,7 +296,7 @@ namespace Assets.GameData.Scenes.Battlefield
                     AnimationAttackStage = 3;
                     AtimationAttackStart = DateTime.Now;
                     AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage3 / AnimationSpeed);
-                    AtimationAttackUnitTarget.AnimationStartHealthChange(-RandomShared.NextInclusive(10, 99));
+                    AtimationAttackUnitTarget.AnimationStartHealthChange(-RandomShared.NextInclusive(200, 300));
                 }
             }
             else if (AnimationAttackStage == 3) // движение от цели до базовой точки
@@ -265,7 +309,7 @@ namespace Assets.GameData.Scenes.Battlefield
                 float y = posStart.y + (distY * animationPercent);
                 _RectTransform.anchoredPosition = new Vector2(x, y);
 
-                float coef = (1f + (0.3f * (1-animationPercent)))* _Scale;
+                float coef = (1f + (0.3f * (1 - animationPercent))) * _Scale;
                 _RectTransform.localScale = new(coef, coef, 1);
                 if (animationPercent == 1)
                 {
@@ -292,7 +336,7 @@ namespace Assets.GameData.Scenes.Battlefield
             }
             else
             {
-                _HealthChange_TextMeshProUGUI.text = "+"+v.ToStr();
+                _HealthChange_TextMeshProUGUI.text = "+" + v.ToStr();
                 _HealthChange_TextMeshProUGUI.color = Color.green;
             }
 
@@ -302,7 +346,7 @@ namespace Assets.GameData.Scenes.Battlefield
             AtimationHealthChangeEnd = AtimationHealthChangeStart.AddSeconds(AnimationHealthChangeTime / AnimationSpeed);
             _HealthChange_RectTransform.gameObject.SetActive(true);
 
-            RefreshHealth(_SpawnedHeroes.Health + v);
+            RefreshHealth(SpawnedHero.Health + v);
         }
 
 
