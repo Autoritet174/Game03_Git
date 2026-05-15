@@ -70,9 +70,10 @@
     <Compile Include="Assets\GameData\Scripts\ButtonCloseHelper.cs" />
     <Compile Include="Assets\GameData\Scripts\ButtonClose_Click_MoveToMainMenu.cs" />
     <Compile Include="Assets\GameData\Scripts\SecureStorageProvider.cs" />
-    <Compile Include="Assets\GameData\Scenes\BattleField\ButtonClose_Click_EndBattle.cs" />
     <Compile Include="Assets\GameData\Scripts\MainThreadDispatcher.cs" />
+    <Compile Include="Assets\GameData\Scenes\Battlefield\BattlefieldUnit.cs" />
     <Compile Include="Assets\GameData\Prefabs\Buttons\Button_01_Init.cs" />
+    <Compile Include="Assets\GameData\Scenes\Battlefield\ButtonClose_Click_EndBattle.cs" />
     <Compile Include="Assets\GameData\Scenes\SelectBattlefield\BattlefieldCategory.cs" />
     <Compile Include="Assets\GameData\Scripts\LoggerException.cs" />
     <Compile Include="Assets\GameData\Prefabs\InputFields\InputField.cs" />
@@ -88,7 +89,6 @@
     <Compile Include="Assets\GameData\Scripts\Redactor\AddressableNamesGenerator.cs" />
     <Compile Include="Assets\GameData\Scripts\Redactor\SpriteGenerator.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\TabButton.cs" />
-    <Compile Include="Assets\GameData\Scenes\BattleField\BattlefieldSceneInitializator.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\PanelCollectionViewer.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\MainMenuSceneInitializator.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\CollectionSceneInitializator.cs" />
@@ -119,8 +119,8 @@
     <Compile Include="Assets\GameData\Prefabs\PanelTop\PanelTopPrefabScript.cs" />
     <Compile Include="Assets\GameData\Scripts\G.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\AuthHelper.cs" />
-    <Compile Include="Assets\GameData\Scenes\BattleField\BattlefieldUnit.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\Slot.cs" />
+    <Compile Include="Assets\GameData\Scenes\Battlefield\BattlefieldSceneInitializator.cs" />
     <Compile Include="Assets\GameData\Prefabs\Reconnecting\PanelReconnectingPrefabInitializator.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Button_Auth.cs" />
     <Compile Include="Assets\GameData\Scripts\RichTextBuilder.cs" />

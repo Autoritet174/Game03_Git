@@ -25,7 +25,7 @@ namespace Assets.GameData.Scenes.Battlefield
         private static readonly float yShift1 = _Height * 0.6f * _Scale;
         private static readonly float yShift = 40;
         private static readonly float yShift2 = yShift1 * 3;
-        private static readonly float[] yShiftArray = new float[] { -yShift1+ yShift, yShift1 + yShift, -yShift2 + yShift, yShift2 + yShift };
+        private static readonly float[] yShiftArray = new float[] { -yShift1 + yShift, yShift1 + yShift, -yShift2 + yShift, yShift2 + yShift };
         private static readonly float xShift = 200f * _Scale;
 
         private readonly RectTransform _RectTransform;
