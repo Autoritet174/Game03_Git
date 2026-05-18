@@ -80,8 +80,12 @@ namespace Assets.GameData.Scenes.SelectBattlefield
                 new Guid[] {
                     Guid.Parse("019d60de-eb9a-7e06-89e3-1d937ed9fae1"),
                 }, default);
+
+
             if (BattlefieldSceneInitializator.SpawnedBattlefield != null)
             {
+                BattlefieldSceneInitializator.SpawnedBattlefield.SpawnedHeroPlayerList.Sort((a, b) => b.Initiative.CompareTo(a.Initiative));
+                BattlefieldSceneInitializator.SpawnedBattlefield.SpawnedHeroEnemyList.Sort((a, b) => b.Initiative.CompareTo(a.Initiative));
                 GameSceneManager.Load(GameSceneManager.SceneName.Battlefield);
             }
             else

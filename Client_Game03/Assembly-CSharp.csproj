@@ -92,6 +92,7 @@
     <Compile Include="Assets\GameData\Scenes\Collection\PanelCollectionViewer.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\MainMenuSceneInitializator.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\CollectionSceneInitializator.cs" />
+    <Compile Include="Assets\GameData\Scenes\Battlefield\BattlefieldUnit_Animation__ChangeHealth.cs" />
     <Compile Include="Assets\GameData\Scripts\GameMessage.cs" />
     <Compile Include="Assets\GameData\Scripts\InitializatorStartScene.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\FilterButton.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Assets\GameData\Scenes\Collection\PanelGroupDivider.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\AuthManager.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\PanelCollection.cs" />
+    <Compile Include="Assets\GameData\Scenes\Battlefield\BattlefieldUnit_Animation_AbilityAttack.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\PanelTop.cs" />
     <Compile Include="Assets\GameData\Scripts\CancellationTokenManager.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Button_Close.cs" />

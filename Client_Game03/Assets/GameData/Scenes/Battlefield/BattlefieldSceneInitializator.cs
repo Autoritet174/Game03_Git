@@ -36,7 +36,10 @@ namespace Assets.GameData.Scenes.BattleField
         private TextMeshProUGUI _Ability2Button__TextMeshProUGUI;
         private TextMeshProUGUI _Ability3Button__TextMeshProUGUI;
 
-        private void Start()
+        private int battlefieldIndexAnimationStarted = -1;
+        private bool battlefieldIndexAnimationActive = false;
+
+        private async void Start()
         {
             if (SpawnedBattlefield == null || SpawnedBattlefield.SpawnedHeroPlayerList == null)
             {
@@ -93,6 +96,15 @@ namespace Assets.GameData.Scenes.BattleField
             //    myUnit.AnimationStartAttackUnit(enemyUnit);
             //});
 
+            SpawnedBattlefield.BattlefieldLog = await Game03Client.Battlefield.BattlefieldProvider.GetBattleLogAsync(default);
+            if (SpawnedBattlefield.BattlefieldLog == null)
+            {
+                return;
+            }
+            SpawnedBattlefield.BattlefieldLog.Sort((a, b) => a.Index.CompareTo(b.Index));
+            battlefieldIndexAnimationStarted = 0;
+            battlefieldIndexAnimationActive = false;
+
             _Initialized = true;
         }
 
@@ -102,16 +114,16 @@ namespace Assets.GameData.Scenes.BattleField
             {
                 OnResized();
             }
-            if (!playerUnits.Any(a => a.AnimationAttackStage > 0))
-            {
-                var list = enemyUnits.Where(a => a.SpawnedHero.Health > 0).ToList();
-                if (list.Count > 0)
-                {
-                    BattlefieldUnit myUnit = playerUnits[RandomShared.Next(playerUnits.Count)];
-                    BattlefieldUnit enemyUnit = list[RandomShared.Next(list.Count)];
-                    myUnit.AnimationStartAttackUnit(enemyUnit);
-                }
-            }
+            //if (!playerUnits.Any(a => a.AnimationAttackStage > 0))
+            //{
+            //    var list = enemyUnits.Where(a => a.SpawnedHero.Health > 0).ToList();
+            //    if (list.Count > 0)
+            //    {
+            //        BattlefieldUnit myUnit = playerUnits[RandomShared.Next(playerUnits.Count)];
+            //        BattlefieldUnit enemyUnit = list[RandomShared.Next(list.Count)];
+            //        myUnit.AnimationStartAttackUnit(enemyUnit);
+            //    }
+            //}
 
             //foreach (BattlefieldUnit unit in playerUnits)
             //{
@@ -122,15 +134,54 @@ namespace Assets.GameData.Scenes.BattleField
             //    }
             //}
 
+
+            //if (battlefieldIndexAnimationActive && SpawnedBattlefield.BattlefieldLog[^1].Index <= battlefieldIndexAnimationStarted)
+            //{
+            //    battlefieldIndexAnimationStarted = -1;
+            //    battlefieldIndexAnimationActive = false;
+            //}
+
+            if (!battlefieldIndexAnimationActive && SpawnedBattlefield.BattlefieldLog != null) {
+                for (int i = 0; i < SpawnedBattlefield.BattlefieldLog.Count; i++)
+                {
+                    BattlefieldLogRecord b = SpawnedBattlefield.BattlefieldLog[i];
+                    if (b.Index > battlefieldIndexAnimationStarted)
+                    {
+                        if (b.eAbility == EAbility.Attack)
+                        {
+                            BattlefieldUnit h1Unit = battlefieldUnits[b.H1.Value];
+                            BattlefieldUnit h2Unit = battlefieldUnits[b.H2.Value];
+                            h1Unit.AnimationStartAttackUnit(h2Unit, b.Damage.Value, b.IsCrit);
+                            h2Unit.SpawnedHero.Health -= b.Damage.Value;
+                            battlefieldIndexAnimationStarted++;
+                            battlefieldIndexAnimationActive = true;
+
+                            //Debug.Log("индекс анимации = " + b.Index.ToString());
+                        }
+                        break;
+                    }
+                }
+            }
+
+
+            battlefieldIndexAnimationActive = false;
             foreach (BattlefieldUnit unit in playerUnits)
             {
                 unit.UpdateAnimationAttack();
                 unit.UpdateAnimationChangeHealth();
+                if (!battlefieldIndexAnimationActive && unit.AnimationAttackStage > 0)
+                {
+                    battlefieldIndexAnimationActive = true;
+                }
             }
             foreach (BattlefieldUnit unit in enemyUnits)
             {
                 unit.UpdateAnimationAttack();
                 unit.UpdateAnimationChangeHealth();
+                if (!battlefieldIndexAnimationActive && unit.AnimationAttackStage > 0)
+                {
+                    battlefieldIndexAnimationActive = true;
+                }
             }
         }
 
@@ -176,7 +227,16 @@ namespace Assets.GameData.Scenes.BattleField
 
         private async UniTask AbilityAttackOnClickAsync()
         {
-
+            SpawnedBattlefield.BattlefieldLog = await Game03Client.Battlefield.BattlefieldProvider.GetBattleLogAsync(default);
+            if (SpawnedBattlefield.BattlefieldLog == null)
+            {
+                return;
+            }
+            SpawnedBattlefield.BattlefieldLog.Sort((a, b) => a.Index.CompareTo(b.Index));
+            battlefieldIndexAnimationStarted = 0;
+            battlefieldIndexAnimationActive = false;
+            //Debug.Log("количество записей в логе = "+SpawnedBattlefield.BattlefieldLog.Count.ToString());
+            //string s = JSON.Serialize(SpawnedBattlefield.BattlefieldLog);
         }
         private async UniTask Ability1OnClickAsync()
         {

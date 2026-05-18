@@ -2,7 +2,7 @@ namespace Assets.GameData.Scripts
 {
     public static class ToStringService
     {
-        public static int mode = 2;
+        public static int mode = 1;
         public static int modePercent = 1;
 
         /// <summary>
