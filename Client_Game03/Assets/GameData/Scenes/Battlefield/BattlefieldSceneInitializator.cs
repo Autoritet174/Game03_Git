@@ -1,11 +1,11 @@
 using Assets.GameData.Scenes.Battlefield;
+using Assets.GameData.Scenes.Battlefield.Animations;
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using General;
 using General.DTO.Battlefield;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using L = General.LocalizationKeys;
@@ -24,9 +24,9 @@ namespace Assets.GameData.Scenes.BattleField
         public static float Width { get; private set; } = 0f;
         public static float Height { get; private set; } = 0f;
 
-        private readonly float _AbilityButton_Size = 150;
-        private readonly float _AbilityButton_Padding = 25;
-        private readonly float _AbilityButton_FontSize = 24;
+        private static readonly float _AbilityButton_Size = 150;
+        private static readonly float _AbilityButton_Padding = 25;
+        private static readonly float _AbilityButton_FontSize = 24;
         private RectTransform _AttackButton__RectTransform;
         private RectTransform _Ability1Button__RectTransform;
         private RectTransform _Ability2Button__RectTransform;
@@ -35,6 +35,11 @@ namespace Assets.GameData.Scenes.BattleField
         private TextMeshProUGUI _Ability1Button__TextMeshProUGUI;
         private TextMeshProUGUI _Ability2Button__TextMeshProUGUI;
         private TextMeshProUGUI _Ability3Button__TextMeshProUGUI;
+
+        public static Transform CanvasDamage__Transform { get; private set; }
+
+        private RectTransform _Turn__RectTransform;
+        private TextMeshProUGUI _Turn__TextMeshProUGUI;
 
         private int battlefieldIndexAnimationStarted = -1;
         private bool battlefieldIndexAnimationActive = false;
@@ -51,6 +56,7 @@ namespace Assets.GameData.Scenes.BattleField
             battlefieldUnits.Clear();
 
             Transform canvasUnits__Transform = GameObjectFinder.FindByName("CanvasUnits").transform;
+            CanvasDamage__Transform = GameObjectFinder.FindByName("CanvasDamage").transform;
 
             // размещение героев игрока
             for (int i = 0; i < SpawnedBattlefield.SpawnedHeroPlayerList.Count; i++)
@@ -105,6 +111,10 @@ namespace Assets.GameData.Scenes.BattleField
             battlefieldIndexAnimationStarted = 0;
             battlefieldIndexAnimationActive = false;
 
+
+            _Turn__RectTransform = GameObjectFinder.FindByName<RectTransform>("TurnText");
+            _Turn__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("TurnText");
+
             _Initialized = true;
         }
 
@@ -141,7 +151,8 @@ namespace Assets.GameData.Scenes.BattleField
             //    battlefieldIndexAnimationActive = false;
             //}
 
-            if (!battlefieldIndexAnimationActive && SpawnedBattlefield.BattlefieldLog != null) {
+            if (!battlefieldIndexAnimationActive && SpawnedBattlefield.BattlefieldLog != null)
+            {
                 for (int i = 0; i < SpawnedBattlefield.BattlefieldLog.Count; i++)
                 {
                     BattlefieldLogRecord b = SpawnedBattlefield.BattlefieldLog[i];
@@ -154,6 +165,7 @@ namespace Assets.GameData.Scenes.BattleField
                             h1Unit.AnimationStartAttackUnit(h2Unit, b.Damage.Value, b.IsCrit);
                             h2Unit.SpawnedHero.Health -= b.Damage.Value;
                             battlefieldIndexAnimationStarted++;
+                            _Turn__TextMeshProUGUI.text = $"{LM.GetValue(L.UI.Label.Turn)}: {b.Turn}";
                             battlefieldIndexAnimationActive = true;
 
                             //Debug.Log("индекс анимации = " + b.Index.ToString());
@@ -168,7 +180,6 @@ namespace Assets.GameData.Scenes.BattleField
             foreach (BattlefieldUnit unit in playerUnits)
             {
                 unit.UpdateAnimationAttack();
-                unit.UpdateAnimationChangeHealth();
                 if (!battlefieldIndexAnimationActive && unit.AnimationAttackStage > 0)
                 {
                     battlefieldIndexAnimationActive = true;
@@ -177,12 +188,15 @@ namespace Assets.GameData.Scenes.BattleField
             foreach (BattlefieldUnit unit in enemyUnits)
             {
                 unit.UpdateAnimationAttack();
-                unit.UpdateAnimationChangeHealth();
                 if (!battlefieldIndexAnimationActive && unit.AnimationAttackStage > 0)
                 {
                     battlefieldIndexAnimationActive = true;
                 }
             }
+
+            HealthHub.Update();
+
+
         }
 
         private void OnResized()
@@ -223,6 +237,9 @@ namespace Assets.GameData.Scenes.BattleField
             _Ability1Button__TextMeshProUGUI.fontSize = _AbilityButton_FontSize * coefHeight;
             _Ability2Button__TextMeshProUGUI.fontSize = _AbilityButton_FontSize * coefHeight;
             _Ability3Button__TextMeshProUGUI.fontSize = _AbilityButton_FontSize * coefHeight;
+
+            _Turn__RectTransform.anchoredPosition = new Vector2(-25 * coefHeight, -108 * coefHeight);
+            _Turn__TextMeshProUGUI.fontSize = 70 * coefHeight;
         }
 
         private async UniTask AbilityAttackOnClickAsync()

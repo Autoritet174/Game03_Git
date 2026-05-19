@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: BattleField
   m_GUID: 4e806205d71d6014aa0daaf175ead4ee
   m_SerializeEntries:
+  - m_GUID: 020fda4df952659439216e027d558b2e
+    m_Address: HealthChange
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 411b26723a2d2974baa37e6a1769d90b
     m_Address: BattleFieldUnit
     m_ReadOnly: 0

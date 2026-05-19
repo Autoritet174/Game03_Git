@@ -92,10 +92,10 @@
     <Compile Include="Assets\GameData\Scenes\Collection\PanelCollectionViewer.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\MainMenuSceneInitializator.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\CollectionSceneInitializator.cs" />
-    <Compile Include="Assets\GameData\Scenes\Battlefield\BattlefieldUnit_Animation__ChangeHealth.cs" />
     <Compile Include="Assets\GameData\Scripts\GameMessage.cs" />
     <Compile Include="Assets\GameData\Scripts\InitializatorStartScene.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\FilterButton.cs" />
+    <Compile Include="Assets\GameData\Scenes\Battlefield\Animations\HealthHub.cs" />
     <Compile Include="Assets\GameData\Scripts\UnityObject.cs" />
     <Compile Include="Assets\GameData\Scripts\AddressableCache.cs" />
     <Compile Include="Assets\GameData\Scripts\InputManager.cs" />
@@ -118,10 +118,12 @@
     <Compile Include="Assets\GameData\Scripts\GameObjectFinder.cs" />
     <Compile Include="Assets\GameData\Scenes\TEST_01\TestScript.cs" />
     <Compile Include="Assets\GameData\Scenes\AllHeroes\AllHeroes.cs" />
+    <Compile Include="Assets\GameData\Scenes\Battlefield\Animations\Health.cs" />
     <Compile Include="Assets\GameData\Prefabs\PanelTop\PanelTopPrefabScript.cs" />
     <Compile Include="Assets\GameData\Scripts\G.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\AuthHelper.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\Slot.cs" />
+    <Compile Include="Assets\GameData\Scripts\GlobalClassesForNetStandard2.cs" />
     <Compile Include="Assets\GameData\Scenes\Battlefield\BattlefieldSceneInitializator.cs" />
     <Compile Include="Assets\GameData\Prefabs\Reconnecting\PanelReconnectingPrefabInitializator.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Button_Auth.cs" />

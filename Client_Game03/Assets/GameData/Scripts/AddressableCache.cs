@@ -28,6 +28,7 @@ namespace Assets.GameData.Scripts
         public static GameObject IconCollectionElementAddressableGameObject;
 
         public static GameObject BattleFieldUnit;
+        public static GameObject HealthChange;
 
         /// <summary> Выполняет параллельную предварительную загрузку ассетов. </summary>
         public static async UniTask PreLoadAssets()
@@ -89,6 +90,7 @@ namespace Assets.GameData.Scripts
             tasks.Add(LoadGameObjectAsync("GroupDividerPrefab", go => GroupDividerPrefabAddressableGameObject = go));
             tasks.Add(LoadGameObjectAsync("IconCollectionElement", go => IconCollectionElementAddressableGameObject = go));
             tasks.Add(LoadGameObjectAsync("BattleFieldUnit", go => BattleFieldUnit = go));
+            tasks.Add(LoadGameObjectAsync("HealthChange", go => HealthChange = go));
 
             // Ожидание всех задач
             await UniTask.WhenAll(tasks);

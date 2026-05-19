@@ -6,7 +6,7 @@ namespace Assets.GameData.Scenes.Battlefield
 {
     public partial class BattlefieldUnit
     {
-        private static readonly double AnimationSpeed = 1;
+        private static readonly double AnimationSpeed = 1.5;
         private static readonly double AnimationAttackTimeStage1 = 0.3;
         private static readonly double AnimationAttackTimeStage2 = 0.5;
         private static readonly double AnimationAttackTimeStage3 = 0.4;
@@ -67,8 +67,11 @@ namespace Assets.GameData.Scenes.Battlefield
                     AnimationAttackStage = 3;
                     AtimationAttackStart = DateTime.Now;
                     AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage3 / AnimationSpeed);
-                    AtimationAttackUnitTarget.AnimationStartHealthChange(-AnimationAttackDamage, AnimationAttackDamageIsCrit);
-                    //AtimationAttackUnitTarget.SpawnedHero.Health -=;
+                    AtimationAttackUnitTarget.RefreshHealth();
+                    Animations.HealthHub.Create(
+                        -AnimationAttackDamage,
+                        AnimationAttackDamageIsCrit,
+                        AtimationAttackUnitTarget._RectTransform);
                 }
             }
             else if (AnimationAttackStage == 3) // движение от цели до базовой точки
