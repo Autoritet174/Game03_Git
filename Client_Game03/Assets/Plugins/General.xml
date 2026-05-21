@@ -11,15 +11,6 @@
             <param name="accessToken">Строка JWT токена</param>
             <returns>true — токен ещё действителен по времени, false — истёк или ещё не начал действовать</returns>
         </member>
-        <member name="P:General.DTO.Battlefield.BattlefieldLogRecord.Index">
-            <summary> Индекс лога. </summary>
-        </member>
-        <member name="P:General.DTO.Battlefield.BattlefieldLogRecord.H1">
-            <summary> Герой нанёсший урон. </summary>
-        </member>
-        <member name="P:General.DTO.Battlefield.BattlefieldLogRecord.H2">
-            <summary> Герой получивший урон. </summary>
-        </member>
         <member name="T:General.DTO.Dice">
             <summary>
             Класс, представляющий бросок кубиков в формате "2d3+5",
