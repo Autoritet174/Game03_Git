@@ -186,7 +186,7 @@ namespace Assets.GameData.Scenes.Battlefield
             _ActionPointsText_RectTransform.sizeDelta = new Vector2(text_Width, text_Height);
             _ActionPointsText_TextMeshProUGUI.fontSize = 22 * coefHeight;
 
-            float imageDead = 100 * coefHeight;
+            float imageDead = 135 * coefHeight;
             _ImageDead_RectTransform.sizeDelta = new Vector2(imageDead, imageDead);
         }
 

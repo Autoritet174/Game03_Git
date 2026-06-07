@@ -47,10 +47,10 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             buttons.Clear();
         }
 
-        public void ButtonsAdd(EBattleFiled name)
+        public void ButtonsAdd(EBattleFiled battlefieldId)
         {
-            BattleFieldButton button = new(name, this);
-            buttons.Add(button.Name, button);
+            BattleFieldButton button = new(battlefieldId, this);
+            buttons.Add(button.BattlefieldId, button);
         }
 
         public void OnResize()

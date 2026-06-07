@@ -3,6 +3,7 @@ using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using General;
 using System;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using L = General.LocalizationKeys;
@@ -24,11 +25,11 @@ namespace Assets.GameData.Scenes.SelectBattlefield
         private readonly RectTransform imageSelected__RectTransform;
         private readonly TextMeshProUGUI label__TextMeshProUGUI;
 
-        public EBattleFiled Name { get; }
+        public EBattleFiled BattlefieldId { get; }
 
-        public BattleFieldButton(EBattleFiled name, BattleFieldCategory parentBattleFieldCategory)
+        public BattleFieldButton(EBattleFiled battlefieldId, BattleFieldCategory parentBattleFieldCategory)
         {
-            Name = name;
+            BattlefieldId = battlefieldId;
             this.parentBattleFieldCategory = parentBattleFieldCategory;
             parentTransform = parentBattleFieldCategory.rectTransform.transform;
 
@@ -41,7 +42,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
             label__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label", parentTransform);
 
-            string localizationKey = $"{L.UI.Label.BattleField}_{name}";
+            string localizationKey = $"{L.UI.Label.BattleField}_{battlefieldId}";
             label__TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(localizationKey));
 
             EventHelper.AddHoverEvents(imageMask__RectTransform.gameObject, OnPointerEnter, OnPointerExit);
@@ -76,7 +77,9 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
         private async UniTask OnClick()
         {
-            BattlefieldSceneInitializator.SpawnedBattlefield = await Game03Client.Battlefield.BattlefieldProvider.LoadBattleFieldAsync(Name,
+            Game03Client.GameData.Container.Battlefields.First(a=>a.Id == BattlefieldId);
+
+            BattlefieldSceneInitializator.SpawnedBattlefield = await Game03Client.Battlefield.BattlefieldProvider.LoadBattleFieldAsync(BattlefieldId,
                 new Guid[] {
                     Guid.Parse("019d60de-eb9a-7e06-89e3-1d937ed9fae1"),
                 }, default);

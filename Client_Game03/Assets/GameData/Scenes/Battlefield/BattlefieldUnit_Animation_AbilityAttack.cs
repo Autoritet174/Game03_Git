@@ -7,9 +7,9 @@ namespace Assets.GameData.Scenes.Battlefield
     public partial class BattlefieldUnit
     {
         private static readonly double AnimationSpeed = 1.5;
-        private static readonly double AnimationAttackTimeStage1 = 0.3;
-        private static readonly double AnimationAttackTimeStage2 = 0.5;
-        private static readonly double AnimationAttackTimeStage3 = 0.4;
+        public static readonly double AnimationAttackTimeStage1 = 0.3;
+        public static readonly double AnimationAttackTimeStage2 = 0.5;
+        public static readonly double AnimationAttackTimeStage3 = 0.4;
 
         public int AnimationAttackStage { get; private set; } = 0;
         private DateTime AtimationAttackStart = DateTime.Now;

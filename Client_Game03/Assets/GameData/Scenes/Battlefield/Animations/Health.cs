@@ -1,11 +1,7 @@
-using Assets.GameData.Scenes.BattleField;
 using Assets.GameData.Scripts;
 using General;
-using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Assets.GameData.Scenes.Battlefield.Animations
@@ -75,19 +71,25 @@ namespace Assets.GameData.Scenes.Battlefield.Animations
             {
                 return;
             }
-
-            float animationPercent = Math.Clamp((float)((DateTime.Now - dtStart).TotalSeconds / (dtEnd - dtStart).TotalSeconds), 0, 1);
-            Vector2 posEndShift = posEnd + posParent.anchoredPosition;
-
-            float xDist = posEndShift.x - posParent.anchoredPosition.x;
-            float yDist = posEndShift.y - posParent.anchoredPosition.y;
-            float x = posParent.anchoredPosition.x + (xDist * animationPercent);
-            float y = posParent.anchoredPosition.y + (yDist * animationPercent);
-            rectTransform.anchoredPosition = new Vector2(x * G.GetCoefHeight(), y * G.GetCoefHeight());
-
-            if (animationPercent == 1)
+            try
             {
-                Active = false;
+                float animationPercent = Math.Clamp((float)((DateTime.Now - dtStart).TotalSeconds / (dtEnd - dtStart).TotalSeconds), 0, 1);
+                Vector2 posEndShift = posEnd + posParent.anchoredPosition;
+
+                float xDist = posEndShift.x - posParent.anchoredPosition.x;
+                float yDist = posEndShift.y - posParent.anchoredPosition.y;
+                float x = posParent.anchoredPosition.x + (xDist * animationPercent);
+                float y = posParent.anchoredPosition.y + (yDist * animationPercent);
+                rectTransform.anchoredPosition = new Vector2(x * G.GetCoefHeight(), y * G.GetCoefHeight());
+
+                if (animationPercent == 1)
+                {
+                    Active = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
             }
         }
     }

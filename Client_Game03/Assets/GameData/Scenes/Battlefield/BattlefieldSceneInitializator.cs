@@ -46,6 +46,8 @@ namespace Assets.GameData.Scenes.BattleField
         private int battlefieldIndexAnimationStarted = -1;
         private bool battlefieldIndexAnimationActive = false;
 
+        private DateTime dateTimeWaitFor = DateTime.MinValue;
+
         private async void Start()
         {
             if (SpawnedBattlefield == null || SpawnedBattlefield.SpawnedHeroPlayerList == null)
@@ -126,6 +128,8 @@ namespace Assets.GameData.Scenes.BattleField
             {
                 OnResized();
             }
+
+
             //if (!playerUnits.Any(a => a.AnimationAttackStage > 0))
             //{
             //    var list = enemyUnits.Where(a => a.SpawnedHero.Health > 0).ToList();
@@ -152,64 +156,70 @@ namespace Assets.GameData.Scenes.BattleField
             //    battlefieldIndexAnimationStarted = -1;
             //    battlefieldIndexAnimationActive = false;
             //}
-            List<IBattlefieldLogRecord> fullLog = SpawnedBattlefield.BattlefieldLog;
-            if (!battlefieldIndexAnimationActive && fullLog != null)
+
+
+            if (dateTimeWaitFor < DateTime.Now)
             {
-                for (int i = 0; i < fullLog.Count; i++)
+                List<BattlefieldLogRecordBase> fullLog = SpawnedBattlefield.BattlefieldLog;
+                if (!battlefieldIndexAnimationActive && fullLog != null)
                 {
-                    IBattlefieldLogRecord iLog = fullLog[i];
-                    if (iLog.Index > battlefieldIndexAnimationStarted)
+                    for (int i = 0; i < fullLog.Count; i++)
                     {
-                        switch (iLog)
+                        BattlefieldLogRecordBase iLog = fullLog[i];
+                        if (iLog.Index > battlefieldIndexAnimationStarted)
                         {
-                            case BattlefieldLogRecord_TurnStart log:
-                                _Turn__TextMeshProUGUI.text = $"{LM.GetValue(L.UI.Label.Turn)}: {log.Turn}";
-                                break;
-                            //case BattlefieldLogRecord_ChangeActionPoints log:
-                            //    break;
-                            case BattlefieldLogRecord_UseAbility log:
+                            switch (iLog)
+                            {
+                                case BattlefieldLogRecord_TurnStart log:
+                                    _Turn__TextMeshProUGUI.text = $"{LM.GetValue(L.UI.Label.Turn)}: {log.Turn}";
 
-                                switch (log.Ability)
-                                {
-                                    case EBattlefieldLogAbility.Attack:
-                                        if (log.SpawnedHeroTargets.Length == 1)
-                                        {
-                                            BattlefieldUnit h1Unit = battlefieldUnits[log.SpawnedHero1Id];
-                                            BattlefieldUnit h2Unit = battlefieldUnits[log.SpawnedHeroTargets[0]];
+                                    break;
+                                //case BattlefieldLogRecord_ChangeActionPoints log:
+                                //    break;
+                                case BattlefieldLogRecord_UseAbility log:
 
-                                            // ищем в логе запись которая хранит значения изменения здоровья
-                                            IBattlefieldLogRecord logRecord = fullLog.FirstOrDefault(a => a is BattlefieldLogRecord_Damage d && d.IndexReason == log.Index);
-                                            if (logRecord != null && logRecord is BattlefieldLogRecord_Damage logDamage)
+                                    switch (log.Ability)
+                                    {
+                                        case EBattlefieldLogAbility.Attack:
+                                            if (log.SpawnedHeroTargets.Length == 1)
                                             {
-                                                h1Unit.AnimationStartAttackUnit(h2Unit, logDamage.Damage, logDamage.IsCrit);
-                                                h2Unit.SpawnedHero.Health -= logDamage.Damage;
+                                                BattlefieldUnit h1Unit = battlefieldUnits[log.SpawnedHero1Id];
+                                                BattlefieldUnit h2Unit = battlefieldUnits[log.SpawnedHeroTargets[0]];
 
-                                                battlefieldIndexAnimationActive = true;
+                                                // ищем в логе запись которая хранит значения изменения здоровья
+                                                BattlefieldLogRecordBase logRecord = fullLog.FirstOrDefault(a => a is BattlefieldLogRecord_Damage d && d.IndexReason == log.Index);
+                                                if (logRecord is not null and BattlefieldLogRecord_Damage logDamage)
+                                                {
+                                                    h1Unit.AnimationStartAttackUnit(h2Unit, logDamage.Damage, logDamage.IsCrit);
+                                                    h2Unit.SpawnedHero.Health -= logDamage.Damage;
+
+                                                    battlefieldIndexAnimationActive = true;
+                                                }
+
+
                                             }
 
-                                          
-                                        }
-                                        battlefieldIndexAnimationStarted++;
-                                        break;
-                                    default:
-                                        break;
-                                }
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                    dateTimeWaitFor = DateTime.Now.AddSeconds(0 + BattlefieldUnit.AnimationAttackTimeStage1 + BattlefieldUnit.AnimationAttackTimeStage2 + BattlefieldUnit.AnimationAttackTimeStage3);
+                                    Debug.Log(dateTimeWaitFor);
 
-                             
+                                    break;
+                                    //case BattlefieldLogRecord_Damage log:
+                                    //    break;
 
-                                break;
-                            //case BattlefieldLogRecord_Damage log:
-                            //    break;
-
-                            //default:
-                            //    break;
+                                    //default:
+                                    //    break;
+                            }
+                           
+                            battlefieldIndexAnimationStarted++;
+                            break;
                         }
-
-                        break;
                     }
                 }
             }
-
 
             battlefieldIndexAnimationActive = false;
             foreach (BattlefieldUnit unit in playerUnits)
