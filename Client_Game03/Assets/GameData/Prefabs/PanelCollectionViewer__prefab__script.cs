@@ -17,20 +17,20 @@ public class PanelCollectionViewer__prefab__script : MonoBehaviour
     private float VIEWPORT_CONTENT_SPACING = 5f;
 
     private RectTransform _RectTransform;
-    private RectTransform _ScrollbarVertical_RectTransform;
-    private VerticalLayoutGroup _Content_VerticalLayoutGroup;
+    private RectTransform _ScrollbarVertical__RectTransform;
+    private VerticalLayoutGroup _Content__VerticalLayoutGroup;
     private readonly List<PanelGroupDivider__prefab__script> _GroupDividers = new();
     private readonly Dictionary<Guid, PanelIconCollectionElement> _Elements = new();
-    private Transform _Content_Transform;
+    public Transform Content_Transform { get; private set; }
     public int MaxCollectionElements { get; private set; }
     public float Width { get; private set; }
 
     private void Start()
     {
         _RectTransform = gameObject.GetComponent<RectTransform>();
-        _ScrollbarVertical_RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollbarVertical", gameObject.transform);
-        _Content_Transform = GameObjectFinder.FindByName("Content", gameObject.transform).transform;
-        _Content_VerticalLayoutGroup = _Content_Transform.GetComponent<VerticalLayoutGroup>();
+        _ScrollbarVertical__RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollbarVertical", gameObject.transform);
+        Content_Transform = GameObjectFinder.FindByName("Content", gameObject.transform).transform;
+        _Content__VerticalLayoutGroup = Content_Transform.GetComponent<VerticalLayoutGroup>();
     }
 
     public void UnselectAll()
@@ -86,7 +86,7 @@ public class PanelCollectionViewer__prefab__script : MonoBehaviour
             }
 
             CollectionSceneInitializator.PanelCollectionTopButtonsInstance.SetPageDiapason();
-            CollectionSceneInitializator.OnResized();
+            OnResized();
         }
         catch (Exception ex)
         {
@@ -125,7 +125,7 @@ public class PanelCollectionViewer__prefab__script : MonoBehaviour
 
         foreach (Game03Client.Collection.GroupCollectionElement item in sorted)
         {
-            _GroupDividers.Add(new(item, _Content_Transform));
+            _GroupDividers.Add(new(item, this));
         }
     }
 
@@ -140,12 +140,12 @@ public class PanelCollectionViewer__prefab__script : MonoBehaviour
 
         // ScrollbarVertical для коллекции героев
         float scrollBarWidth = SCROLLBAR_WIDTH * coefHeight;
-        _ScrollbarVertical_RectTransform.sizeDelta = new Vector2(scrollBarWidth, 0);
+        _ScrollbarVertical__RectTransform.sizeDelta = new Vector2(scrollBarWidth, 0);
 
         Width = CollectionSceneInitializator.PanelCollectionInstance.Width - scrollBarWidth;
 
 
-        _Content_VerticalLayoutGroup.spacing = VIEWPORT_CONTENT_SPACING * coefHeight;
+        _Content__VerticalLayoutGroup.spacing = VIEWPORT_CONTENT_SPACING * coefHeight;
 
         // groupDividers
         if (_GroupDividers.Count > 0)

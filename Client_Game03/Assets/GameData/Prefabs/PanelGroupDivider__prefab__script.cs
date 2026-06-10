@@ -23,10 +23,10 @@ namespace Assets.GameData.Prefabs
         private const float SPACING = 9f;
         private const float PADDING = 22.5f;
 
-        public PanelGroupDivider__prefab__script(GroupCollectionElement groupCollectionElement, Transform parent)
+        public PanelGroupDivider__prefab__script(GroupCollectionElement groupCollectionElement, PanelCollectionViewer__prefab__script parent)
         {
             _GameObject = AddressableCache.GroupDividerPrefabAddressableGameObject.SafeInstant();
-            _GameObject.transform.SetParent(parent, false);
+            _GameObject.transform.SetParent(parent.Content_Transform, false);
 
             _GroupName = groupCollectionElement.Name;
             _RectTransform = _GameObject.GetComponent<RectTransform>();

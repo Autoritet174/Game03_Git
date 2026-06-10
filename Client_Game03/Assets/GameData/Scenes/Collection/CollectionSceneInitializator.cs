@@ -15,6 +15,7 @@ public class CollectionSceneInitializator : MonoBehaviour
     public static float Width { get; private set; } = 0f;
     public static float Height { get; private set; } = 0f;
     public static bool _Initialized = false;
+
     private async void Start()
     {
         PanelSceneInstance = new();
@@ -37,6 +38,7 @@ public class CollectionSceneInitializator : MonoBehaviour
             OnResized();
         }
     }
+
     public static void OnResized()
     {
         if (!_Initialized)
