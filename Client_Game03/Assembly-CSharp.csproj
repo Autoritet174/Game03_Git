@@ -91,7 +91,6 @@
     <Compile Include="Assets\GameData\Scripts\Redactor\SpriteGenerator.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\TabButton.cs" />
     <Compile Include="Assets\GameData\Scripts\StaticRemover.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\PanelCollectionViewer.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\MainMenuSceneInitializator.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\CollectionSceneInitializator.cs" />
     <Compile Include="Assets\GameData\Scripts\GameMessage.cs" />

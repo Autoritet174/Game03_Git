@@ -1,17 +1,16 @@
-using UnityEngine;
-using UnityEditor;
-using System.Collections.Generic;
 using System.IO;
+using UnityEditor;
+using UnityEngine;
 
 public class StaticRemover : EditorWindow
 {
-    [MenuItem("Tools/Remove Static From Everything")]
+    [MenuItem("_Game03/Remove Static From Everything")]
     public static void ShowWindow()
     {
-        GetWindow<StaticRemover>("Удаление Static");
+        _ = GetWindow<StaticRemover>("Удаление Static");
     }
 
-    void OnGUI()
+    private void OnGUI()
     {
         GUILayout.Label("Удаление Static флагов", EditorStyles.boldLabel);
         GUILayout.Space(10);
@@ -51,18 +50,18 @@ public class StaticRemover : EditorWindow
     }
 
     // Главный метод - снимает со всего
-    static void RemoveAllStaticFlags()
+    private static void RemoveAllStaticFlags()
     {
         RemoveStaticFromAllScenes();
         RemoveStaticFromAllPrefabs();
 
         Debug.Log("✅ Static успешно удален со всех объектов и префабов!");
-        EditorUtility.DisplayDialog("Готово!",
+        _ = EditorUtility.DisplayDialog("Готово!",
             "Static удален со всех объектов на сценах и во всех префабах!", "OK");
     }
 
     // Снимает Static со всех объектов на всех сценах
-    static void RemoveStaticFromAllScenes()
+    private static void RemoveStaticFromAllScenes()
     {
         // Сохраняем текущую сцену
         string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().path;
@@ -96,20 +95,20 @@ public class StaticRemover : EditorWindow
             Debug.Log($"Сцена {Path.GetFileName(scenePath)}: обработано {objectsInScene} объектов");
 
             // Сохраняем сцену
-            UnityEditor.SceneManagement.EditorSceneManager.SaveScene(scene);
+            _ = UnityEditor.SceneManagement.EditorSceneManager.SaveScene(scene);
         }
 
         // Возвращаемся к исходной сцене
         if (!string.IsNullOrEmpty(currentScene))
         {
-            UnityEditor.SceneManagement.EditorSceneManager.OpenScene(currentScene);
+            _ = UnityEditor.SceneManagement.EditorSceneManager.OpenScene(currentScene);
         }
 
         Debug.Log($"✅ Всего обработано {totalObjectsProcessed} объектов на всех сценах");
     }
 
     // Снимает Static со всех префабов в проекте
-    static void RemoveStaticFromAllPrefabs()
+    private static void RemoveStaticFromAllPrefabs()
     {
         // Находим все префабы
         string[] prefabGuids = AssetDatabase.FindAssets("t:Prefab");
@@ -136,7 +135,7 @@ public class StaticRemover : EditorWindow
     }
 
     // Рекурсивно снимает Static с GameObject и всех его детей
-    static int RemoveStaticFromGameObjectAndChildren(GameObject obj)
+    private static int RemoveStaticFromGameObjectAndChildren(GameObject obj)
     {
         int count = 0;
 

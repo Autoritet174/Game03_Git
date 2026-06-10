@@ -1,4 +1,5 @@
 using Assets.GameData.Scenes.Collection;
+using Assets.GameData.Scripts;
 using UnityEngine;
 
 public class CollectionSceneInitializator : MonoBehaviour
@@ -7,7 +8,7 @@ public class CollectionSceneInitializator : MonoBehaviour
     public static PanelScene PanelSceneInstance { get; private set; }
     public static PanelTop PanelTopInstance { get; set; }
     public static PanelCollection PanelCollectionInstance { get; private set; }
-    public static PanelCollectionViewer PanelCollectionViewerInstance { get; private set; }
+    public static PanelCollectionViewer__prefab__script PanelCollectionViewerInstance { get; private set; }
     public static PanelCollectionTopButtons PanelCollectionTopButtonsInstance { get; private set; }
     public static PanelSelectedHero PanelSelectedHeroInstance { get; private set; }
     public static PanelSelectedEquipment PanelSelectedEquipmentInstance { get; private set; }
@@ -19,7 +20,7 @@ public class CollectionSceneInitializator : MonoBehaviour
         PanelSceneInstance = new();
         PanelTopInstance = new();
         PanelCollectionInstance = new();
-        PanelCollectionViewerInstance = new();
+        PanelCollectionViewerInstance = GameObjectFinder.FindByName("PanelCollectionViewer (id=ph1oh7dk)").GetComponent<PanelCollectionViewer__prefab__script>();
         PanelCollectionTopButtonsInstance = new();
 
         PanelSelectedHeroInstance = new();

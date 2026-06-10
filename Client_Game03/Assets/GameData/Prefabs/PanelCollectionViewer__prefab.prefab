@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5633917312350531739}
   - component: {fileID: 8217254440803635527}
   m_Layer: 5
-  m_Name: Viewport (id=xy0u00hr)
+  m_Name: Viewport
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -178,7 +178,7 @@ GameObject:
   - component: {fileID: 5327581676734274416}
   - component: {fileID: 1267322587970427478}
   m_Layer: 5
-  m_Name: ScrollbarVertical (id=ti32ix3l)
+  m_Name: ScrollbarVertical
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -303,7 +303,7 @@ GameObject:
   - component: {fileID: 1929797137121885512}
   - component: {fileID: 4844053395485796495}
   m_Layer: 5
-  m_Name: Content (id=ddmjr9vy)
+  m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -491,6 +491,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
   SCROLLBAR_WIDTH: 32
   VIEWPORT_CONTENT_SPACING: 5
+  Content_Transform: {fileID: 0}
 --- !u!1 &7811629680648836840
 GameObject:
   m_ObjectHideFlags: 0

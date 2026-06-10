@@ -26,7 +26,7 @@ namespace Assets.GameData.Scenes.Collection
         public PanelGroupDivider(GroupCollectionElement groupCollectionElement)
         {
             _GameObject = AddressableCache.GroupDividerPrefabAddressableGameObject.SafeInstant();
-            _GameObject.transform.SetParent(I.PanelCollectionViewerInstance.CollectionContent_Transform, false);
+            _GameObject.transform.SetParent(I.PanelCollectionViewerInstance.Content_Transform, false);
 
             _GroupName = groupCollectionElement.Name;
             _RectTransform = _GameObject.GetComponent<RectTransform>();
