@@ -6,11 +6,12 @@ using I = CollectionSceneInitializator;
 
 namespace Assets.GameData.Scenes.Collection
 {
-    public enum CollectionModeEnum
+    public enum ECollectionMode
     {
-        Hero, Equipment//, ChangingEquipment
+        Hero, Equipment
     }
-    public enum CollectionElementEnum { Hero, Equipment }
+
+    public enum ECollectionElement { Hero, Equipment }
 
     public class PanelScene
     {
@@ -18,18 +19,18 @@ namespace Assets.GameData.Scenes.Collection
         {
             // Изображение заднего фона
             _Background_Image = GameObjectFinder.FindByName<Image>("Image_Background (id=688x18dt)");
-            if (_Background_Image != null && _Background_Image.sprite != null)
+            if (_Background_Image == null || _Background_Image.sprite == null)
+            {
+                throw new Exception("Изображение заднего фона некорректно.");
+            }
+            else
             {
                 Texture2D texture = _Background_Image.sprite.texture;
                 _ImageBackgroundCoef = texture.width / (float)texture.height;
             }
-            else
-            {
-                throw new Exception("Изображение заднего фона некорректно.");
-            }
         }
 
-        public CollectionModeEnum CollectionMode { get; set; } = CollectionModeEnum.Hero;
+        public ECollectionMode CollectionMode { get; set; } = ECollectionMode.Hero;
 
         private readonly float _ImageBackgroundCoef;
         private readonly Image _Background_Image;

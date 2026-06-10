@@ -65,27 +65,27 @@ namespace Assets.GameData.Scenes.Collection
         /// <summary> Кнопка "Герои". </summary>
         public async UniTask OnClickHeroes()
         {
-            if (I.PanelSceneInstance.CollectionMode == CollectionModeEnum.Hero)
+            if (I.PanelSceneInstance.CollectionMode == ECollectionMode.Hero)
             {
                 return;
             }
-            I.PanelSceneInstance.CollectionMode = CollectionModeEnum.Hero;
+            I.PanelSceneInstance.CollectionMode = ECollectionMode.Hero;
             //I.PanelSceneInstance.PanelCollection.PanelCollectionTopButtons.UpdateActiveButtons();
             SetColorOnTabButtons(_TabButtonHeroes);
-            await I.PanelCollectionViewerInstance.InstantiateCollectionAsync();
+            await I.PanelCollectionViewerInstance.InstantiateCollectionAsync(ECollectionMode.Hero);
         }
 
         /// <summary> Кнопка "Экипировка". </summary>
         private async UniTask OnClickEquipment()
         {
-            if (I.PanelSceneInstance.CollectionMode == CollectionModeEnum.Equipment)
+            if (I.PanelSceneInstance.CollectionMode == ECollectionMode.Equipment)
             {
                 return;
             }
-            I.PanelSceneInstance.CollectionMode = CollectionModeEnum.Equipment;
+            I.PanelSceneInstance.CollectionMode = ECollectionMode.Equipment;
             //I.PanelSceneInstance.PanelCollection.PanelCollectionTopButtons.UpdateActiveButtons();
             SetColorOnTabButtons(_TabButtonEquipment);
-            await I.PanelCollectionViewerInstance.InstantiateCollectionAsync();
+            await I.PanelCollectionViewerInstance.InstantiateCollectionAsync(ECollectionMode.Equipment);
         }
 
         /// <summary> Кнопка "Смена экипировки". </summary>

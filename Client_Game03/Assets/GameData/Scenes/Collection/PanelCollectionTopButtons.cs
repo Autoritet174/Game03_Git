@@ -118,7 +118,7 @@ namespace Assets.GameData.Scenes.Collection
             if (PageCurrent > 1)
             {
                 PageCurrent--;
-                await I.PanelCollectionViewerInstance.InstantiateCollectionAsync();
+                await I.PanelCollectionViewerInstance.InstantiateCollectionAsync(I.PanelSceneInstance.CollectionMode);
             }
         }
 
@@ -127,7 +127,7 @@ namespace Assets.GameData.Scenes.Collection
             if (PageCurrent < PageMax)
             {
                 PageCurrent++;
-                await I.PanelCollectionViewerInstance.InstantiateCollectionAsync();
+                await I.PanelCollectionViewerInstance.InstantiateCollectionAsync(I.PanelSceneInstance.CollectionMode);
             }
         }
 
@@ -135,8 +135,8 @@ namespace Assets.GameData.Scenes.Collection
         {
             int c = I.PanelSceneInstance.CollectionMode switch
             {
-                CollectionModeEnum.Hero => Game03Client.Collection.CollectionProvider.GetCountHeroes(),
-                CollectionModeEnum.Equipment => Game03Client.Collection.CollectionProvider.GetCountEquipments(),
+                ECollectionMode.Hero => Game03Client.Collection.CollectionProvider.GetCountHeroes(),
+                ECollectionMode.Equipment => Game03Client.Collection.CollectionProvider.GetCountEquipments(),
                 //CollectionModeEnum.ChangingEquipment => _PanelCollection.PanelScene.PanelSelectedHero.IsVisible
                 //    ? Game03Client.Collection.CollectionProvider.GetCountEquipments()
                 //    : Game03Client.Collection.CollectionProvider.GetCountHeroes(),

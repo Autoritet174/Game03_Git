@@ -1,21 +1,21 @@
+using Assets.GameData.Scenes.Collection;
 using Assets.GameData.Scripts;
 using Game03Client.Collection;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using L = General.LocalizationKeys;
 using I = CollectionSceneInitializator;
+using L = General.LocalizationKeys;
 
-namespace Assets.GameData.Scenes.Collection
+namespace Assets.GameData.Prefabs
 {
     /// <summary>
     /// Управляет сворачиванием/разворачиванием группы UI-элементов (ячеек)
     /// с асинхронной анимацией высоты.
     /// </summary>
-    public class PanelGroupDivider
+    public class PanelGroupDivider__prefab__script
     {
         private const float DIVIDER_BUTTON_HEIGHT = 45f;
         private const float DIVIDER_BUTTON_FONTSIZE = 24f;
@@ -23,10 +23,10 @@ namespace Assets.GameData.Scenes.Collection
         private const float SPACING = 9f;
         private const float PADDING = 22.5f;
 
-        public PanelGroupDivider(GroupCollectionElement groupCollectionElement)
+        public PanelGroupDivider__prefab__script(GroupCollectionElement groupCollectionElement, Transform parent)
         {
             _GameObject = AddressableCache.GroupDividerPrefabAddressableGameObject.SafeInstant();
-            _GameObject.transform.SetParent(I.PanelCollectionViewerInstance.Content_Transform, false);
+            _GameObject.transform.SetParent(parent, false);
 
             _GroupName = groupCollectionElement.Name;
             _RectTransform = _GameObject.GetComponent<RectTransform>();

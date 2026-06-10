@@ -25,7 +25,7 @@ public class CollectionSceneInitializator : MonoBehaviour
 
         PanelSelectedHeroInstance = new();
         PanelSelectedEquipmentInstance = new();
-        await PanelCollectionViewerInstance.InstantiateCollectionAsync();
+        await PanelCollectionViewerInstance.InstantiateCollectionAsync(PanelSceneInstance.CollectionMode);
         _Initialized = true;
         OnResized();
     }

@@ -1,3 +1,4 @@
+using Assets.GameData.Prefabs;
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using Game03Client.Collection;
@@ -15,7 +16,7 @@ namespace Assets.GameData.Scenes.Collection
     {
         private const float TEXT_COLLECTION_ELEMENT_FONTSIZE = 14f;
 
-        public PanelIconCollectionElement(PanelGroupDivider panelGroupDivider, CollectionElement collectionElement)
+        public PanelIconCollectionElement(PanelGroupDivider__prefab__script panelGroupDivider, CollectionElement collectionElement)
         {
             Id = collectionElement.Id;
             _PanelGroupDivider = panelGroupDivider;
@@ -79,8 +80,8 @@ namespace Assets.GameData.Scenes.Collection
 
             imageCollectionElement.sprite = I.PanelSceneInstance.CollectionMode switch
             {
-                CollectionModeEnum.Hero => AddressableCache.Heroes[$"{_CollectionElement.Name}_face"],
-                CollectionModeEnum.Equipment => AddressableCache.Equipments[_CollectionElement.Name],
+                ECollectionMode.Hero => AddressableCache.Heroes[$"{_CollectionElement.Name}_face"],
+                ECollectionMode.Equipment => AddressableCache.Equipments[_CollectionElement.Name],
                 _ => throw new NotImplementedException(),
             };
             imageCollectionElement.preserveAspect = true;
@@ -103,7 +104,7 @@ namespace Assets.GameData.Scenes.Collection
         }
 
         public Guid Id { get; private set; }
-        private readonly PanelGroupDivider _PanelGroupDivider;
+        private readonly PanelGroupDivider__prefab__script _PanelGroupDivider;
         private readonly GameObject _GameObject;
         private readonly RectTransform _RectTransform;
         private readonly CollectionElement _CollectionElement;
@@ -161,11 +162,11 @@ namespace Assets.GameData.Scenes.Collection
 
             switch (I.PanelSceneInstance.CollectionMode)
             {
-                case CollectionModeEnum.Hero:
+                case ECollectionMode.Hero:
                     //_PanelSelectedEquipment.Hide();
                     I.PanelSelectedHeroInstance.Show(_CollectionElement.Id); break;
 
-                case CollectionModeEnum.Equipment:
+                case ECollectionMode.Equipment:
                     //await _PanelSelectedHero.Hide();
                     I.PanelSelectedEquipmentInstance.Show(_CollectionElement.Id); break;
 

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(RectTransform))]
-public class PanelTopPrefabScript : MonoBehaviour
+public class PanelTop__prefab__script : MonoBehaviour
 {
     private RectTransform panelTopPrefab__RectTransform;
     private RectTransform buttonClose__RectTransform;

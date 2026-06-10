@@ -1,3 +1,4 @@
+using Assets.GameData.Prefabs;
 using Assets.GameData.Scenes.Collection;
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
@@ -18,9 +19,9 @@ public class PanelCollectionViewer__prefab__script : MonoBehaviour
     private RectTransform _RectTransform;
     private RectTransform _ScrollbarVertical_RectTransform;
     private VerticalLayoutGroup _Content_VerticalLayoutGroup;
-    private readonly List<PanelGroupDivider> _GroupDividers = new();
+    private readonly List<PanelGroupDivider__prefab__script> _GroupDividers = new();
     private readonly Dictionary<Guid, PanelIconCollectionElement> _Elements = new();
-    public Transform Content_Transform { get; private set; }
+    private Transform _Content_Transform;
     public int MaxCollectionElements { get; private set; }
     public float Width { get; private set; }
 
@@ -28,8 +29,8 @@ public class PanelCollectionViewer__prefab__script : MonoBehaviour
     {
         _RectTransform = gameObject.GetComponent<RectTransform>();
         _ScrollbarVertical_RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollbarVertical", gameObject.transform);
-        Content_Transform = GameObjectFinder.FindByName("Content", gameObject.transform).transform;
-        _Content_VerticalLayoutGroup = Content_Transform.GetComponent<VerticalLayoutGroup>();
+        _Content_Transform = GameObjectFinder.FindByName("Content", gameObject.transform).transform;
+        _Content_VerticalLayoutGroup = _Content_Transform.GetComponent<VerticalLayoutGroup>();
     }
 
     public void UnselectAll()
@@ -47,7 +48,7 @@ public class PanelCollectionViewer__prefab__script : MonoBehaviour
         return _Elements.TryGetValue(id, out PanelIconCollectionElement element) ? element : null;
     }
 
-    public async UniTask InstantiateCollectionAsync()
+    public async UniTask InstantiateCollectionAsync(ECollectionMode collectionMode)
     {
         try
         {
@@ -55,25 +56,25 @@ public class PanelCollectionViewer__prefab__script : MonoBehaviour
             _GroupDividers.Clear();
             _Elements.Clear();
 
-            CollectionSceneInitializator.OnResized();
+            OnResized();
             await UniTask.Yield();
 
             MaxCollectionElements = Game03Client.Collection.CollectionProvider.PAGE_SIZE * CollectionSceneInitializator.PanelCollectionTopButtonsInstance.PageCurrent;
 
             CollectionSceneInitializator.PanelCollectionTopButtonsInstance.UpdatePageMax();
 
-            switch (CollectionSceneInitializator.PanelSceneInstance.CollectionMode)
+            switch (collectionMode)
             {
-                case CollectionModeEnum.Hero:
-                    await LoadCollectionElement(CollectionElementEnum.Hero);
+                case ECollectionMode.Hero:
+                    await LoadCollectionElement(ECollectionElement.Hero);
                     if (CollectionSceneInitializator.PanelSelectedHeroInstance != null && CollectionSceneInitializator.PanelSelectedHeroInstance.IsVisible)
                     {
                         GetElement(CollectionSceneInitializator.PanelSelectedHeroInstance.HeroId)?.Selected(true);
                     }
                     break;
 
-                case CollectionModeEnum.Equipment:
-                    await LoadCollectionElement(CollectionElementEnum.Equipment);
+                case ECollectionMode.Equipment:
+                    await LoadCollectionElement(ECollectionElement.Equipment);
                     if (CollectionSceneInitializator.PanelSelectedEquipmentInstance != null && CollectionSceneInitializator.PanelSelectedEquipmentInstance.IsVisible)
                     {
                         GetElement(CollectionSceneInitializator.PanelSelectedEquipmentInstance.EquipmentId)?.Selected(true);
@@ -99,22 +100,22 @@ public class PanelCollectionViewer__prefab__script : MonoBehaviour
 
 
 
-    private async UniTask LoadCollectionElement(CollectionElementEnum collectionElementEnum)
+    private async UniTask LoadCollectionElement(ECollectionElement collectionElementEnum)
     {
         if (CollectionSceneInitializator.PanelCollectionTopButtonsInstance.PageCurrent >= CollectionSceneInitializator.PanelCollectionTopButtonsInstance.PageMax)
         {
             MaxCollectionElements = collectionElementEnum switch
             {
-                CollectionElementEnum.Hero => Game03Client.Collection.CollectionProvider.GetCountHeroes(),
-                CollectionElementEnum.Equipment => Game03Client.Collection.CollectionProvider.GetCountEquipments(),
+                ECollectionElement.Hero => Game03Client.Collection.CollectionProvider.GetCountHeroes(),
+                ECollectionElement.Equipment => Game03Client.Collection.CollectionProvider.GetCountEquipments(),
                 _ => throw new NotImplementedException(),
             };
         }
 
         IEnumerable<Game03Client.Collection.GroupCollectionElement> grouped = collectionElementEnum switch
         {
-            CollectionElementEnum.Hero => Game03Client.Collection.CollectionProvider.GetCollectionHeroesGroupedByGroupNames(CollectionSceneInitializator.PanelCollectionTopButtonsInstance.PageCurrent),
-            CollectionElementEnum.Equipment => Game03Client.Collection.CollectionProvider.GetCollectionEquipmentesGroupByGroups(CollectionSceneInitializator.PanelCollectionTopButtonsInstance.PageCurrent),
+            ECollectionElement.Hero => Game03Client.Collection.CollectionProvider.GetCollectionHeroesGroupedByGroupNames(CollectionSceneInitializator.PanelCollectionTopButtonsInstance.PageCurrent),
+            ECollectionElement.Equipment => Game03Client.Collection.CollectionProvider.GetCollectionEquipmentesGroupByGroups(CollectionSceneInitializator.PanelCollectionTopButtonsInstance.PageCurrent),
             _ => throw new NotImplementedException(),
         };
 
@@ -124,7 +125,7 @@ public class PanelCollectionViewer__prefab__script : MonoBehaviour
 
         foreach (Game03Client.Collection.GroupCollectionElement item in sorted)
         {
-            _GroupDividers.Add(new(item));
+            _GroupDividers.Add(new(item, _Content_Transform));
         }
     }
 
