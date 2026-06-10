@@ -419,7 +419,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 552863601}
   m_HandleRect: {fileID: 552863600}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1071,7 +1071,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 1965, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1173096588
@@ -1087,7 +1087,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.6156863}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1604,6 +1604,10 @@ PrefabInstance:
     - target: {fileID: 4965514259809845701, guid: 99c133d6a47d65640bb543c26158bb3c, type: 3}
       propertyPath: m_Name
       value: ScrollViewCollection (id=ph1oh7dk)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4965514259809845701, guid: 99c133d6a47d65640bb543c26158bb3c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5327581676734274416, guid: 99c133d6a47d65640bb543c26158bb3c, type: 3}
       propertyPath: m_Enabled

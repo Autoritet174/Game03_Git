@@ -16,7 +16,7 @@ namespace Assets.GameData.Scenes.Collection
 
         public PanelCollectionViewer()
         {
-            _RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollViewCollection (id=ph1oh7dk)");
+            _RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelCollectionViewer (id=ph1oh7dk)");
             _ScrollbarVertical_RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollbarVertical (id=ti32ix3l)");
             CollectionContent_Transform = GameObjectFinder.FindByName("Content (id=ddmjr9vy)").transform;
             _Content_VerticalLayoutGroup = CollectionContent_Transform.GetComponent<VerticalLayoutGroup>();
@@ -103,7 +103,7 @@ namespace Assets.GameData.Scenes.Collection
 
             // ScrollbarVertical для коллекции героев
             float scrollBarWidth = SCROLLBAR_WIDTH * coefHeight;
-            _ScrollbarVertical_RectTransform.sizeDelta = new Vector2(scrollBarWidth, height);
+            _ScrollbarVertical_RectTransform.sizeDelta = new Vector2(scrollBarWidth, 0);
 
             Width = I.PanelCollectionInstance.Width - scrollBarWidth;
 

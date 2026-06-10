@@ -25,6 +25,9 @@ namespace Assets.GameData.Scenes.SelectBattlefield
         private readonly RectTransform imageSelected__RectTransform;
         private readonly TextMeshProUGUI label__TextMeshProUGUI;
 
+        private readonly GameObject PanelPrepareBattle__GameObject;
+        private readonly GameObject Viewport__GameObject;
+
         public EBattleFiled BattlefieldId { get; }
 
         public BattleFieldButton(EBattleFiled battlefieldId, BattleFieldCategory parentBattleFieldCategory)
@@ -41,6 +44,9 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             imageSelectedMask__GameObject = imageSelectedMask__RectTransform.gameObject;
 
             label__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label", parentTransform);
+
+            PanelPrepareBattle__GameObject = GameObjectFinder.FindByName("PanelPrepareBattle (id=373scb8n)");
+            PanelPrepareBattle__GameObject.SetActive(false);
 
             string localizationKey = $"{L.UI.Label.BattleField}_{battlefieldId}";
             label__TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(localizationKey));
@@ -63,6 +69,8 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
             label__TextMeshProUGUI.rectTransform.sizeDelta = new Vector2(0f, LABEL_HEIGHT * coefHeight);
             label__TextMeshProUGUI.fontSize = LABEL_FONTSIZE * coefHeight;
+
+            //PanelPrepareBattle__RectTransform.
         }
 
         private async UniTask OnPointerEnter()
@@ -77,7 +85,9 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
         private async UniTask OnClick()
         {
-            Game03Client.GameData.Container.Battlefields.First(a=>a.Id == BattlefieldId);
+            //_ = Game03Client.GameData.Container.Battlefields.First(a => a.Id == BattlefieldId);
+            PanelPrepareBattle__GameObject.SetActive(true);
+            return;
 
             BattlefieldSceneInitializator.SpawnedBattlefield = await Game03Client.Battlefield.BattlefieldProvider.LoadBattleFieldAsync(BattlefieldId,
                 new Guid[] {
