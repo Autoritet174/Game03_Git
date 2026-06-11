@@ -45,7 +45,7 @@ namespace Assets.GameData.Scenes.Collection
 
             // Кнопки вкладок
             float tabButtonWidth = 240f * coefHeight;
-            float fontSize = Height / 4f * coefHeight;
+            float fontSize = 25 * coefHeight;
 
             _TabButtonHeroes.rectTransform.sizeDelta = new Vector2(tabButtonWidth, Height);
             _TabButtonHeroes.textMeshProUGUI.fontSize = fontSize;

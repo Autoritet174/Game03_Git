@@ -418,7 +418,7 @@ GameObject:
   - component: {fileID: 7757225283370677649}
   - component: {fileID: 1689077274294732807}
   m_Layer: 0
-  m_Name: IconCollectionElement
+  m_Name: IconCollectionElement__prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

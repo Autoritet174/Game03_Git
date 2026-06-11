@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -84,6 +85,23 @@ namespace Assets.GameData.Scripts
             return null;
         }
 
+        public static GameObject FindByName(string name, GameObject startParent)
+        {
+            return FindByName(name, startParent.transform);
+        }
+
+        public static T FindByName<T>(string name, GameObject startParent) where T : Component
+        {
+            return FindByName<T>(name, startParent.transform);
+        }
+        public static T FindByName<T>(string name, RectTransform startParent) where T : Component
+        {
+            return FindByName<T>(name, startParent.transform);
+        }
+        public static T FindByName<T>(string name, TextMeshProUGUI startParent) where T : Component
+        {
+            return FindByName<T>(name, startParent.transform);
+        }
 
         /// <summary>
         /// Ищет объект указанного типа в активной сцене.

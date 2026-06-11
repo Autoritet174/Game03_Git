@@ -14,7 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
   m_GroupName: UIButtons
   m_GUID: 0229150f9857992479e871fa1a43e6e3
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: b66048250eae7954b9796b1bda6cb3c4
+    m_Address: button_with_arrow_v4
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d9d3ce457621aa7448c9d0b2f10786a0
+    m_Address: button_with_arrow_v4_reverse
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 3ac335a41d78635408bb61e4d6efbbe7, type: 2}
   m_SchemaSet:

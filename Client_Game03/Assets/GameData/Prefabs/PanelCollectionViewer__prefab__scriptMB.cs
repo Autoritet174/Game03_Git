@@ -8,7 +8,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PanelCollectionViewer__prefab__script : MonoBehaviour
+public class PanelCollectionViewer__prefab__scriptMB : MonoBehaviour
 {
     [SerializeField]
     private float SCROLLBAR_WIDTH = 32f;
@@ -17,6 +17,7 @@ public class PanelCollectionViewer__prefab__script : MonoBehaviour
     private float VIEWPORT_CONTENT_SPACING = 5f;
 
     private RectTransform _RectTransform;
+    private RectTransform Viewport__RectTransform;
     private RectTransform _ScrollbarVertical__RectTransform;
     private VerticalLayoutGroup _Content__VerticalLayoutGroup;
     private readonly List<PanelGroupDivider__prefab__script> _GroupDividers = new();
@@ -25,12 +26,13 @@ public class PanelCollectionViewer__prefab__script : MonoBehaviour
     public int MaxCollectionElements { get; private set; }
     public float Width { get; private set; }
 
-    private void Start()
+    private void Awake()
     {
         _RectTransform = gameObject.GetComponent<RectTransform>();
         _ScrollbarVertical__RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollbarVertical", gameObject.transform);
         Content_Transform = GameObjectFinder.FindByName("Content", gameObject.transform).transform;
         _Content__VerticalLayoutGroup = Content_Transform.GetComponent<VerticalLayoutGroup>();
+        Viewport__RectTransform = GameObjectFinder.FindByName<RectTransform>("Viewport", gameObject.transform);
     }
 
     public void UnselectAll()
@@ -142,6 +144,7 @@ public class PanelCollectionViewer__prefab__script : MonoBehaviour
         float scrollBarWidth = SCROLLBAR_WIDTH * coefHeight;
         _ScrollbarVertical__RectTransform.sizeDelta = new Vector2(scrollBarWidth, 0);
 
+        Viewport__RectTransform.SetRight(scrollBarWidth);
         Width = CollectionSceneInitializator.PanelCollectionInstance.Width - scrollBarWidth;
 
 

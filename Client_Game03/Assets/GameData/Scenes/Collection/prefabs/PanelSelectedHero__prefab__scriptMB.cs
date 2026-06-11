@@ -12,9 +12,9 @@ using UnityEngine.UI;
 using I = CollectionSceneInitializator;
 using L = General.LocalizationKeys;
 
-namespace Assets.GameData.Scenes.Collection
+namespace Assets.GameData.Scenes.Collection.prefabs
 {
-    public class PanelSelectedHero
+    public class PanelSelectedHero__prefab__scriptMB : MonoBehaviour
     {
         /// <summary>
         /// Ширина панели при разрешении 1920x1080.
@@ -32,63 +32,6 @@ namespace Assets.GameData.Scenes.Collection
 
         private const float BUTTON_CLOSE_SPACING = 5f;
 
-        public PanelSelectedHero()
-        {
-            _RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHero (id=vs2gi8c6)");
-            _RectTransform.anchoredPosition = new Vector2(0f, 0f);
-            _GameObject = _RectTransform.gameObject;
-
-            _PanelTop_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHeroTop (id=0y6mrhc2)");
-            _ButtonClose_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose (id=0ursxw0e)");
-            _ButtonClose_RectTransform.gameObject.SetClickEvent(Hide, false);
-            _LabelSelectedHero_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label_SelectedHero (id=ahrtgg43)");
-
-            _PanelBottom_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHeroBottom (id=wejn6493)");
-            _PanelBottomTabButton1_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonTab1 (id=uiufd2wv)");
-            _PanelBottomTabButton1_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonTab1Text (id=lf8q2aas)");
-            _PanelBottomTabButton1_TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(L.UI.Button.Equipment));
-
-            _PanelBottomTabButton2_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonTab2 (id=kzury0kd)");
-            _PanelBottomTabButton2_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonTab2Text (id=6bjw6hi4)");
-            _PanelBottomTabButton2_TextMeshProUGUI.SetText("{Tab2}");
-
-            _Slots = new()
-            {
-                new Slot("Head", 1, 1, _PanelBottom_RectTransform, ESlot.Head),
-                new Slot("Armor", 2, 1, _PanelBottom_RectTransform, ESlot.Armor),
-                new Slot("Hands", 3, 1, _PanelBottom_RectTransform, ESlot.Hands),
-                new Slot("Feet", 4, 1, _PanelBottom_RectTransform, ESlot.Feet),
-                new Slot("Bracelet", 5, 1, _PanelBottom_RectTransform, ESlot.Bracelet),
-                new Slot("Ring", 1, 2, _PanelBottom_RectTransform, ESlot.Ring1, "1"),
-                new Slot("Ring", 2, 2, _PanelBottom_RectTransform, ESlot.Ring2, "2"),
-                new Slot("Neck", 3, 2, _PanelBottom_RectTransform, ESlot.Neck),
-                new Slot("Trinket", 4, 2, _PanelBottom_RectTransform, ESlot.Trinket1, "1"),
-                new Slot("Trinket", 5, 2, _PanelBottom_RectTransform, ESlot.Trinket2, "2"),
-                new Slot("Weapon", 1, 3, _PanelBottom_RectTransform, ESlot.RightHand),
-                new Slot("WeaponShield", 2, 3, _PanelBottom_RectTransform, ESlot.LeftHand)
-            };
-
-            _PanelTab1_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelSelectedHeroBottomTab1 (id=kn3yl79k)");
-            _ImageContainer_RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Container (id=1l6gscif)");
-            _SlotWeapon = _Slots.First(a => a.Name == "Weapon");
-
-            _SelectedHero_Image = GameObjectFinder.FindByName<Image>("ImageHeroFull (id=m5kn2f6p)");
-            _SelectedHeroRarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity (id=xami3s9q)");
-
-            // Stats
-            _PanelStat_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelStats (id=aul0ak16)");
-
-            _StatLevel = new Stat("Level", 1, GameObjectFinder.FindByName("StatLevel (id=gq44hho7)"));
-            _StatHealth = new Stat("Health", 2, GameObjectFinder.FindByName("StatHealth (id=fd8ccppe)"));
-            _StatStrength = new Stat("Strength", 3, GameObjectFinder.FindByName("StatStrength (id=mv49tk9s)"));
-            _StatAgility = new Stat("Agility", 4, GameObjectFinder.FindByName("StatAgility (id=jx4psf25)"));
-            _StatIntelligence = new Stat("Intelligence", 5, GameObjectFinder.FindByName("StatIntelligence (id=ydct7hbc)"));
-            _StatCritChance = new Stat("CritChance", 6, GameObjectFinder.FindByName("StatCritChance (id=1l42t8mp)"));
-            _StatCritMultiplier = new Stat("CritMultiplier", 7, GameObjectFinder.FindByName("StatCritPower (id=1znqy1h2)"));
-
-            Hide().GetAwaiter().GetResult();
-        }
-
 
         public Guid HeroId { get; private set; }
         public float Width { get; private set; }
@@ -97,46 +40,128 @@ namespace Assets.GameData.Scenes.Collection
         public float PanelStatWidth { get; private set; }
         public float PanelStatHeight { get; private set; }
 
-        private readonly RectTransform _RectTransform;
-        private readonly GameObject _GameObject;
+        private RectTransform _RectTransform;
 
-        private readonly RectTransform _PanelTop_RectTransform;
-        private readonly RectTransform _ButtonClose_RectTransform;
-        private readonly TextMeshProUGUI _LabelSelectedHero_TextMeshProUGUI;
+        private RectTransform _PanelTop__RectTransform;
+        private RectTransform _ButtonClose__RectTransform;
+        private TextMeshProUGUI _LabelSelectedHero__TextMeshProUGUI;
 
-        private readonly RectTransform _PanelBottom_RectTransform;
+        private RectTransform _PanelBottom__RectTransform;
 
-        private readonly RectTransform _PanelBottomTabButton1_RectTransform;
-        private readonly RectTransform _PanelBottomTabButton2_RectTransform;
-        private readonly TextMeshProUGUI _PanelBottomTabButton1_TextMeshProUGUI;
-        private readonly TextMeshProUGUI _PanelBottomTabButton2_TextMeshProUGUI;
+        private RectTransform _PanelBottomTabButton1_RectTransform;
+        private RectTransform _PanelBottomTabButton2_RectTransform;
+        private TextMeshProUGUI _PanelBottomTabButton1_TextMeshProUGUI;
+        private TextMeshProUGUI _PanelBottomTabButton2_TextMeshProUGUI;
 
-        private readonly RectTransform _PanelTab1_RectTransform;
-        private readonly List<Slot> _Slots;
-        private readonly RectTransform _ImageContainer_RectTransform;
-        private readonly Slot _SlotWeapon;
+        private RectTransform _PanelTab1_RectTransform;
+        private List<Slot> _Slots;
+        private RectTransform _ImageContainer_RectTransform;
+        private Slot _SlotWeapon;
 
-        private readonly Image _SelectedHero_Image;
-        private readonly Image _SelectedHeroRarity_Image;
+        private Image _SelectedHero_Image;
+        private Image _SelectedHeroRarity_Image;
 
 
         //Stats
-        private readonly RectTransform _PanelStat_RectTransform;
+        private RectTransform _PanelStat_RectTransform;
 
-        private readonly Stat _StatLevel;
-        private readonly Stat _StatHealth;
-        private readonly Stat _StatStrength;
-        private readonly Stat _StatAgility;
-        private readonly Stat _StatIntelligence;
-        private readonly Stat _StatCritChance;
-        private readonly Stat _StatCritMultiplier;
+        private Stat__prefab__script _StatLevel;
+        private Stat__prefab__script _StatHealth;
+        private Stat__prefab__script _StatStrength;
+        private Stat__prefab__script _StatAgility;
+        private Stat__prefab__script _StatIntelligence;
+        private Stat__prefab__script _StatCritChance;
+        private Stat__prefab__script _StatCritMultiplier;
 
+        private void Start()
+        {
+            _RectTransform = gameObject.GetComponent<RectTransform>();
+            _RectTransform.anchoredPosition = new Vector2(0f, 0f);
+
+
+            // Верхняя панель
+            {
+                _PanelTop__RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelTop", _RectTransform);
+
+                _ButtonClose__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose", _PanelTop__RectTransform);
+                _ButtonClose__RectTransform.gameObject.SetClickEvent(Hide, false);
+
+                _LabelSelectedHero__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label_SelectedHero", _PanelTop__RectTransform);
+            }
+
+
+            // Нижняя панель
+            {
+                _PanelBottom__RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelBottom", _RectTransform);
+
+                // кнопка "Вкладка 1"
+                {
+                    _PanelBottomTabButton1_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonTab1", _PanelBottom__RectTransform);
+                    _PanelBottomTabButton1_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonTab1Text", _PanelBottomTabButton1_RectTransform);
+                    _PanelBottomTabButton1_TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(L.UI.Button.Equipment));
+                }
+
+                // кнопка "Вкладка 2"
+                {
+                    _PanelBottomTabButton2_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonTab2", _PanelBottom__RectTransform);
+                    _PanelBottomTabButton2_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonTab2Text", _PanelBottomTabButton2_RectTransform);
+                    _PanelBottomTabButton2_TextMeshProUGUI.SetText("{Tab2}");
+                }
+
+                // панель "Вкладка 1"
+                {
+                    _PanelTab1_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelTab1", _PanelBottom__RectTransform);
+
+                    // Слоты
+                    _Slots = new()
+                    {
+                        new Slot("Head", 1, 1, _PanelTab1_RectTransform, ESlot.Head),
+                        new Slot("Armor", 2, 1, _PanelTab1_RectTransform, ESlot.Armor),
+                        new Slot("Hands", 3, 1, _PanelTab1_RectTransform, ESlot.Hands),
+                        new Slot("Feet", 4, 1, _PanelTab1_RectTransform, ESlot.Feet),
+                        new Slot("Bracelet", 5, 1, _PanelTab1_RectTransform, ESlot.Bracelet),
+                        new Slot("Ring", 1, 2, _PanelTab1_RectTransform, ESlot.Ring1, "1"),
+                        new Slot("Ring", 2, 2, _PanelTab1_RectTransform, ESlot.Ring2, "2"),
+                        new Slot("Neck", 3, 2, _PanelTab1_RectTransform, ESlot.Neck),
+                        new Slot("Trinket", 4, 2, _PanelTab1_RectTransform, ESlot.Trinket1, "1"),
+                        new Slot("Trinket", 5, 2, _PanelTab1_RectTransform, ESlot.Trinket2, "2"),
+                        new Slot("Weapon", 1, 3, _PanelTab1_RectTransform, ESlot.RightHand),
+                        new Slot("WeaponShield", 2, 3, _PanelTab1_RectTransform, ESlot.LeftHand)
+                    };
+
+                    // Изображение героя
+                    {
+                        _ImageContainer_RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Container", _PanelTab1_RectTransform);
+                        _SelectedHero_Image = GameObjectFinder.FindByName<Image>("ImageHeroFull", _ImageContainer_RectTransform);
+                        _SelectedHeroRarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity", _ImageContainer_RectTransform);
+                    }
+
+                    // Панель статов
+                    {
+                        _PanelStat_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelStats", _PanelTab1_RectTransform);
+
+                        _StatLevel = new Stat__prefab__script("Level", 1, GameObjectFinder.FindByName("StatLevel", _PanelStat_RectTransform));
+                        _StatHealth = new Stat__prefab__script("Health", 2, GameObjectFinder.FindByName("StatHealth", _PanelStat_RectTransform));
+                        _StatStrength = new Stat__prefab__script("Strength", 3, GameObjectFinder.FindByName("StatStrength", _PanelStat_RectTransform));
+                        _StatAgility = new Stat__prefab__script("Agility", 4, GameObjectFinder.FindByName("StatAgility", _PanelStat_RectTransform));
+                        _StatIntelligence = new Stat__prefab__script("Intelligence", 5, GameObjectFinder.FindByName("StatIntelligence", _PanelStat_RectTransform));
+                        _StatCritChance = new Stat__prefab__script("CritChance", 6, GameObjectFinder.FindByName("StatCritChance", _PanelStat_RectTransform));
+                        _StatCritMultiplier = new Stat__prefab__script("CritMultiplier", 7, GameObjectFinder.FindByName("StatCritPower", _PanelStat_RectTransform));
+                    }
+                }
+            }
+
+
+            _SlotWeapon = _Slots.First(a => a.Name == "Weapon");
+
+            Hide().GetAwaiter().GetResult();
+        }
         public void Show(Guid heroId)
         {
             IsVisible = true;
             HeroId = heroId;
             Hero hero = CollectionProvider.GetCollectionHeroesFromCache().First(a => a.Id == heroId);
-            _LabelSelectedHero_TextMeshProUGUI.SetText(hero.BaseHero.Name);
+            _LabelSelectedHero__TextMeshProUGUI.SetText(hero.BaseHero.Name);
             _SelectedHero_Image.sprite = AddressableCache.GetHeroSprite(hero);
             _SelectedHero_Image.preserveAspect = true;
 
@@ -204,7 +229,7 @@ namespace Assets.GameData.Scenes.Collection
 
 
             I.PanelCollectionViewerInstance.GetElement(heroId)?.Selected(true);
-            _GameObject.SetActive(true);
+            gameObject.SetActive(true);
             I.OnResized();
         }
 
@@ -218,7 +243,7 @@ namespace Assets.GameData.Scenes.Collection
             IsVisible = false;
             I.PanelCollectionViewerInstance.GetElement(HeroId)?.Selected(false);
             HeroId = Guid.Empty;
-            _GameObject.SetActive(false);
+            gameObject.SetActive(false);
 
             //if (_PanelScene.CollectionMode == CollectionModeEnum.ChangingEquipment)
             //{
@@ -243,19 +268,19 @@ namespace Assets.GameData.Scenes.Collection
             _RectTransform.sizeDelta = new Vector2(Width, Height);
 
             // Верхняя панель где написано имя героя
-            _PanelTop_RectTransform.sizeDelta = new Vector2(Width, h1);
+            _PanelTop__RectTransform.sizeDelta = new Vector2(Width, h1);
 
             float button_close_spacing = BUTTON_CLOSE_SPACING * coefHeight;
             float buttonCloseSize = h1 - (button_close_spacing * 2);
-            _ButtonClose_RectTransform.sizeDelta = new Vector2(buttonCloseSize, buttonCloseSize);
-            _ButtonClose_RectTransform.anchoredPosition = new Vector2(button_close_spacing, -button_close_spacing);
+            _ButtonClose__RectTransform.sizeDelta = new Vector2(buttonCloseSize, buttonCloseSize);
+            _ButtonClose__RectTransform.anchoredPosition = new Vector2(button_close_spacing, -button_close_spacing);
 
-            _LabelSelectedHero_TextMeshProUGUI.rectTransform.sizeDelta = new Vector2(Width - h1, h1);
-            _LabelSelectedHero_TextMeshProUGUI.fontSize = LABEL_HERO_NAME_FONTSIZE * coefHeight;
+            _LabelSelectedHero__TextMeshProUGUI.rectTransform.sizeDelta = new Vector2(Width - h1, h1);
+            _LabelSelectedHero__TextMeshProUGUI.fontSize = LABEL_HERO_NAME_FONTSIZE * coefHeight;
 
 
             // Нижняя панель с характеристиками героя
-            _PanelBottom_RectTransform.sizeDelta = new Vector2(Width, Height - h1);
+            _PanelBottom__RectTransform.sizeDelta = new Vector2(Width, Height - h1);
 
 
             // Кнопки вкладок

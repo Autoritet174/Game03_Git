@@ -1,12 +1,11 @@
 using Assets.GameData.Scripts;
 using Game03Client;
-using System.Net.WebSockets;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using L = General.LocalizationKeys;
 
-public class PanelReconnectingPrefabInitializator : MonoBehaviour
+public class PanelReconnecting__prefab__scriptMB : MonoBehaviour
 {
     private bool _Initialized = false;
     private float Width = 0f, Height = 0f;
@@ -53,8 +52,9 @@ public class PanelReconnectingPrefabInitializator : MonoBehaviour
         UpdateState();
 
         ButtonCancel__Button.onClick.RemoveAllListeners();
-        ButtonCancel__Button.onClick.AddListener(()=> {
-            WebSocketProvider.DisconnectAsync();
+        ButtonCancel__Button.onClick.AddListener(() =>
+        {
+            _ = WebSocketProvider.DisconnectAsync();
             GameSceneManager.Load(GameSceneManager.SceneName.Auth);
         });
 

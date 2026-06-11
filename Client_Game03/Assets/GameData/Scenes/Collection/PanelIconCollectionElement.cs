@@ -24,7 +24,7 @@ namespace Assets.GameData.Scenes.Collection
 
             _GameObject = AddressableCache.IconCollectionElementAddressableGameObject.SafeInstant();
             _GameObject.name = $"IconCollectionElement [{Id}]";
-            _GameObject.transform.SetParent(panelGroupDivider.CellsContainer_Transform);
+            _GameObject.transform.SetParent(panelGroupDivider.CellsContainer__Transform);
             _RarityImage_GameObject = GameObjectFinder.FindByName("ImageMaskRarity", _GameObject.transform);
             _RectTransform = _GameObject.GetComponent<RectTransform>();
             _RectTransform.anchoredPosition3D = Vector3.zero;

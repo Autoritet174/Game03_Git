@@ -266,7 +266,7 @@ GameObject:
   - component: {fileID: 3546207377938051066}
   - component: {fileID: 8593129234225836336}
   m_Layer: 5
-  m_Name: PanelReconnectingPrefab
+  m_Name: PanelReconnecting__prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

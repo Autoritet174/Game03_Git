@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using L = General.LocalizationKeys;
 using I = CollectionSceneInitializator;
+using Assets.GameData.Scenes.Collection.prefabs;
 
 namespace Assets.GameData.Scenes.Collection
 {
@@ -34,7 +35,7 @@ namespace Assets.GameData.Scenes.Collection
         private readonly Image _Rarity_Image;
         private readonly Image _EquipmentFull_Image;
         private Equipment _Equipment;
-        private readonly PanelSelectedEquipment _PanelSelectedEquipment;
+        private readonly PanelSelectedEquipment__prefab__scriptMB _PanelSelectedEquipment;
 
         public float Width { get; private set; }
         public float Height { get; private set; }

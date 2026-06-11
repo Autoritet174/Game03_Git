@@ -14,8 +14,8 @@ namespace Assets.GameData.Scripts
     {
         private static Sprite NullSprite;
 
-        public static Sprite UI_button_with_arrow_v2;
-        public static Sprite UI_button_with_arrow_v2_reverse;
+        public static Sprite UI_button_with_arrow_v4;
+        public static Sprite UI_button_with_arrow_v4_reverse;
 
         private static readonly Sprite[] Rarityes = new Sprite[7];
         public static Sprite RaritySelected { get; private set; }
@@ -51,8 +51,8 @@ namespace Assets.GameData.Scripts
             var tasks = new List<UniTask>(estimatedTasks)
             {
                 // UI Elements
-                SafeLoadAsync("UI-buttons-button_with_arrow_v2", s => UI_button_with_arrow_v2 = s),
-                SafeLoadAsync("UI-buttons-button_with_arrow_v2_reverse", s => UI_button_with_arrow_v2_reverse = s)
+                SafeLoadAsync("button_with_arrow_v4", s => UI_button_with_arrow_v4 = s),
+                SafeLoadAsync("button_with_arrow_v4_reverse", s => UI_button_with_arrow_v4_reverse = s)
             };
 
             // Heroes

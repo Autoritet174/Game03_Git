@@ -23,41 +23,61 @@ namespace Assets.GameData.Prefabs
         private const float SPACING = 9f;
         private const float PADDING = 22.5f;
 
-        public PanelGroupDivider__prefab__script(GroupCollectionElement groupCollectionElement, PanelCollectionViewer__prefab__script parent)
+        public PanelGroupDivider__prefab__script(GroupCollectionElement groupCollectionElement, PanelCollectionViewer__prefab__scriptMB parent)
         {
+            _CollectionElementList = groupCollectionElement.List;
+            _GroupName = groupCollectionElement.Name;
+
             _GameObject = AddressableCache.GroupDividerPrefabAddressableGameObject.SafeInstant();
             _GameObject.transform.SetParent(parent.Content_Transform, false);
 
-            _GroupName = groupCollectionElement.Name;
             _RectTransform = _GameObject.GetComponent<RectTransform>();
-            _DividerButton_GameObject = GameObjectFinder.FindByName("DividerButton", _GameObject.transform);
-            _DividerButton_RectTransform = _DividerButton_GameObject.GetComponent<RectTransform>();
-            _CellsContainer_GameObject = GameObjectFinder.FindByName("CellsContainer", _GameObject.transform);
-            _CellsContainer_RectTransform = _CellsContainer_GameObject.GetComponent<RectTransform>();
-            _CellsContainer_GridLayoutGroup = _CellsContainer_GameObject.GetComponent<GridLayoutGroup>();
-            _DividerButton_Button = _DividerButton_GameObject.GetComponent<Button>();
-            _CollectionElementList = groupCollectionElement.List;
 
-            _DividerButton_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _DividerButton_GameObject.transform);
-
-
-            // DividerButton
-            if (string.IsNullOrWhiteSpace(_GroupName))
+            // Кнопка переключения видимости
             {
-                _DividerButton_TextMeshProUGUI.text = Game03Client.LocalizationManager.GetValue(L.UI.Label.NoGroup);
-                _DividerButton_TextMeshProUGUI.fontStyle = FontStyles.Italic;
+                _DividerButton__GameObject = GameObjectFinder.FindByName("DividerButton", _GameObject);
+                _DividerButton__RectTransform = _DividerButton__GameObject.GetComponent<RectTransform>();
+                _DividerButton__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _DividerButton__GameObject);
+
+                string text;
+                if (string.IsNullOrWhiteSpace(_GroupName))
+                {
+                    text = Game03Client.LocalizationManager.GetValue(L.UI.Label.NoGroup);
+                    _DividerButton__TextMeshProUGUI.fontStyle = FontStyles.Italic;
+                }
+                else
+                {
+                    text = _GroupName;
+                    _DividerButton__TextMeshProUGUI.fontStyle = FontStyles.Normal;
+                }
+                _DividerButton__TextMeshProUGUI.text = $"{text} ({_CollectionElementList.Count()})";
+
+                // Привязываем метод ToggleGroup к событию клика
+                {
+                    Button dividerButton_Button = _DividerButton__GameObject.GetComponent<Button>();
+                    dividerButton_Button.onClick.RemoveAllListeners();
+                    dividerButton_Button.onClick.AddListener(ToggleGroup);
+                }
+
+
+                // Изображения - линии окантовки
+                {
+                    Image_Arrow__Image = GameObjectFinder.FindByName<Image>("Image_Arrow", _DividerButton__GameObject);
+                    Image_Up__RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Up", _DividerButton__GameObject);
+                    Image_Down__RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Down", _DividerButton__GameObject);
+                    Image_Left__RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Left", _DividerButton__GameObject);
+                    Image_Right__RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Right", _DividerButton__GameObject);
+                }
             }
-            else
+
+            // Контейнер контента
             {
-                _DividerButton_TextMeshProUGUI.text = _GroupName;
-                _DividerButton_TextMeshProUGUI.fontStyle = FontStyles.Normal;
+                _CellsContainer__GameObject = GameObjectFinder.FindByName("CellsContainer", _GameObject.transform);
+                _CellsContainer__RectTransform = _CellsContainer__GameObject.GetComponent<RectTransform>();
+                _CellsContainer__GridLayoutGroup = _CellsContainer__GameObject.GetComponent<GridLayoutGroup>();
+                CellsContainer__Transform = _CellsContainer__GameObject.transform;
             }
 
-            // Привязываем метод ToggleGroup к событию клика
-            _DividerButton_Button.onClick.RemoveAllListeners();
-            _DividerButton_Button.onClick.AddListener(ToggleGroup);
-
-            CellsContainer_Transform = _CellsContainer_GameObject.transform;
 
             _PanelIconCollectionElementList = new();
             foreach (CollectionElement collectionElement in _CollectionElementList)
@@ -65,33 +85,38 @@ namespace Assets.GameData.Prefabs
                 _PanelIconCollectionElementList.Add(new(this, collectionElement));
             }
 
-
             OnResized();
         }
 
-        public Transform CellsContainer_Transform { get; }
+        public Transform CellsContainer__Transform { get; }
 
         private readonly string _GroupName;
 
         private readonly GameObject _GameObject;
         private readonly RectTransform _RectTransform;
 
-        private readonly GameObject _DividerButton_GameObject;
-        private readonly RectTransform _DividerButton_RectTransform;
+        private readonly GameObject _DividerButton__GameObject;
+        private readonly RectTransform _DividerButton__RectTransform;
         /// <summary>
         /// Кнопка, при клике на которую происходит сворачивание/разворачивание.
         /// </summary>
-        private readonly Button _DividerButton_Button;
+        //private readonly Button _DividerButton_Button;
+
+        private readonly Image Image_Arrow__Image;
+        private readonly RectTransform Image_Up__RectTransform;
+        private readonly RectTransform Image_Down__RectTransform;
+        private readonly RectTransform Image_Left__RectTransform;
+        private readonly RectTransform Image_Right__RectTransform;
 
         /// <summary>
         /// Контейнер, содержащий все ячейки инвентаря для этой группы.
         /// На этом объекте должен быть RectTransform.
         /// </summary>
-        private readonly GameObject _CellsContainer_GameObject;
-        private readonly RectTransform _CellsContainer_RectTransform;
-        private readonly GridLayoutGroup _CellsContainer_GridLayoutGroup;
+        private readonly GameObject _CellsContainer__GameObject;
+        private readonly RectTransform _CellsContainer__RectTransform;
+        private readonly GridLayoutGroup _CellsContainer__GridLayoutGroup;
 
-        private readonly TextMeshProUGUI _DividerButton_TextMeshProUGUI;
+        private readonly TextMeshProUGUI _DividerButton__TextMeshProUGUI;
 
         private readonly IEnumerable<CollectionElement> _CollectionElementList;
         private readonly List<PanelIconCollectionElement> _PanelIconCollectionElementList;
@@ -119,8 +144,8 @@ namespace Assets.GameData.Prefabs
             {
                 //    // Разворачивание
                 //    // Сначала активируем контейнер, чтобы он участвовал в макете, но с высотой 0
-                _CellsContainer_GameObject.SetActive(true);
-                _DividerButton_Button.image.sprite = AddressableCache.UI_button_with_arrow_v2;
+                _CellsContainer__GameObject.SetActive(true);
+                Image_Arrow__Image.sprite = AddressableCache.UI_button_with_arrow_v4;
                 //_CellsContainer_RectTransform.sizeDelta = new Vector2();
                 //    //await AnimateHeightAsync(0, expandedHeight, token);
             }
@@ -129,8 +154,8 @@ namespace Assets.GameData.Prefabs
                 //    // Сворачивание
                 //    //await AnimateHeightAsync(expandedHeight, 0, token);
                 //    // После завершения анимации деактивируем контейнер
-                _CellsContainer_GameObject.SetActive(false);
-                _DividerButton_Button.image.sprite = AddressableCache.UI_button_with_arrow_v2_reverse;
+                _CellsContainer__GameObject.SetActive(false);
+                Image_Arrow__Image.sprite = AddressableCache.UI_button_with_arrow_v4_reverse;
             }
             OnResized();
             //await UniTask.Delay(1); // Заглушка для асинхронности
@@ -144,8 +169,8 @@ namespace Assets.GameData.Prefabs
             float buttonHeight = DIVIDER_BUTTON_HEIGHT * coefHeight;
             float height = buttonHeight;
 
-            _DividerButton_RectTransform.sizeDelta = new Vector2(width, buttonHeight);
-            _DividerButton_TextMeshProUGUI.fontSize = DIVIDER_BUTTON_FONTSIZE * coefHeight;
+            _DividerButton__RectTransform.sizeDelta = new Vector2(width, buttonHeight);
+            _DividerButton__TextMeshProUGUI.fontSize = DIVIDER_BUTTON_FONTSIZE * coefHeight;
 
             if (_Expanded)
             {
@@ -165,12 +190,12 @@ namespace Assets.GameData.Prefabs
                 spacing = ((int)(spacing * coefWidth * 10f)) / 10f;
                 cellSize = ((int)(cellSize * coefWidth * 10f)) / 10f;
 
-                _CellsContainer_GridLayoutGroup.padding.left = padding;
-                _CellsContainer_GridLayoutGroup.padding.right = padding;
-                _CellsContainer_GridLayoutGroup.padding.top = padding;
-                _CellsContainer_GridLayoutGroup.padding.bottom = padding;
-                _CellsContainer_GridLayoutGroup.spacing = new Vector2(spacing, spacing);
-                _CellsContainer_GridLayoutGroup.cellSize = new Vector2(cellSize, cellSize);
+                _CellsContainer__GridLayoutGroup.padding.left = padding;
+                _CellsContainer__GridLayoutGroup.padding.right = padding;
+                _CellsContainer__GridLayoutGroup.padding.top = padding;
+                _CellsContainer__GridLayoutGroup.padding.bottom = padding;
+                _CellsContainer__GridLayoutGroup.spacing = new Vector2(spacing, spacing);
+                _CellsContainer__GridLayoutGroup.cellSize = new Vector2(cellSize, cellSize);
 
 
                 // вычисляем количество строк
@@ -183,8 +208,8 @@ namespace Assets.GameData.Prefabs
 
                 float heightContainer = (countRows * cellSize) + ((countRows - 1) * spacing)
                     + (padding * 4);// по сути нужно 2 но чтобы сделать низ длиннее поставил 4
-                _CellsContainer_RectTransform.sizeDelta = new Vector2(width, heightContainer);
-                _CellsContainer_RectTransform.anchoredPosition = new Vector2(0f, -DIVIDER_BUTTON_HEIGHT * coefHeight);
+                _CellsContainer__RectTransform.sizeDelta = new Vector2(width, heightContainer);
+                _CellsContainer__RectTransform.anchoredPosition = new Vector2(0f, -DIVIDER_BUTTON_HEIGHT * coefHeight);
 
                 _PanelIconCollectionElementList.ForEach(a => a.OnResized());
 
@@ -192,6 +217,14 @@ namespace Assets.GameData.Prefabs
             }
 
             _RectTransform.sizeDelta = new Vector2(width, height);
+
+            float sizeLine = 4 * coefHeight;
+            Image_Up__RectTransform.sizeDelta = new Vector2(0, sizeLine);
+            Image_Down__RectTransform.sizeDelta = new Vector2(0, sizeLine);
+            Image_Left__RectTransform.sizeDelta = new Vector2(sizeLine, 0);
+            Image_Right__RectTransform.sizeDelta = new Vector2(sizeLine, 0);
+            Image_Arrow__Image.rectTransform.sizeDelta = new Vector2(74*coefHeight, 37*coefHeight);
+            Image_Arrow__Image.rectTransform.anchoredPosition = new Vector2(-sizeLine, -sizeLine);
         }
 
         public void Destroy()

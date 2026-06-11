@@ -1,3 +1,4 @@
+using Assets.GameData.Scenes.Collection.prefabs;
 using Assets.GameData.Scripts;
 using UnityEngine;
 using I = CollectionSceneInitializator;
@@ -19,7 +20,7 @@ namespace Assets.GameData.Scenes.Collection
         public void OnResized()
         {
             Height = Screen.height - I.PanelTopInstance.Height;
-            float w1 = I.PanelSelectedEquipmentInstance.Width > 0 ? I.PanelSelectedEquipmentInstance.Width + (PanelSelectedEquipment.WIDTH_SPACING * 2) : 0;
+            float w1 = I.PanelSelectedEquipmentInstance.Width > 0 ? I.PanelSelectedEquipmentInstance.Width + (PanelSelectedEquipment__prefab__scriptMB.WIDTH_SPACING * 2) : 0;
             Width = Screen.width - I.PanelSelectedHeroInstance.Width - w1;
 
             _RectTransform.sizeDelta = new Vector2(Width, Height);
