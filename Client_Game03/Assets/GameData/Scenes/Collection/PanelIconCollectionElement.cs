@@ -8,7 +8,6 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using I = CollectionSceneInitializator;
 
 namespace Assets.GameData.Scenes.Collection
 {
@@ -16,11 +15,13 @@ namespace Assets.GameData.Scenes.Collection
     {
         private const float TEXT_COLLECTION_ELEMENT_FONTSIZE = 14f;
 
-        public PanelIconCollectionElement(PanelGroupDivider__prefab__script panelGroupDivider, CollectionElement collectionElement)
+        public PanelIconCollectionElement(PanelGroupDivider__prefab__script panelGroupDivider, CollectionElement collectionElement, PanelCollectionViewer__prefab__scriptMB viewer)
         {
             Id = collectionElement.Id;
             _PanelGroupDivider = panelGroupDivider;
             _CollectionElement = collectionElement;
+            _Viewer = viewer;
+            _Context = viewer.Context;
 
             _GameObject = AddressableCache.IconCollectionElementAddressableGameObject.SafeInstant();
             _GameObject.name = $"IconCollectionElement [{Id}]";
@@ -78,7 +79,7 @@ namespace Assets.GameData.Scenes.Collection
             imageRarity.preserveAspect = true;
             imageRarity.type = Image.Type.Simple; // Режим без растягивания;
 
-            imageCollectionElement.sprite = I.PanelSceneInstance.CollectionMode switch
+            imageCollectionElement.sprite = (_Context?.CollectionMode ?? ECollectionMode.Hero) switch
             {
                 ECollectionMode.Hero => AddressableCache.Heroes[$"{_CollectionElement.Name}_face"],
                 ECollectionMode.Equipment => AddressableCache.Equipments[_CollectionElement.Name],
@@ -100,11 +101,13 @@ namespace Assets.GameData.Scenes.Collection
                 ? CollectionProvider.GetCollectionEquipmentsFromCache().First(a => a.Id == _CollectionElement.Id) : null;
 
             RefreshOwnerImage();
-            I.PanelCollectionViewerInstance.AddElement(this);
+            _Viewer.AddElement(this);
         }
 
         public Guid Id { get; private set; }
         private readonly PanelGroupDivider__prefab__script _PanelGroupDivider;
+        private readonly PanelCollectionViewer__prefab__scriptMB _Viewer;
+        private readonly IPanelCollectionViewerContext _Context;
         private readonly GameObject _GameObject;
         private readonly RectTransform _RectTransform;
         private readonly CollectionElement _CollectionElement;
@@ -146,11 +149,11 @@ namespace Assets.GameData.Scenes.Collection
             _TextMeshPro.fontSize = TEXT_COLLECTION_ELEMENT_FONTSIZE * G.GetCoefHeight();
         }
 
-        public void Selected(bool selected)
+        public void Selected(bool selected, bool clearOthers = true)
         {
-            if (selected)
+            if (selected && clearOthers)
             {
-                I.PanelCollectionViewerInstance.UnselectAll();
+                _Viewer.UnselectAll();
             }
             _SelectedImage_GameObject.SetActive(selected);
             //_RarityImage_GameObject.SetActive(!selected);
@@ -158,45 +161,10 @@ namespace Assets.GameData.Scenes.Collection
 
         private async UniTask OnClick()
         {
-            //_RectTransform.localScale = Initializator.Vector3Selected;// ИСПРАВИТЬ
-
-            switch (I.PanelSceneInstance.CollectionMode)
-            {
-                case ECollectionMode.Hero:
-                    //_PanelSelectedEquipment.Hide();
-                    I.PanelSelectedHeroInstance.Show(_CollectionElement.Id); break;
-
-                case ECollectionMode.Equipment:
-                    //await _PanelSelectedHero.Hide();
-                    I.PanelSelectedEquipmentInstance.Show(_CollectionElement.Id); break;
-
-                //case CollectionModeEnum.ChangingEquipment:
-                //    switch (_CollectionElement.TypeCollectionElement)
-                //    {
-                //        case TypeCollectionElement.Hero:
-                //            _PanelSelectedHero.Show(_CollectionElement);
-                //            await _PanelCollectionViewer.InstantiateCollectionAsync();
-                //            break;
-
-                //        case TypeCollectionElement.Equipment:
-                //            _PanelSelectedEquipment.Show(_CollectionElement);
-                //            if (!_PanelScene.PanelSelectedHero.IsVisible)
-                //            {
-                //                await _PanelCollectionViewer.InstantiateCollectionAsync();
-                //            }
-
-                //            break;
-
-                //        default:
-                //            throw new NotImplementedException();
-                //    }
-                //    break;
-                default:
-                    throw new NotImplementedException();
-            }
-
-            Selected(true);
-            I.OnResized();
+            ECollectionMode collectionMode = _Context?.CollectionMode ?? ECollectionMode.Hero;
+            _Context?.OnElementSelected(_CollectionElement.Id, collectionMode);
+            _Context?.OnLayoutChanged();
+            await UniTask.Yield();
         }
 
         private async UniTask OnPointerEnter()

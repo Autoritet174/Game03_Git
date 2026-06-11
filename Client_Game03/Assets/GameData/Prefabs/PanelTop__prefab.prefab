@@ -101,6 +101,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: ButtonClose
       objectReference: {fileID: 0}
+    - target: {fileID: 4178045927099515178, guid: 651b152dc775c274e883b03aa92e7c7b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118241554056136677, guid: 651b152dc775c274e883b03aa92e7c7b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8118241554056136677, guid: 651b152dc775c274e883b03aa92e7c7b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1

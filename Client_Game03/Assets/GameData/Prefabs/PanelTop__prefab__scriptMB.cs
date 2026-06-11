@@ -6,14 +6,14 @@ using UnityEngine.UI;
 public class PanelTop__prefab__scriptMB : MonoBehaviour
 {
     private RectTransform panelTopPrefab__RectTransform;
-    private RectTransform buttonClose__RectTransform;
+    public RectTransform ButtonClose__RectTransform { get; private set; }
     private float _Width, _Height;
     private bool initialized = false;
 
     private void Start()
     {
         panelTopPrefab__RectTransform = GetComponent<RectTransform>();
-        buttonClose__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose", panelTopPrefab__RectTransform.transform);
+        ButtonClose__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose", panelTopPrefab__RectTransform.transform);
         initialized = true;
         OnResized();
     }
@@ -39,6 +39,6 @@ public class PanelTop__prefab__scriptMB : MonoBehaviour
         float coefHeight = G.GetCoefHeight();
         float panelTop_Height = G.PANELTOP_HEIGHT * coefHeight;
         panelTopPrefab__RectTransform.sizeDelta = new Vector2(_Width, panelTop_Height);
-        buttonClose__RectTransform.sizeDelta = new Vector2(panelTop_Height, panelTop_Height);
+        ButtonClose__RectTransform.sizeDelta = new Vector2(panelTop_Height, panelTop_Height);
     }
 }

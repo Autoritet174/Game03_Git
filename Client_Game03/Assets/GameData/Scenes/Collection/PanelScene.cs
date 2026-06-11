@@ -6,13 +6,6 @@ using I = CollectionSceneInitializator;
 
 namespace Assets.GameData.Scenes.Collection
 {
-    public enum ECollectionMode
-    {
-        Hero, Equipment
-    }
-
-    public enum ECollectionElement { Hero, Equipment }
-
     public class PanelScene
     {
         public PanelScene()

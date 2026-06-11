@@ -25,8 +25,6 @@ namespace Assets.GameData.Scenes.Collection
 
         public float Height { get; private set; }
 
-        private const float HEIGHT_BASE = 90f;
-
         private readonly RectTransform _RectTransform;
         private readonly RectTransform _ButtonClose_RectTransform;
         private readonly TabButton _TabButtonHeroes, _TabButtonEquipment;//, _TabButtonChangingEquipment;
@@ -40,12 +38,12 @@ namespace Assets.GameData.Scenes.Collection
         public void OnResized()
         {
             float coefHeight = G.GetCoefHeight();
-            Height = HEIGHT_BASE * coefHeight;
+            Height = G.PANELTOP_HEIGHT * coefHeight;
             //_RectTransform.sizeDelta = new Vector2(Screen.width, 0f);
 
             // Кнопки вкладок
             float tabButtonWidth = 240f * coefHeight;
-            float fontSize = 25 * coefHeight;
+            float fontSize = 22 * coefHeight;
 
             _TabButtonHeroes.rectTransform.sizeDelta = new Vector2(tabButtonWidth, Height);
             _TabButtonHeroes.textMeshProUGUI.fontSize = fontSize;

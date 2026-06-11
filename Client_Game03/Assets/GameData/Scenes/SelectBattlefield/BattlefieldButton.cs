@@ -1,9 +1,7 @@
-using Assets.GameData.Scenes.BattleField;
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using General;
 using System;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using L = General.LocalizationKeys;
@@ -25,9 +23,6 @@ namespace Assets.GameData.Scenes.SelectBattlefield
         private readonly RectTransform imageSelected__RectTransform;
         private readonly TextMeshProUGUI label__TextMeshProUGUI;
 
-        private readonly GameObject PanelPrepareBattle__GameObject;
-        private readonly GameObject Viewport__GameObject;
-
         public EBattleFiled BattlefieldId { get; }
 
         public BattleFieldButton(EBattleFiled battlefieldId, BattleFieldCategory parentBattleFieldCategory)
@@ -44,9 +39,6 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             imageSelectedMask__GameObject = imageSelectedMask__RectTransform.gameObject;
 
             label__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label", parentTransform);
-
-            PanelPrepareBattle__GameObject = GameObjectFinder.FindByName("PanelPrepareBattle (id=373scb8n)");
-            PanelPrepareBattle__GameObject.SetActive(false);
 
             string localizationKey = $"{L.UI.Label.BattleField}_{battlefieldId}";
             label__TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(localizationKey));
@@ -69,8 +61,6 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
             label__TextMeshProUGUI.rectTransform.sizeDelta = new Vector2(0f, LABEL_HEIGHT * coefHeight);
             label__TextMeshProUGUI.fontSize = LABEL_FONTSIZE * coefHeight;
-
-            //PanelPrepareBattle__RectTransform.
         }
 
         private async UniTask OnPointerEnter()
@@ -85,27 +75,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
         private async UniTask OnClick()
         {
-            //_ = Game03Client.GameData.Container.Battlefields.First(a => a.Id == BattlefieldId);
-            PanelPrepareBattle__GameObject.SetActive(true);
-            return;
-
-            BattlefieldSceneInitializator.SpawnedBattlefield = await Game03Client.Battlefield.BattlefieldProvider.LoadBattleFieldAsync(BattlefieldId,
-                new Guid[] {
-                    Guid.Parse("019d60de-eb9a-7e06-89e3-1d937ed9fae1"),
-                }, default);
-
-
-            if (BattlefieldSceneInitializator.SpawnedBattlefield != null)
-            {
-                BattlefieldSceneInitializator.SpawnedBattlefield.SpawnedHeroPlayerList.Sort((a, b) => b.Initiative.CompareTo(a.Initiative));
-                BattlefieldSceneInitializator.SpawnedBattlefield.SpawnedHeroEnemyList.Sort((a, b) => b.Initiative.CompareTo(a.Initiative));
-                GameSceneManager.Load(GameSceneManager.SceneName.Battlefield);
-            }
-            else
-            {
-                Debug.Log($"spawnedBattlefield is null");
-            }
+            await SelectBattlefieldSceneInitializator.PanelPrepareBattleInstance.ShowAsync(BattlefieldId);
         }
-
     }
 }

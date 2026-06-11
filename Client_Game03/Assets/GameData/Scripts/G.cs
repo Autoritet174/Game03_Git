@@ -13,7 +13,7 @@ namespace Assets.GameData.Scripts
     /// </summary>
     public static class G
     {
-        public const float PANELTOP_HEIGHT = 90f;
+        public const float PANELTOP_HEIGHT = 60f;
 
         /// <summary>
         /// Флаг, указывающий на то, что приложение находится в процессе завершения работы.

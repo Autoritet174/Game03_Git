@@ -6,7 +6,6 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using I = CollectionSceneInitializator;
 using L = General.LocalizationKeys;
 
 namespace Assets.GameData.Prefabs
@@ -25,6 +24,7 @@ namespace Assets.GameData.Prefabs
 
         public PanelGroupDivider__prefab__script(GroupCollectionElement groupCollectionElement, PanelCollectionViewer__prefab__scriptMB parent)
         {
+            _Viewer = parent;
             _CollectionElementList = groupCollectionElement.List;
             _GroupName = groupCollectionElement.Name;
 
@@ -82,7 +82,7 @@ namespace Assets.GameData.Prefabs
             _PanelIconCollectionElementList = new();
             foreach (CollectionElement collectionElement in _CollectionElementList)
             {
-                _PanelIconCollectionElementList.Add(new(this, collectionElement));
+                _PanelIconCollectionElementList.Add(new(this, collectionElement, parent));
             }
 
             OnResized();
@@ -90,6 +90,7 @@ namespace Assets.GameData.Prefabs
 
         public Transform CellsContainer__Transform { get; }
 
+        private readonly PanelCollectionViewer__prefab__scriptMB _Viewer;
         private readonly string _GroupName;
 
         private readonly GameObject _GameObject;
@@ -164,7 +165,7 @@ namespace Assets.GameData.Prefabs
 
         public void OnResized()
         {
-            float width = I.PanelCollectionViewerInstance.Width;
+            float width = _Viewer.Width;
             float coefHeight = G.GetCoefHeight();
             float buttonHeight = DIVIDER_BUTTON_HEIGHT * coefHeight;
             float height = buttonHeight;

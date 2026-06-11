@@ -81,9 +81,9 @@ namespace Assets.GameData.Scenes.Collection
 
         //}
 
-        public void SetPageDiapason()
+        public void SetPageDiapason(int maxCollectionElements)
         {
-            _LabelRangePage_TextMeshProUGUI.text = $"{((PageCurrent - 1) * Game03Client.Collection.CollectionProvider.PAGE_SIZE) + 1} - {I.PanelCollectionViewerInstance.MaxCollectionElements}";
+            _LabelRangePage_TextMeshProUGUI.text = $"{((PageCurrent - 1) * Game03Client.Collection.CollectionProvider.PAGE_SIZE) + 1} - {maxCollectionElements}";
         }
 
         public void OnResized()

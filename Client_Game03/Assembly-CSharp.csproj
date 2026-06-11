@@ -71,6 +71,7 @@
     <Compile Include="Assets\GameData\Prefabs\PanelReconnecting__prefab__scriptMB.cs" />
     <Compile Include="Assets\GameData\Scripts\ButtonClose_Click_MoveToMainMenu.cs" />
     <Compile Include="Assets\GameData\Scripts\SecureStorageProvider.cs" />
+    <Compile Include="Assets\GameData\Prefabs\IPanelCollectionViewerContext.cs" />
     <Compile Include="Assets\GameData\Scripts\MainThreadDispatcher.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\prefabs\PanelSelectedEquipment__prefab__scriptMB.cs" />
     <Compile Include="Assets\GameData\Scenes\Battlefield\BattlefieldUnit.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Assets\GameData\Scenes\Collection\FilterButton.cs" />
     <Compile Include="Assets\GameData\Scenes\Battlefield\Animations\HealthHub.cs" />
     <Compile Include="Assets\GameData\Scripts\UnityObject.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\CollectionSceneViewerContext.cs" />
     <Compile Include="Assets\GameData\Scripts\AddressableCache.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\HypercubeInit.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\prefabs\Stat__prefab__script.cs" />
@@ -104,10 +106,13 @@
     <Compile Include="Assets\GameData\Scripts\RectTransformExtensions.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\AuthManager.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\PanelCollection.cs" />
+    <Compile Include="Assets\GameData\Scenes\SelectBattlefield\SelectBattlefieldViewerContext.cs" />
+    <Compile Include="Assets\GameData\Scripts\CollectionEnums.cs" />
     <Compile Include="Assets\GameData\Scenes\Battlefield\BattlefieldUnit_Animation_AbilityAttack.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\PanelTop.cs" />
     <Compile Include="Assets\GameData\Scripts\CancellationTokenManager.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Button_Close.cs" />
+    <Compile Include="Assets\GameData\Scenes\SelectBattlefield\PanelPrepareBattle.cs" />
     <Compile Include="Assets\GameData\Scripts\GameObjectExtensions.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\prefabs\PanelSelectedHero__prefab__scriptMB.cs" />
     <Compile Include="Assets\GameData\Prefabs\PanelTop__prefab__scriptMB.cs" />
