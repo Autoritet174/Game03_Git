@@ -24,9 +24,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
         private readonly PanelCollectionViewer__prefab__scriptMB _Viewer;
         private readonly SelectBattlefieldViewerContext _Context;
         private readonly RectTransform _ButtonStartBattle__RectTransform;
-        private readonly RectTransform _ButtonCancel__RectTransform;
         private readonly TextMeshProUGUI _ButtonStartBattle__TextMeshProUGUI;
-        private readonly TextMeshProUGUI _ButtonCancel__TextMeshProUGUI;
 
         private EBattleFiled _BattlefieldId;
         private bool _BattleStarting;
@@ -51,17 +49,11 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             (_ButtonStartBattle__RectTransform, _ButtonStartBattle__TextMeshProUGUI) = CreateButton(
                 "ButtonStartBattle",
                 LocalizationManager.GetValue(L.UI.Button.StartBattle));
-            (_ButtonCancel__RectTransform, _ButtonCancel__TextMeshProUGUI) = CreateButton(
-                "ButtonCancelPrepareBattle",
-                LocalizationManager.GetValue(L.UI.Button.Cancel));
 
             _ButtonStartBattle__RectTransform.SetParent(_RectTransform, false);
-            _ButtonCancel__RectTransform.SetParent(_RectTransform, false);
 
             _ButtonStartBattle__RectTransform.gameObject
                 .SetClickEvent(StartBattleAsync, useButtonComponent: true);
-            _ButtonCancel__RectTransform.gameObject
-                .SetClickEvent(Cancel, useButtonComponent: true);
 
             _GameObject.SetActive(false);
 
@@ -129,14 +121,6 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             _ButtonStartBattle__RectTransform.sizeDelta = new Vector2(buttonWidth, buttonHeight);
             _ButtonStartBattle__RectTransform.anchoredPosition = new Vector2(-buttonMargin, buttonMargin);
             _ButtonStartBattle__TextMeshProUGUI.fontSize = fontSize;
-
-            _ButtonCancel__RectTransform.sizeDelta = new Vector2(buttonWidth, buttonHeight);
-            _ButtonCancel__RectTransform.anchorMin = new Vector2(0f, 0f);
-            _ButtonCancel__RectTransform.anchorMax = new Vector2(0f, 0f);
-            _ButtonCancel__RectTransform.pivot = new Vector2(0f, 0f);
-            _ButtonCancel__RectTransform.anchoredPosition = new Vector2(buttonMargin, buttonMargin);
-            _ButtonCancel__TextMeshProUGUI.fontSize = fontSize;
-
 
             _PanelCollection.OnResized();
             _TopButtons.OnResized();
