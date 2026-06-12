@@ -66,10 +66,11 @@ namespace Assets.GameData.Scenes.Auth
             }
             finally
             {
-                if (visibleInputFields)
+                if (visibleInputFields
+                    && DevAuthConfig.TryGetPrefillCredentials(out string devEmail, out string devPassword))
                 {
-                    GameObjectFinder.FindByName<TMP_InputField>("InputText_Email (id=96oaypns)").text = "SUPERadmin@mail.RU";
-                    GameObjectFinder.FindByName<TMP_InputField>("InputText_Password (id=9vfnj9oh)").text = "testPassword";
+                    GameObjectFinder.FindByName<TMP_InputField>("InputText_Email (id=96oaypns)").text = devEmail;
+                    GameObjectFinder.FindByName<TMP_InputField>("InputText_Password (id=9vfnj9oh)").text = devPassword;
                 }
                 SetVisibleInputFields(visibleInputFields);
                 //AuthHelper.LogRefreshToken();

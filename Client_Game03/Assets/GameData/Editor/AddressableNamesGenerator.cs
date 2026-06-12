@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using General;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
 
-namespace Assets.GameData.Scripts.Redactor
+namespace Assets.GameData.Editor
 {
     public static class AddressableNamesGenerator
     {
@@ -105,3 +106,4 @@ namespace Assets.GameData.Scripts.Redactor
 
     }
 }
+#endif

@@ -71,3 +71,7 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 /Client_Game03/BuildRelease
+
+# Local dev auth credentials (copy from Main.dev.ini.example)
+/Client_Game03/Assets/GameData/Config/Main.dev.ini
+/Client_Game03/Assets/GameData/Config/Main.dev.ini.meta

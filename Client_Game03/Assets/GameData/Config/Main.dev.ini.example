@@ -1,0 +1,7 @@
+# Скопируйте этот файл как Main.dev.ini в ту же папку.
+# Main.dev.ini не коммитится в git — только для локальной разработки.
+# Используется только в Unity Editor и Development Build.
+
+[Auth]
+Email=your-dev-email@example.com
+Password=your-dev-password
