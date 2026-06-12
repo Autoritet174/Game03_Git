@@ -1,10 +1,17 @@
 using Assets.GameData.Scripts;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 using UnityEngine;
 using L = General.LocalizationKeys;
 
 public class ButtonClose_Click_EndBattle : MonoBehaviour
 {
-    public async void OnClick()
+    public void OnClick()
+    {
+        this.RunAsync(OnClickAsync);
+    }
+
+    private async UniTask OnClickAsync(CancellationToken cancellationToken)
     {
         bool yesNo = await GameMessage.ShowLocaleYesNo(L.UI.Label.EndBattle);
         if (!yesNo)
@@ -21,7 +28,5 @@ public class ButtonClose_Click_EndBattle : MonoBehaviour
         {
             await GameMessage.ShowAndWaitCloseAsync(L.Error.Server.CombatBreak);
         }
-
-       
     }
 }

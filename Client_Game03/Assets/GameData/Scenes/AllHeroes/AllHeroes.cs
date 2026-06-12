@@ -7,6 +7,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -57,7 +58,7 @@ public class AllHeroes : MonoBehaviour
 
 
     //private readonly int r = 4;
-    private async void Start()
+    private void Start()
     {
         scrollView = GameObjectFinder.FindByName<ScrollRect>("Scroll View (id=2e9cbb1a)");
         content = GameObjectFinder.FindByName<RectTransform>("Content (id=0a40ce51)", startParent: scrollView.transform);
@@ -71,10 +72,12 @@ public class AllHeroes : MonoBehaviour
         //ButtonCloseHelper.UpdateSize(_lastWidth, _lastHeight, buttonClose);
         OnResizeWindow();
 
+        this.RunAsync(StartAsync);
+    }
+
+    private async UniTask StartAsync(CancellationToken cancellationToken)
+    {
         await AddAllImageOnContent();
-
-
-
         inited = true;
     }
 

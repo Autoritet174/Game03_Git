@@ -1,4 +1,5 @@
 using Assets.GameData.Scripts;
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -6,7 +7,12 @@ using L = General.LocalizationKeys;
 
 public static class GameExitHandler
 {
-    public static async void ExitGame()
+    public static void ExitGame()
+    {
+        UniTaskRunner.Run(ExitGameAsync);
+    }
+
+    public static async UniTask ExitGameAsync()
     {
         bool yesNo = await GameMessage.ShowLocaleYesNo(L.UI.Label.ExitGame);
         if (!yesNo)

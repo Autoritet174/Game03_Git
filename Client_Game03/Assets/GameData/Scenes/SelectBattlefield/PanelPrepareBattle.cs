@@ -13,8 +13,6 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 {
     public class PanelPrepareBattle
     {
-        private const string START_BATTLE_LOCALIZATION_KEY = "UI.Button.StartBattle";
-
         private const float BUTTON_WIDTH = 220f;
         private const float BUTTON_HEIGHT = 60f;
         private const float BUTTON_MARGIN = 25f;
@@ -47,7 +45,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
             (_ButtonStartBattle__RectTransform, _ButtonStartBattle__TextMeshProUGUI) = CreateButton(
                 "ButtonStartBattle",
-                LocalizationManager.GetValue(START_BATTLE_LOCALIZATION_KEY));
+                LocalizationManager.GetValue(L.UI.Button.StartBattle));
             (_ButtonCancel__RectTransform, _ButtonCancel__TextMeshProUGUI) = CreateButton(
                 "ButtonCancelPrepareBattle",
                 LocalizationManager.GetValue(L.UI.Button.Cancel));

@@ -8,6 +8,7 @@ using General.DTO.Battlefield;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using TMPro;
 using UnityEngine;
 using L = General.LocalizationKeys;
@@ -48,12 +49,22 @@ namespace Assets.GameData.Scenes.BattleField
 
         private DateTime dateTimeWaitFor = DateTime.MinValue;
 
-        private async void Start()
+        private void Start()
+        {
+            if (!TryInitializeSync())
+            {
+                return;
+            }
+
+            this.RunAsync(StartAsync);
+        }
+
+        private bool TryInitializeSync()
         {
             if (SpawnedBattlefield == null || SpawnedBattlefield.SpawnedHeroPlayerList == null)
             {
                 GameMessage.Show("spawnedBattlefield == null || spawnedBattlefield.SpawnedHeroes == null", true);
-                return;
+                return false;
             }
 
             //Debug.Log(Newtonsoft.Json.JsonConvert.SerializeObject(SpawnedBattlefield));
@@ -97,16 +108,15 @@ namespace Assets.GameData.Scenes.BattleField
             _Ability3Button__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _Ability3Button__RectTransform.transform);
             EventHelper.SetClickEvent(_Ability3Button__RectTransform.gameObject, Ability3OnClickAsync, true);
 
+            _Turn__RectTransform = GameObjectFinder.FindByName<RectTransform>("TurnText");
+            _Turn__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("TurnText");
 
-            //testButton.onClick.RemoveAllListeners();
-            //testButton.onClick.AddListener(() =>
-            //{
-            //    BattlefieldUnit myUnit = playerUnits[RandomShared.Next(playerUnits.Count)];
-            //    BattlefieldUnit enemyUnit = enemyUnits[RandomShared.Next(enemyUnits.Count)];
-            //    myUnit.AnimationStartAttackUnit(enemyUnit);
-            //});
+            return true;
+        }
 
-            SpawnedBattlefield.BattlefieldLog = await Game03Client.Battlefield.BattlefieldProvider.GetBattleLogAsync(default);
+        private async UniTask StartAsync(CancellationToken cancellationToken)
+        {
+            SpawnedBattlefield.BattlefieldLog = await Game03Client.Battlefield.BattlefieldProvider.GetBattleLogAsync(cancellationToken);
             if (SpawnedBattlefield.BattlefieldLog == null)
             {
                 return;
@@ -114,10 +124,6 @@ namespace Assets.GameData.Scenes.BattleField
             SpawnedBattlefield.BattlefieldLog.Sort((a, b) => a.Index.CompareTo(b.Index));
             battlefieldIndexAnimationStarted = 0;
             battlefieldIndexAnimationActive = false;
-
-
-            _Turn__RectTransform = GameObjectFinder.FindByName<RectTransform>("TurnText");
-            _Turn__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("TurnText");
 
             _Initialized = true;
         }

@@ -15,12 +15,6 @@
 
 ## Критично (исправить в первую очередь)
 
-### 2. `AddressableNamesGenerator` в runtime-сборке
-
-Файл `Assets/GameData/Scripts/Redactor/AddressableNamesGenerator.cs` использует `UnityEditor` без `#if UNITY_EDITOR` и лежит **не** в папке `Editor/`.
-
-**Риск:** ошибка сборки player build. Перенести в `Editor/` или обернуть директивой.
-
 ### 3. `async void` в lifecycle и UI (7 мест)
 
 | Файл | Метод |

@@ -1,6 +1,7 @@
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using System;
+using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -32,13 +33,18 @@ namespace Assets.GameData.Scenes.Auth
         private Image _ImageBackground_Image;
         private float _ImageBackground_CoefWH = 1f;
 
-        private async void Start()
+        private void Start()
         {
             InitTextLocalization();
             InitObjects();
 
             _initialized = true;
             OnResizeWindow();
+            this.RunAsync(StartAsync);
+        }
+
+        private async UniTask StartAsync(CancellationToken cancellationToken)
+        {
             bool visibleInputFields = false;
             try
             {
