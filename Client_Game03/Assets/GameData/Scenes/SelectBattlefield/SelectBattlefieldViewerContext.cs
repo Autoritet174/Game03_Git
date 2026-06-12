@@ -2,7 +2,6 @@ using Assets.GameData.Prefabs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace Assets.GameData.Scenes.SelectBattlefield
 {
@@ -18,23 +17,30 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
         public ECollectionMode CollectionMode => ECollectionMode.Hero;
 
-        public int PageCurrent => 1;
+        public int PageCurrent => SelectBattlefieldSceneInitializator.PanelPrepareBattleInstance.TopButtons.PageCurrent;
 
-        public int PageMax => GetPageMax();
+        public int PageMax => SelectBattlefieldSceneInitializator.PanelPrepareBattleInstance.TopButtons.PageMax;
 
-        public bool LoadAllPages => true;
+        public bool LoadAllPages => false;
 
-        public bool ContextControlsRootSize => false;
+        public bool ContextControlsRootSize => true;
 
         public void OnCollectionLoaded(PanelCollectionViewer__prefab__scriptMB viewer, int maxCollectionElements)
         {
+            PanelCollectionTopButtons__prefab__scriptMB topButtons =
+                SelectBattlefieldSceneInitializator.PanelPrepareBattleInstance.TopButtons;
+            topButtons.UpdatePageMax();
+            topButtons.SetPageDiapason(maxCollectionElements);
+
+            foreach (Guid heroId in _SelectedHeroIds)
+            {
+                viewer.GetElement(heroId)?.Selected(false, clearOthers: false);
+            }
         }
 
         public Guid? GetSelectedElementId(ECollectionMode collectionMode)
         {
-            return collectionMode == ECollectionMode.Hero && _SelectedHeroIds.Count == 1
-                ? _SelectedHeroIds.First()
-                : null;
+            return null;
         }
 
         public void OnElementSelected(Guid elementId, ECollectionMode collectionMode)
@@ -66,8 +72,10 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
         public (float width, float height) GetViewerSize()
         {
-            RectTransform rectTransform = _Viewer.GetComponent<RectTransform>();
-            return (rectTransform.rect.width, rectTransform.rect.height);
+            PanelPrepareBattle panelPrepareBattle = SelectBattlefieldSceneInitializator.PanelPrepareBattleInstance;
+            float width = panelPrepareBattle.PanelCollection.Width;
+            float height = panelPrepareBattle.PanelCollection.Height - panelPrepareBattle.TopButtons.Height;
+            return (width, height);
         }
 
         public void ClearSelection()
@@ -85,12 +93,5 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             return _SelectedHeroIds.ToArray();
         }
 
-        private static int GetPageMax()
-        {
-            int count = Game03Client.Collection.CollectionProvider.GetCountHeroes();
-            int pageSize = Game03Client.Collection.CollectionProvider.PAGE_SIZE;
-            int pageMax = (count / pageSize) + (count % pageSize > 0 ? 1 : 0);
-            return pageMax < 1 ? 1 : pageMax;
-        }
     }
 }

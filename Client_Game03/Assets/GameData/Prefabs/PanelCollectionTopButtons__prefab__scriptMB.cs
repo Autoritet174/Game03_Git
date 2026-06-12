@@ -76,6 +76,11 @@ public class PanelCollectionTopButtons__prefab__scriptMB : MonoBehaviour
         _LabelRangePage_TextMeshProUGUI.text = $"{((PageCurrent - 1) * Game03Client.Collection.CollectionProvider.PAGE_SIZE) + 1} - {maxCollectionElements}";
     }
 
+    public void ResetPageCurrent()
+    {
+        PageCurrent = 1;
+    }
+
     public void OnResized()
     {
         float coefHeight = G.GetCoefHeight();

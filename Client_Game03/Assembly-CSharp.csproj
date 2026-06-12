@@ -97,6 +97,7 @@
     <Compile Include="Assets\GameData\Scenes\Collection\CollectionSceneInitializator.cs" />
     <Compile Include="Assets\GameData\Scripts\GameMessage.cs" />
     <Compile Include="Assets\GameData\Scripts\InitializatorStartScene.cs" />
+    <Compile Include="Assets\GameData\Scenes\SelectBattlefield\SelectBattlefieldCollectionContext.cs" />
     <Compile Include="Assets\GameData\Scenes\Battlefield\Animations\HealthHub.cs" />
     <Compile Include="Assets\GameData\Scripts\UnityObject.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\CollectionSceneViewerContext.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Assets\GameData\Scenes\Collection\prefabs\PanelSelectedHero__prefab__scriptMB.cs" />
     <Compile Include="Assets\GameData\Scripts\DevAuthConfig.cs" />
     <Compile Include="Assets\GameData\Prefabs\PanelTop__prefab__scriptMB.cs" />
+    <Compile Include="Assets\GameData\Scenes\SelectBattlefield\SelectBattlefieldTopButtonsContext.cs" />
     <Compile Include="Assets\GameData\Prefabs\PanelCollectionViewer__prefab__scriptMB.cs" />
     <Compile Include="Assets\GameData\Scripts\GameSceneManager.cs" />
     <Compile Include="Assets\GameData\Scripts\EventHelper.cs" />

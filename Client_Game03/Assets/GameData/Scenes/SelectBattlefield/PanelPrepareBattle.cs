@@ -17,11 +17,10 @@ namespace Assets.GameData.Scenes.SelectBattlefield
         private const float BUTTON_HEIGHT = 60f;
         private const float BUTTON_MARGIN = 25f;
         private const float BUTTON_FONT_SIZE = 22f;
-        private const float VIEWER_BOTTOM_OFFSET = 90f;
-
         private readonly GameObject _GameObject;
         private readonly RectTransform _RectTransform;
         private readonly PanelCollection__prefab__scriptMB _PanelCollection;
+        private readonly PanelCollectionTopButtons__prefab__scriptMB _TopButtons;
         private readonly PanelCollectionViewer__prefab__scriptMB _Viewer;
         private readonly SelectBattlefieldViewerContext _Context;
         private readonly RectTransform _ButtonStartBattle__RectTransform;
@@ -29,8 +28,6 @@ namespace Assets.GameData.Scenes.SelectBattlefield
         private readonly TextMeshProUGUI _ButtonStartBattle__TextMeshProUGUI;
         private readonly TextMeshProUGUI _ButtonCancel__TextMeshProUGUI;
 
-        //RectTransform _PanelTop__RectTransform;
-        private readonly RectTransform viewerRectTransform;
         private EBattleFiled _BattlefieldId;
         private bool _BattleStarting;
 
@@ -41,9 +38,15 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             _RectTransform.SetHorizontalOffsets(0, 0);
 
             _PanelCollection = GameObjectFinder.FindByName<PanelCollection__prefab__scriptMB>(startParent: _RectTransform);
+            _TopButtons = _PanelCollection.TopButtons;
             _Viewer = _PanelCollection.Viewer;
             _Context = new SelectBattlefieldViewerContext(_Viewer);
+
+            _PanelCollection.SetContext(new SelectBattlefieldCollectionContext());
+            _TopButtons.SetContext(new SelectBattlefieldTopButtonsContext());
             _Viewer.SetContext(_Context);
+
+            GameObjectFinder.FindByName("ImageButtonEquipments (id=vuhjngaz)", _TopButtons.gameObject).SetActive(false);
 
             (_ButtonStartBattle__RectTransform, _ButtonStartBattle__TextMeshProUGUI) = CreateButton(
                 "ButtonStartBattle",
@@ -79,8 +82,13 @@ namespace Assets.GameData.Scenes.SelectBattlefield
                     .ButtonClose__RectTransform.gameObject
                     .SetClickEvent(Cancel, useButtonComponent: true);
             }
-            viewerRectTransform = _Viewer.GetComponent<RectTransform>();
         }
+
+        public PanelCollection__prefab__scriptMB PanelCollection => _PanelCollection;
+
+        public PanelCollectionTopButtons__prefab__scriptMB TopButtons => _TopButtons;
+
+        public PanelCollectionViewer__prefab__scriptMB Viewer => _Viewer;
 
         public bool IsVisible => _GameObject.activeSelf;
 
@@ -89,6 +97,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             _BattlefieldId = battlefieldId;
             _BattleStarting = false;
             _Context.ClearSelection();
+            _TopButtons.ResetPageCurrent();
             _GameObject.SetActive(true);
             if (SelectBattlefieldSceneInitializator.IsConfigured)
             {
@@ -116,7 +125,6 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             float buttonHeight = BUTTON_HEIGHT * coefHeight;
             float buttonMargin = BUTTON_MARGIN * coefHeight;
             float fontSize = BUTTON_FONT_SIZE * coefHeight;
-            _ = VIEWER_BOTTOM_OFFSET * coefHeight;
 
             _ButtonStartBattle__RectTransform.sizeDelta = new Vector2(buttonWidth, buttonHeight);
             _ButtonStartBattle__RectTransform.anchoredPosition = new Vector2(-buttonMargin, buttonMargin);
@@ -130,15 +138,11 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             _ButtonCancel__TextMeshProUGUI.fontSize = fontSize;
 
 
-            //viewerRectTransform.anchorMin = new Vector2(0f, 0f);
-            //viewerRectTransform.anchorMax = new Vector2(1f, 1f);
-            //viewerRectTransform.pivot = new Vector2(0.5f, 0.5f);
-            //viewerRectTransform.anchoredPosition = new Vector2(0f, viewerBottomOffset * 0.5f);
-            float panelTop_Height = G.PANELTOP_HEIGHT * coefHeight;
-            viewerRectTransform.sizeDelta = new Vector2(0, Screen.height - panelTop_Height);
+            _PanelCollection.OnResized();
+            _TopButtons.OnResized();
+            _Viewer.OnResized();
 
             UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(_RectTransform);
-            _Viewer.OnResized();
         }
 
         private async UniTask StartBattleAsync()
