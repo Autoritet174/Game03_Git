@@ -30,6 +30,10 @@ namespace Assets.GameData.Scripts
         }
 
         private const string CURSOR_TEXTURE_ADDRESS = "UI-cursors-cursor_var2_green_64x64";
+        private const string CONFIG_RELATIVE_PATH = @"GameData\Config\Main.ini";
+        private const string CONFIG_DEV_RELATIVE_PATH = @"GameData\Config\Main.dev.ini";
+        private const string SECTION_SERVER = "Server";
+        private const string KEY_BASE_URL = "BaseUrl";
 
         private class AppStateMonitor : MonoBehaviour
         {
@@ -56,7 +60,13 @@ namespace Assets.GameData.Scripts
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Initialize_BeforeSceneLoad()
         {
-            General.Url.Init("https://localhost:7227");
+#if UNITY_EDITOR
+            string configPath = Path.Combine(Application.dataPath, CONFIG_DEV_RELATIVE_PATH);
+#else
+            string configPath = Path.Combine(Application.dataPath, CONFIG_RELATIVE_PATH);
+#endif
+            General.Url.Init(ReadServerBaseUrlFromIni(configPath));
+
             GameLanguage lang = GameLanguage.Ru;
 
             string path = $"localization/{lang.NameShort}/data";
@@ -66,7 +76,7 @@ namespace Assets.GameData.Scripts
                 Value = jsonFile.text,
             };
 
-            Game03.Init(Path.Combine(Application.dataPath, @"GameData\Config\Main.ini"), capsule, LogError, LogInfo);
+            Game03.Init(Path.Combine(Application.dataPath, CONFIG_RELATIVE_PATH), capsule, LogError, LogInfo);
 
             Application.targetFrameRate = 60;
         }
@@ -76,6 +86,58 @@ namespace Assets.GameData.Scripts
         {
             AppStateMonitor monitor = new GameObject(nameof(AppStateMonitor)).AddComponent<AppStateMonitor>();
             GameObject.DontDestroyOnLoad(monitor.gameObject);
+        }
+
+        private static string ReadServerBaseUrlFromIni(string configPath)
+        {
+            if (!File.Exists(configPath))
+            {
+                throw new FileNotFoundException($"Server config not found: {configPath}");
+            }
+
+            bool inServerSection = false;
+            string baseUrl = null;
+
+            foreach (string rawLine in File.ReadAllLines(configPath))
+            {
+                string line = rawLine.Trim();
+                if (line.Length == 0 || line.StartsWith("#") || line.StartsWith(";"))
+                {
+                    continue;
+                }
+
+                if (line.StartsWith("[") && line.EndsWith("]"))
+                {
+                    inServerSection = string.Equals(line, $"[{SECTION_SERVER}]", StringComparison.OrdinalIgnoreCase);
+                    continue;
+                }
+
+                if (!inServerSection)
+                {
+                    continue;
+                }
+
+                int eqIndex = line.IndexOf('=');
+                if (eqIndex <= 0)
+                {
+                    continue;
+                }
+
+                string key = line.Substring(0, eqIndex).Trim();
+                if (string.Equals(key, KEY_BASE_URL, StringComparison.OrdinalIgnoreCase))
+                {
+                    baseUrl = line.Substring(eqIndex + 1).Trim();
+                    break;
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(baseUrl))
+            {
+                throw new InvalidOperationException(
+                    $"[{SECTION_SERVER}] {KEY_BASE_URL} is missing or empty in {configPath}");
+            }
+
+            return baseUrl;
         }
 
         private static void LogError(object message)
