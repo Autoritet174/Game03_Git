@@ -180,11 +180,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3854808174271576157, guid: 99c133d6a47d65640bb543c26158bb3c, type: 3}
       propertyPath: m_SizeDelta.x
-      value: -1191
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4965514259809845701, guid: 99c133d6a47d65640bb543c26158bb3c, type: 3}
       propertyPath: m_Name
-      value: PanelCollectionViewer (id=ph1oh7dk)
+      value: PanelCollectionViewer
       objectReference: {fileID: 0}
     - target: {fileID: 7663758044325494734, guid: 99c133d6a47d65640bb543c26158bb3c, type: 3}
       propertyPath: m_AnchorMax.x
@@ -294,7 +294,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7157875177063317698, guid: 7fcf22a7d311f4742b90fecc7daf7733, type: 3}
       propertyPath: m_Name
-      value: PanelCollectionTopButtons (id=gmzb0h9f)
+      value: PanelCollectionTopButtons
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -2,11 +2,9 @@ using Assets.GameData.Prefabs;
 using Assets.GameData.Scripts;
 using UnityEngine;
 
+[RequireComponent(typeof(RectTransform))]
 public class PanelCollection__prefab__scriptMB : MonoBehaviour
 {
-    private const string TopButtonsObjectName = "PanelCollectionTopButtons (id=gmzb0h9f)";
-    private const string ViewerObjectName = "PanelCollectionViewer (id=ph1oh7dk)";
-
     private RectTransform _RectTransform;
     private IPanelCollectionContext _Context;
     private PanelCollectionTopButtons__prefab__scriptMB _TopButtons;
@@ -16,10 +14,19 @@ public class PanelCollection__prefab__scriptMB : MonoBehaviour
     public float Height { get; private set; }
 
     public PanelCollectionTopButtons__prefab__scriptMB TopButtons =>
-        _TopButtons ??= GameObjectFinder.FindByName<PanelCollectionTopButtons__prefab__scriptMB>(TopButtonsObjectName, gameObject);
+        _TopButtons = _TopButtons != null ? _TopButtons : GameObjectFinder.FindByName<PanelCollectionTopButtons__prefab__scriptMB>("PanelCollectionTopButtons", gameObject);
 
-    public PanelCollectionViewer__prefab__scriptMB Viewer =>
-        _Viewer ??= GameObjectFinder.FindByName<PanelCollectionViewer__prefab__scriptMB>(ViewerObjectName, gameObject);
+    public PanelCollectionViewer__prefab__scriptMB Viewer
+    {
+        get
+        {
+            if (_Viewer == null)
+            {
+                _Viewer = GameObjectFinder.FindByName<PanelCollectionViewer__prefab__scriptMB>("PanelCollectionViewer", gameObject);
+            }
+            return _Viewer;
+        }
+    }
 
     private void Awake()
     {

@@ -1448,6 +1448,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 653411842}
     m_Modifications:
+    - target: {fileID: 2591540507988308366, guid: beb391ba91103b1498f8017eec796203, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5913322580767224797, guid: beb391ba91103b1498f8017eec796203, type: 3}
       propertyPath: m_Name
       value: PanelCollection (id=jcxwa01g)
@@ -1530,6 +1534,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6746234530680097131, guid: beb391ba91103b1498f8017eec796203, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8994573110196254237, guid: beb391ba91103b1498f8017eec796203, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8994573110196254237, guid: beb391ba91103b1498f8017eec796203, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1724,7 +1736,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4253175579641553526, guid: 5eb903f6a383f5f40ad15ee93542fc29, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 574.99994
+      value: 575
       objectReference: {fileID: 0}
     - target: {fileID: 4253175579641553526, guid: 5eb903f6a383f5f40ad15ee93542fc29, type: 3}
       propertyPath: m_AnchoredPosition.y

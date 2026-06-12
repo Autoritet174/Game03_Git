@@ -15,10 +15,6 @@
 
 ## Высокий приоритет
 
-### Hardcoded URL сервера
-
-`G.cs`: `General.Url.Init("https://localhost:7227")` — нет конфигурации под staging/production.
-
 ### Refresh token в PlayerPrefs
 
 `SecureStorageProvider.cs` — DPAPI только Windows/Editor; на mobile — `NotSupportedException`. Для mobile prod нужен Keychain/Keystore.
@@ -88,22 +84,10 @@ Prefab'ы decouple через context, но scene-level код всё ещё з�
 
 ## Ассеты и сцены
 
-### Заготовки без логики
-
-- `GameModesScene.unity` — только Main Camera, нет initializator, не в build
-- `LoadingScreenScene.unity` — то же самое
-
-Либо довести до конца, либо удалить.
-
 ### Мусор в репозитории
 
-- **`Assets/_Recovery/`** — 24 auto-recovery сцены после крашей Unity
 - **`Assets/Packages/`** — NuGet-артефакты (~500+ файлов), обычно не коммитят
 - **`YughuesFreeMetalMaterials/`** — сторонний pack с `.unitypackage`
-
-### Устаревшие `m_EditorClassIdentifier` в YAML
-
-Классы переименованы, guid валиден, но в YAML старые имена (`NewMonoBehaviourScript`, `SelectDungeonScene` и т.д.). Пересохранение в Unity почистит.
 
 ### Editor-ловушка
 
