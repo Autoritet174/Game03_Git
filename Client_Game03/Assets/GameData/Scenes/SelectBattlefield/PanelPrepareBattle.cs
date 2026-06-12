@@ -1,4 +1,4 @@
-using Assets.GameData.Scenes.BattleField;
+using Assets.GameData.Scenes.Battlefield;
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using Game03Client;
@@ -156,7 +156,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             _BattleStarting = true;
             try
             {
-                BattlefieldSceneInitializator.SpawnedBattlefield = await Game03Client.Battlefield.BattlefieldProvider.LoadBattleFieldAsync(
+                BattlefieldSceneInitializator.SpawnedBattlefield = await Game03Client.Battlefield.BattlefieldProvider.LoadBattlefieldAsync(
                     _BattlefieldId,
                     heroIds,
                     CancellationTokenManager.Create($"{nameof(PanelPrepareBattle)}.{nameof(StartBattleAsync)}"));

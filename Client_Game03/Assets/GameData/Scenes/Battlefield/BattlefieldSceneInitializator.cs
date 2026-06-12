@@ -14,7 +14,7 @@ using UnityEngine;
 using L = General.LocalizationKeys;
 using LM = Game03Client.LocalizationManager;
 
-namespace Assets.GameData.Scenes.BattleField
+namespace Assets.GameData.Scenes.Battlefield
 {
     public class BattlefieldSceneInitializator : MonoBehaviour
     {

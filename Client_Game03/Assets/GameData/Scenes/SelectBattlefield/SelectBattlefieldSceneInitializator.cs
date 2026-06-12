@@ -18,7 +18,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
         private RectTransform ViewportMain__RectTransform;
         private RectTransform ContentMain__RectTransform;
 
-        private readonly Dictionary<string, BattleFieldCategory> dictBattleFieldCategory = new();
+        private readonly Dictionary<string, BattlefieldCategory> dictBattlefieldCategory = new();
 
         private float _Width, _Height;
 
@@ -41,15 +41,15 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
                 // Испытательные площадки
                 {
-                    BattleFieldCategory scrollViewCollection_TestPlatforms = new("TestPlatforms");
-                    dictBattleFieldCategory.Add(scrollViewCollection_TestPlatforms.Name, scrollViewCollection_TestPlatforms);
+                    BattlefieldCategory scrollViewCollection_TestPlatforms = new("TestPlatforms");
+                    dictBattlefieldCategory.Add(scrollViewCollection_TestPlatforms.Name, scrollViewCollection_TestPlatforms);
                     scrollViewCollection_TestPlatforms.ButtonsAdd(General.EBattleFiled.TestPlatforms__Polygon);
                 }
 
                 // Шахты
                 {
-                    BattleFieldCategory scrollViewCollection_Mines = new("Mines");
-                    dictBattleFieldCategory.Add(scrollViewCollection_Mines.Name, scrollViewCollection_Mines);
+                    BattlefieldCategory scrollViewCollection_Mines = new("Mines");
+                    dictBattlefieldCategory.Add(scrollViewCollection_Mines.Name, scrollViewCollection_Mines);
                     scrollViewCollection_Mines.ButtonsAdd(General.EBattleFiled.Mines__Iron);
                 }
 
@@ -95,7 +95,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             ViewportMain__RectTransform.anchoredPosition = Vector2.zero;
             ContentMain__RectTransform.anchoredPosition = Vector2.zero;
 
-            foreach (KeyValuePair<string, BattleFieldCategory> item in dictBattleFieldCategory)
+            foreach (KeyValuePair<string, BattlefieldCategory> item in dictBattlefieldCategory)
             {
                 item.Value.OnResize();
             }

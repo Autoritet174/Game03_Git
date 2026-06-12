@@ -76,7 +76,7 @@ namespace Assets.GameData.Scenes.Battlefield
             _Position = position;
             _IsMyUnit = isMyUnit;
 
-            GameObject gameObject = AddressableCache.BattleFieldUnit.SafeInstant(canvasUnits__Transform);
+            GameObject gameObject = AddressableCache.BattlefieldUnit.SafeInstant(canvasUnits__Transform);
             BaseHero dtoBaseHero = Game03Client.GameData.Container.BaseHeroes.First(a => a.Id == spawnedHeroes.BaseHeroId);
 
             gameObject.name = $"Unit{(isMyUnit ? "Player" : "Enemy")}_{dtoBaseHero.Name}";

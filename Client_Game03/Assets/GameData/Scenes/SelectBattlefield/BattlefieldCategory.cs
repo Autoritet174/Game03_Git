@@ -8,7 +8,7 @@ using L = General.LocalizationKeys;
 
 namespace Assets.GameData.Scenes.SelectBattlefield
 {
-    public class BattleFieldCategory
+    public class BattlefieldCategory
     {
         private const float TEXTNAME_HEIGHT = 50;
         private const float TEXTNAME_FONTSIZE = 30;
@@ -21,7 +21,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
         private const float DUNGEON_BUTTON_HEIGHT = 121.7602f;
 
-        private readonly Dictionary<General.EBattleFiled, BattleFieldButton> buttons = new();
+        private readonly Dictionary<General.EBattleFiled, BattlefieldButton> buttons = new();
 
         public string Name { get; }
         public string LocalizationKey { get; }
@@ -31,14 +31,14 @@ namespace Assets.GameData.Scenes.SelectBattlefield
         private readonly GridLayoutGroup contentBlock__GridLayoutGroup;
 
         private readonly TextMeshProUGUI textName__TextMeshProUGUI;
-        public BattleFieldCategory(string name)
+        public BattlefieldCategory(string name)
         {
             Name = name;
             gameObject = GameObjectFinder.FindByName($"ScrollViewCollection_{name}");
             rectTransform = gameObject.GetComponent<RectTransform>();
             textName__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("TextName", gameObject.transform);
             contentBlock__GridLayoutGroup = GameObjectFinder.FindByName<GridLayoutGroup>("ContentBlock", gameObject.transform);
-            LocalizationKey = $"{L.UI.Label.BattleField}_{name}";
+            LocalizationKey = $"{L.UI.Label.Battlefield}_{name}";
             textName__TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(LocalizationKey));
         }
 
@@ -49,7 +49,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
         public void ButtonsAdd(EBattleFiled battlefieldId)
         {
-            BattleFieldButton button = new(battlefieldId, this);
+            BattlefieldButton button = new(battlefieldId, this);
             buttons.Add(button.BattlefieldId, button);
         }
 
@@ -100,7 +100,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
                 );
 
 
-            foreach (KeyValuePair<EBattleFiled, BattleFieldButton> item in buttons)
+            foreach (KeyValuePair<EBattleFiled, BattlefieldButton> item in buttons)
             {
                 item.Value.OnResize(dungeonButtonWidth, dungeonButtonHeight);
             }

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: BattleField
+  m_Name: Battlefield
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
-  m_GroupName: BattleField
+  m_GroupName: Battlefield
   m_GUID: 4e806205d71d6014aa0daaf175ead4ee
   m_SerializeEntries:
   - m_GUID: 020fda4df952659439216e027d558b2e
@@ -21,7 +21,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 411b26723a2d2974baa37e6a1769d90b
-    m_Address: BattleFieldUnit
+    m_Address: BattlefieldUnit
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

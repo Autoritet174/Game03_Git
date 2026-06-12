@@ -29,13 +29,13 @@
 			"NoGroup": "Нет группы",
 			"EndBattle": "Завершить бой",
 			
-			"BattleField_TestPlatforms": "Испытательные площадки",
-			"BattleField_TestPlatforms__Polygon": "Полигон",
+			"Battlefield_TestPlatforms": "Испытательные площадки",
+			"Battlefield_TestPlatforms__Polygon": "Полигон",
 			
-			"BattleField_Mines": "Шахты",
-			"BattleField_Mines__Iron": "Железо",
+			"Battlefield_Mines": "Шахты",
+			"Battlefield_Mines__Iron": "Железо",
 			
-			"BattleField_Dungeons": "Подземелья",
+			"Battlefield_Dungeons": "Подземелья",
 			"ConnectionLost": "Соединение прервано",
 			"Reconnecting": "Переподключение",
 			"Try": "Попытка",

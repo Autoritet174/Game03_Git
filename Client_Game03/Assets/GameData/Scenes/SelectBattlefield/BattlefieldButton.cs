@@ -8,13 +8,13 @@ using L = General.LocalizationKeys;
 
 namespace Assets.GameData.Scenes.SelectBattlefield
 {
-    public class BattleFieldButton
+    public class BattlefieldButton
     {
         private const float LABEL_HEIGHT = 27;
         private const float LABEL_FONTSIZE = 22;
         private const float IMAGE_SELECTED_SIZE = 10;
 
-        private readonly BattleFieldCategory parentBattleFieldCategory;
+        private readonly BattlefieldCategory parentBattlefieldCategory;
         private readonly Transform parentTransform;
         private readonly RectTransform imageMask__RectTransform;
         private readonly RectTransform image__RectTransform;
@@ -25,11 +25,11 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
         public EBattleFiled BattlefieldId { get; }
 
-        public BattleFieldButton(EBattleFiled battlefieldId, BattleFieldCategory parentBattleFieldCategory)
+        public BattlefieldButton(EBattleFiled battlefieldId, BattlefieldCategory parentBattlefieldCategory)
         {
             BattlefieldId = battlefieldId;
-            this.parentBattleFieldCategory = parentBattleFieldCategory;
-            parentTransform = parentBattleFieldCategory.rectTransform.transform;
+            this.parentBattlefieldCategory = parentBattlefieldCategory;
+            parentTransform = parentBattlefieldCategory.rectTransform.transform;
 
             imageMask__RectTransform = GameObjectFinder.FindByName<RectTransform>("ImageMask", parentTransform);
             image__RectTransform = GameObjectFinder.FindByName<RectTransform>("Image", imageMask__RectTransform.transform);
@@ -40,7 +40,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
             label__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label", parentTransform);
 
-            string localizationKey = $"{L.UI.Label.BattleField}_{battlefieldId}";
+            string localizationKey = $"{L.UI.Label.Battlefield}_{battlefieldId}";
             label__TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(localizationKey));
 
             EventHelper.AddHoverEvents(imageMask__RectTransform.gameObject, OnPointerEnter, OnPointerExit);

@@ -1,4 +1,4 @@
-using Assets.GameData.Scenes.BattleField;
+using Assets.GameData.Scenes.Battlefield;
 using Assets.GameData.Scripts;
 using System;
 using System.Collections.Generic;

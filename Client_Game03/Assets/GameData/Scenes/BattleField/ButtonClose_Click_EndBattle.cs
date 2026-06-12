@@ -4,29 +4,32 @@ using System.Threading;
 using UnityEngine;
 using L = General.LocalizationKeys;
 
-public class ButtonClose_Click_EndBattle : MonoBehaviour
+namespace Assets.GameData.Scenes.Battlefield
 {
-    public void OnClick()
+    public class ButtonClose_Click_EndBattle : MonoBehaviour
     {
-        this.RunAsync(OnClickAsync);
-    }
-
-    private async UniTask OnClickAsync(CancellationToken cancellationToken)
-    {
-        bool yesNo = await GameMessage.ShowLocaleYesNo(L.UI.Label.EndBattle);
-        if (!yesNo)
+        public void OnClick()
         {
-            return;
+            this.RunAsync(OnClickAsync);
         }
 
-        bool result = await Game03Client.Battlefield.BattlefieldProvider.CombatBreakAsync(CancellationTokenManager.Create("CombatBreakAsync"));
-        if (result)
+        private async UniTask OnClickAsync(CancellationToken cancellationToken)
         {
-            GameSceneManager.Load(GameSceneManager.SceneName.MainMenu);
-        }
-        else
-        {
-            await GameMessage.ShowAndWaitCloseAsync(L.Error.Server.CombatBreak);
+            bool yesNo = await GameMessage.ShowLocaleYesNo(L.UI.Label.EndBattle);
+            if (!yesNo)
+            {
+                return;
+            }
+
+            bool result = await Game03Client.Battlefield.BattlefieldProvider.CombatBreakAsync(CancellationTokenManager.Create("CombatBreakAsync"));
+            if (result)
+            {
+                GameSceneManager.Load(GameSceneManager.SceneName.MainMenu);
+            }
+            else
+            {
+                await GameMessage.ShowAndWaitCloseAsync(L.Error.Server.CombatBreak);
+            }
         }
     }
 }
