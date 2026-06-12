@@ -1,6 +1,8 @@
+using Cysharp.Threading.Tasks;
 using Game03Client;
 using System;
 using System.IO;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -27,8 +29,15 @@ namespace Assets.GameData.Scripts
             AppDomain.CurrentDomain.DomainUnload += (s, e) => IsApplicationQuitting = true;
         }
 
+        private const string CURSOR_TEXTURE_ADDRESS = "UI-cursors-cursor_var2_green_64x64";
+
         private class AppStateMonitor : MonoBehaviour
         {
+            private void Start()
+            {
+                this.RunAsync(LoadCursorTextureAsync);
+            }
+
             private void OnApplicationQuit()
             {
                 IsApplicationQuitting = true;
@@ -41,7 +50,6 @@ namespace Assets.GameData.Scripts
         private static void Initialize_BeforeSceneLoad()
         {
             General.Url.Init("https://localhost:7227");
-            LoadCursorTexture();
             GameLanguage lang = GameLanguage.Ru;
 
             string path = $"localization/{lang.NameShort}/data";
@@ -94,13 +102,13 @@ namespace Assets.GameData.Scripts
         }
 
 
-        private static void LoadCursorTexture(string address = "UI-cursors-cursor_var2_green_64x64")
+        private static async UniTask LoadCursorTextureAsync(CancellationToken cancellationToken)
         {
-            AsyncOperationHandle<Texture2D> operationHandle = Addressables.LoadAssetAsync<Texture2D>(address); // Начинаем операцию загрузки
-            _ = operationHandle.WaitForCompletion();
+            AsyncOperationHandle<Texture2D> operationHandle = Addressables.LoadAssetAsync<Texture2D>(CURSOR_TEXTURE_ADDRESS);
+            await operationHandle.ToUniTask(cancellationToken: cancellationToken);
             if (operationHandle.Status != AsyncOperationStatus.Succeeded)
             {
-                UnityEngine.Debug.LogError($"Ошибка загрузки текста '{address}'");
+                UnityEngine.Debug.LogError($"Ошибка загрузки текста '{CURSOR_TEXTURE_ADDRESS}'");
                 return;
             }
 
