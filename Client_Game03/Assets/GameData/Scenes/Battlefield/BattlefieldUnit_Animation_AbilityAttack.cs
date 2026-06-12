@@ -6,10 +6,11 @@ namespace Assets.GameData.Scenes.Battlefield
 {
     public partial class BattlefieldUnit
     {
-        private static readonly double AnimationSpeed = 1.5;
+        //private static readonly double AnimationSpeed = 1.5;
         public static readonly double AnimationAttackTimeStage1 = 0.3;
         public static readonly double AnimationAttackTimeStage2 = 0.5;
         public static readonly double AnimationAttackTimeStage3 = 0.4;
+        public static readonly double AnimationAttackTimeStage4 = 0.5;
 
         public int AnimationAttackStage { get; private set; } = 0;
         private DateTime AtimationAttackStart = DateTime.Now;
@@ -24,7 +25,7 @@ namespace Assets.GameData.Scenes.Battlefield
             AtimationAttackUnitTarget = unitTarget;
             AnimationAttackStage = 1;
             AtimationAttackStart = DateTime.Now;
-            AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage1 / AnimationSpeed);
+            AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage1 / BattlefieldSceneInitializator.AnimationSpeed);
             AnimationAttackDamage = animationAttackDamage;
             AnimationAttackDamageIsCrit = animationAttackDamageIsCrit;
             _RectTransform.transform.SetAsLastSibling();
@@ -47,7 +48,7 @@ namespace Assets.GameData.Scenes.Battlefield
                 {
                     AnimationAttackStage = 2;
                     AtimationAttackStart = DateTime.Now;
-                    AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage2 / AnimationSpeed);
+                    AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage2 / BattlefieldSceneInitializator.AnimationSpeed);
                 }
             }
             else if (AnimationAttackStage == 2) // движение от базовой точки до цели
@@ -66,7 +67,7 @@ namespace Assets.GameData.Scenes.Battlefield
                 {
                     AnimationAttackStage = 3;
                     AtimationAttackStart = DateTime.Now;
-                    AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage3 / AnimationSpeed);
+                    AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage3 / BattlefieldSceneInitializator.AnimationSpeed);
                     AtimationAttackUnitTarget.RefreshHealth();
                     Animations.HealthHub.Create(
                         -AnimationAttackDamage,
@@ -86,6 +87,15 @@ namespace Assets.GameData.Scenes.Battlefield
 
                 float coef = (1f + (0.3f * (1 - animationPercent))) * _Scale;
                 _RectTransform.localScale = new(coef, coef, 1);
+                if (animationPercent == 1)
+                {
+                    AnimationAttackStage = 4;
+                    AtimationAttackStart = DateTime.Now;
+                    AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage4 / BattlefieldSceneInitializator.AnimationSpeed);
+                }
+            }
+            else if (AnimationAttackStage == 4) // ожидание перед сбросом параметров
+            {
                 if (animationPercent == 1)
                 {
                     AnimationAttackStage = 0;

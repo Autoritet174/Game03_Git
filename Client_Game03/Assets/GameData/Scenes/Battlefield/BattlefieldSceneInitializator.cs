@@ -1,8 +1,6 @@
-using Assets.GameData.Scenes.Battlefield;
 using Assets.GameData.Scenes.Battlefield.Animations;
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
-using Game03Client.Battlefield;
 using General;
 using General.DTO.Battlefield;
 using System;
@@ -11,6 +9,7 @@ using System.Linq;
 using System.Threading;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using L = General.LocalizationKeys;
 using LM = Game03Client.LocalizationManager;
 
@@ -20,38 +19,41 @@ namespace Assets.GameData.Scenes.Battlefield
     {
         public static SpawnedBattlefield SpawnedBattlefield { get; set; } = null;
 
-        private readonly Dictionary<Guid, BattlefieldUnit> battlefieldUnits = new();
-        private readonly List<BattlefieldUnit> playerUnits = new();
-        private readonly List<BattlefieldUnit> enemyUnits = new();
-        private bool _Initialized = false;
+        private readonly Dictionary<Guid, BattlefieldUnit> BattlefieldUnits = new();
+        private readonly List<BattlefieldUnit> PlayerUnits = new();
+        private readonly List<BattlefieldUnit> EnemyUnits = new();
+        private bool Initialized = false;
         public static float Width { get; private set; } = 0f;
         public static float Height { get; private set; } = 0f;
 
-        private static readonly float _AbilityButton_Size = 150;
-        private static readonly float _AbilityButton_Padding = 25;
-        private static readonly float _AbilityButton_FontSize = 24;
-        private RectTransform _AttackButton__RectTransform;
-        private RectTransform _Ability1Button__RectTransform;
-        private RectTransform _Ability2Button__RectTransform;
-        private RectTransform _Ability3Button__RectTransform;
-        private TextMeshProUGUI _AttackButton__TextMeshProUGUI;
-        private TextMeshProUGUI _Ability1Button__TextMeshProUGUI;
-        private TextMeshProUGUI _Ability2Button__TextMeshProUGUI;
-        private TextMeshProUGUI _Ability3Button__TextMeshProUGUI;
+        public static float AnimationSpeed { get; private set; } = 1f;
+
+        private static readonly float AnimationSpeedButton_Size = 128;
+        private static readonly float Button_Padding = 25;
+        //private static readonly float _AbilityButton_FontSize = 24;
+        private static readonly float AnimationSpeedButton_FontSize = 50;
+        private RectTransform AnimationSpeedButton__RectTransform;
+        //private RectTransform _Ability1Button__RectTransform;
+        //private RectTransform _Ability2Button__RectTransform;
+        //private RectTransform _Ability3Button__RectTransform;
+        private TextMeshProUGUI AnimationSpeedButton__TextMeshProUGUI;
+        //private TextMeshProUGUI _Ability1Button__TextMeshProUGUI;
+        //private TextMeshProUGUI _Ability2Button__TextMeshProUGUI;
+        //private TextMeshProUGUI _Ability3Button__TextMeshProUGUI;
 
         public static Transform CanvasDamage__Transform { get; private set; }
 
-        private RectTransform _Turn__RectTransform;
-        private TextMeshProUGUI _Turn__TextMeshProUGUI;
+        private RectTransform Turn__RectTransform;
+        private TextMeshProUGUI Turn__TextMeshProUGUI;
 
-        private int battlefieldIndexAnimationStarted = -1;
-        private bool battlefieldIndexAnimationActive = false;
+        private int BattlefieldIndexAnimationStarted = -1;
+        private bool BattlefieldIndexAnimationActive = false;
 
-        private DateTime dateTimeWaitFor = DateTime.MinValue;
+        private readonly DateTime DateTimeWaitFor = DateTime.MinValue;
 
         private void Start()
         {
-            if (!TryInitializeSync())
+            if (!TryInitialize())
             {
                 return;
             }
@@ -59,7 +61,7 @@ namespace Assets.GameData.Scenes.Battlefield
             this.RunAsync(StartAsync);
         }
 
-        private bool TryInitializeSync()
+        private bool TryInitialize()
         {
             if (SpawnedBattlefield == null || SpawnedBattlefield.SpawnedHeroPlayerList == null)
             {
@@ -68,7 +70,7 @@ namespace Assets.GameData.Scenes.Battlefield
             }
 
             //Debug.Log(Newtonsoft.Json.JsonConvert.SerializeObject(SpawnedBattlefield));
-            battlefieldUnits.Clear();
+            BattlefieldUnits.Clear();
 
             Transform canvasUnits__Transform = GameObjectFinder.FindByName("CanvasUnits").transform;
             CanvasDamage__Transform = GameObjectFinder.FindByName("CanvasDamage").transform;
@@ -78,8 +80,8 @@ namespace Assets.GameData.Scenes.Battlefield
             {
                 SpawnedHero spawnedHeroes = SpawnedBattlefield.SpawnedHeroPlayerList[i];
                 BattlefieldUnit unit = new(spawnedHeroes, i, true, canvasUnits__Transform);
-                battlefieldUnits.Add(spawnedHeroes.SpawnedId, unit);
-                playerUnits.Add(unit);
+                BattlefieldUnits.Add(spawnedHeroes.SpawnedId, unit);
+                PlayerUnits.Add(unit);
             }
 
             // размещение героев врага
@@ -87,33 +89,62 @@ namespace Assets.GameData.Scenes.Battlefield
             {
                 SpawnedHero spawnedHeroes = SpawnedBattlefield.SpawnedHeroEnemyList[i];
                 BattlefieldUnit unit = new(spawnedHeroes, i, false, canvasUnits__Transform);
-                battlefieldUnits.Add(spawnedHeroes.SpawnedId, unit);
-                enemyUnits.Add(unit);
+                BattlefieldUnits.Add(spawnedHeroes.SpawnedId, unit);
+                EnemyUnits.Add(unit);
             }
 
-            _AttackButton__RectTransform = GameObjectFinder.FindByName<RectTransform>("AttackButton");
-            _AttackButton__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _AttackButton__RectTransform.transform);
-            _AttackButton__TextMeshProUGUI.text = LM.GetValue(L.UI.Button.Ability.Attack);
-            EventHelper.SetClickEvent(_AttackButton__RectTransform.gameObject, AbilityAttackOnClickAsync, true);
+            AnimationSpeedButton__RectTransform = GameObjectFinder.FindByName<RectTransform>("AnimationSpeedButton");
+            AnimationSpeedButton__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", AnimationSpeedButton__RectTransform);
+            AnimationSpeedButton__TextMeshProUGUI.text = "X1";
 
-            _Ability1Button__RectTransform = GameObjectFinder.FindByName<RectTransform>("Ability1Button");
-            _Ability1Button__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _Ability1Button__RectTransform.transform);
-            EventHelper.SetClickEvent(_Ability1Button__RectTransform.gameObject, Ability1OnClickAsync, true);
+            Button AnimationSpeedButton__Button = AnimationSpeedButton__RectTransform.gameObject.GetComponent<Button>();
+            AnimationSpeedButton__Button.onClick.RemoveAllListeners();
+            AnimationSpeedButton__Button.onClick.AddListener(AnimationSpeedChange);
 
-            _Ability2Button__RectTransform = GameObjectFinder.FindByName<RectTransform>("Ability2Button");
-            _Ability2Button__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _Ability2Button__RectTransform.transform);
-            EventHelper.SetClickEvent(_Ability2Button__RectTransform.gameObject, Ability2OnClickAsync, true);
+            //_Ability1Button__RectTransform = GameObjectFinder.FindByName<RectTransform>("Ability1Button");
+            //_Ability1Button__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _Ability1Button__RectTransform.transform);
+            //EventHelper.SetClickEvent(_Ability1Button__RectTransform.gameObject, Ability1OnClickAsync, true);
 
-            _Ability3Button__RectTransform = GameObjectFinder.FindByName<RectTransform>("Ability3Button");
-            _Ability3Button__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _Ability3Button__RectTransform.transform);
-            EventHelper.SetClickEvent(_Ability3Button__RectTransform.gameObject, Ability3OnClickAsync, true);
+            //_Ability2Button__RectTransform = GameObjectFinder.FindByName<RectTransform>("Ability2Button");
+            //_Ability2Button__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _Ability2Button__RectTransform.transform);
+            //EventHelper.SetClickEvent(_Ability2Button__RectTransform.gameObject, Ability2OnClickAsync, true);
 
-            _Turn__RectTransform = GameObjectFinder.FindByName<RectTransform>("TurnText");
-            _Turn__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("TurnText");
+            //_Ability3Button__RectTransform = GameObjectFinder.FindByName<RectTransform>("Ability3Button");
+            //_Ability3Button__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _Ability3Button__RectTransform.transform);
+            //EventHelper.SetClickEvent(_Ability3Button__RectTransform.gameObject, Ability3OnClickAsync, true);
+
+            Turn__RectTransform = GameObjectFinder.FindByName<RectTransform>("TurnText");
+            Turn__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("TurnText");
 
             return true;
         }
 
+        private void AnimationSpeedChange()
+        {
+            if (AnimationSpeedButton__RectTransform != null)
+            {
+                if (AnimationSpeed == 1f)
+                {
+                    AnimationSpeed = 2f;
+                    AnimationSpeedButton__TextMeshProUGUI.text = "X2";
+                }
+                else if (AnimationSpeed == 2f)
+                {
+                    AnimationSpeed = 5f;
+                    AnimationSpeedButton__TextMeshProUGUI.text = "X5";
+                }
+                else if (AnimationSpeed == 5f)
+                {
+                    AnimationSpeed = 10f;
+                    AnimationSpeedButton__TextMeshProUGUI.text = "X10";
+                }
+                else
+                {
+                    AnimationSpeed = 1f;
+                    AnimationSpeedButton__TextMeshProUGUI.text = "X1";
+                }
+            }
+        }
         private async UniTask StartAsync(CancellationToken cancellationToken)
         {
             SpawnedBattlefield.BattlefieldLog = await Game03Client.Battlefield.BattlefieldProvider.GetBattleLogAsync(cancellationToken);
@@ -122,15 +153,15 @@ namespace Assets.GameData.Scenes.Battlefield
                 return;
             }
             SpawnedBattlefield.BattlefieldLog.Sort((a, b) => a.Index.CompareTo(b.Index));
-            battlefieldIndexAnimationStarted = 0;
-            battlefieldIndexAnimationActive = false;
+            BattlefieldIndexAnimationStarted = 0;
+            BattlefieldIndexAnimationActive = false;
 
-            _Initialized = true;
+            Initialized = true;
         }
 
         private void Update()
         {
-            if (_Initialized && (!Mathf.Approximately(Screen.height, Height) || !Mathf.Approximately(Screen.width, Width)))
+            if (Initialized && (!Mathf.Approximately(Screen.height, Height) || !Mathf.Approximately(Screen.width, Width)))
             {
                 OnResized();
             }
@@ -164,20 +195,20 @@ namespace Assets.GameData.Scenes.Battlefield
             //}
 
 
-            if (dateTimeWaitFor < DateTime.Now)
+            if (DateTimeWaitFor < DateTime.Now)
             {
                 List<BattlefieldLogRecordBase> fullLog = SpawnedBattlefield.BattlefieldLog;
-                if (!battlefieldIndexAnimationActive && fullLog != null)
+                if (!BattlefieldIndexAnimationActive && fullLog != null)
                 {
                     for (int i = 0; i < fullLog.Count; i++)
                     {
                         BattlefieldLogRecordBase iLog = fullLog[i];
-                        if (iLog.Index > battlefieldIndexAnimationStarted)
+                        if (iLog.Index > BattlefieldIndexAnimationStarted)
                         {
                             switch (iLog)
                             {
                                 case BattlefieldLogRecord_TurnStart log:
-                                    _Turn__TextMeshProUGUI.text = $"{LM.GetValue(L.UI.Label.Turn)}: {log.Turn}";
+                                    Turn__TextMeshProUGUI.text = $"{LM.GetValue(L.UI.Label.Turn)}: {log.Turn}";
 
                                     break;
                                 //case BattlefieldLogRecord_ChangeActionPoints log:
@@ -189,8 +220,8 @@ namespace Assets.GameData.Scenes.Battlefield
                                         case EBattlefieldLogAbility.Attack:
                                             if (log.SpawnedHeroTargets.Length == 1)
                                             {
-                                                BattlefieldUnit h1Unit = battlefieldUnits[log.SpawnedHero1Id];
-                                                BattlefieldUnit h2Unit = battlefieldUnits[log.SpawnedHeroTargets[0]];
+                                                BattlefieldUnit h1Unit = BattlefieldUnits[log.SpawnedHero1Id];
+                                                BattlefieldUnit h2Unit = BattlefieldUnits[log.SpawnedHeroTargets[0]];
 
                                                 // ищем в логе запись которая хранит значения изменения здоровья
                                                 BattlefieldLogRecordBase logRecord = fullLog.FirstOrDefault(a => a is BattlefieldLogRecord_Damage d && d.IndexReason == log.Index);
@@ -198,8 +229,13 @@ namespace Assets.GameData.Scenes.Battlefield
                                                 {
                                                     h1Unit.AnimationStartAttackUnit(h2Unit, logDamage.Damage, logDamage.IsCrit);
                                                     h2Unit.SpawnedHero.Health -= logDamage.Damage;
-
-                                                    battlefieldIndexAnimationActive = true;
+                                                    //dateTimeWaitFor = DateTime.Now.AddSeconds(
+                                                    //    0
+                                                    //    + BattlefieldUnit.AnimationAttackTimeStage1
+                                                    //    + BattlefieldUnit.AnimationAttackTimeStage2
+                                                    //    //+ BattlefieldUnit.AnimationAttackTimeStage3
+                                                    //    );
+                                                    BattlefieldIndexAnimationActive = true;
                                                 }
 
 
@@ -209,8 +245,8 @@ namespace Assets.GameData.Scenes.Battlefield
                                         default:
                                             break;
                                     }
-                                    dateTimeWaitFor = DateTime.Now.AddSeconds(0 + BattlefieldUnit.AnimationAttackTimeStage1 + BattlefieldUnit.AnimationAttackTimeStage2 + BattlefieldUnit.AnimationAttackTimeStage3);
-                                    Debug.Log(dateTimeWaitFor);
+
+                                    //Debug.Log(dateTimeWaitFor);
 
                                     break;
                                     //case BattlefieldLogRecord_Damage log:
@@ -219,29 +255,29 @@ namespace Assets.GameData.Scenes.Battlefield
                                     //default:
                                     //    break;
                             }
-                           
-                            battlefieldIndexAnimationStarted++;
+
+                            BattlefieldIndexAnimationStarted++;
                             break;
                         }
                     }
                 }
             }
 
-            battlefieldIndexAnimationActive = false;
-            foreach (BattlefieldUnit unit in playerUnits)
+            BattlefieldIndexAnimationActive = false;
+            foreach (BattlefieldUnit unit in PlayerUnits)
             {
                 unit.UpdateAnimationAttack();
-                if (!battlefieldIndexAnimationActive && unit.AnimationAttackStage > 0)
+                if (!BattlefieldIndexAnimationActive && unit.AnimationAttackStage > 0)
                 {
-                    battlefieldIndexAnimationActive = true;
+                    BattlefieldIndexAnimationActive = true;
                 }
             }
-            foreach (BattlefieldUnit unit in enemyUnits)
+            foreach (BattlefieldUnit unit in EnemyUnits)
             {
                 unit.UpdateAnimationAttack();
-                if (!battlefieldIndexAnimationActive && unit.AnimationAttackStage > 0)
+                if (!BattlefieldIndexAnimationActive && unit.AnimationAttackStage > 0)
                 {
-                    battlefieldIndexAnimationActive = true;
+                    BattlefieldIndexAnimationActive = true;
                 }
             }
 
@@ -252,7 +288,7 @@ namespace Assets.GameData.Scenes.Battlefield
 
         private void OnResized()
         {
-            if (!_Initialized)
+            if (!Initialized)
             {
                 return;
             }
@@ -260,66 +296,66 @@ namespace Assets.GameData.Scenes.Battlefield
             Height = Screen.height;
             Width = Screen.width;
 
-            foreach (BattlefieldUnit unit in playerUnits)
+            foreach (BattlefieldUnit unit in PlayerUnits)
             {
                 unit.OnResize();
             }
-            foreach (BattlefieldUnit unit in enemyUnits)
+            foreach (BattlefieldUnit unit in EnemyUnits)
             {
                 unit.OnResize();
             }
 
             float coefHeight = G.GetCoefHeight();
-            float abilityButton_Size = _AbilityButton_Size * coefHeight;
-            Vector2 abilityButton_SizeVector = new(abilityButton_Size, abilityButton_Size);
+            float animationSpeedButton_Size = AnimationSpeedButton_Size * coefHeight;
+            Vector2 animationSpeedButton_SizeVector = new(animationSpeedButton_Size, animationSpeedButton_Size);
 
-            _AttackButton__RectTransform.sizeDelta = abilityButton_SizeVector;
-            _Ability1Button__RectTransform.sizeDelta = abilityButton_SizeVector;
-            _Ability2Button__RectTransform.sizeDelta = abilityButton_SizeVector;
-            _Ability3Button__RectTransform.sizeDelta = abilityButton_SizeVector;
+            AnimationSpeedButton__RectTransform.sizeDelta = animationSpeedButton_SizeVector;
+            //_Ability1Button__RectTransform.sizeDelta = abilityButton_SizeVector;
+            //_Ability2Button__RectTransform.sizeDelta = abilityButton_SizeVector;
+            //_Ability3Button__RectTransform.sizeDelta = abilityButton_SizeVector;
 
-            float abilityButton_Padding = _AbilityButton_Padding * coefHeight;
-            _AttackButton__RectTransform.anchoredPosition = new Vector2(-abilityButton_Padding, abilityButton_Padding);
-            _Ability1Button__RectTransform.anchoredPosition = new Vector2((-abilityButton_Padding * 2) - abilityButton_Size, abilityButton_Padding);
-            _Ability2Button__RectTransform.anchoredPosition = new Vector2((-abilityButton_Padding * 3) - (abilityButton_Size * 2), abilityButton_Padding);
-            _Ability3Button__RectTransform.anchoredPosition = new Vector2((-abilityButton_Padding * 4) - (abilityButton_Size * 3), abilityButton_Padding);
+            float abilityButton_Padding = Button_Padding * coefHeight;
+            AnimationSpeedButton__RectTransform.anchoredPosition = new Vector2(-abilityButton_Padding, abilityButton_Padding);
+            //_Ability1Button__RectTransform.anchoredPosition = new Vector2((-abilityButton_Padding * 2) - abilityButton_Size, abilityButton_Padding);
+            //_Ability2Button__RectTransform.anchoredPosition = new Vector2((-abilityButton_Padding * 3) - (abilityButton_Size * 2), abilityButton_Padding);
+            //_Ability3Button__RectTransform.anchoredPosition = new Vector2((-abilityButton_Padding * 4) - (abilityButton_Size * 3), abilityButton_Padding);
 
-            _AttackButton__TextMeshProUGUI.fontSize = _AbilityButton_FontSize * coefHeight;
-            _Ability1Button__TextMeshProUGUI.fontSize = _AbilityButton_FontSize * coefHeight;
-            _Ability2Button__TextMeshProUGUI.fontSize = _AbilityButton_FontSize * coefHeight;
-            _Ability3Button__TextMeshProUGUI.fontSize = _AbilityButton_FontSize * coefHeight;
+            AnimationSpeedButton__TextMeshProUGUI.fontSize = AnimationSpeedButton_FontSize * coefHeight;
+            //_Ability1Button__TextMeshProUGUI.fontSize = _AbilityButton_FontSize * coefHeight;
+            //_Ability2Button__TextMeshProUGUI.fontSize = _AbilityButton_FontSize * coefHeight;
+            //_Ability3Button__TextMeshProUGUI.fontSize = _AbilityButton_FontSize * coefHeight;
 
-            _Turn__RectTransform.anchoredPosition = new Vector2(-25 * coefHeight, -108 * coefHeight);
-            _Turn__TextMeshProUGUI.fontSize = 70 * coefHeight;
+            Turn__RectTransform.anchoredPosition = new Vector2(-25 * coefHeight, -108 * coefHeight);
+            Turn__TextMeshProUGUI.fontSize = 70 * coefHeight;
         }
 
-        private async UniTask AbilityAttackOnClickAsync()
-        {
-            SpawnedBattlefield.BattlefieldLog = await BattlefieldProvider.GetBattleLogAsync(
-                CancellationTokenManager.Create($"{nameof(BattlefieldProvider)}.{nameof(BattlefieldProvider.GetBattleLogAsync)}()"));
+        //private async UniTask AbilityAttackOnClickAsync()
+        //{
+        //    SpawnedBattlefield.BattlefieldLog = await BattlefieldProvider.GetBattleLogAsync(
+        //        CancellationTokenManager.Create($"{nameof(BattlefieldProvider)}.{nameof(BattlefieldProvider.GetBattleLogAsync)}()"));
 
-            if (SpawnedBattlefield.BattlefieldLog == null)
-            {
-                return;
-            }
-            SpawnedBattlefield.BattlefieldLog.Sort((a, b) => a.Index.CompareTo(b.Index));
-            battlefieldIndexAnimationStarted = 0;
-            battlefieldIndexAnimationActive = false;
-            //Debug.Log("количество записей в логе = "+SpawnedBattlefield.BattlefieldLog.Count.ToString());
-            //string s = JSON.Serialize(SpawnedBattlefield.BattlefieldLog);
-        }
-        private async UniTask Ability1OnClickAsync()
-        {
+        //    if (SpawnedBattlefield.BattlefieldLog == null)
+        //    {
+        //        return;
+        //    }
+        //    SpawnedBattlefield.BattlefieldLog.Sort((a, b) => a.Index.CompareTo(b.Index));
+        //    battlefieldIndexAnimationStarted = 0;
+        //    battlefieldIndexAnimationActive = false;
+        //    //Debug.Log("количество записей в логе = "+SpawnedBattlefield.BattlefieldLog.Count.ToString());
+        //    //string s = JSON.Serialize(SpawnedBattlefield.BattlefieldLog);
+        //}
+        //private async UniTask Ability1OnClickAsync()
+        //{
 
-        }
-        private async UniTask Ability2OnClickAsync()
-        {
+        //}
+        //private async UniTask Ability2OnClickAsync()
+        //{
 
-        }
-        private async UniTask Ability3OnClickAsync()
-        {
+        //}
+        //private async UniTask Ability3OnClickAsync()
+        //{
 
-        }
+        //}
 
     }
 }

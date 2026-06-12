@@ -28,7 +28,7 @@ namespace Assets.GameData.Scenes.Battlefield.Animations
         public void Start(float value, bool isCrit, RectTransform posParent)
         {
             dtStart = DateTime.Now;
-            dtEnd = dtStart.AddSeconds(HealthHub.AnimationHealthChangeTime / HealthHub.AnimationSpeed);
+            dtEnd = dtStart.AddSeconds(HealthHub.AnimationHealthChangeTime / BattlefieldSceneInitializator.AnimationSpeed);
 
             string text;
             if (value < 0)

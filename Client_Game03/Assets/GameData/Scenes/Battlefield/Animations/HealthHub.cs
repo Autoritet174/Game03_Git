@@ -1,4 +1,3 @@
-using Assets.GameData.Scenes.Battlefield;
 using Assets.GameData.Scripts;
 using System;
 using System.Collections.Generic;
@@ -10,7 +9,6 @@ namespace Assets.GameData.Scenes.Battlefield.Animations
     public static class HealthHub
     {
         public static double AnimationHealthChangeTime { get; } = 3;
-        public static double AnimationSpeed { get; } = 1;
         public static float Height { get; } = 25;
         public static float FontSize { get; } = 35;
         public static float Distance { get; } = 80;
