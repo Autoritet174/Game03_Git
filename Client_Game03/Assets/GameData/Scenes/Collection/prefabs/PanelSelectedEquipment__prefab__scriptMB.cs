@@ -1,3 +1,4 @@
+using Assets.GameData.Scenes.Collection;
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using Game03Client;
@@ -92,7 +93,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
             {
                 _PanelTop_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelTop", gameObject);
                 _ButtonClose_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose", _PanelTop_RectTransform);
-                _ButtonClose_RectTransform.gameObject.SetClickEvent(Hide, false);
+                _ButtonClose_RectTransform.gameObject.SetClickEvent(HideAsync, false);
                 _LabelSelectedEquipment_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label_SelectedEquipment", _PanelTop_RectTransform);
             }
 
@@ -174,7 +175,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
                 }
             }
 
-            Hide().GetAwaiter().GetResult();
+            Hide();
         }
 
         public void Show(Guid equipmentId)
@@ -214,19 +215,25 @@ namespace Assets.GameData.Scenes.Collection.prefabs
 
             UpdateButtons();
 
-            I.PanelCollectionViewerInstance?.GetElement(equipmentId)?.Selected(true);
+            SetViewerElementSelected(equipmentId, true);
 
             gameObject.SetActive(true);
             I.OnResized();
         }
 
-        public async UniTask Hide()
+        private void Hide()
         {
             IsVisible = false;
-            I.PanelCollectionViewerInstance?.GetElement(EquipmentId)?.Selected(false);
+            SetViewerElementSelected(EquipmentId, false);
             EquipmentId = Guid.Empty;
             gameObject.SetActive(false);
             I.OnResized();
+        }
+
+        public UniTask HideAsync()
+        {
+            Hide();
+            return UniTask.CompletedTask;
         }
 
         public void OnResized()
@@ -359,7 +366,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
                 {
                     Show(EquipmentId);
                     I.PanelSelectedHeroInstance.Show(heroId);
-                    I.PanelCollectionViewerInstance?.GetElement(EquipmentId)?.RefreshOwnerImage();
+                    RefreshViewerElementOwnerImage(EquipmentId);
                 }
                 else
                 {
@@ -393,13 +400,13 @@ namespace Assets.GameData.Scenes.Collection.prefabs
                         //Если была одетая экипировка в этот слот, то снимаем её
                         equipmentEquipped.SlotId = null;
                         equipmentEquipped.HeroId = null;
-                        I.PanelCollectionViewerInstance?.GetElement(equipmentEquipped.Id)?.RefreshOwnerImage();
+                        RefreshViewerElementOwnerImage(equipmentEquipped.Id);
                     }
 
 
                     Show(EquipmentId);
                     I.PanelSelectedHeroInstance.Show(_DtoEquipment.HeroId.Value);
-                    I.PanelCollectionViewerInstance?.GetElement(EquipmentId)?.RefreshOwnerImage();
+                    RefreshViewerElementOwnerImage(EquipmentId);
                 }
                 else
                 {
@@ -429,6 +436,40 @@ namespace Assets.GameData.Scenes.Collection.prefabs
         private bool HaveAltSlot()
         {
             return _DtoEquipment != null && _DtoEquipment.BaseEquipment.EquipmentType.SlotType.HaveAltSlot;
+        }
+
+        private void SetViewerElementSelected(Guid id, bool selected)
+        {
+            PanelCollectionViewer__prefab__scriptMB viewer = I.PanelCollectionViewerInstance;
+            if (viewer == null)
+            {
+                return;
+            }
+
+            PanelIconCollectionElement element = viewer.GetElement(id);
+            if (element == null)
+            {
+                return;
+            }
+
+            element.Selected(selected);
+        }
+
+        private void RefreshViewerElementOwnerImage(Guid id)
+        {
+            PanelCollectionViewer__prefab__scriptMB viewer = I.PanelCollectionViewerInstance;
+            if (viewer == null)
+            {
+                return;
+            }
+
+            PanelIconCollectionElement element = viewer.GetElement(id);
+            if (element == null)
+            {
+                return;
+            }
+
+            element.RefreshOwnerImage();
         }
 
 

@@ -24,12 +24,14 @@ alwaysApply: true
 - Общие enum'ы сцены Collection — в `Assets/GameData/Scripts/CollectionEnums.cs` (`ECollectionMode`, `ECollectionElement`).
 - Поиск дочерних объектов — через `GameObjectFinder.FindByName` с **точными именами** экземпляров в сцене (например `PanelCollection (id=jcxwa01g)`).
 - Асинхронность — **UniTask** (`Cysharp.Threading.Tasks`), не `Task` без необходимости.
+- Проверки на null не используй паттерн "Null comparison" например "Object?.Action()", так как unity не рекомендует его использовать, предупреждение "UNT0008"
 
 ## Именование
 
 - Prefab asset: `PanelFoo__prefab.prefab`, root: `PanelFoo__prefab`
 - Script prefab: `PanelFoo__prefab__scriptMB.cs`
 - Scene instance: `PanelFoo (id=xxxx)` — сохраняй существующие id в сцене
+- Все имена методов которые являются асинхронными называй с окончанием "Async" например "async UniTask MyMethodAsync()"
 
 ## Файлы сцены и prefab
 

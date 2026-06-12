@@ -1,3 +1,4 @@
+using Assets.GameData.Scenes.Collection;
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using Game03Client.Collection;
@@ -84,7 +85,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
                 _PanelTop__RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelTop", _RectTransform);
 
                 _ButtonClose__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose", _PanelTop__RectTransform);
-                _ButtonClose__RectTransform.gameObject.SetClickEvent(Hide, false);
+                _ButtonClose__RectTransform.gameObject.SetClickEvent(HideAsync, false);
 
                 _LabelSelectedHero__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label_SelectedHero", _PanelTop__RectTransform);
             }
@@ -154,7 +155,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
 
             _SlotWeapon = _Slots.First(a => a.Name == "Weapon");
 
-            Hide().GetAwaiter().GetResult();
+            Hide();
         }
         public void Show(Guid heroId)
         {
@@ -228,7 +229,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
 
 
 
-            I.PanelCollectionViewerInstance?.GetElement(heroId)?.Selected(true);
+            SetViewerElementSelected(heroId, true);
             gameObject.SetActive(true);
             I.OnResized();
         }
@@ -238,10 +239,10 @@ namespace Assets.GameData.Scenes.Collection.prefabs
             Show(HeroId);
         }
 
-        private async UniTask Hide()
+        private void Hide()
         {
             IsVisible = false;
-            I.PanelCollectionViewerInstance?.GetElement(HeroId)?.Selected(false);
+            SetViewerElementSelected(HeroId, false);
             HeroId = Guid.Empty;
             gameObject.SetActive(false);
 
@@ -250,6 +251,12 @@ namespace Assets.GameData.Scenes.Collection.prefabs
             //    await _PanelScene.PanelCollection.PanelCollectionViewer.InstantiateCollectionAsync();
             //}
             I.OnResized();
+        }
+
+        private UniTask HideAsync()
+        {
+            Hide();
+            return UniTask.CompletedTask;
         }
 
         public void OnResized()
@@ -323,6 +330,23 @@ namespace Assets.GameData.Scenes.Collection.prefabs
             _StatIntelligence.OnResized();
             _StatCritChance.OnResized();
             _StatCritMultiplier.OnResized();
+        }
+
+        private void SetViewerElementSelected(Guid id, bool selected)
+        {
+            PanelCollectionViewer__prefab__scriptMB viewer = I.PanelCollectionViewerInstance;
+            if (viewer == null)
+            {
+                return;
+            }
+
+            PanelIconCollectionElement element = viewer.GetElement(id);
+            if (element == null)
+            {
+                return;
+            }
+
+            element.Selected(selected);
         }
 
     }
