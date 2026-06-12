@@ -28,6 +28,8 @@ namespace Assets.GameData.Scenes.Battlefield
 
         public static float AnimationSpeed { get; private set; } = 1f;
 
+        private const string ANIMATION_SPEED_PREFS_KEY = "Battlefield.AnimationSpeed";
+
         private static readonly float AnimationSpeedButton_Size = 128;
         private static readonly float Button_Padding = 25;
         //private static readonly float _AbilityButton_FontSize = 24;
@@ -95,7 +97,9 @@ namespace Assets.GameData.Scenes.Battlefield
 
             AnimationSpeedButton__RectTransform = GameObjectFinder.FindByName<RectTransform>("AnimationSpeedButton");
             AnimationSpeedButton__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", AnimationSpeedButton__RectTransform);
-            AnimationSpeedButton__TextMeshProUGUI.text = "X1";
+
+            AnimationSpeed = LoadAnimationSpeed();
+            AnimationSpeedButton__TextMeshProUGUI.text = $"X{AnimationSpeed:0}";
 
             Button AnimationSpeedButton__Button = AnimationSpeedButton__RectTransform.gameObject.GetComponent<Button>();
             AnimationSpeedButton__Button.onClick.RemoveAllListeners();
@@ -143,8 +147,18 @@ namespace Assets.GameData.Scenes.Battlefield
                     AnimationSpeed = 1f;
                     AnimationSpeedButton__TextMeshProUGUI.text = "X1";
                 }
+
+                PlayerPrefs.SetFloat(ANIMATION_SPEED_PREFS_KEY, AnimationSpeed);
+                PlayerPrefs.Save();
             }
         }
+
+        private static float LoadAnimationSpeed()
+        {
+            float storedValue = PlayerPrefs.GetFloat(ANIMATION_SPEED_PREFS_KEY, 1f);
+            return storedValue is 1f or 2f or 5f or 10f ? storedValue : 1f;
+        }
+
         private async UniTask StartAsync(CancellationToken cancellationToken)
         {
             SpawnedBattlefield.BattlefieldLog = await Game03Client.Battlefield.BattlefieldProvider.GetBattleLogAsync(cancellationToken);
