@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using General;
 using System;
+using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -15,6 +16,7 @@ namespace Assets.GameData.Scripts
         private const string PREFAB_ADDRESS = "GameMessage-Canvas"; // Адрес префаба в Addressables
         private static bool _opened = false;
         private static GameObject _currentInstance;
+        private static AsyncOperationHandle<GameObject> _prefabHandle;
 
         public static bool Exists => _currentInstance != null;
 
@@ -29,6 +31,60 @@ namespace Assets.GameData.Scripts
 
         private static readonly string textOk = Game03Client.LocalizationManager.GetValue(L.UI.Button.Ok);
         private static readonly string textOkHover = $"{textOk} [Enter/Escape]";
+
+        public static async UniTask PreloadAsync(CancellationToken cancellationToken = default)
+        {
+            if (IsPrefabReady())
+            {
+                return;
+            }
+
+            if (!_prefabHandle.IsValid())
+            {
+                _prefabHandle = Addressables.LoadAssetAsync<GameObject>(PREFAB_ADDRESS);
+            }
+
+            if (!_prefabHandle.IsDone)
+            {
+                await _prefabHandle.ToUniTask(cancellationToken: cancellationToken);
+            }
+
+            if (_prefabHandle.Status != AsyncOperationStatus.Succeeded)
+            {
+                Debug.LogError($"Failed to preload prefab: {PREFAB_ADDRESS}");
+            }
+        }
+
+        private static bool IsPrefabReady()
+        {
+            return _prefabHandle.IsValid() && _prefabHandle.Status == AsyncOperationStatus.Succeeded;
+        }
+
+        private static GameObject GetPrefabAsset()
+        {
+            if (IsPrefabReady())
+            {
+                return _prefabHandle.Result;
+            }
+
+            if (!_prefabHandle.IsValid())
+            {
+                _prefabHandle = Addressables.LoadAssetAsync<GameObject>(PREFAB_ADDRESS);
+            }
+
+            if (!_prefabHandle.IsDone)
+            {
+                _prefabHandle.WaitForCompletion();
+            }
+
+            if (_prefabHandle.Status != AsyncOperationStatus.Succeeded)
+            {
+                Debug.LogError($"Failed to load prefab: {PREFAB_ADDRESS}");
+                return null;
+            }
+
+            return _prefabHandle.Result;
+        }
 
         /// <summary>
         /// Выводит игровое сообщение и ожидает закрытие окна.
@@ -111,42 +167,35 @@ namespace Assets.GameData.Scripts
             //{
             //    return;
             //}
-            // Загружаем префаб через Addressables
-            AsyncOperationHandle<GameObject> loadHandle = Addressables.LoadAssetAsync<GameObject>(PREFAB_ADDRESS);
-            GameObject go = loadHandle.WaitForCompletion();
-            if (loadHandle.Status == AsyncOperationStatus.Succeeded)
+            // Загружаем префаб через Addressables (preload при старте, fallback — синхронная догрузка)
+            GameObject prefabAsset = GetPrefabAsset();
+            if (prefabAsset == null)
             {
-                //if (!Application.isPlaying)
-                //{
-                //    return;
-                //}
-                _currentInstance = go.SafeInstant();
-                if (_currentInstance == null)
-                {
-                    return;
-                }
-                _currentInstance.name = OBJECT_NAME;
-                _opened = true;
-
-                if (!_currentInstance.TryGetComponent(out Canvas canvas))
-                {
-                    UnityEngine.Object.Destroy(_currentInstance);
-                    throw new Exception("Canvas component not found in the prefab.");
-                }
-
-                // Находим камеру и настраиваем Canvas
-                if (!GameObject.FindWithTag("MainCamera").TryGetComponent(out Camera mainCamera))
-                {
-                    throw new Exception("MainCamera not found in the scene.");
-                }
-                canvas.worldCamera = mainCamera;
-
-                UpdateMessage(message, buttonActiveClose, yesNoDialog: yesNoDialog);
+                return;
             }
-            else
+
+            _currentInstance = prefabAsset.SafeInstant();
+            if (_currentInstance == null)
             {
-                Debug.LogError($"Failed to load prefab: {PREFAB_ADDRESS}");
+                return;
             }
+            _currentInstance.name = OBJECT_NAME;
+            _opened = true;
+
+            if (!_currentInstance.TryGetComponent(out Canvas canvas))
+            {
+                UnityEngine.Object.Destroy(_currentInstance);
+                throw new Exception("Canvas component not found in the prefab.");
+            }
+
+            // Находим камеру и настраиваем Canvas
+            if (!GameObject.FindWithTag("MainCamera").TryGetComponent(out Camera mainCamera))
+            {
+                throw new Exception("MainCamera not found in the scene.");
+            }
+            canvas.worldCamera = mainCamera;
+
+            UpdateMessage(message, buttonActiveClose, yesNoDialog: yesNoDialog);
         }
 
         /// <summary>

@@ -33,9 +33,16 @@ namespace Assets.GameData.Scripts
 
         private class AppStateMonitor : MonoBehaviour
         {
-            private void Start()
+            private void Awake()
             {
-                this.RunAsync(LoadCursorTextureAsync);
+                this.RunAsync(StartupAsync);
+            }
+
+            private async UniTask StartupAsync(CancellationToken cancellationToken)
+            {
+                await UniTask.WhenAll(
+                    LoadCursorTextureAsync(cancellationToken),
+                    GameMessage.PreloadAsync(cancellationToken));
             }
 
             private void OnApplicationQuit()
