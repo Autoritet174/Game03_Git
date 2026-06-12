@@ -2,10 +2,10 @@ using Assets.GameData.Scripts;
 using TMPro;
 using UnityEngine;
 
-namespace Assets.GameData.Scenes.Collection
+namespace Assets.GameData.Prefabs
 {
     /// <summary>
-    /// Кнопка фильтра.
+    /// Кнопка фильтра внутри PanelCollectionTopButtons.
     /// </summary>
     public class FilterButton
     {
@@ -22,9 +22,9 @@ namespace Assets.GameData.Scenes.Collection
         private readonly RectTransform _Label_RectTransform;
         private readonly TextMeshProUGUI _TextMeshProUGUILabel;
 
-        public FilterButton(string name)
+        public FilterButton(string name, Transform parent)
         {
-            _RectTransform = GameObjectFinder.FindByName<RectTransform>(name);
+            _RectTransform = GameObjectFinder.FindByName<RectTransform>(name, parent);
             _GameObject = _RectTransform.gameObject;
             _Button_RectTransform = GameObjectFinder.FindByName<RectTransform>("Button", _RectTransform.transform);
             _Label_RectTransform = GameObjectFinder.FindByName<RectTransform>("Label", _RectTransform.transform);
@@ -34,16 +34,6 @@ namespace Assets.GameData.Scenes.Collection
         public void SetActive(bool active)
         {
             _GameObject.SetActive(active);
-        }
-
-        public void Show()
-        {
-            _GameObject.SetActive(true);
-        }
-
-        public void Hide()
-        {
-            _GameObject.SetActive(false);
         }
 
         public void OnResized(int position)
@@ -65,5 +55,4 @@ namespace Assets.GameData.Scenes.Collection
             _TextMeshProUGUILabel.fontSize = LABEL_FONTSIZE * coefHeight;
         }
     }
-
 }

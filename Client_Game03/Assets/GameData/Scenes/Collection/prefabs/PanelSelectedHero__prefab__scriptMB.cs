@@ -228,7 +228,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
 
 
 
-            I.PanelCollectionViewerInstance.GetElement(heroId)?.Selected(true);
+            I.PanelCollectionViewerInstance?.GetElement(heroId)?.Selected(true);
             gameObject.SetActive(true);
             I.OnResized();
         }
@@ -241,7 +241,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
         private async UniTask Hide()
         {
             IsVisible = false;
-            I.PanelCollectionViewerInstance.GetElement(HeroId)?.Selected(false);
+            I.PanelCollectionViewerInstance?.GetElement(HeroId)?.Selected(false);
             HeroId = Guid.Empty;
             gameObject.SetActive(false);
 

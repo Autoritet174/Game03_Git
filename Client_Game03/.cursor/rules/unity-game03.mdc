@@ -1,0 +1,42 @@
+---
+description: Стандарты Unity-проекта Game03 (Client_Game03)
+alwaysApply: true
+---
+
+# Game03 — правила работы с кодом
+
+## Язык и коммуникация
+
+- Отвечай пользователю на **русском языке**.
+- Комментарии в коде — только если объясняют неочевидную бизнес-логику; не дублируй очевидное.
+
+## Общие принципы
+
+- **Минимальный diff** — меняй только то, что нужно для задачи. Без лишних рефакторингов и «улучшений по ходу».
+- **Не over-engineer** — без лишних абстракций, хелперов на 1–2 строки и избыточной обработки редких edge cases.
+- **Следуй существующим конвенциям** — читай окружающий код и повторяй стиль (имена, типы, паттерны, уровень документации).
+- **Git** — не создавай commit и не push без явной просьбы пользователя.
+
+## Unity / архитектура UI
+
+- Новые UI-панели выноси в **prefab** (`*__prefab`) с отдельным `*__prefab__scriptMB.cs`.
+- Связь prefab ↔ сцена — через **context interface** (`I*Context` в prefab, адаптер `*Scene*Context` в сцене). Prefab не должен напрямую зависеть от singleton'ов конкретной сцены.
+- Общие enum'ы сцены Collection — в `Assets/GameData/Scripts/CollectionEnums.cs` (`ECollectionMode`, `ECollectionElement`).
+- Поиск дочерних объектов — через `GameObjectFinder.FindByName` с **точными именами** экземпляров в сцене (например `PanelCollection (id=jcxwa01g)`).
+- Асинхронность — **UniTask** (`Cysharp.Threading.Tasks`), не `Task` без необходимости.
+
+## Именование
+
+- Prefab asset: `PanelFoo__prefab.prefab`, root: `PanelFoo__prefab`
+- Script prefab: `PanelFoo__prefab__scriptMB.cs`
+- Scene instance: `PanelFoo (id=xxxx)` — сохраняй существующие id в сцене
+
+## Файлы сцены и prefab
+
+- Не правь `.unity` / `.prefab` YAML без необходимости; при правках проверяй **guid скриптов** (`m_Script` не должен быть `{fileID: 0}`).
+- После добавления новых `.cs` убедись, что Unity их видит (при необходимости — в `Assembly-CSharp.csproj`).
+
+## Именование Unity полей
+- Если юнити поля имеют тип из пространства имён UnityEngine то к имени добавляй имя класса с двойным подчёркиванием, например "RectTransform ButtonStartBattle__RectTransform;"
+- Никогда не называй переменный так как называется имя его же класса, например "private GameObject GameObject;"
+- Все констаны пиши в верхнем регистре

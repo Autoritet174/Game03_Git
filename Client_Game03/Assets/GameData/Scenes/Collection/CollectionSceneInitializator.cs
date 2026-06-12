@@ -5,12 +5,11 @@ using UnityEngine;
 
 public class CollectionSceneInitializator : MonoBehaviour
 {
-
     public static PanelScene PanelSceneInstance { get; private set; }
     public static PanelTop PanelTopInstance { get; set; }
-    public static PanelCollection PanelCollectionInstance { get; private set; }
+    public static PanelCollection__prefab__scriptMB PanelCollectionInstance { get; private set; }
     public static PanelCollectionViewer__prefab__scriptMB PanelCollectionViewerInstance { get; private set; }
-    public static PanelCollectionTopButtons PanelCollectionTopButtonsInstance { get; private set; }
+    public static PanelCollectionTopButtons__prefab__scriptMB PanelCollectionTopButtonsInstance { get; private set; }
     public static PanelSelectedHero__prefab__scriptMB PanelSelectedHeroInstance { get; private set; }
     public static PanelSelectedEquipment__prefab__scriptMB PanelSelectedEquipmentInstance { get; private set; }
     public static float Width { get; private set; } = 0f;
@@ -21,18 +20,39 @@ public class CollectionSceneInitializator : MonoBehaviour
     {
         PanelSceneInstance = new();
         PanelTopInstance = new();
-        PanelCollectionInstance = new();
-        PanelCollectionViewerInstance = GameObjectFinder.FindByName("PanelCollectionViewer (id=ph1oh7dk)").GetComponent<PanelCollectionViewer__prefab__scriptMB>();
-        PanelCollectionTopButtonsInstance = new();
+
+        var panelCollectionObject = GameObjectFinder.FindByName("PanelCollection (id=jcxwa01g)");
+        if (panelCollectionObject == null)
+        {
+            Debug.LogError("CollectionSceneInitializator: PanelCollection (id=jcxwa01g) not found.");
+            return;
+        }
+
+        PanelCollectionInstance = panelCollectionObject.GetComponent<PanelCollection__prefab__scriptMB>();
+        if (PanelCollectionInstance == null)
+        {
+            Debug.LogError("CollectionSceneInitializator: PanelCollection__prefab__scriptMB is missing on PanelCollection (id=jcxwa01g).");
+            return;
+        }
+
+        PanelCollectionTopButtonsInstance = PanelCollectionInstance.TopButtons;
+        PanelCollectionViewerInstance = PanelCollectionInstance.Viewer;
 
         PanelSelectedHeroInstance = GameObjectFinder.FindByName("PanelSelectedHero").GetComponent<PanelSelectedHero__prefab__scriptMB>();
         PanelSelectedEquipmentInstance = GameObjectFinder.FindByName("PanelSelectedEquipment").GetComponent<PanelSelectedEquipment__prefab__scriptMB>();
 
+        PanelCollectionInstance.SetContext(new CollectionSceneCollectionContext());
+        PanelCollectionTopButtonsInstance.SetContext(new CollectionSceneTopButtonsContext());
         PanelCollectionViewerInstance.SetContext(new CollectionSceneViewerContext());
     }
 
     private async void Start()
     {
+        if (PanelCollectionViewerInstance == null)
+        {
+            return;
+        }
+
         await PanelCollectionViewerInstance.InstantiateCollectionAsync(PanelSceneInstance.CollectionMode);
         Initialized = true;
     }

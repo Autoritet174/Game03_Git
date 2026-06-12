@@ -214,7 +214,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
 
             UpdateButtons();
 
-            I.PanelCollectionViewerInstance.GetElement(equipmentId)?.Selected(true);
+            I.PanelCollectionViewerInstance?.GetElement(equipmentId)?.Selected(true);
 
             gameObject.SetActive(true);
             I.OnResized();
@@ -223,7 +223,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
         public async UniTask Hide()
         {
             IsVisible = false;
-            I.PanelCollectionViewerInstance.GetElement(EquipmentId)?.Selected(false);
+            I.PanelCollectionViewerInstance?.GetElement(EquipmentId)?.Selected(false);
             EquipmentId = Guid.Empty;
             gameObject.SetActive(false);
             I.OnResized();
@@ -359,7 +359,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
                 {
                     Show(EquipmentId);
                     I.PanelSelectedHeroInstance.Show(heroId);
-                    I.PanelCollectionViewerInstance.GetElement(EquipmentId)?.RefreshOwnerImage();
+                    I.PanelCollectionViewerInstance?.GetElement(EquipmentId)?.RefreshOwnerImage();
                 }
                 else
                 {
@@ -393,13 +393,13 @@ namespace Assets.GameData.Scenes.Collection.prefabs
                         //Если была одетая экипировка в этот слот, то снимаем её
                         equipmentEquipped.SlotId = null;
                         equipmentEquipped.HeroId = null;
-                        I.PanelCollectionViewerInstance.GetElement(equipmentEquipped.Id)?.RefreshOwnerImage();
+                        I.PanelCollectionViewerInstance?.GetElement(equipmentEquipped.Id)?.RefreshOwnerImage();
                     }
 
 
                     Show(EquipmentId);
                     I.PanelSelectedHeroInstance.Show(_DtoEquipment.HeroId.Value);
-                    I.PanelCollectionViewerInstance.GetElement(EquipmentId)?.RefreshOwnerImage();
+                    I.PanelCollectionViewerInstance?.GetElement(EquipmentId)?.RefreshOwnerImage();
                 }
                 else
                 {
