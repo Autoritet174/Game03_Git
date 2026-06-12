@@ -123,21 +123,18 @@ namespace Assets.GameData.Scripts
                     continue;
                 }
 
-                string key = line.Substring(0, eqIndex).Trim();
+                string key = line[..eqIndex].Trim();
                 if (string.Equals(key, KEY_BASE_URL, StringComparison.OrdinalIgnoreCase))
                 {
-                    baseUrl = line.Substring(eqIndex + 1).Trim();
+                    baseUrl = line[(eqIndex + 1)..].Trim();
                     break;
                 }
             }
 
-            if (string.IsNullOrWhiteSpace(baseUrl))
-            {
-                throw new InvalidOperationException(
-                    $"[{SECTION_SERVER}] {KEY_BASE_URL} is missing or empty in {configPath}");
-            }
-
-            return baseUrl;
+            return string.IsNullOrWhiteSpace(baseUrl)
+                ? throw new InvalidOperationException(
+                    $"[{SECTION_SERVER}] {KEY_BASE_URL} is missing or empty in {configPath}")
+                : baseUrl;
         }
 
         private static void LogError(object message)
@@ -174,7 +171,7 @@ namespace Assets.GameData.Scripts
         private static async UniTask LoadCursorTextureAsync(CancellationToken cancellationToken)
         {
             AsyncOperationHandle<Texture2D> operationHandle = Addressables.LoadAssetAsync<Texture2D>(CURSOR_TEXTURE_ADDRESS);
-            await operationHandle.ToUniTask(cancellationToken: cancellationToken);
+            _ = await operationHandle.ToUniTask(cancellationToken: cancellationToken);
             if (operationHandle.Status != AsyncOperationStatus.Succeeded)
             {
                 UnityEngine.Debug.LogError($"Ошибка загрузки текста '{CURSOR_TEXTURE_ADDRESS}'");
@@ -204,7 +201,7 @@ namespace Assets.GameData.Scripts
         /// </summary>
         public static float GetCoefHeight()
         {
-            return Screen.height / 1080f;
+            return (Screen.width > Screen.height ? Screen.height : Screen.width) / 1080f;
         }
     }
 }

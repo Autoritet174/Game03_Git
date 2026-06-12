@@ -13,7 +13,6 @@ namespace Assets.GameData.Scenes.Battlefield.Animations
             this.gameObject = gameObject;
             rectTransform = gameObject.GetComponent<RectTransform>();
             textMeshProUGUI = gameObject.GetComponent<TextMeshProUGUI>();
-            textMeshProUGUI.fontSize = HealthHub.FontSize * G.GetCoefHeight();
         }
 
         private readonly GameObject gameObject;
@@ -80,7 +79,9 @@ namespace Assets.GameData.Scenes.Battlefield.Animations
                 float yDist = posEndShift.y - posParent.anchoredPosition.y;
                 float x = posParent.anchoredPosition.x + (xDist * animationPercent);
                 float y = posParent.anchoredPosition.y + (yDist * animationPercent);
-                rectTransform.anchoredPosition = new Vector2(x * G.GetCoefHeight(), y * G.GetCoefHeight());
+                float coefHeight = G.GetCoefHeight();
+                rectTransform.anchoredPosition = new Vector2(x * coefHeight, y * coefHeight);
+                textMeshProUGUI.fontSize = HealthHub.FontSize * coefHeight;
 
                 if (animationPercent == 1)
                 {
