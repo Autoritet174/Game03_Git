@@ -101,8 +101,8 @@
     <Compile Include="Assets\GameData\Scripts\UnityObject.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\CollectionSceneViewerContext.cs" />
     <Compile Include="Assets\GameData\Prefabs\FilterButton.cs" />
-    <Compile Include="Assets\GameData\Scripts\AddressableCache.cs" />
     <Compile Include="Assets\GameData\Scripts\UniTaskRunner.cs" />
+    <Compile Include="Assets\GameData\Scripts\AddressableCache.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\HypercubeInit.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\prefabs\Stat__prefab__script.cs" />
     <Compile Include="Assets\GameData\Scripts\InputManager.cs" />

@@ -21,6 +21,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
         private readonly GameObject _GameObject;
         private readonly RectTransform _RectTransform;
+        private readonly PanelCollection__prefab__scriptMB _PanelCollection;
         private readonly PanelCollectionViewer__prefab__scriptMB _Viewer;
         private readonly SelectBattlefieldViewerContext _Context;
         private readonly RectTransform _ButtonStartBattle__RectTransform;
@@ -39,7 +40,8 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             _RectTransform = _GameObject.GetComponent<RectTransform>();
             _RectTransform.SetHorizontalOffsets(0, 0);
 
-            _Viewer = GameObjectFinder.FindByName<PanelCollectionViewer__prefab__scriptMB>(startParent: _RectTransform);
+            _PanelCollection = GameObjectFinder.FindByName<PanelCollection__prefab__scriptMB>(startParent: _RectTransform);
+            _Viewer = _PanelCollection.Viewer;
             _Context = new SelectBattlefieldViewerContext(_Viewer);
             _Viewer.SetContext(_Context);
 

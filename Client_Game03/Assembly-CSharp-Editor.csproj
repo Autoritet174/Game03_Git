@@ -65,7 +65,6 @@
   <ItemGroup>
     <Compile Include="Assets\GameData\Editor\PanelCollectionPrefabCreator.cs" />
     <Compile Include="Assets\GameData\Editor\AddressableNamesGenerator.cs" />
-    <Compile Include="Assets\GameData\Editor\PanelCollectionTopButtonsPrefabCreator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\MobileDependencyResolver\Editor\Google.VersionHandler.dll" />
