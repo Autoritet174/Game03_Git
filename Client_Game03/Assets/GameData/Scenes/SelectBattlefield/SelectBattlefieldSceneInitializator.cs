@@ -1,4 +1,5 @@
 using Assets.GameData.Scripts;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
         public static SelectBattlefieldSceneInitializator Instance { get; private set; }
         public static PanelPrepareBattle PanelPrepareBattleInstance { get; private set; }
+        public static bool IsConfigured { get; private set; }
 
         private RectTransform ScrollViewCollectionMain__RectTransform;
         private RectTransform ScrollbarVertical__RectTransform;
@@ -19,42 +21,54 @@ namespace Assets.GameData.Scenes.SelectBattlefield
         private readonly Dictionary<string, BattleFieldCategory> dictBattleFieldCategory = new();
 
         private float _Width, _Height;
-        private bool initialized = false;
 
         private void Awake()
         {
             Instance = this;
+            IsConfigured = false;
         }
 
         private void Start()
         {
-            ScrollbarVertical__RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollbarVertical (id=gez98o51)");
-            ViewportMain__RectTransform = GameObjectFinder.FindByName<RectTransform>("ViewportMain (id=sno6hebj)");
-            ScrollViewCollectionMain__RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollViewCollectionMain (id=elrwytkp)");
-            ContentMain__RectTransform = GameObjectFinder.FindByName<RectTransform>("ContentMain (id=ieb9sss4)");
-
-            PanelPrepareBattleInstance = new PanelPrepareBattle();
-
-            // Испытательные площадки
+            try
             {
-                BattleFieldCategory scrollViewCollection_TestPlatforms = new("TestPlatforms");
-                dictBattleFieldCategory.Add(scrollViewCollection_TestPlatforms.Name, scrollViewCollection_TestPlatforms);
-                scrollViewCollection_TestPlatforms.ButtonsAdd(General.EBattleFiled.TestPlatforms__Polygon);
-            }
+                ScrollbarVertical__RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollbarVertical (id=gez98o51)");
+                ViewportMain__RectTransform = GameObjectFinder.FindByName<RectTransform>("ViewportMain (id=sno6hebj)");
+                ScrollViewCollectionMain__RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollViewCollectionMain (id=elrwytkp)");
+                ContentMain__RectTransform = GameObjectFinder.FindByName<RectTransform>("ContentMain (id=ieb9sss4)");
 
-            // Шахты
+                PanelPrepareBattleInstance = new PanelPrepareBattle();
+
+                // Испытательные площадки
+                {
+                    BattleFieldCategory scrollViewCollection_TestPlatforms = new("TestPlatforms");
+                    dictBattleFieldCategory.Add(scrollViewCollection_TestPlatforms.Name, scrollViewCollection_TestPlatforms);
+                    scrollViewCollection_TestPlatforms.ButtonsAdd(General.EBattleFiled.TestPlatforms__Polygon);
+                }
+
+                // Шахты
+                {
+                    BattleFieldCategory scrollViewCollection_Mines = new("Mines");
+                    dictBattleFieldCategory.Add(scrollViewCollection_Mines.Name, scrollViewCollection_Mines);
+                    scrollViewCollection_Mines.ButtonsAdd(General.EBattleFiled.Mines__Iron);
+                }
+
+                IsConfigured = true;
+                OnResized();
+            }
+            catch (Exception ex)
             {
-                BattleFieldCategory scrollViewCollection_Mines = new("Mines");
-                dictBattleFieldCategory.Add(scrollViewCollection_Mines.Name, scrollViewCollection_Mines);
-                scrollViewCollection_Mines.ButtonsAdd(General.EBattleFiled.Mines__Iron);
+                Debug.LogError($"SelectBattlefieldSceneInitializator: scene configuration failed. {ex.Message}");
             }
-
-            initialized = true;
-            OnResized();
         }
 
         private void Update()
         {
+            if (!IsConfigured)
+            {
+                return;
+            }
+
             if (!Mathf.Approximately(Screen.height, _Height) || !Mathf.Approximately(Screen.width, _Width))
             {
                 OnResized();
@@ -63,7 +77,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
         public void OnResized()
         {
-            if (!initialized)
+            if (!IsConfigured)
             {
                 return;
             }
@@ -86,7 +100,10 @@ namespace Assets.GameData.Scenes.SelectBattlefield
                 item.Value.OnResize();
             }
 
-            PanelPrepareBattleInstance?.OnResized();
+            if (PanelPrepareBattleInstance != null)
+            {
+                PanelPrepareBattleInstance.OnResized();
+            }
         }
     }
 }

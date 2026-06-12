@@ -13,46 +13,7 @@
 
 ---
 
-## Критично (исправить в первую очередь)
-
-### 3. `async void` в lifecycle и UI (7 мест)
-
-| Файл | Метод |
-|------|-------|
-| `CollectionSceneInitializator.cs` | `async void Awake()` (без `await`), `async void Start()` |
-| `BattlefieldSceneInitializator.cs` | `async void Start()` |
-| `AuthSceneInitializator.cs` | `async void Start()` |
-| `AllHeroes.cs` | `async void Start()` |
-| `ButtonClose_Click_EndBattle.cs` | `async void OnClick()` |
-| `GameExitHandler.cs` | `async void ExitGame()` |
-
-**Риск:** необработанные исключения «тихо» роняют сцену. Заменить на `UniTaskVoid` + `.Forget()` с обработкой или `async UniTask` с явным await.
-
-### 4. Sync-over-async при старте
-
-- `G.cs` — `Addressables.LoadAssetAsync` + `WaitForCompletion()` при `BeforeSceneLoad`
-- `PanelSelectedHero/Equipment` — `Hide().GetAwaiter().GetResult()` в `Start`/`Awake`
-- `GameMessage.cs` — `WaitForCompletion()` при показе
-
-**Риск:** фризы при загрузке, deadlock в edge cases. Перевести на чистый async pipeline через UniTask.
-
----
-
 ## Высокий приоритет
-
-### NullReference и хрупкая инициализация
-
-- **`CollectionSceneInitializator.OnResized()`** — вызывает static-инстансы без null-check; при частичном сбое `Awake` возможен каскад NRE
-- **`PanelCollectionViewer__prefab__scriptMB.cs:34`** — `FindByName("Content", parent).transform` без проверки (двухаргументный overload возвращает `null`, не бросает)
-- **Hero/Equipment initializators** — `FindByName(...).GetComponent<>()` без проверки компонента
-- **`SelectBattlefieldSceneInitializator.Instance.OnResized()`** — без `?.`, хотя в context-адаптере уже есть проверка
-
-### Несогласованный `GameObjectFinder`
-
-- `FindByName(string)` без parent → **throw Exception**
-- `FindByName(string, Transform)` → **return null**
-
-Один API, два поведения — частый источник багов.
 
 ### Hardcoded URL сервера
 

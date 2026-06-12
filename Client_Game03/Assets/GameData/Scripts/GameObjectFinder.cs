@@ -6,7 +6,10 @@ using UnityEngine.SceneManagement;
 namespace Assets.GameData.Scripts
 {
     /// <summary>
-    /// Предоставляет методы для поиска игровых объектов на сцене.
+    /// Поиск объектов на сцене в runtime.
+    /// Используется для элементов, которые по задумке проекта обязаны присутствовать на сцене или в prefab.
+    /// Если объект не найден — это ошибка проектирования (сломанная сцена, prefab или имя), а не штатная игровая ситуация.
+    /// Поэтому методы поиска по имени и типу выбрасывают исключение, а не возвращают null.
     /// </summary>
     public static class GameObjectFinder
     {
@@ -30,7 +33,7 @@ namespace Assets.GameData.Scripts
                 }
             }
 
-            throw new System.Exception($"Не найден GameObject с тегом {tag}");
+            throw new Exception($"Не найден GameObject с тегом {tag}");
         }
 
 
@@ -38,7 +41,7 @@ namespace Assets.GameData.Scripts
         /// Рекурсивно ищет игровой объект по имени во всех объектах текущей сцены.
         /// </summary>
         /// <param name="name">Имя искомого объекта.</param>
-        /// <returns>Объект с заданным именем или null, если не найден.</returns>
+        /// <returns>Объект с заданным именем.</returns>
         public static GameObject FindByName(string name)
         {
             GameObject[] rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
@@ -50,39 +53,32 @@ namespace Assets.GameData.Scripts
             }
             foreach (GameObject gameObject in rootObjects)
             {
-                GameObject found = FindByName(name, gameObject.transform);
+                GameObject found = TryFindByNameInChildren(name, gameObject.transform);
                 if (found != null)
                 {
                     return found;
                 }
             }
 
-            throw new System.Exception($"Не найден GameObject с именем {name}");
+            throw new Exception($"Не найден GameObject с именем {name}");
         }
 
 
         /// <summary>
         /// Рекурсивно ищет объект по имени среди всех потомков заданного Transform.
         /// </summary>
-        /// <param name="parent">Родительский Transform для начала поиска.</param>
         /// <param name="name">Имя искомого объекта.</param>
-        /// <returns>Объект с заданным именем или null.</returns>
+        /// <param name="parent">Родительский Transform для начала поиска.</param>
+        /// <returns>Объект с заданным именем.</returns>
         public static GameObject FindByName(string name, Transform parent)
         {
-            foreach (Transform child in parent)
+            GameObject found = TryFindByNameInChildren(name, parent);
+            if (found != null)
             {
-                if (child.name == name)
-                {
-                    return child.gameObject;
-                }
-                GameObject found = FindByName(name, child);
-                if (found != null)
-                {
-                    return found;
-                }
+                return found;
             }
 
-            return null;
+            throw new Exception($"Не найден GameObject с именем {name} среди потомков {parent.name}");
         }
 
         public static GameObject FindByName(string name, GameObject startParent)
@@ -152,7 +148,7 @@ namespace Assets.GameData.Scripts
         /// <typeparam name="T">Тип компонента, который требуется найти.</typeparam>
         /// <param name="parent">Родительский трансформ для поиска.</param>
         /// <param name="name">Имя искомого объекта (или null для поиска первого объекта).</param>
-        /// <returns>Найденный компонент или null, если объект отсутствует.</returns>
+        /// <returns>Найденный компонент или null, если объект отсутствует в данной ветке.</returns>
         private static T FindInChildrenRecursive<T>(Transform parent, string name) where T : Component
         {
             if (string.IsNullOrEmpty(name))
@@ -173,6 +169,25 @@ namespace Assets.GameData.Scripts
             foreach (Transform child in parent)
             {
                 T found = FindInChildrenRecursive<T>(child, name);
+                if (found != null)
+                {
+                    return found;
+                }
+            }
+
+            return null;
+        }
+
+        private static GameObject TryFindByNameInChildren(string name, Transform parent)
+        {
+            foreach (Transform child in parent)
+            {
+                if (child.name == name)
+                {
+                    return child.gameObject;
+                }
+
+                GameObject found = TryFindByNameInChildren(name, child);
                 if (found != null)
                 {
                     return found;

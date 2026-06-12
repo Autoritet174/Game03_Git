@@ -88,7 +88,10 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             _BattleStarting = false;
             _Context.ClearSelection();
             _GameObject.SetActive(true);
-            SelectBattlefieldSceneInitializator.Instance.OnResized();
+            if (SelectBattlefieldSceneInitializator.IsConfigured)
+            {
+                SelectBattlefieldSceneInitializator.Instance.OnResized();
+            }
             await _Viewer.InstantiateCollectionAsync(ECollectionMode.Hero);
         }
 

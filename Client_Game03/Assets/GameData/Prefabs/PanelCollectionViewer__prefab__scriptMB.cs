@@ -31,7 +31,7 @@ public class PanelCollectionViewer__prefab__scriptMB : MonoBehaviour
     {
         _RectTransform = gameObject.GetComponent<RectTransform>();
         _ScrollbarVertical__RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollbarVertical", gameObject.transform);
-        Content_Transform = GameObjectFinder.FindByName("Content", gameObject.transform).transform;
+        Content_Transform = GameObjectFinder.FindByName<RectTransform>("Content", gameObject.transform);
         _Content__VerticalLayoutGroup = Content_Transform.GetComponent<VerticalLayoutGroup>();
         Viewport__RectTransform = GameObjectFinder.FindByName<RectTransform>("Viewport", gameObject.transform);
     }

@@ -58,7 +58,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
         public void OnLayoutChanged()
         {
-            if (SelectBattlefieldSceneInitializator.Instance != null)
+            if (SelectBattlefieldSceneInitializator.IsConfigured)
             {
                 SelectBattlefieldSceneInitializator.Instance.OnResized();
             }
