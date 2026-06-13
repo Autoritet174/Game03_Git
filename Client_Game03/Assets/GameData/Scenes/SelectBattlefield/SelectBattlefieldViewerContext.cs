@@ -25,6 +25,8 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
         public bool ContextControlsRootSize => true;
 
+        public List<Action> Actions { get; } = new List<Action>();
+
         public void OnCollectionLoaded(PanelCollectionViewer__prefab__scriptMB viewer, int maxCollectionElements)
         {
             PanelCollectionTopButtons__prefab__scriptMB topButtons =
@@ -59,6 +61,11 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             {
                 _ = _SelectedHeroIds.Add(elementId);
                 _Viewer.GetElement(elementId)?.Selected(true, clearOthers: false);
+            }
+
+            foreach (Action a in Actions)
+            {
+                a();
             }
         }
 

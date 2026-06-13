@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class PanelCollectionTopButtons__prefab__scriptMB : MonoBehaviour
 {
-    private const float HEIGHT = 113f;
+    public const float HEIGHT = 113f;
     private const float RANGE_PANEL_WIDTH = 230f;
     private const float RANGE_PANEL_HEIGHT = 90f;
     private const float BUTTON_PAGE_WIDTH = 100f;

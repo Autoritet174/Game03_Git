@@ -42,8 +42,9 @@ public class PanelCollection__prefab__scriptMB : MonoBehaviour
     {
         if (_Context != null && _Context.ContextControlsRootSize)
         {
-            (Width, Height) = _Context.GetPanelSize();
-            _RectTransform.sizeDelta = new Vector2(Width, Height);
+            //(Width, Height) = _Context.GetPanelSize();
+            //_RectTransform.sizeDelta = new Vector2(Width, Height);
+            _RectTransform.SetHorizontalOffsets(0, 0);
         }
         else
         {

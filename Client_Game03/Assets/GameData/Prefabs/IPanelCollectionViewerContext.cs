@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Assets.GameData.Prefabs
 {
@@ -14,5 +15,6 @@ namespace Assets.GameData.Prefabs
         bool LoadAllPages { get; }
         bool ContextControlsRootSize { get; }
         (float width, float height) GetViewerSize();
+        List<Action> Actions { get; }
     }
 }

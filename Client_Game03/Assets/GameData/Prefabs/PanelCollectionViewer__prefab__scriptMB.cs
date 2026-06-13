@@ -185,16 +185,20 @@ public class PanelCollectionViewer__prefab__scriptMB : MonoBehaviour
         float coefHeight = G.GetCoefHeight();
         float scrollBarWidth = SCROLLBAR_WIDTH * coefHeight;
 
-        if (Context != null && Context.ContextControlsRootSize)
-        {
-            (float width, float height) = Context.GetViewerSize();
-            _RectTransform.sizeDelta = new Vector2(width, height);
-            Width = width - scrollBarWidth;
-        }
-        else
-        {
-            Width = _RectTransform.rect.width - scrollBarWidth;
-        }
+        //if (Context != null && Context.ContextControlsRootSize)
+        //{
+        //    (float width, float height) = Context.GetViewerSize();
+        //    _RectTransform.sizeDelta = new Vector2(width, height);
+        //    Width = width - scrollBarWidth;
+        //}
+        //else
+        //{
+        //    Width = _RectTransform.rect.width - scrollBarWidth;
+        //}
+
+        Width = _RectTransform.rect.width - (PanelCollectionTopButtons__prefab__scriptMB.HEIGHT * coefHeight);
+        _RectTransform.SetTop(PanelCollectionTopButtons__prefab__scriptMB.HEIGHT * coefHeight);
+
 
         _ScrollbarVertical__RectTransform.sizeDelta = new Vector2(scrollBarWidth, 0);
         Viewport__RectTransform.SetRight(scrollBarWidth);

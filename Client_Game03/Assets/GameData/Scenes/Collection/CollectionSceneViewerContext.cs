@@ -1,6 +1,6 @@
 using Assets.GameData.Prefabs;
-using Assets.GameData.Scenes.Collection.prefabs;
 using System;
+using System.Collections.Generic;
 
 namespace Assets.GameData.Scenes.Collection
 {
@@ -55,6 +55,8 @@ namespace Assets.GameData.Scenes.Collection
         public bool LoadAllPages => false;
 
         public bool ContextControlsRootSize => true;
+
+        public List<Action> Actions => throw new NotImplementedException();
 
         public void OnLayoutChanged()
         {

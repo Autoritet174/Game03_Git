@@ -30,8 +30,8 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
         private void Start()
         {
-            try
-            {
+            //try
+            //{
                 ScrollbarVertical__RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollbarVertical (id=gez98o51)");
                 ViewportMain__RectTransform = GameObjectFinder.FindByName<RectTransform>("ViewportMain (id=sno6hebj)");
                 ScrollViewCollectionMain__RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollViewCollectionMain (id=elrwytkp)");
@@ -55,11 +55,12 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
                 IsConfigured = true;
                 OnResized();
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"SelectBattlefieldSceneInitializator: scene configuration failed. {ex.Message}");
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Debug.LogError($"SelectBattlefieldSceneInitializator: scene configuration failed.");
+            //    Debug.LogException(ex);
+            //}
         }
 
         private void Update()
