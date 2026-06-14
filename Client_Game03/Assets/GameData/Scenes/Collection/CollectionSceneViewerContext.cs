@@ -6,19 +6,19 @@ namespace Assets.GameData.Scenes.Collection
 {
     public class CollectionSceneViewerContext : IPanelCollectionViewerContext
     {
-        private PanelCollectionViewer__prefab__scriptMB _Viewer;
+        private PanelCollection__prefab__scriptMB _PanelCollection;
 
         public ECollectionMode CollectionMode => CollectionSceneInitializator.PanelSceneInstance.CollectionMode;
 
-        public int PageCurrent => CollectionSceneInitializator.PanelCollectionTopButtonsInstance.PageCurrent;
+        public int PageCurrent => CollectionSceneInitializator.PanelCollectionInstance.PageCurrent;
 
-        public int PageMax => CollectionSceneInitializator.PanelCollectionTopButtonsInstance.PageMax;
+        public int PageMax => CollectionSceneInitializator.PanelCollectionInstance.PageMax;
 
-        public void OnCollectionLoaded(PanelCollectionViewer__prefab__scriptMB viewer, int maxCollectionElements)
+        public void OnCollectionLoaded(PanelCollection__prefab__scriptMB panelCollection, int maxCollectionElements)
         {
-            _Viewer = viewer;
-            CollectionSceneInitializator.PanelCollectionTopButtonsInstance.UpdatePageMax();
-            CollectionSceneInitializator.PanelCollectionTopButtonsInstance.SetPageDiapason(maxCollectionElements);
+            _PanelCollection = panelCollection;
+            CollectionSceneInitializator.PanelCollectionInstance.UpdatePageMax();
+            CollectionSceneInitializator.PanelCollectionInstance.SetPageDiapason(maxCollectionElements);
         }
 
         public Guid? GetSelectedElementId(ECollectionMode collectionMode)
@@ -49,7 +49,7 @@ namespace Assets.GameData.Scenes.Collection
                     throw new NotImplementedException();
             }
 
-            _Viewer?.GetElement(elementId)?.Selected(true, clearOthers: true);
+            _PanelCollection?.GetElement(elementId)?.Selected(true, clearOthers: true);
         }
 
         public bool LoadAllPages => false;
@@ -67,7 +67,7 @@ namespace Assets.GameData.Scenes.Collection
         {
             float width = CollectionSceneInitializator.PanelCollectionInstance.Width;
             float height = CollectionSceneInitializator.PanelCollectionInstance.Height
-                - CollectionSceneInitializator.PanelCollectionTopButtonsInstance.Height;
+                - CollectionSceneInitializator.PanelCollectionInstance.TopButtonsHeight;
             return (width, height);
         }
     }

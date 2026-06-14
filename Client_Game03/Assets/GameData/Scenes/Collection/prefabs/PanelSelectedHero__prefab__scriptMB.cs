@@ -334,13 +334,13 @@ namespace Assets.GameData.Scenes.Collection.prefabs
 
         private void SetViewerElementSelected(Guid id, bool selected)
         {
-            PanelCollectionViewer__prefab__scriptMB viewer = I.PanelCollectionViewerInstance;
-            if (viewer == null)
+            PanelCollection__prefab__scriptMB panelCollection = I.PanelCollectionInstance;
+            if (panelCollection == null)
             {
                 return;
             }
 
-            PanelIconCollectionElement element = viewer.GetElement(id);
+            PanelIconCollectionElement element = panelCollection.GetElement(id);
             if (element == null)
             {
                 return;

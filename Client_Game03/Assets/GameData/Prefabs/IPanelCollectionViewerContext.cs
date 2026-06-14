@@ -8,7 +8,7 @@ namespace Assets.GameData.Prefabs
         ECollectionMode CollectionMode { get; }
         int PageCurrent { get; }
         int PageMax { get; }
-        void OnCollectionLoaded(PanelCollectionViewer__prefab__scriptMB viewer, int maxCollectionElements);
+        void OnCollectionLoaded(PanelCollection__prefab__scriptMB panelCollection, int maxCollectionElements);
         Guid? GetSelectedElementId(ECollectionMode collectionMode);
         void OnElementSelected(Guid elementId, ECollectionMode collectionMode);
         void OnLayoutChanged();

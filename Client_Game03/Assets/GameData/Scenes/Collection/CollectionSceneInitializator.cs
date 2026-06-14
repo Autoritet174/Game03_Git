@@ -11,8 +11,6 @@ public class CollectionSceneInitializator : MonoBehaviour
     public static PanelScene PanelSceneInstance { get; private set; }
     public static PanelTop PanelTopInstance { get; set; }
     public static PanelCollection__prefab__scriptMB PanelCollectionInstance { get; private set; }
-    public static PanelCollectionViewer__prefab__scriptMB PanelCollectionViewerInstance { get; private set; }
-    public static PanelCollectionTopButtons__prefab__scriptMB PanelCollectionTopButtonsInstance { get; private set; }
     public static PanelSelectedHero__prefab__scriptMB PanelSelectedHeroInstance { get; private set; }
     public static PanelSelectedEquipment__prefab__scriptMB PanelSelectedEquipmentInstance { get; private set; }
     public static float Width { get; private set; } = 0f;
@@ -38,15 +36,12 @@ public class CollectionSceneInitializator : MonoBehaviour
                     "CollectionSceneInitializator: PanelCollection__prefab__scriptMB is missing on PanelCollection (id=jcxwa01g).");
             }
 
-            PanelCollectionTopButtonsInstance = PanelCollectionInstance.TopButtons;
-            PanelCollectionViewerInstance = PanelCollectionInstance.Viewer;
-
             PanelSelectedHeroInstance = GameObjectFinder.FindByName<PanelSelectedHero__prefab__scriptMB>("PanelSelectedHero");
             PanelSelectedEquipmentInstance = GameObjectFinder.FindByName<PanelSelectedEquipment__prefab__scriptMB>("PanelSelectedEquipment");
 
             PanelCollectionInstance.SetContext(new CollectionSceneCollectionContext());
-            PanelCollectionTopButtonsInstance.SetContext(new CollectionSceneTopButtonsContext());
-            PanelCollectionViewerInstance.SetContext(new CollectionSceneViewerContext());
+            PanelCollectionInstance.SetTopButtonsContext(new CollectionSceneTopButtonsContext());
+            PanelCollectionInstance.SetViewerContext(new CollectionSceneViewerContext());
 
             IsConfigured = true;
         }
@@ -68,7 +63,7 @@ public class CollectionSceneInitializator : MonoBehaviour
             return;
         }
 
-        await PanelCollectionViewerInstance.InstantiateCollectionAsync(PanelSceneInstance.CollectionMode);
+        await PanelCollectionInstance.InstantiateCollectionAsync(PanelSceneInstance.CollectionMode);
         Initialized = true;
     }
 
@@ -98,8 +93,6 @@ public class CollectionSceneInitializator : MonoBehaviour
         PanelTopInstance.OnResized();
         PanelSelectedHeroInstance.OnResized();
         PanelSelectedEquipmentInstance.OnResized();
-        PanelCollectionInstance.OnResized();
-        PanelCollectionTopButtonsInstance.OnResized();
-        PanelCollectionViewerInstance.OnResized();
+        PanelCollectionInstance.OnResized(PanelSelectedHeroInstance.Width + PanelSelectedEquipmentInstance.Width); 
     }
 }

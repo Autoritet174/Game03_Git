@@ -23,7 +23,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
         public async UniTask OnPageChangedAsync(int pageCurrent)
         {
-            await SelectBattlefieldSceneInitializator.PanelPrepareBattleInstance.Viewer
+            await SelectBattlefieldSceneInitializator.PanelPrepareBattleInstance.PanelCollection
                 .InstantiateCollectionAsync(ECollectionMode.Hero);
         }
 

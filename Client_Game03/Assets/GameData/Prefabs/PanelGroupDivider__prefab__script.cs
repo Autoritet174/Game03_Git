@@ -22,9 +22,9 @@ namespace Assets.GameData.Prefabs
         private const float SPACING = 9f;
         private const float PADDING = 22.5f;
 
-        public PanelGroupDivider__prefab__script(GroupCollectionElement groupCollectionElement, PanelCollectionViewer__prefab__scriptMB parent)
+        public PanelGroupDivider__prefab__script(GroupCollectionElement groupCollectionElement, PanelCollection__prefab__scriptMB parent)
         {
-            _Viewer = parent;
+            _PanelCollection = parent;
             _CollectionElementList = groupCollectionElement.List;
             _GroupName = groupCollectionElement.Name;
 
@@ -90,7 +90,7 @@ namespace Assets.GameData.Prefabs
 
         public Transform CellsContainer__Transform { get; }
 
-        private readonly PanelCollectionViewer__prefab__scriptMB _Viewer;
+        private readonly PanelCollection__prefab__scriptMB _PanelCollection;
         private readonly string _GroupName;
 
         private readonly GameObject _GameObject;
@@ -165,7 +165,7 @@ namespace Assets.GameData.Prefabs
 
         public void OnResized()
         {
-            float width = _Viewer.Width;
+            float width = _PanelCollection.ViewerWidth;
             float coefHeight = G.GetCoefHeight();
             float buttonHeight = DIVIDER_BUTTON_HEIGHT * coefHeight;
             float height = buttonHeight;

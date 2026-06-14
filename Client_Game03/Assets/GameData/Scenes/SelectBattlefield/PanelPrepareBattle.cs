@@ -38,15 +38,13 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             _RectTransform.SetHorizontalOffsets(0, 0);
 
             PanelCollection = GameObjectFinder.FindByName<PanelCollection__prefab__scriptMB>(startParent: _RectTransform);
-            TopButtons = PanelCollection.TopButtons;
-            Viewer = PanelCollection.Viewer;
-            _Context = new SelectBattlefieldViewerContext(Viewer);
+            _Context = new SelectBattlefieldViewerContext(PanelCollection);
 
             PanelCollection.SetContext(new SelectBattlefieldCollectionContext());
-            TopButtons.SetContext(new SelectBattlefieldTopButtonsContext());
-            Viewer.SetContext(_Context);
+            PanelCollection.SetTopButtonsContext(new SelectBattlefieldTopButtonsContext());
+            PanelCollection.SetViewerContext(_Context);
 
-            GameObjectFinder.FindByName("ImageButtonEquipments (id=vuhjngaz)", TopButtons.gameObject).SetActive(false);
+            GameObjectFinder.FindByName("ImageButtonEquipments (id=vuhjngaz)", PanelCollection.gameObject).SetActive(false);
 
 
 
@@ -91,10 +89,6 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
         public PanelCollection__prefab__scriptMB PanelCollection { get; }
 
-        public PanelCollectionTopButtons__prefab__scriptMB TopButtons { get; }
-
-        public PanelCollectionViewer__prefab__scriptMB Viewer { get; }
-
         public bool IsVisible => _GameObject.activeSelf;
 
         public async UniTask ShowAsync(EBattleFiled battlefieldId)
@@ -102,7 +96,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             _BattlefieldId = battlefieldId;
             _BattleStarting = false;
             _Context.ClearSelection();
-            TopButtons.ResetPageCurrent();
+            PanelCollection.ResetPageCurrent();
             _GameObject.SetActive(true);
             if (SelectBattlefieldSceneInitializator.IsConfigured)
             {
@@ -115,7 +109,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             _Context.Actions.Add(UpdateHeroesSelectedAndMaxLabel);
             UpdateHeroesSelectedAndMaxLabel();
 
-            await Viewer.InstantiateCollectionAsync(ECollectionMode.Hero);
+            await PanelCollection.InstantiateCollectionAsync(ECollectionMode.Hero);
         }
 
         public void Hide()
@@ -150,8 +144,6 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
 
             PanelCollection.OnResized();
-            TopButtons.OnResized();
-            Viewer.OnResized();
 
             UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(_RectTransform);
         }

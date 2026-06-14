@@ -26,7 +26,7 @@ namespace Assets.GameData.Scenes.Collection
 
         public async UniTask OnPageChangedAsync(int pageCurrent)
         {
-            await CollectionSceneInitializator.PanelCollectionViewerInstance.InstantiateCollectionAsync(CollectionMode);
+            await CollectionSceneInitializator.PanelCollectionInstance.InstantiateCollectionAsync(CollectionMode);
         }
 
         public void OnLayoutChanged()

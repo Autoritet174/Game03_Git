@@ -70,7 +70,7 @@ namespace Assets.GameData.Scenes.Collection
             I.PanelSceneInstance.CollectionMode = ECollectionMode.Hero;
             //I.PanelSceneInstance.PanelCollection.PanelCollectionTopButtons.UpdateActiveButtons();
             SetColorOnTabButtons(_TabButtonHeroes);
-            await I.PanelCollectionViewerInstance.InstantiateCollectionAsync(ECollectionMode.Hero);
+            await I.PanelCollectionInstance.InstantiateCollectionAsync(ECollectionMode.Hero);
         }
 
         /// <summary> Кнопка "Экипировка". </summary>
@@ -83,7 +83,7 @@ namespace Assets.GameData.Scenes.Collection
             I.PanelSceneInstance.CollectionMode = ECollectionMode.Equipment;
             //I.PanelSceneInstance.PanelCollection.PanelCollectionTopButtons.UpdateActiveButtons();
             SetColorOnTabButtons(_TabButtonEquipment);
-            await I.PanelCollectionViewerInstance.InstantiateCollectionAsync(ECollectionMode.Equipment);
+            await I.PanelCollectionInstance.InstantiateCollectionAsync(ECollectionMode.Equipment);
         }
 
         /// <summary> Кнопка "Смена экипировки". </summary>

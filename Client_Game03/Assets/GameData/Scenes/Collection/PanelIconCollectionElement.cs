@@ -15,13 +15,13 @@ namespace Assets.GameData.Scenes.Collection
     {
         private const float TEXT_COLLECTION_ELEMENT_FONTSIZE = 14f;
 
-        public PanelIconCollectionElement(PanelGroupDivider__prefab__script panelGroupDivider, CollectionElement collectionElement, PanelCollectionViewer__prefab__scriptMB viewer)
+        public PanelIconCollectionElement(PanelGroupDivider__prefab__script panelGroupDivider, CollectionElement collectionElement, PanelCollection__prefab__scriptMB panelCollection)
         {
             Id = collectionElement.Id;
             _PanelGroupDivider = panelGroupDivider;
             _CollectionElement = collectionElement;
-            _Viewer = viewer;
-            _Context = viewer.Context;
+            _PanelCollection = panelCollection;
+            _Context = panelCollection.ViewerContext;
 
             _GameObject = AddressableCache.IconCollectionElementAddressableGameObject.SafeInstant();
             _GameObject.name = $"IconCollectionElement [{Id}]";
@@ -101,12 +101,12 @@ namespace Assets.GameData.Scenes.Collection
                 ? CollectionProvider.GetCollectionEquipmentsFromCache().First(a => a.Id == _CollectionElement.Id) : null;
 
             RefreshOwnerImage();
-            _Viewer.AddElement(this);
+            _PanelCollection.AddElement(this);
         }
 
         public Guid Id { get; private set; }
         private readonly PanelGroupDivider__prefab__script _PanelGroupDivider;
-        private readonly PanelCollectionViewer__prefab__scriptMB _Viewer;
+        private readonly PanelCollection__prefab__scriptMB _PanelCollection;
         private readonly IPanelCollectionViewerContext _Context;
         private readonly GameObject _GameObject;
         private readonly RectTransform _RectTransform;
@@ -153,7 +153,7 @@ namespace Assets.GameData.Scenes.Collection
         {
             if (selected && clearOthers)
             {
-                _Viewer.UnselectAll();
+                _PanelCollection.UnselectAll();
             }
             _SelectedImage_GameObject.SetActive(selected);
             //_RarityImage_GameObject.SetActive(!selected);
