@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.GameData.Scenes.Collection
 {
-    public class CollectionSceneCollectionContext : IPanelCollectionContext
+    public class PanelCollectionContext : IPanelCollectionContext
     {
         public bool ContextControlsRootSize => true;
 

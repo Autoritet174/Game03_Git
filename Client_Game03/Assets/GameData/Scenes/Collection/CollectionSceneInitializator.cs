@@ -39,9 +39,9 @@ public class CollectionSceneInitializator : MonoBehaviour
             PanelSelectedHeroInstance = GameObjectFinder.FindByName<PanelSelectedHero__prefab__scriptMB>("PanelSelectedHero");
             PanelSelectedEquipmentInstance = GameObjectFinder.FindByName<PanelSelectedEquipment__prefab__scriptMB>("PanelSelectedEquipment");
 
-            PanelCollectionInstance.SetContext(new CollectionSceneCollectionContext());
+            PanelCollectionInstance.SetContext(new PanelCollectionContext());
             PanelCollectionInstance.SetTopButtonsContext(new CollectionSceneTopButtonsContext());
-            PanelCollectionInstance.SetViewerContext(new CollectionSceneViewerContext());
+            PanelCollectionInstance.SetViewerContext(new PanelCollectionViewerContext());
 
             IsConfigured = true;
         }

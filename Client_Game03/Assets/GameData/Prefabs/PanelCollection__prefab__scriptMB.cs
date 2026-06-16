@@ -21,18 +21,7 @@ public class PanelCollection__prefab__scriptMB : MonoBehaviour
     private const float LABEL_HEIGHT = 30f;
     private const float LABEL_FONTSIZE = 18f;
 
-    private const string TopButtonsObjectName = "PanelCollectionTopButtons";
-    private const string ViewerObjectName = "PanelCollectionViewer";
-    private const string FilterButtonHeroesName = "ImageButtonHeroes (id=pakco5ud)";
-    private const string FilterButtonEquipmentsName = "ImageButtonEquipments (id=vuhjngaz)";
-    private const string FilterButtonFilterName = "ImageButtonFilter (id=vjeqfzen)";
-    private const string FilterButtonGroupName = "ImageButtonGroup (id=hbsaogwl)";
-    private const string FilterButtonSortName = "ImageButtonSort (id=6nvcsrdm)";
-    private const string PanelRangeName = "PanelRange (id=66z5bnzi)";
-    private const string ButtonPrevPageName = "ButtonPrevPage (id=25alql62)";
-    private const string ButtonNextPageName = "ButtonNextPage (id=k5moi57b)";
-    private const string LabelRangePageName = "LabelRangePage (id=6jgz12bu)";
-
+  
     [SerializeField]
     private float SCROLLBAR_WIDTH = 32f;
 
@@ -78,29 +67,38 @@ public class PanelCollection__prefab__scriptMB : MonoBehaviour
     {
         _RectTransform = GetComponent<RectTransform>();
 
-        _TopButtons_GameObject = GameObjectFinder.FindByName(TopButtonsObjectName, gameObject);
-        _TopButtons_RectTransform = _TopButtons_GameObject.GetComponent<RectTransform>();
+        // PanelCollectionTopButtons
+        {
+            _TopButtons_GameObject = GameObjectFinder.FindByName("PanelCollectionTopButtons", gameObject);
+            _TopButtons_RectTransform = _TopButtons_GameObject.GetComponent<RectTransform>();
 
-        _FilterButtonHeroes = new(FilterButtonHeroesName, _TopButtons_GameObject.transform);
-        _FilterButtonEquipments = new(FilterButtonEquipmentsName, _TopButtons_GameObject.transform);
-        _FilterButtonFilter = new(FilterButtonFilterName, _TopButtons_GameObject.transform);
-        _FilterButtonGroup = new(FilterButtonGroupName, _TopButtons_GameObject.transform);
-        _FilterButtonSort = new(FilterButtonSortName, _TopButtons_GameObject.transform);
+            _FilterButtonHeroes = new("ImageButtonHeroes", _TopButtons_GameObject.transform);
+            _FilterButtonEquipments = new("ImageButtonEquipments", _TopButtons_GameObject.transform);
+            _FilterButtonFilter = new("ImageButtonFilter", _TopButtons_GameObject.transform);
+            _FilterButtonGroup = new("ImageButtonGroup", _TopButtons_GameObject.transform);
+            _FilterButtonSort = new("ImageButtonSort", _TopButtons_GameObject.transform);
 
-        _RangePanel_RectTransform = GameObjectFinder.FindByName<RectTransform>(PanelRangeName, _TopButtons_GameObject);
-        _ButtonPrevPage_RectTransform = GameObjectFinder.FindByName<RectTransform>(ButtonPrevPageName, _TopButtons_GameObject);
-        _ButtonNextPage_RectTransform = GameObjectFinder.FindByName<RectTransform>(ButtonNextPageName, _TopButtons_GameObject);
-        _ButtonPrevPage_RectTransform.gameObject.SetClickEvent(PagePrev, true);
-        _ButtonNextPage_RectTransform.gameObject.SetClickEvent(PageNext, true);
+            // PanelRange
+            {
+                _RangePanel_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelRange", _TopButtons_GameObject);
+                _ButtonPrevPage_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonPrevPage", _TopButtons_GameObject);
+                _ButtonNextPage_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonNextPage", _TopButtons_GameObject);
+                _ButtonPrevPage_RectTransform.gameObject.SetClickEvent(PagePrev, true);
+                _ButtonNextPage_RectTransform.gameObject.SetClickEvent(PageNext, true);
 
-        _LabelRangePage_RectTransform = GameObjectFinder.FindByName<RectTransform>(LabelRangePageName, _TopButtons_GameObject);
-        _LabelRangePage_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>(LabelRangePageName, _TopButtons_GameObject);
+                _LabelRangePage_RectTransform = GameObjectFinder.FindByName<RectTransform>("LabelRangePage", _TopButtons_GameObject);
+                _LabelRangePage_TextMeshProUGUI = _LabelRangePage_RectTransform.GetComponent<TextMeshProUGUI>();
+            }
+        }
 
-        _Viewer_RectTransform = GameObjectFinder.FindByName<RectTransform>(ViewerObjectName, gameObject);
-        _ScrollbarVertical_RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollbarVertical", _Viewer_RectTransform);
-        Content_Transform = GameObjectFinder.FindByName<RectTransform>("Content", _Viewer_RectTransform);
-        _Content_VerticalLayoutGroup = Content_Transform.GetComponent<VerticalLayoutGroup>();
-        _ViewerViewport_RectTransform = GameObjectFinder.FindByName<RectTransform>("Viewport", _Viewer_RectTransform);
+        // PanelCollectionViewer
+        {
+            _Viewer_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelCollectionViewer", gameObject);
+            _ScrollbarVertical_RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollbarVertical", _Viewer_RectTransform);
+            Content_Transform = GameObjectFinder.FindByName<RectTransform>("Content", _Viewer_RectTransform);
+            _Content_VerticalLayoutGroup = Content_Transform.GetComponent<VerticalLayoutGroup>();
+            _ViewerViewport_RectTransform = GameObjectFinder.FindByName<RectTransform>("Viewport", _Viewer_RectTransform);
+        }
     }
 
     public void SetContext(IPanelCollectionContext context)
@@ -219,9 +217,15 @@ public class PanelCollection__prefab__scriptMB : MonoBehaviour
         }
         else
         {
+            
+        }
+
+        if (_PanelCollectionContext != null)
+        {
             Width = _RectTransform.rect.width;
             Height = _RectTransform.rect.height;
         }
+        
 
         OnTopButtonsResized();
         OnViewerResized();

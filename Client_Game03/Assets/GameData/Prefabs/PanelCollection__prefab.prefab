@@ -85,7 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1939901752008573204}
   m_Layer: 5
-  m_Name: PanelRange (id=66z5bnzi)
+  m_Name: PanelRange
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -611,7 +611,7 @@ GameObject:
   - component: {fileID: 2041423624809202858}
   - component: {fileID: 3898299394079041550}
   m_Layer: 5
-  m_Name: ImageButtonGroup (id=hbsaogwl)
+  m_Name: ImageButtonGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1113,7 +1113,7 @@ GameObject:
   - component: {fileID: 3857638321198721032}
   - component: {fileID: 5240508929414112750}
   m_Layer: 5
-  m_Name: ImageButtonSort (id=6nvcsrdm)
+  m_Name: ImageButtonSort
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1519,7 +1519,7 @@ GameObject:
   - component: {fileID: 991278354950735087}
   - component: {fileID: 3230982622897325726}
   m_Layer: 5
-  m_Name: ImageButtonFilter (id=vjeqfzen)
+  m_Name: ImageButtonFilter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1716,7 +1716,7 @@ GameObject:
   - component: {fileID: 6896463531914611066}
   - component: {fileID: 2844150859597035345}
   m_Layer: 5
-  m_Name: ImageButtonEquipments (id=vuhjngaz)
+  m_Name: ImageButtonEquipments
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1793,7 +1793,7 @@ GameObject:
   - component: {fileID: 5083180392889724226}
   - component: {fileID: 6426052344117080354}
   m_Layer: 5
-  m_Name: ImageButtonHeroes (id=pakco5ud)
+  m_Name: ImageButtonHeroes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1868,7 +1868,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2883646782141063761, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_Name
-      value: ButtonPrevPage (id=25alql62)
+      value: ButtonPrevPage
       objectReference: {fileID: 0}
     - target: {fileID: 3997452176854684527, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_Type
@@ -2178,7 +2178,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2883646782141063761, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_Name
-      value: ButtonNextPage (id=k5moi57b)
+      value: ButtonNextPage
       objectReference: {fileID: 0}
     - target: {fileID: 3997452176854684527, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_Color.b
@@ -2348,7 +2348,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 69272583334885662, guid: d35c7a96fc5dc7241b1e7dfed11f845f, type: 3}
       propertyPath: m_Name
-      value: LabelRangePage (id=6jgz12bu)
+      value: LabelRangePage
       objectReference: {fileID: 0}
     - target: {fileID: 69272583334885662, guid: d35c7a96fc5dc7241b1e7dfed11f845f, type: 3}
       propertyPath: m_StaticEditorFlags

@@ -81,6 +81,7 @@
     <Compile Include="Assets\GameData\Scenes\SelectBattlefield\BattlefieldCategory.cs" />
     <Compile Include="Assets\GameData\Scripts\LoggerException.cs" />
     <Compile Include="Assets\GameData\Scenes\SelectBattlefield\BattlefieldButton.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\PanelCollectionViewerContext.cs" />
     <Compile Include="Assets\GameData\Scenes\SelectBattlefield\SelectBattlefieldSceneInitializator.cs" />
     <Compile Include="Assets\GameData\Scripts\GameExitHandler.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Button_Reg.cs" />
@@ -93,14 +94,12 @@
     <Compile Include="Assets\GameData\Scenes\Collection\TabButton.cs" />
     <Compile Include="Assets\GameData\Scripts\StaticRemover.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\MainMenuSceneInitializator.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\CollectionSceneCollectionContext.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\CollectionSceneInitializator.cs" />
     <Compile Include="Assets\GameData\Scripts\GameMessage.cs" />
     <Compile Include="Assets\GameData\Scripts\InitializatorStartScene.cs" />
     <Compile Include="Assets\GameData\Scenes\SelectBattlefield\SelectBattlefieldCollectionContext.cs" />
     <Compile Include="Assets\GameData\Scenes\Battlefield\Animations\HealthHub.cs" />
     <Compile Include="Assets\GameData\Scripts\UnityObject.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\CollectionSceneViewerContext.cs" />
     <Compile Include="Assets\GameData\Prefabs\FilterButton.cs" />
     <Compile Include="Assets\GameData\Scripts\UniTaskRunner.cs" />
     <Compile Include="Assets\GameData\Scripts\AddressableCache.cs" />
@@ -119,6 +118,7 @@
     <Compile Include="Assets\GameData\Scripts\GameObjectExtensions.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\prefabs\PanelSelectedHero__prefab__scriptMB.cs" />
     <Compile Include="Assets\GameData\Scripts\DevAuthConfig.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\PanelCollectionContext.cs" />
     <Compile Include="Assets\GameData\Prefabs\PanelTop__prefab__scriptMB.cs" />
     <Compile Include="Assets\GameData\Scenes\SelectBattlefield\SelectBattlefieldTopButtonsContext.cs" />
     <Compile Include="Assets\GameData\Scripts\GameSceneManager.cs" />

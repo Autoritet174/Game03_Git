@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Assets.GameData.Scenes.Collection
 {
-    public class CollectionSceneViewerContext : IPanelCollectionViewerContext
+    public class PanelCollectionViewerContext : IPanelCollectionViewerContext
     {
         private PanelCollection__prefab__scriptMB _PanelCollection;
 
