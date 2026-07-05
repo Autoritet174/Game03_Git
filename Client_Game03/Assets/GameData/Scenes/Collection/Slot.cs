@@ -68,7 +68,7 @@ namespace Assets.GameData.Scenes.Collection
             _Rarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity", _RectTransform.transform);
             _EquipmentFull_Image = GameObjectFinder.FindByName<Image>("ImageEquipmentFull", _RectTransform.transform);
 
-            EventHelper.AddHoverEvents(_GameObject, OnPointerEnter, OnPointerExit);
+            EventHelper.SetHoverEvents(_GameObject, OnPointerEnter, OnPointerExit);
             EventHelper.SetClickEvent(_GameObject, OnClick, false);
         }
 
@@ -140,10 +140,10 @@ namespace Assets.GameData.Scenes.Collection
 
         private async UniTask OnClick()
         {
-            if (_Equipment != null)
-            {
-                I.PanelSelectedEquipmentInstance.Show(_Equipment.Id);
-            }
+            //if (_Equipment != null)
+            //{
+            //    PanelSelectedEquipment__context.Show(_Equipment.Id);
+            //}
         }
     }
 

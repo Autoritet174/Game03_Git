@@ -29,7 +29,7 @@ namespace Assets.GameData.Prefabs
             _GroupName = groupCollectionElement.Name;
 
             _GameObject = AddressableCache.GroupDividerPrefabAddressableGameObject.SafeInstant();
-            _GameObject.transform.SetParent(parent.Content_Transform, false);
+            _GameObject.transform.SetParent(parent.PanelCollectionViewer_Content__Transform, false);
 
             _RectTransform = _GameObject.GetComponent<RectTransform>();
 
@@ -165,7 +165,7 @@ namespace Assets.GameData.Prefabs
 
         public void OnResized()
         {
-            float width = _PanelCollection.ViewerWidth;
+            float width = _PanelCollection.Width;
             float coefHeight = G.GetCoefHeight();
             float buttonHeight = DIVIDER_BUTTON_HEIGHT * coefHeight;
             float height = buttonHeight;

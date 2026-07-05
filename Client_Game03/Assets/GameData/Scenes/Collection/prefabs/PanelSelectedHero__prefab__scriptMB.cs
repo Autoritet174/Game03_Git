@@ -15,8 +15,12 @@ using L = General.LocalizationKeys;
 
 namespace Assets.GameData.Scenes.Collection.prefabs
 {
-    public class PanelSelectedHero__prefab__scriptMB : MonoBehaviour
+    public class PanelSelectedHero__prefab__scriptMB : MonoBehaviour, IPrefab
     {
+        public bool Initialized { get; private set; }
+        public float Width { get; private set; }
+        public float Height { get; private set; }
+
         /// <summary>
         /// Ширина панели при разрешении 1920x1080.
         /// </summary>
@@ -35,11 +39,10 @@ namespace Assets.GameData.Scenes.Collection.prefabs
 
 
         public Guid HeroId { get; private set; }
-        public float Width { get; private set; }
-        public float Height { get; private set; }
         public bool IsVisible { get; private set; }
         public float PanelStatWidth { get; private set; }
         public float PanelStatHeight { get; private set; }
+
 
         private RectTransform _RectTransform;
 
@@ -74,7 +77,10 @@ namespace Assets.GameData.Scenes.Collection.prefabs
         private Stat__prefab__script _StatCritChance;
         private Stat__prefab__script _StatCritMultiplier;
 
-        private void Start()
+        public Action SceneOnResized { get; set; }
+        public PanelCollection__prefab__scriptMB PanelCollection__prefab__context { get; set; }
+
+        public void Initialize()
         {
             _RectTransform = gameObject.GetComponent<RectTransform>();
             _RectTransform.anchoredPosition = new Vector2(0f, 0f);
@@ -157,6 +163,11 @@ namespace Assets.GameData.Scenes.Collection.prefabs
 
             Hide();
         }
+
+        public void Refresh()
+        {
+            Show(HeroId);
+        }
         public void Show(Guid heroId)
         {
             IsVisible = true;
@@ -229,28 +240,19 @@ namespace Assets.GameData.Scenes.Collection.prefabs
 
 
 
-            SetViewerElementSelected(heroId, true);
+            SetViewerElementSelected(true);
             gameObject.SetActive(true);
-            I.OnResized();
+            SceneOnResized();
         }
 
-        public void Refresh()
-        {
-            Show(HeroId);
-        }
 
         private void Hide()
         {
             IsVisible = false;
-            SetViewerElementSelected(HeroId, false);
+            SetViewerElementSelected(false);
             HeroId = Guid.Empty;
             gameObject.SetActive(false);
-
-            //if (_PanelScene.CollectionMode == CollectionModeEnum.ChangingEquipment)
-            //{
-            //    await _PanelScene.PanelCollection.PanelCollectionViewer.InstantiateCollectionAsync();
-            //}
-            I.OnResized();
+            SceneOnResized();
         }
 
         private UniTask HideAsync()
@@ -259,7 +261,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
             return UniTask.CompletedTask;
         }
 
-        public void OnResized()
+        public void OnResized(float coefHeight, float top = 0, float buttom = 0, float left = 0, float right = 0)
         {
             if (!IsVisible)
             {
@@ -268,12 +270,11 @@ namespace Assets.GameData.Scenes.Collection.prefabs
                 return;
             }
 
-            float coefHeight = G.GetCoefHeight();
             Width = WIDTH_BASE * coefHeight;
-            float h1 = I.PanelTopInstance.Height;
-            Height = Screen.height - h1;
+            Height = Screen.height - top;
             _RectTransform.sizeDelta = new Vector2(Width, Height);
 
+            float h1 = G.PANELTOP_HEIGHT * coefHeight;
             // Верхняя панель где написано имя героя
             _PanelTop__RectTransform.sizeDelta = new Vector2(Width, h1);
 
@@ -332,15 +333,14 @@ namespace Assets.GameData.Scenes.Collection.prefabs
             _StatCritMultiplier.OnResized();
         }
 
-        private void SetViewerElementSelected(Guid id, bool selected)
+        private void SetViewerElementSelected(bool selected)
         {
-            PanelCollection__prefab__scriptMB panelCollection = I.PanelCollectionInstance;
-            if (panelCollection == null)
+            if (PanelCollection__prefab__context == null)
             {
                 return;
             }
 
-            PanelIconCollectionElement element = panelCollection.GetElement(id);
+            PanelIconCollectionElement element = PanelCollection__prefab__context.GetElement(HeroId);
             if (element == null)
             {
                 return;
@@ -348,6 +348,6 @@ namespace Assets.GameData.Scenes.Collection.prefabs
 
             element.Selected(selected);
         }
-
+       
     }
 }

@@ -1,74 +1,70 @@
-using Assets.GameData.Prefabs;
-using System;
-using System.Collections.Generic;
+//using Assets.GameData.Prefabs;
+//using System;
+//using System.Collections.Generic;
 
-namespace Assets.GameData.Scenes.Collection
-{
-    public class PanelCollectionViewerContext : IPanelCollectionViewerContext
-    {
-        private PanelCollection__prefab__scriptMB _PanelCollection;
+//namespace Assets.GameData.Scenes.Collection
+//{
+//    public class PanelCollectionViewerContext : IPanelCollectionViewerContext
+//    {
+//        public int PageCurrent => CollectionSceneInitializator.PanelCollection__prefab__context.PageCurrent;
 
-        public ECollectionMode CollectionMode => CollectionSceneInitializator.PanelSceneInstance.CollectionMode;
+//        public int PageMax => CollectionSceneInitializator.PanelCollection__prefab__context.PageMax;
 
-        public int PageCurrent => CollectionSceneInitializator.PanelCollectionInstance.PageCurrent;
+//        public void OnCollectionLoaded(PanelCollection__prefab__scriptMB panelCollection, int maxCollectionElements)
+//        {
+//            _PanelCollection = panelCollection;
+//            CollectionSceneInitializator.PanelCollection__prefab__context.PanelTopButtons_UpdatePageMax();
+//            //CollectionSceneInitializator.PanelCollection__prefab__context.TopButtons_SetPageDiapason(maxCollectionElements);
+//        }
 
-        public int PageMax => CollectionSceneInitializator.PanelCollectionInstance.PageMax;
+//        public Guid? GetSelectedElementId(ECollectionMode collectionMode)
+//        {
+//            return collectionMode switch
+//            {
+//                ECollectionMode.Hero when CollectionSceneInitializator.PanelSelectedHero__context is { IsVisible: true } heroPanel
+//                    => heroPanel.HeroId,
+//                ECollectionMode.Equipment when CollectionSceneInitializator.PanelSelectedEquipment__context is { IsVisible: true } equipmentPanel
+//                    => equipmentPanel.EquipmentId,
+//                _ => null,
+//            };
+//        }
 
-        public void OnCollectionLoaded(PanelCollection__prefab__scriptMB panelCollection, int maxCollectionElements)
-        {
-            _PanelCollection = panelCollection;
-            CollectionSceneInitializator.PanelCollectionInstance.UpdatePageMax();
-            CollectionSceneInitializator.PanelCollectionInstance.SetPageDiapason(maxCollectionElements);
-        }
+//        public void OnElementSelected(Guid elementId, ECollectionMode collectionMode)
+//        {
+//            switch (collectionMode)
+//            {
+//                case ECollectionMode.Hero:
+//                    CollectionSceneInitializator.PanelSelectedHero__context.Show(elementId);
+//                    break;
 
-        public Guid? GetSelectedElementId(ECollectionMode collectionMode)
-        {
-            return collectionMode switch
-            {
-                ECollectionMode.Hero when CollectionSceneInitializator.PanelSelectedHeroInstance is { IsVisible: true } heroPanel
-                    => heroPanel.HeroId,
-                ECollectionMode.Equipment when CollectionSceneInitializator.PanelSelectedEquipmentInstance is { IsVisible: true } equipmentPanel
-                    => equipmentPanel.EquipmentId,
-                _ => null,
-            };
-        }
+//                case ECollectionMode.Equipment:
+//                    CollectionSceneInitializator.PanelSelectedEquipment__context.Show(elementId);
+//                    break;
 
-        public void OnElementSelected(Guid elementId, ECollectionMode collectionMode)
-        {
-            switch (collectionMode)
-            {
-                case ECollectionMode.Hero:
-                    CollectionSceneInitializator.PanelSelectedHeroInstance.Show(elementId);
-                    break;
+//                default:
+//                    throw new NotImplementedException();
+//            }
 
-                case ECollectionMode.Equipment:
-                    CollectionSceneInitializator.PanelSelectedEquipmentInstance.Show(elementId);
-                    break;
+//            _PanelCollection?.GetElement(elementId)?.Selected(true, clearOthers: true);
+//        }
 
-                default:
-                    throw new NotImplementedException();
-            }
+//        public bool LoadAllPages => false;
 
-            _PanelCollection?.GetElement(elementId)?.Selected(true, clearOthers: true);
-        }
+//        public bool ContextControlsRootSize => true;
 
-        public bool LoadAllPages => false;
+//        public List<Action> Actions => throw new NotImplementedException();
 
-        public bool ContextControlsRootSize => true;
+//        public void OnLayoutChanged()
+//        {
+//            IPrefab.OnResized();
+//        }
 
-        public List<Action> Actions => throw new NotImplementedException();
-
-        public void OnLayoutChanged()
-        {
-            CollectionSceneInitializator.OnResized();
-        }
-
-        public (float width, float height) GetViewerSize()
-        {
-            float width = CollectionSceneInitializator.PanelCollectionInstance.Width;
-            float height = CollectionSceneInitializator.PanelCollectionInstance.Height
-                - CollectionSceneInitializator.PanelCollectionInstance.TopButtonsHeight;
-            return (width, height);
-        }
-    }
-}
+//        public (float width, float height) GetViewerSize()
+//        {
+//            float width = CollectionSceneInitializator.PanelCollection__prefab__context.Width;
+//            float height = CollectionSceneInitializator.PanelCollection__prefab__context.Height
+//                - CollectionSceneInitializator.PanelCollection__prefab__context.PanelTopButtons_Height;
+//            return (width, height);
+//        }
+//    }
+//}

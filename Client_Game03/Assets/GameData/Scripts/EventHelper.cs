@@ -6,10 +6,11 @@ using UnityEngine.UI;
 
 public static class EventHelper
 {
+   
     /// <summary>
-    /// Метод для навешивания событий наведения и ухода курсора.
+    /// Метод для навешивания событий наведения и ухода курсора с асинхронными делегатами.
     /// </summary>
-    public static void AddHoverEvents(this GameObject gameObject, Func<UniTask> onPointerEnter, Func<UniTask> onPointerExit)
+    public static void SetHoverEvents(this GameObject gameObject, Func<UniTask> onPointerEnter, Func<UniTask> onPointerExit)
     {
         if (gameObject == null)
         {
@@ -24,6 +25,46 @@ public static class EventHelper
 
         handler.SetupHoverEvents(onPointerEnter, onPointerExit);
     }
+
+    /// <summary>
+    /// Метод для навешивания событий наведения и ухода курсора с синхронными делегатами.
+    /// </summary>
+    /// <param name="gameObject"></param>
+    /// <param name="onPointerEnter"></param>
+    /// <param name="onPointerExit"></param>
+    public static void SetHoverEvents(this GameObject gameObject, Action onPointerEnter, Action onPointerExit)
+    {
+        if (gameObject == null)
+        {
+            Debug.LogError("gameObject is null!");
+            return;
+        }
+
+        if (!gameObject.TryGetComponent(out ButtonHoverHandler handler))
+        {
+            handler = gameObject.AddComponent<ButtonHoverHandler>();
+        }
+
+        handler.SetupHoverEvents(onPointerEnter, onPointerExit);
+    }
+
+    /// <summary>
+    /// Назначает событие клика на кнопку, удаляя все предыдущие слушатели. Если компонент Button отсутствует, выбрасывается исключение.
+    /// </summary>
+    /// <param name="gameObject"></param>
+    /// <param name="action"></param>
+    /// <exception cref="InvalidOperationException"></exception>
+    public static void SetClickEvent(this GameObject gameObject, Action action)
+    {
+        if (!gameObject.TryGetComponent(out Button button))
+        {
+            throw new InvalidOperationException($"GameObject '{gameObject.name}' does not have a Button component");
+        }
+        Button.ButtonClickedEvent onClick = button.onClick;
+        onClick.RemoveAllListeners();
+        onClick.AddListener(() => action());
+    }
+
 
     /// <summary>
     /// Метод для навешивания события клика на GameObject или его Button компонент. Удаляет все другие Listener.
@@ -60,7 +101,7 @@ public static class EventHelper
     /// <summary>
     /// Метод для навешивания события клика на UI элемент с поддержкой параметра.
     /// </summary>
-    public static void AddClickEvent<T>(this GameObject gameObject, Func<T, UniTask> onClick, T parameter)
+    public static void SetClickEvent<T>(this GameObject gameObject, Func<T, UniTask> onClick, T parameter)
     {
         if (gameObject == null)
         {
@@ -80,7 +121,7 @@ public static class EventHelper
     /// <summary>
     /// Метод для навешивания асинхронного события клика на UI элемент с поддержкой параметра.
     /// </summary>
-    public static void AddClickEvent<T>(this GameObject gameObject, Func<T, UniTask> asyncOnClick, T parameter, bool handleExceptions = true)
+    public static void SetClickEvent<T>(this GameObject gameObject, Func<T, UniTask> asyncOnClick, T parameter, bool handleExceptions = true)
     {
         if (gameObject == null)
         {
@@ -119,31 +160,52 @@ public static class EventHelper
         button.onClick.AddListener(() => ExecuteWithExceptionHandling().Forget());
     }
 
-    // УДАЛИТЬ этот метод - он некорректен
-    // public static void AddClickEvent(this GameObject gameObject, UniTask asyncOnClick, ...)
-    // UniTask нельзя передавать как делегат
 }
 
 // Класс-обработчик, который будет добавляться к кнопкам
 internal class ButtonHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    private Func<UniTask> onEnter;
-    private Func<UniTask> onExit;
+    private Func<UniTask> onEnterAsync;
+    private Func<UniTask> onExitAsync;
+    private Action onEnterSync;
+    private Action onExitSync;
 
     public void SetupHoverEvents(Func<UniTask> enterAction, Func<UniTask> exitAction)
     {
-        onEnter = enterAction;
-        onExit = exitAction;
+        onEnterAsync = enterAction;
+        onExitAsync = exitAction;
+        onEnterSync = null;
+        onExitSync = null;
+    }
+
+    public void SetupHoverEvents(Action enterAction, Action exitAction)
+    {
+        onEnterSync = enterAction;
+        onExitSync = exitAction;
+        onEnterAsync = null;
+        onExitAsync = null;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        onEnter?.Invoke().Forget();
+        if (onEnterSync != null)
+        {
+            onEnterSync();
+            return;
+        }
+
+        onEnterAsync?.Invoke().Forget();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        onExit?.Invoke().Forget();
+        if (onExitSync != null)
+        {
+            onExitSync();
+            return;
+        }
+
+        onExitAsync?.Invoke().Forget();
     }
 }
 

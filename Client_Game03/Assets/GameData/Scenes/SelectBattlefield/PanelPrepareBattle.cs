@@ -30,21 +30,21 @@ namespace Assets.GameData.Scenes.SelectBattlefield
         private bool _BattleStarting;
 
         private General.DTO.Entities.GameData.Battlefield battlefield = null;
-
+        //public PanelCollection__prefab__scriptMB PanelCollection__prefab { get; set; }
         public PanelPrepareBattle()
         {
             _GameObject = GameObjectFinder.FindByName("PanelPrepareBattle");
             _RectTransform = _GameObject.GetComponent<RectTransform>();
             _RectTransform.SetHorizontalOffsets(0, 0);
 
-            PanelCollection = GameObjectFinder.FindByName<PanelCollection__prefab__scriptMB>(startParent: _RectTransform);
-            _Context = new SelectBattlefieldViewerContext(PanelCollection);
+            PanelCollection__prefab = GameObjectFinder.FindByName<PanelCollection__prefab__scriptMB>(startParent: _RectTransform);
+            _Context = new SelectBattlefieldViewerContext(PanelCollection__prefab);
 
-            PanelCollection.SetContext(new SelectBattlefieldCollectionContext());
-            PanelCollection.SetTopButtonsContext(new SelectBattlefieldTopButtonsContext());
-            PanelCollection.SetViewerContext(_Context);
+            //PanelCollection__prefab.SetContext(new SelectBattlefieldCollectionContext());
+            //PanelCollection__prefab.SetTopButtonsContext(new SelectBattlefieldTopButtonsContext());
+            //PanelCollection__prefab.SetViewerContext(_Context);
 
-            GameObjectFinder.FindByName("ImageButtonEquipments (id=vuhjngaz)", PanelCollection.gameObject).SetActive(false);
+            GameObjectFinder.FindByName("ImageButtonEquipments (id=vuhjngaz)", PanelCollection__prefab.gameObject).SetActive(false);
 
 
 
@@ -69,34 +69,34 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             _GameObject.SetActive(false);
 
             {
-                GameObject buttonClose__GameObject = GameObjectFinder.FindByName("PanelTop", _GameObject)
-                   .GetComponent<PanelTop__prefab__scriptMB>()
-                   .ButtonClose__RectTransform.gameObject;
+                //GameObject buttonClose__GameObject = GameObjectFinder.FindByName("PanelTop", _GameObject)
+                //   .GetComponent<PanelTop__prefab__scriptMB>()
+                //   ._ButtonClose__RectTransform.gameObject;
 
-                if (buttonClose__GameObject.TryGetComponent(out ButtonClose_Click_MoveToMainMenu clickClose))
-                {
-                    UnityEngine.Object.Destroy(clickClose);
-                }
+                //if (buttonClose__GameObject.TryGetComponent(out ButtonClose_Click_MoveToMainMenu clickClose))
+                //{
+                //    UnityEngine.Object.Destroy(clickClose);
+                //}
 
-                buttonClose__GameObject.GetComponent<Button>().onClick.RemoveAllListeners();
+                //buttonClose__GameObject.GetComponent<Button>().onClick.RemoveAllListeners();
 
-                GameObjectFinder.FindByName("PanelTop", _GameObject)
-                    .GetComponent<PanelTop__prefab__scriptMB>()
-                    .ButtonClose__RectTransform.gameObject
-                    .SetClickEvent(Cancel, useButtonComponent: true);
+                //GameObjectFinder.FindByName("PanelTop", _GameObject)
+                //    .GetComponent<PanelTop__prefab__scriptMB>()
+                //    ._ButtonClose__RectTransform.gameObject
+                //    .SetClickEvent(Cancel, useButtonComponent: true);
             }
         }
 
-        public PanelCollection__prefab__scriptMB PanelCollection { get; }
+        public PanelCollection__prefab__scriptMB PanelCollection__prefab { get; }
 
         public bool IsVisible => _GameObject.activeSelf;
 
-        public async UniTask ShowAsync(EBattleFiled battlefieldId)
+        public void Show(EBattleFiled battlefieldId)
         {
             _BattlefieldId = battlefieldId;
             _BattleStarting = false;
             _Context.ClearSelection();
-            PanelCollection.ResetPageCurrent();
+            PanelCollection__prefab.PanelTopButtons_ResetPageCurrent();
             _GameObject.SetActive(true);
             if (SelectBattlefieldSceneInitializator.IsConfigured)
             {
@@ -109,7 +109,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             _Context.Actions.Add(UpdateHeroesSelectedAndMaxLabel);
             UpdateHeroesSelectedAndMaxLabel();
 
-            await PanelCollection.InstantiateCollectionAsync(ECollectionMode.Hero);
+            PanelCollection__prefab.InstantiateCollection(ECollectionMode.Hero);
         }
 
         public void Hide()
@@ -143,7 +143,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             _StartBattleButton__RectTransform.sizeDelta = new Vector2(325 * coefHeight, 100 * coefHeight);
 
 
-            PanelCollection.OnResized();
+            PanelCollection__prefab.OnResized(coefHeight);
 
             UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(_RectTransform);
         }

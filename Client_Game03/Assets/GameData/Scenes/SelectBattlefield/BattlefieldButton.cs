@@ -43,8 +43,8 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             string localizationKey = $"{L.UI.Label.Battlefield}_{battlefieldId}";
             label__TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(localizationKey));
 
-            EventHelper.AddHoverEvents(imageMask__RectTransform.gameObject, OnPointerEnter, OnPointerExit);
-            EventHelper.SetClickEvent(imageMask__RectTransform.gameObject, OnClick, false);
+            imageMask__RectTransform.gameObject.SetHoverEvents(OnPointerEnter, OnPointerExit);
+            imageMask__RectTransform.gameObject.SetClickEvent(OnClick);
         }
 
 
@@ -73,9 +73,9 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             imageSelectedMask__GameObject.SetActive(false);
         }
 
-        private async UniTask OnClick()
+        private void OnClick()
         {
-            await SelectBattlefieldSceneInitializator.PanelPrepareBattleInstance.ShowAsync(BattlefieldId);
+            SelectBattlefieldSceneInitializator.PanelPrepareBattleInstance.Show(BattlefieldId);
         }
     }
 }

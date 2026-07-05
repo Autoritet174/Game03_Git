@@ -16,8 +16,12 @@ using L = General.LocalizationKeys;
 
 namespace Assets.GameData.Scenes.Collection.prefabs
 {
-    public class PanelSelectedEquipment__prefab__scriptMB : MonoBehaviour
+    public class PanelSelectedEquipment__prefab__scriptMB : MonoBehaviour, IPrefab
     {
+        public bool Initialized { get; private set; }
+        public float Width { get; private set; }
+        public float Height { get; private set; }
+
         private const float WIDTH_BASE = 535f;
         public const float WIDTH_SPACING = 10f;
 
@@ -38,12 +42,10 @@ namespace Assets.GameData.Scenes.Collection.prefabs
 
         private const float IMAGE_CONTAINER_SPACING = 10f;
 
-        public PanelScene _PanelScene { get; private set; }
         public Guid EquipmentId { get; private set; }
-        public float Width { get; private set; }
-        public float Height { get; private set; }
         public bool IsVisible { get; private set; }
         public bool IsEquipped { get; private set; }
+
 
         private RectTransform _RectTransform;
 
@@ -83,7 +85,12 @@ namespace Assets.GameData.Scenes.Collection.prefabs
         private Stat__prefab__script _StatLevel;
         private readonly Stat__prefab__script[] _Stats = new Stat__prefab__script[7];
 
-        private void Start()
+        public Action SceneOnResized { get; set; }
+        public Action TabButtonHeroesOnClick { get; set; }
+        public PanelCollection__prefab__scriptMB PanelCollection__prefab__context { get; set; }
+        public PanelSelectedHero__prefab__scriptMB PanelSelectedHero__context { get; set; }
+
+        public void Initialize()
         {
             _RectTransform = gameObject.GetComponent<RectTransform>();
             _RectTransform.anchoredPosition = new Vector2(0f, 0f);
@@ -157,7 +164,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
                         _ImageContainer_RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Container", _PanelTab1__RectTransform);
                         _SelectedEquipment_Image = GameObjectFinder.FindByName<Image>("ImageEquipmentFull", _ImageContainer_RectTransform);
                         _SelectedEquipmentRarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity", _ImageContainer_RectTransform);
-                        _ButtonShowHero_RectTransform.gameObject.SetClickEvent(ShowHeroOnClickAsync, true);
+                        _ButtonShowHero_RectTransform.gameObject.SetClickEvent(ShowHeroOnClick);
                     }
 
                     // Статы
@@ -218,7 +225,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
             SetViewerElementSelected(equipmentId, true);
 
             gameObject.SetActive(true);
-            I.OnResized();
+            SceneOnResized();
         }
 
         private void Hide()
@@ -227,7 +234,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
             SetViewerElementSelected(EquipmentId, false);
             EquipmentId = Guid.Empty;
             gameObject.SetActive(false);
-            I.OnResized();
+            SceneOnResized();
         }
 
         public UniTask HideAsync()
@@ -236,7 +243,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
             return UniTask.CompletedTask;
         }
 
-        public void OnResized()
+        public void OnResized(float coefHeight, float top = 0, float buttom = 0, float left = 0, float right = 0)
         {
             if (!IsVisible)
             {
@@ -245,12 +252,11 @@ namespace Assets.GameData.Scenes.Collection.prefabs
                 return;
             }
 
-            float coefHeight = G.GetCoefHeight();
             Width = WIDTH_BASE * coefHeight;
-            float h1 = I.PanelTopInstance.Height;
-            Height = Screen.height - h1;
+            Height = Screen.height - top;
+            float h1 = G.PANELTOP_HEIGHT * coefHeight;
             _RectTransform.sizeDelta = new Vector2(Width, Height);
-            _RectTransform.anchoredPosition = new Vector2(-I.PanelSelectedHeroInstance.Width - WIDTH_SPACING, 0f);
+            _RectTransform.anchoredPosition = new Vector2(-right - WIDTH_SPACING, 0f);
 
             // Верхняя панель где написано название экипировки
             _PanelTop_RectTransform.sizeDelta = new Vector2(Width, h1);
@@ -335,13 +341,6 @@ namespace Assets.GameData.Scenes.Collection.prefabs
             }
         }
 
-        private async UniTask ShowHeroOnClickAsync()
-        {
-            if (_DtoEquipment.HeroId != null)
-            {
-                I.PanelSelectedHeroInstance.Show(_DtoEquipment.HeroId.Value);
-            }
-        }
         private async UniTask TakeOnOffOnClickAsync()
         {
             await EquipmentTakeOnOffAsync();
@@ -351,6 +350,13 @@ namespace Assets.GameData.Scenes.Collection.prefabs
         {
             await EquipmentTakeOnOffAsync(true);
         }
+        private void ShowHeroOnClick()
+        {
+            if (_DtoEquipment.HeroId != null)
+            {
+                PanelSelectedHero__context.Show(_DtoEquipment.HeroId.Value);
+            }
+        }
 
         private async UniTask EquipmentTakeOnOffAsync(bool? inAltSlot = null)
         {
@@ -358,6 +364,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
             if (IsEquipped)
             {
                 // экипировка надета, снимаем
+
                 _ = _DtoEquipment.SlotId.Value;
                 Guid heroId = _DtoEquipment.HeroId.Value;
                 result = await CollectionProvider.EquipmentTakeOffAsync(EquipmentId,
@@ -365,7 +372,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
                 if (result)
                 {
                     Show(EquipmentId);
-                    I.PanelSelectedHeroInstance.Show(heroId);
+                    PanelSelectedHero__context.Show(heroId);
                     RefreshViewerElementOwnerImage(EquipmentId);
                 }
                 else
@@ -376,10 +383,11 @@ namespace Assets.GameData.Scenes.Collection.prefabs
             else
             {
                 // экипировка не одета, одеваем
-                Guid heroId = I.PanelSelectedHeroInstance.HeroId;
+
+                Guid heroId = PanelSelectedHero__context.HeroId;
                 if (heroId == Guid.Empty)
                 {
-                    await I.PanelTopInstance.OnClickHeroes();
+                    TabButtonHeroesOnClick();
                     GameMessage.Show(LocalizationManager.GetValue(L.Info.SelectHero), true);
                     return;
                 }
@@ -391,7 +399,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
 
 
                 result = await CollectionProvider.EquipmentTakeOnAsync(EquipmentId,
-                    I.PanelSelectedHeroInstance.HeroId, inAltSlot,
+                    PanelSelectedHero__context.HeroId, inAltSlot,
                     CancellationTokenManager.Create("CollectionProvider.EquipmentTakeOnAsync", 5));
                 if (result)
                 {
@@ -405,7 +413,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
 
 
                     Show(EquipmentId);
-                    I.PanelSelectedHeroInstance.Show(_DtoEquipment.HeroId.Value);
+                    PanelSelectedHero__context.Show(_DtoEquipment.HeroId.Value);
                     RefreshViewerElementOwnerImage(EquipmentId);
                 }
                 else
@@ -440,7 +448,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
 
         private void SetViewerElementSelected(Guid id, bool selected)
         {
-            PanelCollection__prefab__scriptMB panelCollection = I.PanelCollectionInstance;
+            PanelCollection__prefab__scriptMB panelCollection = PanelCollection__prefab__context;
             if (panelCollection == null)
             {
                 return;
@@ -457,7 +465,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
 
         private void RefreshViewerElementOwnerImage(Guid id)
         {
-            PanelCollection__prefab__scriptMB panelCollection = I.PanelCollectionInstance;
+            PanelCollection__prefab__scriptMB panelCollection = PanelCollection__prefab__context;
             if (panelCollection == null)
             {
                 return;

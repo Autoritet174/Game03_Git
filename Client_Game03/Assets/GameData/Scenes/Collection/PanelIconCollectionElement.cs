@@ -1,4 +1,5 @@
 using Assets.GameData.Prefabs;
+using Assets.GameData.Scenes.Collection.prefabs;
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using Game03Client.Collection;
@@ -14,14 +15,20 @@ namespace Assets.GameData.Scenes.Collection
     public class PanelIconCollectionElement
     {
         private const float TEXT_COLLECTION_ELEMENT_FONTSIZE = 14f;
-
-        public PanelIconCollectionElement(PanelGroupDivider__prefab__script panelGroupDivider, CollectionElement collectionElement, PanelCollection__prefab__scriptMB panelCollection)
+        public PanelIconCollectionElement(
+            PanelGroupDivider__prefab__script panelGroupDivider,
+            CollectionElement collectionElement,
+            PanelCollection__prefab__scriptMB panelCollection
+            //PanelSelectedHero__prefab__scriptMB panelSelectedHero,
+            //PanelSelectedEquipment__prefab__scriptMB panelSelectedEquipment
+            )
         {
             Id = collectionElement.Id;
             _PanelGroupDivider = panelGroupDivider;
             _CollectionElement = collectionElement;
             _PanelCollection = panelCollection;
-            _Context = panelCollection.ViewerContext;
+            //PanelSelectedHero = panelSelectedHero;
+            //PanelSelectedEquipment = panelSelectedEquipment;
 
             _GameObject = AddressableCache.IconCollectionElementAddressableGameObject.SafeInstant();
             _GameObject.name = $"IconCollectionElement [{Id}]";
@@ -79,7 +86,7 @@ namespace Assets.GameData.Scenes.Collection
             imageRarity.preserveAspect = true;
             imageRarity.type = Image.Type.Simple; // Режим без растягивания;
 
-            imageCollectionElement.sprite = (_Context?.CollectionMode ?? ECollectionMode.Hero) switch
+            imageCollectionElement.sprite = _PanelCollection.CollectionMode switch
             {
                 ECollectionMode.Hero => AddressableCache.Heroes[$"{_CollectionElement.Name}_face"],
                 ECollectionMode.Equipment => AddressableCache.Equipments[_CollectionElement.Name],
@@ -88,8 +95,8 @@ namespace Assets.GameData.Scenes.Collection
             imageCollectionElement.preserveAspect = true;
             imageCollectionElement.type = Image.Type.Simple; // Режим без растягивания;
 
-            EventHelper.SetClickEvent(_GameObject, OnClick, false);
-            EventHelper.AddHoverEvents(_GameObject, OnPointerEnter, OnPointerExit);
+            _GameObject.SetClickEvent(OnClick);
+            EventHelper.SetHoverEvents(_GameObject, OnPointerEnter, OnPointerExit);
 
             _OwnerHeroIcon_GameObject = GameObjectFinder.FindByName("OwnerHeroIcon", _GameObject.transform);
             _OwnerImageRarity_Image = GameObjectFinder.FindByName<Image>("OwnerImageRarity", _GameObject.transform);
@@ -107,7 +114,7 @@ namespace Assets.GameData.Scenes.Collection
         public Guid Id { get; private set; }
         private readonly PanelGroupDivider__prefab__script _PanelGroupDivider;
         private readonly PanelCollection__prefab__scriptMB _PanelCollection;
-        private readonly IPanelCollectionViewerContext _Context;
+        //private readonly IPanelCollectionViewerContext _Context;
         private readonly GameObject _GameObject;
         private readonly RectTransform _RectTransform;
         private readonly CollectionElement _CollectionElement;
@@ -121,6 +128,8 @@ namespace Assets.GameData.Scenes.Collection
         private readonly GameObject _SelectedImage_GameObject;
         private readonly GameObject _RarityImage_GameObject;
 
+        private readonly PanelSelectedHero__prefab__scriptMB PanelSelectedHero;
+        private readonly PanelSelectedEquipment__prefab__scriptMB PanelSelectedEquipment;
         public void SetText(string text)
         {
             _TextMeshPro.SetText(text);
@@ -159,24 +168,29 @@ namespace Assets.GameData.Scenes.Collection
             //_RarityImage_GameObject.SetActive(!selected);
         }
 
-        private async UniTask OnClick()
+        private void OnClick()
         {
-            ECollectionMode collectionMode = _Context?.CollectionMode ?? ECollectionMode.Hero;
-            _Context?.OnElementSelected(_CollectionElement.Id, collectionMode);
-            _Context?.OnLayoutChanged();
-            await UniTask.Yield();
+            //switch (_PanelCollection.CollectionMode)
+            //{
+            //    case ECollectionMode.Hero:
+            //        PanelSelectedHero.Show(_CollectionElement.Id);
+            //        break;
+            //    case ECollectionMode.Equipment:
+            //        PanelSelectedEquipment.Show(_CollectionElement.Id);
+            //        break;
+            //    default:
+            //        throw new NotImplementedException();
+            //}
         }
 
-        private async UniTask OnPointerEnter()
+        private void OnPointerEnter()
         {
             _Rarity_Image.sprite = AddressableCache.RaritySelected;
-            await UniTask.Yield();
         }
 
-        private async UniTask OnPointerExit()
+        private void OnPointerExit()
         {
             _Rarity_Image.sprite = AddressableCache.GetRarity(_CollectionElement.Rarity);
-            await UniTask.Yield();
         }
     }
 }

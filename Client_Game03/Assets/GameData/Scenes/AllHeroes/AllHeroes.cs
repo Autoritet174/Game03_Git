@@ -160,7 +160,7 @@ public class AllHeroes : MonoBehaviour
             imageRarity.sprite = AddressableCache.GetRarity(hero.Rarity);
             await UniTask.Yield();
         }
-        _prefabIconHero.AddHoverEvents(OnPoinerEnter, OnPoinerExit);
+        _prefabIconHero.SetHoverEvents(OnPoinerEnter, OnPoinerExit);
 
         // Добавляем компонент для обработки кликов
         //ImageHeroHandler clickHandler = _prefabIconHero.AddComponent<ImageHeroHandler>();

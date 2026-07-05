@@ -6,135 +6,95 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(RectTransform))]
-public class PanelCollection__prefab__scriptMB : MonoBehaviour
+public class PanelCollection__prefab__scriptMB : MonoBehaviour, IPrefab
 {
-    public const float TOP_BUTTONS_HEIGHT = 113f;
-
-    private const float RANGE_PANEL_WIDTH = 230f;
-    private const float RANGE_PANEL_HEIGHT = 90f;
-    private const float BUTTON_PAGE_WIDTH = 100f;
-    private const float BUTTON_PAGE_HEIGHT = 60f;
-    private const float LABEL_HEIGHT = 30f;
-    private const float LABEL_FONTSIZE = 18f;
-
-  
-    [SerializeField]
-    private float SCROLLBAR_WIDTH = 32f;
-
-    [SerializeField]
-    private float VIEWPORT_CONTENT_SPACING = 5f;
+    public bool Initialized { get; private set; }
+    public float Width { get; private set; }
+    public float Height { get; private set; }
 
     private RectTransform _RectTransform;
-    private IPanelCollectionContext _PanelCollectionContext;
-    private IPanelCollectionTopButtonsContext _PanelCollectionTopButtonsContext;
-    private IPanelCollectionViewerContext _PanelCollectionViewerContext;
 
-    private GameObject _TopButtons_GameObject;
-    private RectTransform _TopButtons_RectTransform;
-    private FilterButton _FilterButtonHeroes;
-    private FilterButton _FilterButtonEquipments;
-    private FilterButton _FilterButtonFilter;
-    private FilterButton _FilterButtonGroup;
-    private FilterButton _FilterButtonSort;
-    private RectTransform _RangePanel_RectTransform;
-    private RectTransform _ButtonPrevPage_RectTransform;
-    private RectTransform _ButtonNextPage_RectTransform;
-    private RectTransform _LabelRangePage_RectTransform;
-    private TextMeshProUGUI _LabelRangePage_TextMeshProUGUI;
 
-    private RectTransform _Viewer_RectTransform;
-    private RectTransform _ViewerViewport_RectTransform;
-    private RectTransform _ScrollbarVertical_RectTransform;
-    private VerticalLayoutGroup _Content_VerticalLayoutGroup;
     private readonly List<PanelGroupDivider__prefab__script> _GroupDividers = new();
     private readonly Dictionary<Guid, PanelIconCollectionElement> _Elements = new();
 
-    public float Width { get; private set; }
-    public float Height { get; private set; }
-    public float TopButtonsHeight { get; private set; }
-    public float ViewerWidth { get; private set; }
+    public ECollectionMode CollectionMode { get; private set; } = ECollectionMode.Hero;
+
     public int PageCurrent { get; private set; } = 1;
     public int PageMax { get; private set; } = 1;
-    public Transform Content_Transform { get; private set; }
     public int MaxCollectionElements { get; private set; }
-    public IPanelCollectionViewerContext ViewerContext => _PanelCollectionViewerContext;
+    //public IPanelCollectionViewerContext ViewerContext => _PanelCollectionViewerContext;
 
-    private void Awake()
+
+    public void Initialize()
     {
         _RectTransform = GetComponent<RectTransform>();
 
-        // PanelCollectionTopButtons
+        PanelTopButtons_Initialize();
+        PanelCollectionViewer_Initialize();
+        Initialized = true;
+    }
+
+
+    #region ================ PanelTopButtons ================
+
+    private GameObject PanelTopButtons__GameObject;
+    private RectTransform PanelTopButtons__RectTransform;
+
+    private FilterButton PanelTopButtons_FilterButtonHeroes;
+    private FilterButton PanelTopButtons_FilterButtonEquipments;
+    private FilterButton PanelTopButtons_FilterButtonFilter;
+    private FilterButton PanelTopButtons_FilterButtonGroup;
+    private FilterButton PanelTopButtons_FilterButtonSort;
+    private RectTransform PanelTopButtons_RangePanel__RectTransform;
+    private RectTransform PanelTopButtons_ButtonPrevPage__RectTransform;
+    private RectTransform PanelTopButtons_ButtonNextPage__RectTransform;
+    private RectTransform PanelTopButtons_LabelRangePage__RectTransform;
+    private TextMeshProUGUI PanelTopButtons_LabelRangePage__TextMeshProUGUI;
+    public float PanelTopButtons_Height { get; private set; }
+
+    private void PanelTopButtons_Initialize() {
+        PanelTopButtons__GameObject = GameObjectFinder.FindByName("PanelTopButtons", gameObject);
+        PanelTopButtons__RectTransform = PanelTopButtons__GameObject.GetComponent<RectTransform>();
+
+        PanelTopButtons_FilterButtonHeroes = new("ImageButtonHeroes", PanelTopButtons__GameObject.transform);
+        PanelTopButtons_FilterButtonEquipments = new("ImageButtonEquipments", PanelTopButtons__GameObject.transform);
+        PanelTopButtons_FilterButtonFilter = new("ImageButtonFilter", PanelTopButtons__GameObject.transform);
+        PanelTopButtons_FilterButtonGroup = new("ImageButtonGroup", PanelTopButtons__GameObject.transform);
+        PanelTopButtons_FilterButtonSort = new("ImageButtonSort", PanelTopButtons__GameObject.transform);
+
+        // PanelRange
         {
-            _TopButtons_GameObject = GameObjectFinder.FindByName("PanelCollectionTopButtons", gameObject);
-            _TopButtons_RectTransform = _TopButtons_GameObject.GetComponent<RectTransform>();
+            PanelTopButtons_RangePanel__RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelRange", PanelTopButtons__GameObject);
+            PanelTopButtons_ButtonPrevPage__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonPrevPage", PanelTopButtons__GameObject);
+            PanelTopButtons_ButtonNextPage__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonNextPage", PanelTopButtons__GameObject);
+            PanelTopButtons_ButtonPrevPage__RectTransform.gameObject.GetComponent<Button>().onClick.RemoveAllListeners();
+            PanelTopButtons_ButtonPrevPage__RectTransform.gameObject.GetComponent<Button>().onClick.AddListener(() => PagePrev());
+            PanelTopButtons_ButtonNextPage__RectTransform.gameObject.GetComponent<Button>().onClick.AddListener(() => PageNext());
 
-            _FilterButtonHeroes = new("ImageButtonHeroes", _TopButtons_GameObject.transform);
-            _FilterButtonEquipments = new("ImageButtonEquipments", _TopButtons_GameObject.transform);
-            _FilterButtonFilter = new("ImageButtonFilter", _TopButtons_GameObject.transform);
-            _FilterButtonGroup = new("ImageButtonGroup", _TopButtons_GameObject.transform);
-            _FilterButtonSort = new("ImageButtonSort", _TopButtons_GameObject.transform);
-
-            // PanelRange
-            {
-                _RangePanel_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelRange", _TopButtons_GameObject);
-                _ButtonPrevPage_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonPrevPage", _TopButtons_GameObject);
-                _ButtonNextPage_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonNextPage", _TopButtons_GameObject);
-                _ButtonPrevPage_RectTransform.gameObject.SetClickEvent(PagePrev, true);
-                _ButtonNextPage_RectTransform.gameObject.SetClickEvent(PageNext, true);
-
-                _LabelRangePage_RectTransform = GameObjectFinder.FindByName<RectTransform>("LabelRangePage", _TopButtons_GameObject);
-                _LabelRangePage_TextMeshProUGUI = _LabelRangePage_RectTransform.GetComponent<TextMeshProUGUI>();
-            }
-        }
-
-        // PanelCollectionViewer
-        {
-            _Viewer_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelCollectionViewer", gameObject);
-            _ScrollbarVertical_RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollbarVertical", _Viewer_RectTransform);
-            Content_Transform = GameObjectFinder.FindByName<RectTransform>("Content", _Viewer_RectTransform);
-            _Content_VerticalLayoutGroup = Content_Transform.GetComponent<VerticalLayoutGroup>();
-            _ViewerViewport_RectTransform = GameObjectFinder.FindByName<RectTransform>("Viewport", _Viewer_RectTransform);
+            PanelTopButtons_LabelRangePage__RectTransform = GameObjectFinder.FindByName<RectTransform>("LabelRangePage", PanelTopButtons__GameObject);
+            PanelTopButtons_LabelRangePage__TextMeshProUGUI = PanelTopButtons_LabelRangePage__RectTransform.GetComponent<TextMeshProUGUI>();
         }
     }
 
-    public void SetContext(IPanelCollectionContext context)
+    public void PanelTopButtons_SetPageDiapason()
     {
-        _PanelCollectionContext = context;
+        PanelTopButtons_LabelRangePage__TextMeshProUGUI.text = $"{((PageCurrent - 1) * Game03Client.Collection.CollectionProvider.PAGE_SIZE) + 1} - {MaxCollectionElements}";
     }
 
-    public void SetTopButtonsContext(IPanelCollectionTopButtonsContext context)
-    {
-        _PanelCollectionTopButtonsContext = context;
-    }
-
-    public void SetViewerContext(IPanelCollectionViewerContext context)
-    {
-        _PanelCollectionViewerContext = context;
-    }
-
-    public void SetPageDiapason(int maxCollectionElements)
-    {
-        _LabelRangePage_TextMeshProUGUI.text = $"{((PageCurrent - 1) * Game03Client.Collection.CollectionProvider.PAGE_SIZE) + 1} - {maxCollectionElements}";
-    }
-
-    public void ResetPageCurrent()
+    public void PanelTopButtons_ResetPageCurrent()
     {
         PageCurrent = 1;
     }
 
-    public void UpdatePageMax()
+    public void PanelTopButtons_UpdatePageMax()
     {
-        if (_PanelCollectionTopButtonsContext == null)
-        {
-            PageMax = 1;
-            return;
-        }
-
-        int count = _PanelCollectionTopButtonsContext.GetCollectionCount(_PanelCollectionTopButtonsContext.CollectionMode);
+        int count = GetCollectionCount(CollectionMode);
         PageMax = (count / Game03Client.Collection.CollectionProvider.PAGE_SIZE) + (count % Game03Client.Collection.CollectionProvider.PAGE_SIZE > 0 ? 1 : 0);
         if (PageMax < 1)
         {
@@ -147,10 +107,85 @@ public class PanelCollection__prefab__scriptMB : MonoBehaviour
         }
 
         bool hasMultiplePages = PageMax > 1;
-        _ButtonPrevPage_RectTransform.gameObject.GetComponent<Button>().interactable = hasMultiplePages && PageCurrent > 1;
-        _ButtonNextPage_RectTransform.gameObject.GetComponent<Button>().interactable = hasMultiplePages && PageMax > PageCurrent;
+        PanelTopButtons_ButtonPrevPage__RectTransform.gameObject.GetComponent<Button>().interactable = hasMultiplePages && PageCurrent > 1;
+        PanelTopButtons_ButtonNextPage__RectTransform.gameObject.GetComponent<Button>().interactable = hasMultiplePages && PageMax > PageCurrent;
     }
 
+    private void PanelTopButtons_OnResized(float coefHeight, float top = 0, float buttom = 0, float left = 0, float right = 0)
+    {
+        PanelTopButtons_Height = 113f * coefHeight;
+
+        PanelTopButtons__RectTransform.sizeDelta = new Vector2(Width, PanelTopButtons_Height);
+
+        PanelTopButtons_FilterButtonHeroes.OnResized(0);
+        PanelTopButtons_FilterButtonEquipments.OnResized(0);
+        PanelTopButtons_FilterButtonFilter.OnResized(1);
+        PanelTopButtons_FilterButtonGroup.OnResized(2);
+        PanelTopButtons_FilterButtonSort.OnResized(3);
+
+        float panelRangeLeft = (((FilterButton.SIZE + FilterButton.SPACING) * 4) + (FilterButton.SPACING_ADDITIONAL * 2)) * coefHeight;
+
+        float rangePanelWidth = 230f * coefHeight;
+        PanelTopButtons_RangePanel__RectTransform.anchoredPosition = new Vector2(panelRangeLeft, FilterButton.SPACING * coefHeight);
+        PanelTopButtons_RangePanel__RectTransform.sizeDelta = new Vector2(rangePanelWidth, 90f * coefHeight);
+
+        float buttonPageWidth = 100f * coefHeight;
+        float buttonPageHeight = 60f * coefHeight;
+        PanelTopButtons_ButtonPrevPage__RectTransform.sizeDelta = new Vector2(buttonPageWidth, buttonPageHeight);
+        PanelTopButtons_ButtonNextPage__RectTransform.sizeDelta = new Vector2(buttonPageWidth, buttonPageHeight);
+        PanelTopButtons_LabelRangePage__RectTransform.sizeDelta = new Vector2(rangePanelWidth, 30f * coefHeight);
+        PanelTopButtons_LabelRangePage__TextMeshProUGUI.fontSize = 18f * coefHeight;
+    }
+
+    #endregion ================ PanelTopButtons ================
+
+
+    #region ================ PanelCollectionViewer ================
+    private RectTransform PanelCollectionViewer__RectTransform;
+    private RectTransform PanelCollectionViewer_ScrollbarVertical__RectTransform;
+    public Transform PanelCollectionViewer_Content__Transform { get; private set; }
+    private VerticalLayoutGroup PanelCollectionViewer_Content__VerticalLayoutGroup;
+    private RectTransform PanelCollectionViewer_ViewerViewport__RectTransform;
+
+    private void PanelCollectionViewer_Initialize() {
+
+        PanelCollectionViewer__RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelCollectionViewer", gameObject);
+        PanelCollectionViewer_ScrollbarVertical__RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollbarVertical", PanelCollectionViewer__RectTransform);
+        PanelCollectionViewer_Content__Transform = GameObjectFinder.FindByName<RectTransform>("Content", PanelCollectionViewer__RectTransform);
+        PanelCollectionViewer_Content__VerticalLayoutGroup = PanelCollectionViewer_Content__Transform.GetComponent<VerticalLayoutGroup>();
+        PanelCollectionViewer_ViewerViewport__RectTransform = GameObjectFinder.FindByName<RectTransform>("Viewport", PanelCollectionViewer__RectTransform);
+    }
+
+    private void PanelCollectionViewer_OnResized(float coefHeight, float top = 0, float buttom = 0, float left = 0, float right = 0)
+    {
+        float scrollBarWidth = 32f * coefHeight;
+        float viewportContentSpacing = 5f;
+
+        PanelCollectionViewer__RectTransform.sizeDelta = new Vector2(Width, Height - PanelTopButtons_Height);
+
+        PanelCollectionViewer_ScrollbarVertical__RectTransform.sizeDelta = new Vector2(scrollBarWidth, 0);
+        PanelCollectionViewer_ViewerViewport__RectTransform.SetRight(scrollBarWidth);
+        PanelCollectionViewer_Content__VerticalLayoutGroup.spacing = viewportContentSpacing * coefHeight;
+
+        if (_GroupDividers.Count > 0)
+        {
+            _GroupDividers.ForEach(a => a.OnResized());
+        }
+    }
+
+    #endregion ================ PanelCollectionViewer ================
+
+
+
+    public int GetCollectionCount(ECollectionMode collectionMode)
+    {
+        return collectionMode switch
+        {
+            ECollectionMode.Hero => Game03Client.Collection.CollectionProvider.GetCountHeroes(),
+            ECollectionMode.Equipment => Game03Client.Collection.CollectionProvider.GetCountEquipments(),
+            _ => 0,
+        };
+    }
     public void UnselectAll()
     {
         _GroupDividers.ForEach(a => a.UnselectAll());
@@ -166,38 +201,55 @@ public class PanelCollection__prefab__scriptMB : MonoBehaviour
         return _Elements.TryGetValue(id, out PanelIconCollectionElement element) ? element : null;
     }
 
-    public async UniTask InstantiateCollectionAsync(ECollectionMode collectionMode)
+    public void InstantiateCollection(ECollectionMode collectionMode)
     {
+        CollectionMode = collectionMode;
         try
         {
             _GroupDividers.ForEach(a => a.Destroy());
             _GroupDividers.Clear();
             _Elements.Clear();
 
-            OnResized();
-            await UniTask.Yield();
+            //OnResized();
 
-            int pageCurrent = _PanelCollectionViewerContext?.PageCurrent ?? 1;
-            MaxCollectionElements = Game03Client.Collection.CollectionProvider.PAGE_SIZE * pageCurrent;
+            MaxCollectionElements = Game03Client.Collection.CollectionProvider.PAGE_SIZE * PageCurrent;
 
-            switch (collectionMode)
+
+            // Переопределение максимального элемента в диапазоне на последней странице
+            if (PageCurrent >= PageMax)
             {
-                case ECollectionMode.Hero:
-                    await LoadCollectionElement(ECollectionElement.Hero);
-                    RestoreSelection(ECollectionMode.Hero);
-                    break;
-
-                case ECollectionMode.Equipment:
-                    await LoadCollectionElement(ECollectionElement.Equipment);
-                    RestoreSelection(ECollectionMode.Equipment);
-                    break;
-
-                default:
-                    throw new Exception();
+                MaxCollectionElements = collectionMode switch
+                {
+                    ECollectionMode.Hero => Game03Client.Collection.CollectionProvider.GetCountHeroes(),
+                    ECollectionMode.Equipment => Game03Client.Collection.CollectionProvider.GetCountEquipments(),
+                    _ => throw new NotImplementedException(),
+                };
             }
 
-            _PanelCollectionViewerContext?.OnCollectionLoaded(this, MaxCollectionElements);
-            OnResized();
+
+
+            // Добавление GroupDividers
+            IEnumerable<Game03Client.Collection.GroupCollectionElement> grouped = collectionMode switch
+            {
+                ECollectionMode.Hero => Game03Client.Collection.CollectionProvider.GetCollectionHeroesGroupedByGroupNames(PageCurrent),
+                ECollectionMode.Equipment => Game03Client.Collection.CollectionProvider.GetCollectionEquipmentesGroupByGroups(PageCurrent),
+                _ => throw new NotImplementedException(),
+            };
+
+            IOrderedEnumerable<Game03Client.Collection.GroupCollectionElement> sorted = grouped
+                .Where(static a => a.List.Count() > 0)
+                .OrderByDescending(static a => a.Priority);
+
+            foreach (Game03Client.Collection.GroupCollectionElement item in sorted)
+            {
+                _GroupDividers.Add(new(item, this));
+            }
+
+
+
+            PanelTopButtons_UpdatePageMax();
+            PanelTopButtons_SetPageDiapason();
+            //OnResized();
         }
         catch (Exception ex)
         {
@@ -209,119 +261,28 @@ public class PanelCollection__prefab__scriptMB : MonoBehaviour
         }
     }
 
-    public void OnResized(float right = 0)
+    public void OnResized(float coefHeight, float top = 0, float buttom = 0, float left = 0, float right = 0)
     {
-        if (_PanelCollectionContext != null && _PanelCollectionContext.ContextControlsRootSize)
-        {
-            _RectTransform.SetHorizontalOffsets(0, right);
-        }
-        else
-        {
-            
-        }
+        //if (_PanelCollectionContext != null && _PanelCollectionContext.ContextControlsRootSize)
+        //{
+        //    _RectTransform.SetHorizontalOffsets(0, right);
+        //}
+        //else
+        //{
 
-        if (_PanelCollectionContext != null)
-        {
-            Width = _RectTransform.rect.width;
-            Height = _RectTransform.rect.height;
-        }
-        
+        //}
 
-        OnTopButtonsResized();
-        OnViewerResized();
+        //if (_PanelCollectionContext != null)
+        //{
+        //    Width = _RectTransform.rect.width;
+        //    Height = _RectTransform.rect.height;
+        //}
+
+
+        PanelTopButtons_OnResized(coefHeight, top, buttom, left, right);
+        PanelCollectionViewer_OnResized(coefHeight, top, buttom, left, right);
     }
 
-    private void OnTopButtonsResized()
-    {
-        float coefHeight = G.GetCoefHeight();
-        TopButtonsHeight = TOP_BUTTONS_HEIGHT * coefHeight;
-
-        if (_PanelCollectionTopButtonsContext != null && _PanelCollectionTopButtonsContext.ContextControlsRootSize)
-        {
-            _TopButtons_RectTransform.sizeDelta = new Vector2(_PanelCollectionTopButtonsContext.GetPanelWidth(), TopButtonsHeight);
-        }
-
-        _FilterButtonHeroes.OnResized(0);
-        _FilterButtonEquipments.OnResized(0);
-        _FilterButtonFilter.OnResized(1);
-        _FilterButtonGroup.OnResized(2);
-        _FilterButtonSort.OnResized(3);
-
-        float panelRangeLeft = (((FilterButton.SIZE + FilterButton.SPACING) * 4) + (FilterButton.SPACING_ADDITIONAL * 2)) * coefHeight;
-
-        _RangePanel_RectTransform.anchoredPosition = new Vector2(panelRangeLeft, FilterButton.SPACING * coefHeight);
-        _RangePanel_RectTransform.sizeDelta = new Vector2(RANGE_PANEL_WIDTH * coefHeight, RANGE_PANEL_HEIGHT * coefHeight);
-
-        float buttonPageWidth = BUTTON_PAGE_WIDTH * coefHeight;
-        float buttonPageHeight = BUTTON_PAGE_HEIGHT * coefHeight;
-        _ButtonPrevPage_RectTransform.sizeDelta = new Vector2(buttonPageWidth, buttonPageHeight);
-        _ButtonNextPage_RectTransform.sizeDelta = new Vector2(buttonPageWidth, buttonPageHeight);
-        _LabelRangePage_RectTransform.sizeDelta = new Vector2(RANGE_PANEL_WIDTH * coefHeight, LABEL_HEIGHT * coefHeight);
-        _LabelRangePage_TextMeshProUGUI.fontSize = LABEL_FONTSIZE * coefHeight;
-    }
-
-    private void OnViewerResized()
-    {
-        float coefHeight = G.GetCoefHeight();
-        float scrollBarWidth = SCROLLBAR_WIDTH * coefHeight;
-
-        ViewerWidth = _Viewer_RectTransform.rect.width - (TOP_BUTTONS_HEIGHT * coefHeight);
-        _Viewer_RectTransform.SetTop(TOP_BUTTONS_HEIGHT * coefHeight);
-
-        _ScrollbarVertical_RectTransform.sizeDelta = new Vector2(scrollBarWidth, 0);
-        _ViewerViewport_RectTransform.SetRight(scrollBarWidth);
-        _Content_VerticalLayoutGroup.spacing = VIEWPORT_CONTENT_SPACING * coefHeight;
-
-        if (_GroupDividers.Count > 0)
-        {
-            _GroupDividers.ForEach(a => a.OnResized());
-        }
-    }
-
-    private void RestoreSelection(ECollectionMode collectionMode)
-    {
-        Guid? selectedId = _PanelCollectionViewerContext?.GetSelectedElementId(collectionMode);
-        if (selectedId.HasValue)
-        {
-            GetElement(selectedId.Value)?.Selected(true);
-        }
-    }
-
-    private async UniTask LoadCollectionElement(ECollectionElement collectionElementEnum)
-    {
-        if (_PanelCollectionViewerContext?.LoadAllPages == true)
-        {
-            int pageMax = GetPageMax(collectionElementEnum);
-            MaxCollectionElements = collectionElementEnum switch
-            {
-                ECollectionElement.Hero => Game03Client.Collection.CollectionProvider.GetCountHeroes(),
-                ECollectionElement.Equipment => Game03Client.Collection.CollectionProvider.GetCountEquipments(),
-                _ => throw new NotImplementedException(),
-            };
-
-            for (int page = 1; page <= pageMax; page++)
-            {
-                await AppendCollectionElementPage(collectionElementEnum, page);
-            }
-
-            return;
-        }
-
-        int pageCurrent = _PanelCollectionViewerContext?.PageCurrent ?? 1;
-        int pageMaxSingle = _PanelCollectionViewerContext?.PageMax ?? 1;
-
-        if (pageCurrent >= pageMaxSingle)
-        {
-            MaxCollectionElements = collectionElementEnum switch
-            {
-                ECollectionElement.Hero => Game03Client.Collection.CollectionProvider.GetCountHeroes(),
-                ECollectionElement.Equipment => Game03Client.Collection.CollectionProvider.GetCountEquipments(),
-                _ => throw new NotImplementedException(),
-            };
-        }
-
-        await AppendCollectionElementPage(collectionElementEnum, pageCurrent);
-    }
 
     private static int GetPageMax(ECollectionElement collectionElementEnum)
     {
@@ -336,51 +297,22 @@ public class PanelCollection__prefab__scriptMB : MonoBehaviour
         return (count / pageSize) + (count % pageSize > 0 ? 1 : 0);
     }
 
-    private async UniTask AppendCollectionElementPage(ECollectionElement collectionElementEnum, int page)
-    {
-        IEnumerable<Game03Client.Collection.GroupCollectionElement> grouped = collectionElementEnum switch
-        {
-            ECollectionElement.Hero => Game03Client.Collection.CollectionProvider.GetCollectionHeroesGroupedByGroupNames(page),
-            ECollectionElement.Equipment => Game03Client.Collection.CollectionProvider.GetCollectionEquipmentesGroupByGroups(page),
-            _ => throw new NotImplementedException(),
-        };
-
-        IOrderedEnumerable<Game03Client.Collection.GroupCollectionElement> sorted = grouped
-            .Where(static a => a.List.Count() > 0)
-            .OrderByDescending(static a => a.Priority);
-
-        foreach (Game03Client.Collection.GroupCollectionElement item in sorted)
-        {
-            _GroupDividers.Add(new(item, this));
-        }
-
-        await UniTask.Yield();
-    }
-
-    private async UniTask PagePrev()
+    private void PagePrev()
     {
         if (PageCurrent > 1)
         {
             PageCurrent--;
-            await NotifyPageChangedAsync();
+            InstantiateCollection(CollectionMode);
         }
     }
 
-    private async UniTask PageNext()
+    private void PageNext()
     {
         if (PageCurrent < PageMax)
         {
             PageCurrent++;
-            await NotifyPageChangedAsync();
+            InstantiateCollection(CollectionMode);
         }
     }
 
-    private async UniTask NotifyPageChangedAsync()
-    {
-        if (_PanelCollectionTopButtonsContext != null)
-        {
-            await _PanelCollectionTopButtonsContext.OnPageChangedAsync(PageCurrent);
-            _PanelCollectionTopButtonsContext.OnLayoutChanged();
-        }
-    }
 }

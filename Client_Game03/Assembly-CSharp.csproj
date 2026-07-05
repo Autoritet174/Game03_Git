@@ -36,7 +36,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <UnityProjectGenerator>Package</UnityProjectGenerator>
-    <UnityProjectGeneratorVersion>2.0.26</UnityProjectGeneratorVersion>
+    <UnityProjectGeneratorVersion>2.0.27</UnityProjectGeneratorVersion>
     <UnityProjectGeneratorStyle>SDK</UnityProjectGeneratorStyle>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
@@ -66,14 +66,10 @@
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_InBattle.cs" />
     <Compile Include="Assets\GameData\Scenes\AllHeroes\AllHeroesConsts.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_AllHeroes.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\PanelScene.cs" />
-    <Compile Include="Assets\GameData\Prefabs\IPanelCollectionContext.cs" />
     <Compile Include="Assets\GameData\Scripts\ButtonCloseHelper.cs" />
-    <Compile Include="Assets\GameData\Prefabs\IPanelCollectionTopButtonsContext.cs" />
     <Compile Include="Assets\GameData\Prefabs\PanelReconnecting__prefab__scriptMB.cs" />
     <Compile Include="Assets\GameData\Scripts\ButtonClose_Click_MoveToMainMenu.cs" />
     <Compile Include="Assets\GameData\Scripts\SecureStorageProvider.cs" />
-    <Compile Include="Assets\GameData\Prefabs\IPanelCollectionViewerContext.cs" />
     <Compile Include="Assets\GameData\Scripts\MainThreadDispatcher.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\prefabs\PanelSelectedEquipment__prefab__scriptMB.cs" />
     <Compile Include="Assets\GameData\Scenes\Battlefield\BattlefieldUnit.cs" />
@@ -111,14 +107,12 @@
     <Compile Include="Assets\GameData\Scenes\SelectBattlefield\SelectBattlefieldViewerContext.cs" />
     <Compile Include="Assets\GameData\Scripts\CollectionEnums.cs" />
     <Compile Include="Assets\GameData\Scenes\Battlefield\BattlefieldUnit_Animation_AbilityAttack.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\PanelTop.cs" />
     <Compile Include="Assets\GameData\Scripts\CancellationTokenManager.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Button_Close.cs" />
     <Compile Include="Assets\GameData\Scenes\SelectBattlefield\PanelPrepareBattle.cs" />
     <Compile Include="Assets\GameData\Scripts\GameObjectExtensions.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\prefabs\PanelSelectedHero__prefab__scriptMB.cs" />
     <Compile Include="Assets\GameData\Scripts\DevAuthConfig.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\PanelCollectionContext.cs" />
     <Compile Include="Assets\GameData\Prefabs\PanelTop__prefab__scriptMB.cs" />
     <Compile Include="Assets\GameData\Scenes\SelectBattlefield\SelectBattlefieldTopButtonsContext.cs" />
     <Compile Include="Assets\GameData\Scripts\GameSceneManager.cs" />
@@ -131,12 +125,13 @@
     <Compile Include="Assets\GameData\Prefabs\PanelCollection__prefab__scriptMB.cs" />
     <Compile Include="Assets\GameData\Scenes\AllHeroes\AllHeroes.cs" />
     <Compile Include="Assets\GameData\Scenes\Battlefield\Animations\Health.cs" />
+    <Compile Include="Assets\GameData\Prefabs\IPrefab.cs" />
     <Compile Include="Assets\GameData\Scripts\G.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\AuthHelper.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\Slot.cs" />
     <Compile Include="Assets\GameData\Scripts\GlobalClassesForNetStandard2.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\CollectionSceneTopButtonsContext.cs" />
     <Compile Include="Assets\GameData\Scenes\Battlefield\BattlefieldSceneInitializator.cs" />
+    <Compile Include="Assets\GameData\Prefabs\Backgrounds\Background_BlueClouds_v1__prefab__scriptMB.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Button_Auth.cs" />
     <Compile Include="Assets\GameData\Scripts\RichTextBuilder.cs" />
   </ItemGroup>
@@ -1561,10 +1556,6 @@
       <HintPath>Library\ScriptAssemblies\UnityEngine.Advertisements.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEngine.Purchasing.SecurityCore">
-      <HintPath>Library\ScriptAssemblies\UnityEngine.Purchasing.SecurityCore.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Unity.Rider.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
       <Private>False</Private>
@@ -1613,10 +1604,6 @@
       <HintPath>Library\ScriptAssemblies\Unity.2D.Tilemap.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEngine.Purchasing.SecurityStub">
-      <HintPath>Library\ScriptAssemblies\UnityEngine.Purchasing.SecurityStub.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="UnityEditor.XR.LegacyInputHelpers">
       <HintPath>Library\ScriptAssemblies\UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
       <Private>False</Private>
@@ -1635,10 +1622,6 @@
     </Reference>
     <Reference Include="Unity.VisualScripting.State.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.State.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Purchasing.Common">
-      <HintPath>Library\ScriptAssemblies\Purchasing.Common.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Universal.Shaders">
@@ -1705,10 +1688,6 @@
       <HintPath>Library\ScriptAssemblies\Unity.2D.IK.Runtime.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEditor.Purchasing">
-      <HintPath>Library\ScriptAssemblies\UnityEditor.Purchasing.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Unity.ScriptableBuildPipeline">
       <HintPath>Library\ScriptAssemblies\Unity.ScriptableBuildPipeline.dll</HintPath>
       <Private>False</Private>
@@ -1731,10 +1710,6 @@
     </Reference>
     <Reference Include="Unity.2D.Tooling.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.2D.Tooling.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.Purchasing.Codeless">
-      <HintPath>Library\ScriptAssemblies\UnityEngine.Purchasing.Codeless.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.VisualScripting.Shared.Editor">
@@ -1817,10 +1792,6 @@
       <HintPath>Library\ScriptAssemblies\Unity.Collections.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEngine.Purchasing.Stores">
-      <HintPath>Library\ScriptAssemblies\UnityEngine.Purchasing.Stores.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
       <Private>False</Private>
@@ -1835,10 +1806,6 @@
     </Reference>
     <Reference Include="Unity.Burst">
       <HintPath>Library\ScriptAssemblies\Unity.Burst.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.Purchasing">
-      <HintPath>Library\ScriptAssemblies\UnityEngine.Purchasing.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.VisualScripting.Core.Editor">

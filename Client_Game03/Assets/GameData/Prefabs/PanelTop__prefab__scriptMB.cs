@@ -3,42 +3,35 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(RectTransform))]
-public class PanelTop__prefab__scriptMB : MonoBehaviour
+public class PanelTop__prefab__scriptMB : MonoBehaviour, IPrefab
 {
-    private RectTransform panelTopPrefab__RectTransform;
-    public RectTransform ButtonClose__RectTransform { get; private set; }
-    private float _Width, _Height;
-    private bool initialized = false;
+    private RectTransform This__RectTransform;
+    private RectTransform ButtonClose__RectTransform;
 
-    private void Start()
+    public bool Initialized { get; private set; }
+    public float Width { get; private set; }
+    public float Height { get; private set; }
+
+    public void Initialize()
     {
-        panelTopPrefab__RectTransform = GetComponent<RectTransform>();
-        ButtonClose__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose", panelTopPrefab__RectTransform.transform);
-        initialized = true;
-        OnResized();
+        This__RectTransform = GetComponent<RectTransform>();
+        ButtonClose__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose", This__RectTransform.transform);
+        Initialized = true;
     }
 
-    private void Update()
+    public void OnResized(float coefHeight, float top = 0, float buttom = 0, float left = 0, float right = 0)
     {
-        if (!Mathf.Approximately(Screen.height, _Height) || !Mathf.Approximately(Screen.width, _Width))
-        {
-            OnResized();
-        }
-    }
-
-    public void OnResized()
-    {
-        if (!initialized)
+        if (!Initialized)
         {
             return;
         }
 
-        _Height = Screen.height;
-        _Width = Screen.width;
+        Height = Screen.height;
+        Width = Screen.width;
 
-        float coefHeight = G.GetCoefHeight();
         float panelTop_Height = G.PANELTOP_HEIGHT * coefHeight;
-        panelTopPrefab__RectTransform.sizeDelta = new Vector2(_Width, panelTop_Height);
+        This__RectTransform.sizeDelta = new Vector2(Width, panelTop_Height);
         ButtonClose__RectTransform.sizeDelta = new Vector2(panelTop_Height, panelTop_Height);
     }
+
 }

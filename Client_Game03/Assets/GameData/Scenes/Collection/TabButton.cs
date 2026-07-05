@@ -1,5 +1,4 @@
 using Assets.GameData.Scripts;
-using Cysharp.Threading.Tasks;
 using System;
 using TMPro;
 using UnityEngine;
@@ -15,7 +14,7 @@ namespace Assets.GameData.Scenes.Collection
         public readonly TextMeshProUGUI textMeshProUGUI;
         public readonly Image image;
 
-        public TabButton(string name, string nameText, Func<UniTask> asyncAction)
+        public TabButton(string name, string nameText, Action action)
         {
             this.name = name;
             button = GameObjectFinder.FindByName<Button>(name);
@@ -23,7 +22,8 @@ namespace Assets.GameData.Scenes.Collection
             image = GameObjectFinder.FindByName<Image>(name);
             textMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>(nameText);
             //button.onClick.AddListener(() => asyncAction().Forget());
-            rectTransform.gameObject.SetClickEvent(asyncAction, true);
+            rectTransform.gameObject.GetComponent<Button>().onClick.RemoveAllListeners();
+            rectTransform.gameObject.GetComponent<Button>().onClick.AddListener(() => action());
         }
         public void SetText(string text)
         {

@@ -39,6 +39,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
                 PanelPrepareBattleInstance = new PanelPrepareBattle();
 
+            var qwe = ScrollViewCollectionMain__RectTransform.gameObject.GetComponent<PanelCollection__prefab__scriptMB>();
                 // Испытательные площадки
                 {
                     BattlefieldCategory scrollViewCollection_TestPlatforms = new("TestPlatforms");
