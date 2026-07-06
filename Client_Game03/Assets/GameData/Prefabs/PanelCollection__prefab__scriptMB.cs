@@ -144,6 +144,7 @@ public class PanelCollection__prefab__scriptMB : MonoBehaviour, IPrefab
     private RectTransform PanelCollectionViewer__RectTransform;
     private RectTransform PanelCollectionViewer_ScrollbarVertical__RectTransform;
     public Transform PanelCollectionViewer_Content__Transform { get; private set; }
+    public float PanelCollectionViewer_Width { get; private set; }
     private VerticalLayoutGroup PanelCollectionViewer_Content__VerticalLayoutGroup;
     private RectTransform PanelCollectionViewer_ViewerViewport__RectTransform;
 
@@ -151,7 +152,7 @@ public class PanelCollection__prefab__scriptMB : MonoBehaviour, IPrefab
 
         PanelCollectionViewer__RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelCollectionViewer", gameObject);
         PanelCollectionViewer_ScrollbarVertical__RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollbarVertical", PanelCollectionViewer__RectTransform);
-        PanelCollectionViewer_Content__Transform = GameObjectFinder.FindByName<RectTransform>("Content", PanelCollectionViewer__RectTransform);
+        PanelCollectionViewer_Content__Transform = GameObjectFinder.FindByName<Transform>("Content", PanelCollectionViewer__RectTransform);
         PanelCollectionViewer_Content__VerticalLayoutGroup = PanelCollectionViewer_Content__Transform.GetComponent<VerticalLayoutGroup>();
         PanelCollectionViewer_ViewerViewport__RectTransform = GameObjectFinder.FindByName<RectTransform>("Viewport", PanelCollectionViewer__RectTransform);
     }
@@ -164,7 +165,10 @@ public class PanelCollection__prefab__scriptMB : MonoBehaviour, IPrefab
         PanelCollectionViewer__RectTransform.sizeDelta = new Vector2(Width, Height - PanelTopButtons_Height);
 
         PanelCollectionViewer_ScrollbarVertical__RectTransform.sizeDelta = new Vector2(scrollBarWidth, 0);
-        PanelCollectionViewer_ViewerViewport__RectTransform.SetRight(scrollBarWidth);
+
+        PanelCollectionViewer_Width = Width - scrollBarWidth;
+        PanelCollectionViewer_ViewerViewport__RectTransform.sizeDelta = new Vector2(PanelCollectionViewer_Width, 0);
+
         PanelCollectionViewer_Content__VerticalLayoutGroup.spacing = viewportContentSpacing * coefHeight;
 
         if (_GroupDividers.Count > 0)
@@ -263,22 +267,9 @@ public class PanelCollection__prefab__scriptMB : MonoBehaviour, IPrefab
 
     public void OnResized(float coefHeight, float top = 0, float buttom = 0, float left = 0, float right = 0)
     {
-        //if (_PanelCollectionContext != null && _PanelCollectionContext.ContextControlsRootSize)
-        //{
-        //    _RectTransform.SetHorizontalOffsets(0, right);
-        //}
-        //else
-        //{
-
-        //}
-
-        //if (_PanelCollectionContext != null)
-        //{
-        //    Width = _RectTransform.rect.width;
-        //    Height = _RectTransform.rect.height;
-        //}
-
-
+        Width = Screen.width - right;
+        Height = Screen.height - top;
+        _RectTransform.sizeDelta = new Vector2(Width, Height);
         PanelTopButtons_OnResized(coefHeight, top, buttom, left, right);
         PanelCollectionViewer_OnResized(coefHeight, top, buttom, left, right);
     }

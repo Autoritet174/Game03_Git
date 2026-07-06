@@ -62,8 +62,10 @@ public class CollectionSceneInitializator : MonoBehaviour
             {
                 PanelCollection__prefab__context = GameObjectFinder.FindByName("PanelCollection__prefab").GetComponent<PanelCollection__prefab__scriptMB>();
                 PanelCollection__prefab__context.Initialize();
+                PanelCollection__prefab__context.InstantiateCollection(PanelCollection__prefab__context.CollectionMode);
             }
-
+            Initialized = true;
+            OnResized();
             //PanelTop__prefab__context.Initialize();
             //PanelTop__prefab__context.Initialize();
         }
@@ -119,18 +121,26 @@ public class CollectionSceneInitializator : MonoBehaviour
             float tabButtonWidth = 240f * coefHeight;
             float fontSize = 22f * coefHeight;
 
-            ButtonHeroes__TabButton.rectTransform.sizeDelta = new Vector2(tabButtonWidth, Height);
+            ButtonHeroes__TabButton.rectTransform.sizeDelta = new Vector2(tabButtonWidth, PanelTop__prefab__context.Height);
             ButtonHeroes__TabButton.textMeshProUGUI.fontSize = fontSize;
 
-            ButtonEquipment__TabButton.rectTransform.sizeDelta = new Vector2(tabButtonWidth, Height);
+            ButtonEquipment__TabButton.rectTransform.sizeDelta = new Vector2(tabButtonWidth, PanelTop__prefab__context.Height);
             ButtonEquipment__TabButton.rectTransform.anchoredPosition = new Vector2(tabButtonWidth, 0f);
             ButtonEquipment__TabButton.textMeshProUGUI.fontSize = fontSize;
         }
 
-
+        float PanelCollection__context_right = 0f;
+        if (PanelSelectedHero__context.IsVisible)
+        {
+            PanelCollection__context_right += PanelSelectedHero__context.Width;
+        }
+        if (PanelSelectedEquipment__context.IsVisible)
+        {
+            PanelCollection__context_right += PanelSelectedEquipment__context.Width;
+        }
         PanelSelectedHero__context.OnResized(coefHeight, top: PanelTop__prefab__context.Height);
         PanelSelectedEquipment__context.OnResized(coefHeight, top: PanelTop__prefab__context.Height, right: PanelSelectedHero__context.Width);
-        PanelCollection__prefab__context.OnResized(PanelSelectedHero__context.Width + PanelSelectedEquipment__context.Width);
+        PanelCollection__prefab__context.OnResized(coefHeight,top: PanelTop__prefab__context.Height, right: PanelCollection__context_right);
     }
 
     private async UniTask ShowHeroByEquipmentAsync()

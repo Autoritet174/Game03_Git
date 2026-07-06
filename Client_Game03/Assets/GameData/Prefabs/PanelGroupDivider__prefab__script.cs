@@ -165,7 +165,7 @@ namespace Assets.GameData.Prefabs
 
         public void OnResized()
         {
-            float width = _PanelCollection.Width;
+            float width = _PanelCollection.PanelCollectionViewer_Width;
             float coefHeight = G.GetCoefHeight();
             float buttonHeight = DIVIDER_BUTTON_HEIGHT * coefHeight;
             float height = buttonHeight;

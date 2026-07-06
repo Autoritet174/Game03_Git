@@ -26,12 +26,11 @@ public class PanelTop__prefab__scriptMB : MonoBehaviour, IPrefab
             return;
         }
 
-        Height = Screen.height;
         Width = Screen.width;
+        Height = G.PANELTOP_HEIGHT * coefHeight;
 
-        float panelTop_Height = G.PANELTOP_HEIGHT * coefHeight;
-        This__RectTransform.sizeDelta = new Vector2(Width, panelTop_Height);
-        ButtonClose__RectTransform.sizeDelta = new Vector2(panelTop_Height, panelTop_Height);
+        This__RectTransform.sizeDelta = new Vector2(Width, Height);
+        ButtonClose__RectTransform.sizeDelta = new Vector2(Height, Height);
     }
 
 }
