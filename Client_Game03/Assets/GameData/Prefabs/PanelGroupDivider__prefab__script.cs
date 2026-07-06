@@ -21,7 +21,6 @@ namespace Assets.GameData.Prefabs
         private const float CELL_SIZE = 120f;
         private const float SPACING = 9f;
         private const float PADDING = 22.5f;
-
         public PanelGroupDivider__prefab__script(GroupCollectionElement groupCollectionElement, PanelCollection__prefab__scriptMB parent)
         {
             _PanelCollection = parent;

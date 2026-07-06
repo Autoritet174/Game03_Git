@@ -1,7 +1,6 @@
 using Assets.GameData.Prefabs;
 using Assets.GameData.Scenes.Collection.prefabs;
 using Assets.GameData.Scripts;
-using Cysharp.Threading.Tasks;
 using Game03Client.Collection;
 using General.DTO.Entities.Collection;
 using System;
@@ -19,16 +18,12 @@ namespace Assets.GameData.Scenes.Collection
             PanelGroupDivider__prefab__script panelGroupDivider,
             CollectionElement collectionElement,
             PanelCollection__prefab__scriptMB panelCollection
-            //PanelSelectedHero__prefab__scriptMB panelSelectedHero,
-            //PanelSelectedEquipment__prefab__scriptMB panelSelectedEquipment
             )
         {
             Id = collectionElement.Id;
             _PanelGroupDivider = panelGroupDivider;
             _CollectionElement = collectionElement;
             _PanelCollection = panelCollection;
-            //PanelSelectedHero = panelSelectedHero;
-            //PanelSelectedEquipment = panelSelectedEquipment;
 
             _GameObject = AddressableCache.IconCollectionElementAddressableGameObject.SafeInstant();
             _GameObject.name = $"IconCollectionElement [{Id}]";
@@ -114,7 +109,6 @@ namespace Assets.GameData.Scenes.Collection
         public Guid Id { get; private set; }
         private readonly PanelGroupDivider__prefab__script _PanelGroupDivider;
         private readonly PanelCollection__prefab__scriptMB _PanelCollection;
-        //private readonly IPanelCollectionViewerContext _Context;
         private readonly GameObject _GameObject;
         private readonly RectTransform _RectTransform;
         private readonly CollectionElement _CollectionElement;
@@ -170,6 +164,7 @@ namespace Assets.GameData.Scenes.Collection
 
         private void OnClick()
         {
+            _PanelCollection.PanelCollectionViewerContext.OnElementSelected(_CollectionElement.Id, _PanelCollection.CollectionMode);
             //switch (_PanelCollection.CollectionMode)
             //{
             //    case ECollectionMode.Hero:

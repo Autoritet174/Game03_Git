@@ -70,6 +70,7 @@
     <Compile Include="Assets\GameData\Prefabs\PanelReconnecting__prefab__scriptMB.cs" />
     <Compile Include="Assets\GameData\Scripts\ButtonClose_Click_MoveToMainMenu.cs" />
     <Compile Include="Assets\GameData\Scripts\SecureStorageProvider.cs" />
+    <Compile Include="Assets\GameData\Prefabs\IPanelCollectionViewerContext.cs" />
     <Compile Include="Assets\GameData\Scripts\MainThreadDispatcher.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\prefabs\PanelSelectedEquipment__prefab__scriptMB.cs" />
     <Compile Include="Assets\GameData\Scenes\Battlefield\BattlefieldUnit.cs" />

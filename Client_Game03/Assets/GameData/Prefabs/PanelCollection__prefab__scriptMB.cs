@@ -28,8 +28,8 @@ public class PanelCollection__prefab__scriptMB : MonoBehaviour, IPrefab
     public int PageCurrent { get; private set; } = 1;
     public int PageMax { get; private set; } = 1;
     public int MaxCollectionElements { get; private set; }
-    //public IPanelCollectionViewerContext ViewerContext => _PanelCollectionViewerContext;
 
+    public IPanelCollectionViewerContext PanelCollectionViewerContext { get; set; }
 
     public void Initialize()
     {

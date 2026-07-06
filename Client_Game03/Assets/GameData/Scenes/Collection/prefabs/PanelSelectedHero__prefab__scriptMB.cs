@@ -25,6 +25,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
         /// Ширина панели при разрешении 1920x1080.
         /// </summary>
         private const float WIDTH_BASE = 535f;
+        public const float WIDTH_SPACING = 10f;
 
         private const float LABEL_HERO_NAME_FONTSIZE = 30f;
 
