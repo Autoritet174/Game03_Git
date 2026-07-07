@@ -10,7 +10,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using L = General.LocalizationKeys;
 using I = CollectionSceneInitializator;
-using Assets.GameData.Scenes.Collection.prefabs;
+using Assets.GameData.Scenes.Collection.Prefabs;
 
 namespace Assets.GameData.Scenes.Collection
 {
@@ -70,8 +70,8 @@ namespace Assets.GameData.Scenes.Collection
             _Rarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity", _RectTransform.transform);
             _EquipmentFull_Image = GameObjectFinder.FindByName<Image>("ImageEquipmentFull", _RectTransform.transform);
 
-            EventHelper.SetHoverEvents(_GameObject, OnPointerEnter, OnPointerExit);
-            EventHelper.SetClickEvent(_GameObject, OnClick, false);
+            _GameObject.SetHoverEvents(OnPointerEnter, OnPointerExit);
+            _GameObject.SetClickOnGameObject(OnClick);
         }
 
         public void OnResized()

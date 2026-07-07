@@ -1,5 +1,5 @@
 using Assets.GameData.Scenes.Collection;
-using Assets.GameData.Scenes.Collection.prefabs;
+using Assets.GameData.Scenes.Collection.Prefabs;
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using General.DTO.Entities.Collection;
@@ -53,22 +53,21 @@ public class CollectionSceneInitializator : MonoBehaviour
 
         // PanelSelectedEquipment
         {
-            PanelSelectedEquipment__context.PanelCollection__prefab__context = PanelCollection__prefab__context;
-            PanelSelectedEquipment__context.SceneOnResized = OnResized;
-            PanelSelectedEquipment__context.PanelSelectedHero__context = PanelSelectedHero__context;
-            PanelSelectedEquipment__context.TabButtonHeroesOnClick = TabButtonHeroesOnClick;
+            PanelSelectedEquipment__context.panelCollectionContext = PanelCollection__prefab__context;
+            PanelSelectedEquipment__context.sceneOnResized = OnResized;
+            PanelSelectedEquipment__context.panelSelectedHeroContext = PanelSelectedHero__context;
+            PanelSelectedEquipment__context.tabButtonHeroesOnClick = TabButtonHeroesOnClick;
             PanelSelectedEquipment__context.Initialize();
         }
 
 
         // PanelCollection__prefab
         {
-
-            PanelCollectionViewerContext panelCollectionViewerContext = new();
-            PanelCollection__prefab__context.PanelCollectionViewerContext = panelCollectionViewerContext;
+            PanelCollectionContext panelCollectionContext = new();
+            panelCollectionContext.OnCollectionLoaded(this);
+            PanelCollection__prefab__context.panelCollectionContext = panelCollectionContext;
             PanelCollection__prefab__context.Initialize();
-            PanelCollection__prefab__context.InstantiateCollection(PanelCollection__prefab__context.CollectionMode);
-            panelCollectionViewerContext.OnCollectionLoaded(this);
+            PanelCollection__prefab__context.InstantiateCollection(PanelCollection__prefab__context.collectionMode);
         }
 
         Initialized = true;
@@ -116,32 +115,32 @@ public class CollectionSceneInitializator : MonoBehaviour
             float tabButtonWidth = 240f * coefHeight;
             float fontSize = 22f * coefHeight;
 
-            ButtonHeroes__TabButton.rectTransform.sizeDelta = new Vector2(tabButtonWidth, PanelTop__prefab__context.Height);
+            ButtonHeroes__TabButton.rectTransform.sizeDelta = new Vector2(tabButtonWidth, PanelTop__prefab__context.height);
             ButtonHeroes__TabButton.textMeshProUGUI.fontSize = fontSize;
 
-            ButtonEquipment__TabButton.rectTransform.sizeDelta = new Vector2(tabButtonWidth, PanelTop__prefab__context.Height);
+            ButtonEquipment__TabButton.rectTransform.sizeDelta = new Vector2(tabButtonWidth, PanelTop__prefab__context.height);
             ButtonEquipment__TabButton.rectTransform.anchoredPosition = new Vector2(tabButtonWidth, 0f);
             ButtonEquipment__TabButton.textMeshProUGUI.fontSize = fontSize;
         }
 
-        PanelSelectedHero__context.OnResized(coefHeight, top: PanelTop__prefab__context.Height);
-        PanelSelectedEquipment__context.OnResized(coefHeight, top: PanelTop__prefab__context.Height, right: PanelSelectedHero__context.Width);
+        PanelSelectedHero__context.OnResized(coefHeight, top: PanelTop__prefab__context.height);
+        PanelSelectedEquipment__context.OnResized(coefHeight, top: PanelTop__prefab__context.height, right: PanelSelectedHero__context.width);
 
         float PanelCollection__context_right = 0f;
         if (PanelSelectedHero__context.IsVisible)
         {
-            PanelCollection__context_right += PanelSelectedHero__context.Width + PanelSelectedHero__prefab__scriptMB.WIDTH_SPACING;
+            PanelCollection__context_right += PanelSelectedHero__context.width + PanelSelectedHero__prefab__scriptMB.WIDTH_SPACING;
         }
-        if (PanelSelectedEquipment__context.IsVisible)
+        if (PanelSelectedEquipment__context.isVisible)
         {
-            PanelCollection__context_right += PanelSelectedEquipment__context.Width + PanelSelectedEquipment__prefab__scriptMB.WIDTH_SPACING;
+            PanelCollection__context_right += PanelSelectedEquipment__context.width + PanelSelectedEquipment__prefab__scriptMB.WIDTH_SPACING;
         }
-        PanelCollection__prefab__context.OnResized(coefHeight, top: PanelTop__prefab__context.Height, right: PanelCollection__context_right);
+        PanelCollection__prefab__context.OnResized(coefHeight, top: PanelTop__prefab__context.height, right: PanelCollection__context_right);
     }
 
     private async UniTask ShowHeroByEquipmentAsync()
     {
-        Equipment eq = Game03Client.Collection.CollectionProvider.GetEquipment(PanelSelectedEquipment__context.EquipmentId);
+        Equipment eq = Game03Client.Collection.CollectionProvider.GetEquipment(PanelSelectedEquipment__context.equipmentId);
         if (eq == null || eq.HeroId == null)
         {
             return;
@@ -161,7 +160,7 @@ public class CollectionSceneInitializator : MonoBehaviour
 
     public void TabButtonHeroesOnClick()
     {
-        if (PanelCollection__prefab__context.CollectionMode == ECollectionMode.Hero)
+        if (PanelCollection__prefab__context.collectionMode == ECollectionMode.Hero)
         {
             return;
         }
@@ -176,7 +175,7 @@ public class CollectionSceneInitializator : MonoBehaviour
     /// <summary> Кнопка "Экипировка". </summary>
     private void TabButtonEquipmentOnClick()
     {
-        if (PanelCollection__prefab__context.CollectionMode == ECollectionMode.Equipment)
+        if (PanelCollection__prefab__context.collectionMode == ECollectionMode.Equipment)
         {
             return;
         }
@@ -189,8 +188,8 @@ public class CollectionSceneInitializator : MonoBehaviour
 
     private void RestoreSelection()
     {
-        Guid selectedId = GetSelectedElementId(PanelCollection__prefab__context.CollectionMode);
-        PanelCollection__prefab__context.GetElement(selectedId)?.Selected(true);
+        Guid selectedId = GetSelectedElementId(PanelCollection__prefab__context.collectionMode);
+        PanelCollection__prefab__context.GetElement(selectedId)?.SetSelected(true);
     }
     #endregion ================ PanelTop ================
 
@@ -200,7 +199,7 @@ public class CollectionSceneInitializator : MonoBehaviour
         return collectionMode switch
         {
             ECollectionMode.Hero => PanelSelectedHero__context.HeroId,
-            ECollectionMode.Equipment => PanelSelectedEquipment__context.EquipmentId,
+            ECollectionMode.Equipment => PanelSelectedEquipment__context.equipmentId,
             _ => throw new NotImplementedException(),
         };
     }

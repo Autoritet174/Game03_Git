@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public static class EventHelper
 {
-   
+
     /// <summary>
     /// Метод для навешивания событий наведения и ухода курсора с асинхронными делегатами.
     /// </summary>
@@ -54,7 +54,7 @@ public static class EventHelper
     /// <param name="gameObject"></param>
     /// <param name="action"></param>
     /// <exception cref="InvalidOperationException"></exception>
-    public static void SetClickEvent(this GameObject gameObject, Action action)
+    public static void SetClickOnButton(this GameObject gameObject, Action action)
     {
         if (!gameObject.TryGetComponent(out Button button))
         {
@@ -69,7 +69,26 @@ public static class EventHelper
     /// <summary>
     /// Метод для навешивания события клика на GameObject или его Button компонент. Удаляет все другие Listener.
     /// </summary>
-    public static void SetClickEvent(this GameObject gameObject, Func<UniTask> onClick, bool useButtonComponent)
+    public static void SetClickOnButton(this GameObject gameObject, Func<UniTask> onClick)
+    {
+        if (gameObject == null)
+        {
+            Debug.LogError("gameObject is null!");
+            return;
+        }
+        if (!gameObject.TryGetComponent(out Button button))
+        {
+            button = gameObject.AddComponent<Button>();
+        }
+
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(() => onClick?.Invoke().Forget());
+    }
+
+    /// <summary>
+    /// Метод для навешивания события клика на GameObject без компонента Button.
+    /// </summary>
+    public static void SetClickOnGameObject(this GameObject gameObject, Action action)
     {
         if (gameObject == null)
         {
@@ -77,25 +96,28 @@ public static class EventHelper
             return;
         }
 
-        if (useButtonComponent)
+        if (!gameObject.TryGetComponent(out ButtonClickHandlerCustom clickHandler))
         {
-            if (!gameObject.TryGetComponent(out Button button))
-            {
-                button = gameObject.AddComponent<Button>();
-            }
-
-            button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(() => onClick?.Invoke().Forget());
+            clickHandler = gameObject.AddComponent<ButtonClickHandlerCustom>();
         }
-        else
+
+        clickHandler.SetupClickEvent(action);
+    }
+
+    public static void SetClickOnGameObject(this GameObject gameObject, Func<UniTask> onClick)
+    {
+        if (gameObject == null)
         {
-            if (!gameObject.TryGetComponent(out ButtonClickHandlerCustom clickHandler))
-            {
-                clickHandler = gameObject.AddComponent<ButtonClickHandlerCustom>();
-            }
-
-            clickHandler.SetupClickEvent(onClick);
+            Debug.LogError("gameObject is null!");
+            return;
         }
+
+        if (!gameObject.TryGetComponent(out ButtonClickHandlerCustom clickHandler))
+        {
+            clickHandler = gameObject.AddComponent<ButtonClickHandlerCustom>();
+        }
+
+        clickHandler.SetupClickEvent(onClick);
     }
 
     /// <summary>
@@ -160,67 +182,82 @@ public static class EventHelper
         button.onClick.AddListener(() => ExecuteWithExceptionHandling().Forget());
     }
 
-}
 
-// Класс-обработчик, который будет добавляться к кнопкам
-internal class ButtonHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
-{
-    private Func<UniTask> onEnterAsync;
-    private Func<UniTask> onExitAsync;
-    private Action onEnterSync;
-    private Action onExitSync;
 
-    public void SetupHoverEvents(Func<UniTask> enterAction, Func<UniTask> exitAction)
+    // Класс-обработчик, который будет добавляться к кнопкам
+    internal class ButtonHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        onEnterAsync = enterAction;
-        onExitAsync = exitAction;
-        onEnterSync = null;
-        onExitSync = null;
-    }
+        private Func<UniTask> onEnterAsync;
+        private Func<UniTask> onExitAsync;
+        private Action onEnterSync;
+        private Action onExitSync;
 
-    public void SetupHoverEvents(Action enterAction, Action exitAction)
-    {
-        onEnterSync = enterAction;
-        onExitSync = exitAction;
-        onEnterAsync = null;
-        onExitAsync = null;
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        if (onEnterSync != null)
+        public void SetupHoverEvents(Func<UniTask> enterAction, Func<UniTask> exitAction)
         {
-            onEnterSync();
-            return;
+            onEnterAsync = enterAction;
+            onExitAsync = exitAction;
+            onEnterSync = null;
+            onExitSync = null;
         }
 
-        onEnterAsync?.Invoke().Forget();
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        if (onExitSync != null)
+        public void SetupHoverEvents(Action enterAction, Action exitAction)
         {
-            onExitSync();
-            return;
+            onEnterSync = enterAction;
+            onExitSync = exitAction;
+            onEnterAsync = null;
+            onExitAsync = null;
         }
 
-        onExitAsync?.Invoke().Forget();
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            if (onEnterSync != null)
+            {
+                onEnterSync();
+                return;
+            }
+
+            onEnterAsync?.Invoke().Forget();
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            if (onExitSync != null)
+            {
+                onExitSync();
+                return;
+            }
+
+            onExitAsync?.Invoke().Forget();
+        }
     }
-}
 
-// Класс-обработчик для кликов (используется как альтернатива Button)
-internal class ButtonClickHandlerCustom : MonoBehaviour, IPointerClickHandler
-{
-    private Func<UniTask> onClick;
-
-    public void SetupClickEvent(Func<UniTask> clickAction)
+    // Класс-обработчик для кликов (используется как альтернатива Button)
+    internal class ButtonClickHandlerCustom : MonoBehaviour, IPointerClickHandler
     {
-        onClick = clickAction;
-    }
+        private Func<UniTask> onClickAsync;
+        private Action onClickSync;
 
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        onClick?.Invoke().Forget();
+        public void SetupClickEvent(Func<UniTask> clickAction)
+        {
+            onClickAsync = clickAction;
+            onClickSync = null;
+        }
+
+        public void SetupClickEvent(Action clickAction)
+        {
+            onClickSync = clickAction;
+            onClickAsync = null;
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            if (onClickSync != null)
+            {
+                onClickSync();
+                return;
+            }
+
+            onClickAsync?.Invoke().Forget();
+        }
     }
 }

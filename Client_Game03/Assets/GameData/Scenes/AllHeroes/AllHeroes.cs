@@ -148,7 +148,7 @@ public class AllHeroes : MonoBehaviour
         {
             await HeroView(hero);
         }
-        _prefabIconHero.SetClickEvent(OnClick, false);
+        _prefabIconHero.SetClickOnGameObject(OnClick);
 
         async UniTask OnPoinerEnter()
         {

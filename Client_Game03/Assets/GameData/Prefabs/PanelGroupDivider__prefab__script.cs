@@ -1,9 +1,11 @@
 using Assets.GameData.Scenes.Collection;
 using Assets.GameData.Scripts;
 using Game03Client.Collection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using L = General.LocalizationKeys;
@@ -28,7 +30,7 @@ namespace Assets.GameData.Prefabs
             _GroupName = groupCollectionElement.Name;
 
             _GameObject = AddressableCache.GroupDividerPrefabAddressableGameObject.SafeInstant();
-            _GameObject.transform.SetParent(parent.PanelCollectionViewer_Content__Transform, false);
+            _GameObject.transform.SetParent(parent.panelCollectionViewer_Content__Transform, false);
 
             _RectTransform = _GameObject.GetComponent<RectTransform>();
 
@@ -132,6 +134,10 @@ namespace Assets.GameData.Prefabs
         private bool _Expanded = true;
 
 
+        public List<Guid> GetSelectedElements() {
+            return _CollectionElementList.Select(a => a.Id).ToList();
+        }
+
         /// <summary>
         /// Переключает состояние группы и запускает анимацию.
         /// </summary>
@@ -164,7 +170,7 @@ namespace Assets.GameData.Prefabs
 
         public void OnResized()
         {
-            float width = _PanelCollection.PanelCollectionViewer_Width;
+            float width = _PanelCollection.panelCollectionViewer_Width;
             float coefHeight = G.GetCoefHeight();
             float buttonHeight = DIVIDER_BUTTON_HEIGHT * coefHeight;
             float height = buttonHeight;
@@ -235,7 +241,7 @@ namespace Assets.GameData.Prefabs
 
         public void UnselectAll()
         {
-            _PanelIconCollectionElementList.ForEach(_a => _a.Selected(false));
+            _PanelIconCollectionElementList.ForEach(_a => _a.SetSelected(false));
         }
 
         //private async UniTask ShowEquipment()

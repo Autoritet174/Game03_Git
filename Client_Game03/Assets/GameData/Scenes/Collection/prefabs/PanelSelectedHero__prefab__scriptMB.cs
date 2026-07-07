@@ -13,13 +13,13 @@ using UnityEngine.UI;
 using I = CollectionSceneInitializator;
 using L = General.LocalizationKeys;
 
-namespace Assets.GameData.Scenes.Collection.prefabs
+namespace Assets.GameData.Scenes.Collection.Prefabs
 {
     public class PanelSelectedHero__prefab__scriptMB : MonoBehaviour, IPrefab
     {
-        public bool Initialized { get; private set; }
-        public float Width { get; private set; }
-        public float Height { get; private set; }
+        public bool initialized { get; private set; }
+        public float width { get; private set; }
+        public float height { get; private set; }
 
         /// <summary>
         /// Ширина панели при разрешении 1920x1080.
@@ -93,7 +93,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
                 _PanelTop__RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelTop", _RectTransform);
 
                 _ButtonClose__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose", _PanelTop__RectTransform);
-                _ButtonClose__RectTransform.gameObject.SetClickEvent(HideAsync, false);
+                _ButtonClose__RectTransform.gameObject.SetClickOnGameObject(Hide);
 
                 _LabelSelectedHero__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label_SelectedHero", _PanelTop__RectTransform);
             }
@@ -256,41 +256,34 @@ namespace Assets.GameData.Scenes.Collection.prefabs
             gameObject.SetActive(false);
             SceneOnResized();
         }
-
-        private UniTask HideAsync()
-        {
-            Hide();
-            return UniTask.CompletedTask;
-        }
-
         public void OnResized(float coefHeight, float top = 0, float buttom = 0, float left = 0, float right = 0)
         {
             if (!IsVisible)
             {
-                Width = 0f;
-                Height = 0f;
+                width = 0f;
+                height = 0f;
                 return;
             }
 
-            Width = WIDTH_BASE * coefHeight;
-            Height = Screen.height - top;
-            _RectTransform.sizeDelta = new Vector2(Width, Height);
+            width = WIDTH_BASE * coefHeight;
+            height = Screen.height - top;
+            _RectTransform.sizeDelta = new Vector2(width, height);
 
             float h1 = G.PANELTOP_HEIGHT * coefHeight;
             // Верхняя панель где написано имя героя
-            _PanelTop__RectTransform.sizeDelta = new Vector2(Width, h1);
+            _PanelTop__RectTransform.sizeDelta = new Vector2(width, h1);
 
             float button_close_spacing = BUTTON_CLOSE_SPACING * coefHeight;
             float buttonCloseSize = h1 - (button_close_spacing * 2);
             _ButtonClose__RectTransform.sizeDelta = new Vector2(buttonCloseSize, buttonCloseSize);
             _ButtonClose__RectTransform.anchoredPosition = new Vector2(button_close_spacing, -button_close_spacing);
 
-            _LabelSelectedHero__TextMeshProUGUI.rectTransform.sizeDelta = new Vector2(Width - h1, h1);
+            _LabelSelectedHero__TextMeshProUGUI.rectTransform.sizeDelta = new Vector2(width - h1, h1);
             _LabelSelectedHero__TextMeshProUGUI.fontSize = LABEL_HERO_NAME_FONTSIZE * coefHeight;
 
 
             // Нижняя панель с характеристиками героя
-            _PanelBottom__RectTransform.sizeDelta = new Vector2(Width, Height - h1);
+            _PanelBottom__RectTransform.sizeDelta = new Vector2(width, height - h1);
 
 
             // Кнопки вкладок
@@ -310,8 +303,8 @@ namespace Assets.GameData.Scenes.Collection.prefabs
 
             _Slots.ForEach(a => a.OnResized());
 
-            float panelTabHeight = Height - h1 - tabButtonH - (tabButtonS * 2);
-            _PanelTab1_RectTransform.sizeDelta = new Vector2(Width, panelTabHeight);
+            float panelTabHeight = height - h1 - tabButtonH - (tabButtonS * 2);
+            _PanelTab1_RectTransform.sizeDelta = new Vector2(width, panelTabHeight);
 
             float imageContainerSpacing = IMAGE_CONTAINER_SPACING * coefHeight;
             _ImageContainer_RectTransform.anchoredPosition = new Vector2(imageContainerSpacing, imageContainerSpacing);
@@ -322,7 +315,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
             _ImageContainer_RectTransform.sizeDelta = new Vector2(imageContainerWidth, imageContainerHeight);
 
             // Stats
-            PanelStatWidth = Width - (3f * panelSlotSpacing) - imageContainerWidth;
+            PanelStatWidth = width - (3f * panelSlotSpacing) - imageContainerWidth;
             PanelStatHeight = PanelStatWidth * 576f / 244.06f;
             _PanelStat_RectTransform.sizeDelta = new Vector2(PanelStatWidth, PanelStatHeight);
             _PanelStat_RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, imageContainerSpacing);
@@ -343,7 +336,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
                 return;
             }
 
-            element.Selected(selected);
+            element.SetSelected(selected);
         }
        
     }

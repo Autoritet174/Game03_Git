@@ -15,7 +15,7 @@ namespace Assets.GameData.Scenes.Auth
         {
             Button button = GameObjectFinder.FindByName<Button>("Button_Login (id=bf6euydu)");
             //button.onClick.AddListener(() => ButtonLoginOnClick().Forget());
-            button.gameObject.SetClickEvent(ButtonLoginOnClick, true);
+            button.gameObject.SetClickOnButton(ButtonLoginOnClick);
         }
         public static async UniTask ButtonLoginOnClick()
         {

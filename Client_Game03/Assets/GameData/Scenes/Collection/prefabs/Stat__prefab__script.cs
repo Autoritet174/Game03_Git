@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using L = General.LocalizationKeys;
 
-namespace Assets.GameData.Scenes.Collection.prefabs
+namespace Assets.GameData.Scenes.Collection.Prefabs
 {
     public class Stat__prefab__script
     {

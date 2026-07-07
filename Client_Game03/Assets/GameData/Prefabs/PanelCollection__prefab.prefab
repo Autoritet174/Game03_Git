@@ -1280,7 +1280,7 @@ GameObject:
   - component: {fileID: 6242930061174651350}
   - component: {fileID: 1955321209287522172}
   m_Layer: 5
-  m_Name: PanelCollectionTopButtons
+  m_Name: PanelTopButtons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

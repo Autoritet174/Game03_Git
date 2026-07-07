@@ -44,7 +44,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             label__TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(localizationKey));
 
             imageMask__RectTransform.gameObject.SetHoverEvents(OnPointerEnter, OnPointerExit);
-            imageMask__RectTransform.gameObject.SetClickEvent(OnClick);
+            imageMask__RectTransform.gameObject.SetClickOnGameObject(OnClick);
         }
 
 
@@ -75,7 +75,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
         private void OnClick()
         {
-            SelectBattlefieldSceneInitializator.PanelPrepareBattleInstance.Show(BattlefieldId);
+            parentBattlefieldCategory.panelPrepareBattle.Show(BattlefieldId);
         }
     }
 }

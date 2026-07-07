@@ -31,9 +31,11 @@ namespace Assets.GameData.Scenes.SelectBattlefield
         private readonly GridLayoutGroup contentBlock__GridLayoutGroup;
 
         private readonly TextMeshProUGUI textName__TextMeshProUGUI;
-        public BattlefieldCategory(string name)
+        public PanelPrepareBattle panelPrepareBattle { get; }
+        public BattlefieldCategory(string name, PanelPrepareBattle panelPrepareBattle)
         {
             Name = name;
+            this.panelPrepareBattle = panelPrepareBattle;
             gameObject = GameObjectFinder.FindByName($"ScrollViewCollection_{name}");
             rectTransform = gameObject.GetComponent<RectTransform>();
             textName__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("TextName", gameObject.transform);

@@ -1,5 +1,5 @@
 using Assets.GameData.Prefabs;
-using Assets.GameData.Scenes.Collection.prefabs;
+using Assets.GameData.Scenes.Collection.Prefabs;
 using Assets.GameData.Scripts;
 using Game03Client.Collection;
 using General.DTO.Entities.Collection;
@@ -81,7 +81,7 @@ namespace Assets.GameData.Scenes.Collection
             imageRarity.preserveAspect = true;
             imageRarity.type = Image.Type.Simple; // Режим без растягивания;
 
-            imageCollectionElement.sprite = _PanelCollection.CollectionMode switch
+            imageCollectionElement.sprite = _PanelCollection.collectionMode switch
             {
                 ECollectionMode.Hero => AddressableCache.Heroes[$"{_CollectionElement.Name}_face"],
                 ECollectionMode.Equipment => AddressableCache.Equipments[_CollectionElement.Name],
@@ -90,7 +90,7 @@ namespace Assets.GameData.Scenes.Collection
             imageCollectionElement.preserveAspect = true;
             imageCollectionElement.type = Image.Type.Simple; // Режим без растягивания;
 
-            _GameObject.SetClickEvent(OnClick);
+            _GameObject.SetClickOnButton(OnClick);
             EventHelper.SetHoverEvents(_GameObject, OnPointerEnter, OnPointerExit);
 
             _OwnerHeroIcon_GameObject = GameObjectFinder.FindByName("OwnerHeroIcon", _GameObject.transform);
@@ -124,6 +124,9 @@ namespace Assets.GameData.Scenes.Collection
 
         private readonly PanelSelectedHero__prefab__scriptMB PanelSelectedHero;
         private readonly PanelSelectedEquipment__prefab__scriptMB PanelSelectedEquipment;
+
+        public bool selected { get; private set; }
+
         public void SetText(string text)
         {
             _TextMeshPro.SetText(text);
@@ -152,15 +155,12 @@ namespace Assets.GameData.Scenes.Collection
             _TextMeshPro.fontSize = TEXT_COLLECTION_ELEMENT_FONTSIZE * G.GetCoefHeight();
         }
 
-        public void Selected(bool selected, bool clearOthers = true)
+        public void SetSelected(bool selected, bool clearOthers = true)
         {
+            this.selected = selected;
             if (selected && clearOthers)
             {
                 _PanelCollection.UnselectAll();
-            }
-            if (selected)
-            {
-
             }
             _SelectedImage_GameObject.SetActive(selected);
             //_RarityImage_GameObject.SetActive(!selected);
@@ -168,7 +168,7 @@ namespace Assets.GameData.Scenes.Collection
 
         private void OnClick()
         {
-            _PanelCollection.PanelCollectionViewerContext.OnElementSelected(_CollectionElement.Id, _PanelCollection.CollectionMode);
+            _PanelCollection.panelCollectionContext.OnClick(_CollectionElement.Id, _PanelCollection.collectionMode);
             //switch (_PanelCollection.CollectionMode)
             //{
             //    case ECollectionMode.Hero:

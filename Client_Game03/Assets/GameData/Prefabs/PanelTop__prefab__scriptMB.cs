@@ -8,29 +8,29 @@ public class PanelTop__prefab__scriptMB : MonoBehaviour, IPrefab
     private RectTransform This__RectTransform;
     private RectTransform ButtonClose__RectTransform;
 
-    public bool Initialized { get; private set; }
-    public float Width { get; private set; }
-    public float Height { get; private set; }
+    public bool initialized { get; private set; }
+    public float width { get; private set; }
+    public float height { get; private set; }
 
     public void Initialize()
     {
         This__RectTransform = GetComponent<RectTransform>();
         ButtonClose__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose", This__RectTransform.transform);
-        Initialized = true;
+        initialized = true;
     }
 
     public void OnResized(float coefHeight, float top = 0, float buttom = 0, float left = 0, float right = 0)
     {
-        if (!Initialized)
+        if (!initialized)
         {
             return;
         }
 
-        Width = Screen.width;
-        Height = G.PANELTOP_HEIGHT * coefHeight;
+        width = Screen.width;
+        height = G.PANELTOP_HEIGHT * coefHeight;
 
-        This__RectTransform.sizeDelta = new Vector2(Width, Height);
-        ButtonClose__RectTransform.sizeDelta = new Vector2(Height, Height);
+        This__RectTransform.sizeDelta = new Vector2(width, height);
+        ButtonClose__RectTransform.sizeDelta = new Vector2(height, height);
     }
 
 }
