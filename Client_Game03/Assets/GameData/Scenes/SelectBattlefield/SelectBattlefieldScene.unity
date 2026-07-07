@@ -350,7 +350,7 @@ GameObject:
   - component: {fileID: 611122035}
   - component: {fileID: 611122034}
   m_Layer: 5
-  m_Name: ScrollbarVertical (id=gez98o51)
+  m_Name: ScrollbarVertical
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -419,7 +419,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 552863601}
   m_HandleRect: {fileID: 552863600}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -774,7 +774,7 @@ GameObject:
   - component: {fileID: 794474243}
   - component: {fileID: 794474242}
   m_Layer: 5
-  m_Name: ScrollViewCollectionMain (id=elrwytkp)
+  m_Name: ScrollViewCollectionMain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -792,8 +792,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1348681347}
   - {fileID: 611122033}
+  - {fileID: 1348681347}
   m_Father: {fileID: 976867535}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1324,7 +1324,7 @@ GameObject:
   - component: {fileID: 1348681349}
   - component: {fileID: 1348681348}
   m_Layer: 5
-  m_Name: ViewportMain (id=sno6hebj)
+  m_Name: ViewportMain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1413,7 +1413,7 @@ GameObject:
   - component: {fileID: 1353483402}
   - component: {fileID: 1353483401}
   m_Layer: 5
-  m_Name: ContentMain (id=ieb9sss4)
+  m_Name: ContentMain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -94,7 +94,6 @@
     <Compile Include="Assets\GameData\Scenes\Collection\CollectionSceneInitializator.cs" />
     <Compile Include="Assets\GameData\Scripts\GameMessage.cs" />
     <Compile Include="Assets\GameData\Scripts\InitializatorStartScene.cs" />
-    <Compile Include="Assets\GameData\Scenes\SelectBattlefield\SelectBattlefieldCollectionContext.cs" />
     <Compile Include="Assets\GameData\Scenes\Battlefield\Animations\HealthHub.cs" />
     <Compile Include="Assets\GameData\Scripts\UnityObject.cs" />
     <Compile Include="Assets\GameData\Prefabs\FilterButton.cs" />
