@@ -43,12 +43,14 @@ namespace Assets.GameData.Scenes.Collection
         public float Top { get; private set; }
         public ESlot SlotId { get; private set; }
 
-        public Slot(string name, int posX, int posY, Transform parent, ESlot slotId, string suffix = "")
+        public Slot(string name, int posX, int posY, Transform parent,
+            PanelSelectedEquipment__prefab__scriptMB _PanelSelectedEquipment, ESlot slotId, string suffix = "")
         {
             Name = name;
             this.posX = posX;
             this.posY = posY;
             SlotId = slotId;
+            this._PanelSelectedEquipment = _PanelSelectedEquipment;
 
             _RectTransform = GameObjectFinder.FindByName<RectTransform>($"PanelSlot{name}{suffix}", parent);
             _GameObject = _RectTransform.gameObject;
@@ -140,10 +142,10 @@ namespace Assets.GameData.Scenes.Collection
 
         private async UniTask OnClick()
         {
-            //if (_Equipment != null)
-            //{
-            //    PanelSelectedEquipment__context.Show(_Equipment.Id);
-            //}
+            if (_Equipment != null)
+            {
+                _PanelSelectedEquipment.Show(_Equipment.Id);
+            }
         }
     }
 

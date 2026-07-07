@@ -19,78 +19,70 @@ public class CollectionSceneInitializator : MonoBehaviour
     public PanelCollection__prefab__scriptMB PanelCollection__prefab__context { get; private set; }
 
 
-
     private void Start()
     {
         Background_BlueClouds_v1__prefab__context = GameObjectFinder.FindByName<Background_BlueClouds_v1__prefab__scriptMB>("Background_BlueClouds_v1__prefab");
         Background_BlueClouds_v1__prefab__context.Initialize();
 
-        try
+        //try
+        //{
+
+        // PanelTop
         {
-            // PanelTop
-            {
-                PanelTop__prefab__context = GameObjectFinder.FindByName("PanelTop__prefab").GetComponent<PanelTop__prefab__scriptMB>();
-                ButtonHeroes__TabButton = new("ButtonHeroes (id=40jhb51a)", "Text (TMP) (id=wl92ls1m)", TabButtonHeroesOnClick);
-                ButtonHeroes__TabButton.SetText($"{Game03Client.LocalizationManager.GetValue(L.UI.Button.Heroes)}\r\n{Game03Client.Collection.CollectionProvider.GetCountHeroes()}");
-                ButtonEquipment__TabButton = new("ButtonEquipment (id=k5hqeyat)", "Text (TMP) (id=cklw2id1)", TabButtonEquipmentOnClick);
-                ButtonEquipment__TabButton.SetText($"{Game03Client.LocalizationManager.GetValue(L.UI.Button.Equipment)}\r\n{Game03Client.Collection.CollectionProvider.GetCountEquipments()}");
-                PanelTop__prefab__context.Initialize();
-            }
-
-
-            // PanelSelectedHero
-            {
-                PanelSelectedHero__context = GameObjectFinder.FindByName<PanelSelectedHero__prefab__scriptMB>("PanelSelectedHero__prefab");
-                PanelSelectedHero__context.SceneOnResized = OnResized;
-                PanelSelectedHero__context.PanelCollection__prefab__context = PanelCollection__prefab__context;
-                PanelSelectedHero__context.Initialize();
-            }
-
-
-            // PanelSelectedEquipment
-            {
-                PanelSelectedEquipment__context = GameObjectFinder.FindByName<PanelSelectedEquipment__prefab__scriptMB>("PanelSelectedEquipment__prefab");
-                PanelSelectedEquipment__context.SceneOnResized = OnResized;
-                PanelSelectedEquipment__context.PanelCollection__prefab__context = PanelCollection__prefab__context;
-                PanelSelectedEquipment__context.PanelSelectedHero__context = PanelSelectedHero__context;
-                PanelSelectedEquipment__context.TabButtonHeroesOnClick = TabButtonHeroesOnClick;
-                PanelSelectedEquipment__context.Initialize();
-            }
-
-
-            // PanelCollection__prefab
-            {
-                PanelCollection__prefab__context = GameObjectFinder.FindByName("PanelCollection__prefab").GetComponent<PanelCollection__prefab__scriptMB>();
-                PanelCollectionViewerContext panelCollectionViewerContext = new();
-                PanelCollection__prefab__context.PanelCollectionViewerContext = panelCollectionViewerContext;
-                PanelCollection__prefab__context.Initialize();
-                PanelCollection__prefab__context.InstantiateCollection(PanelCollection__prefab__context.CollectionMode);
-                panelCollectionViewerContext.OnCollectionLoaded(this);
-            }
-            Initialized = true;
-            OnResized();
-            //PanelTop__prefab__context.Initialize();
-            //PanelTop__prefab__context.Initialize();
+            PanelTop__prefab__context = GameObjectFinder.FindByName("PanelTop__prefab").GetComponent<PanelTop__prefab__scriptMB>();
+            ButtonHeroes__TabButton = new("ButtonHeroes (id=40jhb51a)", "Text (TMP) (id=wl92ls1m)", TabButtonHeroesOnClick);
+            ButtonHeroes__TabButton.SetText($"{Game03Client.LocalizationManager.GetValue(L.UI.Button.Heroes)}\r\n{Game03Client.Collection.CollectionProvider.GetCountHeroes()}");
+            ButtonEquipment__TabButton = new("ButtonEquipment (id=k5hqeyat)", "Text (TMP) (id=cklw2id1)", TabButtonEquipmentOnClick);
+            ButtonEquipment__TabButton.SetText($"{Game03Client.LocalizationManager.GetValue(L.UI.Button.Equipment)}\r\n{Game03Client.Collection.CollectionProvider.GetCountEquipments()}");
+            PanelTop__prefab__context.Initialize();
         }
-        catch (Exception ex)
+
+
+        PanelCollection__prefab__context = GameObjectFinder.FindByName("PanelCollection__prefab").GetComponent<PanelCollection__prefab__scriptMB>();
+        PanelSelectedHero__context = GameObjectFinder.FindByName<PanelSelectedHero__prefab__scriptMB>("PanelSelectedHero__prefab");
+        PanelSelectedEquipment__context = GameObjectFinder.FindByName<PanelSelectedEquipment__prefab__scriptMB>("PanelSelectedEquipment__prefab");
+
+        // PanelSelectedHero
         {
-            Debug.LogError($"CollectionSceneInitializator: scene configuration failed. {ex.Message}");
-            throw ex;
+            PanelSelectedHero__context.PanelCollection__prefab__context = PanelCollection__prefab__context;
+            PanelSelectedHero__context.PanelSelectedEquipment__context = PanelSelectedEquipment__context;
+            PanelSelectedHero__context.SceneOnResized = OnResized;
+            PanelSelectedHero__context.Initialize();
         }
+
+
+        // PanelSelectedEquipment
+        {
+            PanelSelectedEquipment__context.PanelCollection__prefab__context = PanelCollection__prefab__context;
+            PanelSelectedEquipment__context.SceneOnResized = OnResized;
+            PanelSelectedEquipment__context.PanelSelectedHero__context = PanelSelectedHero__context;
+            PanelSelectedEquipment__context.TabButtonHeroesOnClick = TabButtonHeroesOnClick;
+            PanelSelectedEquipment__context.Initialize();
+        }
+
+
+        // PanelCollection__prefab
+        {
+
+            PanelCollectionViewerContext panelCollectionViewerContext = new();
+            PanelCollection__prefab__context.PanelCollectionViewerContext = panelCollectionViewerContext;
+            PanelCollection__prefab__context.Initialize();
+            PanelCollection__prefab__context.InstantiateCollection(PanelCollection__prefab__context.CollectionMode);
+            panelCollectionViewerContext.OnCollectionLoaded(this);
+        }
+
+        Initialized = true;
+        OnResized();
+        //PanelTop__prefab__context.Initialize();
+        //PanelTop__prefab__context.Initialize();
+        //}
+        //catch (Exception ex)
+        //{
+        //    Debug.LogError($"CollectionSceneInitializator: scene configuration failed. {ex.Message}");
+        //    throw ex;
+        //}
         //this.RunAsync(StartAsync);
     }
-
-
-    //private async UniTask StartAsync(CancellationToken cancellationToken)
-    //{
-    //    if (!IsConfigured)
-    //    {
-    //        return;
-    //    }
-
-    //    await PanelCollectionInstance.InstantiateCollectionAsync(PanelSceneInstance.CollectionMode);
-    //    Initialized = true;
-    //}
 
     private void Update()
     {
@@ -144,7 +136,7 @@ public class CollectionSceneInitializator : MonoBehaviour
         {
             PanelCollection__context_right += PanelSelectedEquipment__context.Width + PanelSelectedEquipment__prefab__scriptMB.WIDTH_SPACING;
         }
-        PanelCollection__prefab__context.OnResized(coefHeight,top: PanelTop__prefab__context.Height, right: PanelCollection__context_right);
+        PanelCollection__prefab__context.OnResized(coefHeight, top: PanelTop__prefab__context.Height, right: PanelCollection__context_right);
     }
 
     private async UniTask ShowHeroByEquipmentAsync()
@@ -173,9 +165,12 @@ public class CollectionSceneInitializator : MonoBehaviour
         {
             return;
         }
+
         ButtonEquipment__TabButton.image.color = ColorOffButton;
         ButtonHeroes__TabButton.image.color = Color.white;
+
         PanelCollection__prefab__context.InstantiateCollection(ECollectionMode.Hero);
+        RestoreSelection();
     }
 
     /// <summary> Кнопка "Экипировка". </summary>

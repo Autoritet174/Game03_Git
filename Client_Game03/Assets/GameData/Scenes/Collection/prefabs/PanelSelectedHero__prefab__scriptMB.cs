@@ -80,6 +80,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
 
         public Action SceneOnResized { get; set; }
         public PanelCollection__prefab__scriptMB PanelCollection__prefab__context { get; set; }
+        public PanelSelectedEquipment__prefab__scriptMB PanelSelectedEquipment__context { get; set; }
 
         public void Initialize()
         {
@@ -123,18 +124,18 @@ namespace Assets.GameData.Scenes.Collection.prefabs
                     // Слоты
                     _Slots = new()
                     {
-                        new Slot("Head", 1, 1, _PanelTab1_RectTransform, ESlot.Head),
-                        new Slot("Armor", 2, 1, _PanelTab1_RectTransform, ESlot.Armor),
-                        new Slot("Hands", 3, 1, _PanelTab1_RectTransform, ESlot.Hands),
-                        new Slot("Feet", 4, 1, _PanelTab1_RectTransform, ESlot.Feet),
-                        new Slot("Bracelet", 5, 1, _PanelTab1_RectTransform, ESlot.Bracelet),
-                        new Slot("Ring", 1, 2, _PanelTab1_RectTransform, ESlot.Ring1, "1"),
-                        new Slot("Ring", 2, 2, _PanelTab1_RectTransform, ESlot.Ring2, "2"),
-                        new Slot("Neck", 3, 2, _PanelTab1_RectTransform, ESlot.Neck),
-                        new Slot("Trinket", 4, 2, _PanelTab1_RectTransform, ESlot.Trinket1, "1"),
-                        new Slot("Trinket", 5, 2, _PanelTab1_RectTransform, ESlot.Trinket2, "2"),
-                        new Slot("Weapon", 1, 3, _PanelTab1_RectTransform, ESlot.RightHand),
-                        new Slot("WeaponShield", 2, 3, _PanelTab1_RectTransform, ESlot.LeftHand)
+                        new Slot("Head", 1, 1, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.Head),
+                        new Slot("Armor", 2, 1, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.Armor),
+                        new Slot("Hands", 3, 1, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.Hands),
+                        new Slot("Feet", 4, 1, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.Feet),
+                        new Slot("Bracelet", 5, 1, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.Bracelet),
+                        new Slot("Ring", 1, 2, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.Ring1, "1"),
+                        new Slot("Ring", 2, 2, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.Ring2, "2"),
+                        new Slot("Neck", 3, 2, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.Neck),
+                        new Slot("Trinket", 4, 2, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.Trinket1, "1"),
+                        new Slot("Trinket", 5, 2, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.Trinket2, "2"),
+                        new Slot("Weapon", 1, 3, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.RightHand),
+                        new Slot("WeaponShield", 2, 3, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.LeftHand)
                     };
 
                     // Изображение героя
@@ -336,11 +337,6 @@ namespace Assets.GameData.Scenes.Collection.prefabs
 
         private void SetViewerElementSelected(bool selected)
         {
-            if (PanelCollection__prefab__context == null)
-            {
-                return;
-            }
-
             PanelIconCollectionElement element = PanelCollection__prefab__context.GetElement(HeroId);
             if (element == null)
             {

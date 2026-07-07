@@ -158,6 +158,10 @@ namespace Assets.GameData.Scenes.Collection
             {
                 _PanelCollection.UnselectAll();
             }
+            if (selected)
+            {
+
+            }
             _SelectedImage_GameObject.SetActive(selected);
             //_RarityImage_GameObject.SetActive(!selected);
         }

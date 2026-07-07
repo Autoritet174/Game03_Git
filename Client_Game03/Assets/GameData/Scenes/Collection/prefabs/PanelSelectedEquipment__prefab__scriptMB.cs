@@ -465,13 +465,7 @@ namespace Assets.GameData.Scenes.Collection.prefabs
 
         private void RefreshViewerElementOwnerImage(Guid id)
         {
-            PanelCollection__prefab__scriptMB panelCollection = PanelCollection__prefab__context;
-            if (panelCollection == null)
-            {
-                return;
-            }
-
-            PanelIconCollectionElement element = panelCollection.GetElement(id);
+            PanelIconCollectionElement element = PanelCollection__prefab__context.GetElement(id);
             if (element == null)
             {
                 return;
