@@ -24,6 +24,8 @@ namespace Assets.GameData.Scenes.SelectBattlefield
         private void Start()
         {
             PanelTop__prefab__context = GameObjectFinder.FindByName("PanelTop__prefab").GetComponent<PanelTop__prefab__scriptMB>();
+            PanelTop__prefab__context.Initialize();
+            PanelTop__prefab__context.SetActionOnButtonClose(G.ButtonCloseOnClick);
 
             panelPrepareBattle = new PanelPrepareBattle
             {

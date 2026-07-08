@@ -999,10 +999,14 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 897619211837132204, guid: 77e7fb991689726469402cabb744d15a, type: 3}
       propertyPath: m_Name
-      value: PanelTop
+      value: PanelTop__prefab
       objectReference: {fileID: 0}
     - target: {fileID: 897619211837132204, guid: 77e7fb991689726469402cabb744d15a, type: 3}
       propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2369640821103770274, guid: 77e7fb991689726469402cabb744d15a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2629187236987724646, guid: 77e7fb991689726469402cabb744d15a, type: 3}

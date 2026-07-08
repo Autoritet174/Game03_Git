@@ -419,7 +419,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 552863601}
   m_HandleRect: {fileID: 552863600}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1751,6 +1751,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2369640821103770274, guid: 77e7fb991689726469402cabb744d15a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5020314524966510458, guid: 77e7fb991689726469402cabb744d15a, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
@@ -2061,6 +2065,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 897619211837132204, guid: 77e7fb991689726469402cabb744d15a, type: 3}
       propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2369640821103770274, guid: 77e7fb991689726469402cabb744d15a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5020314524966510458, guid: 77e7fb991689726469402cabb744d15a, type: 3}

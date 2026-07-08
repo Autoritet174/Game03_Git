@@ -8,9 +8,11 @@ namespace Assets.GameData.Scenes.SelectBattlefield
     {
         //private SelectBattlefieldSceneInitializator selectBattlefieldSceneInitializator;
         private PanelCollection__prefab__scriptMB panelCollection__prefab;
-        public void OnCollectionLoaded(SelectBattlefieldSceneInitializator selectBattlefieldSceneInitializator)
+        private Action UpdateHeroesSelectedAndMaxLabel;
+        public void OnCollectionLoaded(SelectBattlefieldSceneInitializator selectBattlefieldSceneInitializator
+            , Action UpdateHeroesSelectedAndMaxLabel)
         {
-            //this.selectBattlefieldSceneInitializator = selectBattlefieldSceneInitializator;
+            this.UpdateHeroesSelectedAndMaxLabel = UpdateHeroesSelectedAndMaxLabel;
             panelCollection__prefab = selectBattlefieldSceneInitializator.panelPrepareBattle.panelCollection__prefab;
         }
 
@@ -18,6 +20,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
         {
             PanelIconCollectionElement e = panelCollection__prefab.GetElement(elementId);
             e?.SetSelected(!e.selected, false);
+            UpdateHeroesSelectedAndMaxLabel();
         }
     }
 }

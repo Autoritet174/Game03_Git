@@ -6,6 +6,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.SceneManagement;
 
 namespace Assets.GameData.Scripts
 {
@@ -202,6 +203,18 @@ namespace Assets.GameData.Scripts
         public static float GetCoefHeight()
         {
             return (Screen.width > Screen.height ? Screen.height : Screen.width) / 1080f;
+        }
+
+        public static void ButtonCloseOnClick()
+        {
+            if (SceneManager.GetActiveScene().name == $"{GameSceneManager.SceneName.MainMenu}Scene")
+            {
+                GameExitHandler.ExitGame();
+            }
+            else
+            {
+                GameSceneManager.Load(GameSceneManager.SceneName.MainMenu);
+            }
         }
     }
 }

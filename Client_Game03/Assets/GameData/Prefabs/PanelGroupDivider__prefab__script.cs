@@ -135,7 +135,7 @@ namespace Assets.GameData.Prefabs
 
 
         public List<Guid> GetSelectedElements() {
-            return _CollectionElementList.Select(a => a.Id).ToList();
+            return _PanelIconCollectionElementList.Where(a=>a.selected).Select(a => a.Id).ToList();
         }
 
         /// <summary>

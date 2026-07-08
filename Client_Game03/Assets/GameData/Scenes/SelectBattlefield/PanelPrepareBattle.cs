@@ -43,11 +43,13 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             _RectTransform.SetHorizontalOffsets(0, 0);//переместить в пределы экрана
 
             PanelTop__prefab__context = GameObjectFinder.FindByName("PanelPrepareBattle_PanelTop__prefab").GetComponent<PanelTop__prefab__scriptMB>();
+            PanelTop__prefab__context.Initialize();
+            PanelTop__prefab__context.SetActionOnButtonClose(Hide);
 
             panelCollection__prefab = GameObjectFinder.FindByName<PanelCollection__prefab__scriptMB>("PanelCollection", startParent: _RectTransform);
 
             PanelCollectionContext panelCollectionContext = new();
-            panelCollectionContext.OnCollectionLoaded(selectBattlefieldSceneInitializator);
+            panelCollectionContext.OnCollectionLoaded(selectBattlefieldSceneInitializator, UpdateHeroesSelectedAndMaxLabel);
             panelCollection__prefab.panelCollectionContext = panelCollectionContext;
             panelCollection__prefab.Initialize();
             panelCollection__prefab.InstantiateCollection(panelCollection__prefab.collectionMode);
@@ -206,20 +208,5 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             }
         }
 
-        private async UniTask Cancel()
-        {
-            Hide();
-            await UniTask.Yield();
-        }
-
-        void IPrefab.Initialize()
-        {
-            throw new NotImplementedException();
-        }
-
-        void IPrefab.OnResized(float coefHeight, float top, float buttom, float left, float right)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

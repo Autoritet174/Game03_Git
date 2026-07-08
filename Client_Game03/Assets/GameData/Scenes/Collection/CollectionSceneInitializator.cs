@@ -9,9 +9,9 @@ using L = General.LocalizationKeys;
 
 public class CollectionSceneInitializator : MonoBehaviour
 {
-    public bool Initialized { get; private set; } = false;
-    public float Width { get; private set; } = 0f;
-    public float Height { get; private set; } = 0f;
+    public bool initialized { get; private set; }
+    public float width { get; private set; }
+    public float height { get; private set; }
     public Background_BlueClouds_v1__prefab__scriptMB Background_BlueClouds_v1__prefab__context { get; private set; }
     public PanelTop__prefab__scriptMB PanelTop__prefab__context { get; private set; }
     public PanelSelectedHero__prefab__scriptMB PanelSelectedHero__context { get; private set; }
@@ -23,7 +23,7 @@ public class CollectionSceneInitializator : MonoBehaviour
     {
         Background_BlueClouds_v1__prefab__context = GameObjectFinder.FindByName<Background_BlueClouds_v1__prefab__scriptMB>("Background_BlueClouds_v1__prefab");
         Background_BlueClouds_v1__prefab__context.Initialize();
-
+        
         //try
         //{
 
@@ -35,6 +35,7 @@ public class CollectionSceneInitializator : MonoBehaviour
             ButtonEquipment__TabButton = new("ButtonEquipment (id=k5hqeyat)", "Text (TMP) (id=cklw2id1)", TabButtonEquipmentOnClick);
             ButtonEquipment__TabButton.SetText($"{Game03Client.LocalizationManager.GetValue(L.UI.Button.Equipment)}\r\n{Game03Client.Collection.CollectionProvider.GetCountEquipments()}");
             PanelTop__prefab__context.Initialize();
+            PanelTop__prefab__context.SetActionOnButtonClose(G.ButtonCloseOnClick);
         }
 
 
@@ -70,7 +71,7 @@ public class CollectionSceneInitializator : MonoBehaviour
             PanelCollection__prefab__context.InstantiateCollection(PanelCollection__prefab__context.collectionMode);
         }
 
-        Initialized = true;
+        initialized = true;
         OnResized();
         //PanelTop__prefab__context.Initialize();
         //PanelTop__prefab__context.Initialize();
@@ -85,12 +86,12 @@ public class CollectionSceneInitializator : MonoBehaviour
 
     private void Update()
     {
-        if (!Initialized)
+        if (!initialized)
         {
             return;
         }
 
-        if (!Mathf.Approximately(Screen.height, Height) || !Mathf.Approximately(Screen.width, Width))
+        if (!Mathf.Approximately(Screen.height, height) || !Mathf.Approximately(Screen.width, width))
         {
             OnResized();
         }
@@ -98,13 +99,13 @@ public class CollectionSceneInitializator : MonoBehaviour
 
     public void OnResized()
     {
-        if (!Initialized)
+        if (!initialized)
         {
             return;
         }
 
-        Height = Screen.height;
-        Width = Screen.width;
+        height = Screen.height;
+        width = Screen.width;
         float coefHeight = G.GetCoefHeight();
 
 

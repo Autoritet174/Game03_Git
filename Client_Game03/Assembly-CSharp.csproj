@@ -69,9 +69,9 @@
     <Compile Include="Assets\GameData\Prefabs\IPanelCollectionContext.cs" />
     <Compile Include="Assets\GameData\Scripts\ButtonCloseHelper.cs" />
     <Compile Include="Assets\GameData\Prefabs\PanelReconnecting__prefab__scriptMB.cs" />
-    <Compile Include="Assets\GameData\Scripts\ButtonClose_Click_MoveToMainMenu.cs" />
     <Compile Include="Assets\GameData\Scripts\SecureStorageProvider.cs" />
     <Compile Include="Assets\GameData\Scripts\MainThreadDispatcher.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\prefabs\PanelSelectedEquipment__prefab__scriptMB.cs" />
     <Compile Include="Assets\GameData\Scenes\Battlefield\BattlefieldUnit.cs" />
     <Compile Include="Assets\GameData\Scenes\Battlefield\ButtonClose_Click_EndBattle.cs" />
     <Compile Include="Assets\GameData\Scenes\SelectBattlefield\BattlefieldCategory.cs" />
@@ -91,7 +91,6 @@
     <Compile Include="Assets\GameData\Scripts\StaticRemover.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\MainMenuSceneInitializator.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\CollectionSceneInitializator.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\Prefabs\Stat__prefab__script.cs" />
     <Compile Include="Assets\GameData\Scripts\GameMessage.cs" />
     <Compile Include="Assets\GameData\Scripts\InitializatorStartScene.cs" />
     <Compile Include="Assets\GameData\Scenes\Battlefield\Animations\HealthHub.cs" />
@@ -100,16 +99,17 @@
     <Compile Include="Assets\GameData\Scripts\UniTaskRunner.cs" />
     <Compile Include="Assets\GameData\Scripts\AddressableCache.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\HypercubeInit.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\prefabs\Stat__prefab__script.cs" />
     <Compile Include="Assets\GameData\Scripts\InputManager.cs" />
     <Compile Include="Assets\GameData\Scripts\RectTransformExtensions.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\AuthManager.cs" />
     <Compile Include="Assets\GameData\Scripts\CollectionEnums.cs" />
     <Compile Include="Assets\GameData\Scenes\Battlefield\BattlefieldUnit_Animation_AbilityAttack.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\Prefabs\PanelSelectedHero__prefab__scriptMB.cs" />
     <Compile Include="Assets\GameData\Scripts\CancellationTokenManager.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Button_Close.cs" />
     <Compile Include="Assets\GameData\Scenes\SelectBattlefield\PanelPrepareBattle.cs" />
     <Compile Include="Assets\GameData\Scripts\GameObjectExtensions.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\prefabs\PanelSelectedHero__prefab__scriptMB.cs" />
     <Compile Include="Assets\GameData\Scripts\DevAuthConfig.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\PanelCollectionContext.cs" />
     <Compile Include="Assets\GameData\Prefabs\PanelTop__prefab__scriptMB.cs" />
@@ -123,7 +123,6 @@
     <Compile Include="Assets\GameData\Prefabs\PanelCollection__prefab__scriptMB.cs" />
     <Compile Include="Assets\GameData\Scenes\AllHeroes\AllHeroes.cs" />
     <Compile Include="Assets\GameData\Scenes\Battlefield\Animations\Health.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\Prefabs\PanelSelectedEquipment__prefab__scriptMB.cs" />
     <Compile Include="Assets\GameData\Prefabs\IPrefab.cs" />
     <Compile Include="Assets\GameData\Scripts\G.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\AuthHelper.cs" />

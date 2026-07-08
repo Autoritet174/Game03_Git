@@ -1,4 +1,5 @@
 using Assets.GameData.Scripts;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +18,9 @@ public class PanelTop__prefab__scriptMB : MonoBehaviour, IPrefab
         This__RectTransform = GetComponent<RectTransform>();
         ButtonClose__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose", This__RectTransform.transform);
         initialized = true;
+    }
+    public void SetActionOnButtonClose(Action action) {
+        ButtonClose__RectTransform.gameObject.SetClickOnButton(action);
     }
 
     public void OnResized(float coefHeight, float top = 0, float buttom = 0, float left = 0, float right = 0)
