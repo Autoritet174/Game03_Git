@@ -37,13 +37,13 @@ namespace Assets.GameData.Scenes.Battlefield
         private readonly RectTransform _RectTransform;
 
 
-        private readonly RectTransform _Health__RectTransform;
-        private readonly RectTransform _HealthImagePercent__RectTransform;
-        private readonly RectTransform _HealthImageGreenBar__RectTransform;
+        //private readonly RectTransform _Health__RectTransform;
+        //private readonly RectTransform _HealthImagePercent__RectTransform;
+        //private readonly RectTransform _HealthImageGreenBar__RectTransform;
 
         private static readonly float _Health_Height = 30;
-        private readonly TextMeshProUGUI _HealthText_TextMeshProUGUI;
-        private readonly RectTransform _HealthText__RectTransform;
+        //private readonly TextMeshProUGUI _HealthText_TextMeshProUGUI;
+        //private readonly RectTransform _HealthText__RectTransform;
 
         private readonly RectTransform _ImageHeroMask__RectTransform;
 
@@ -65,10 +65,13 @@ namespace Assets.GameData.Scenes.Battlefield
         private readonly GameObject _ImageDead_GameObject;
         private readonly RectTransform _ImageDead_RectTransform;
 
+        private readonly ProgressBar__prefab__script progressBar;
+
         public SpawnedHero SpawnedHero { get; }
 
         private readonly bool _IsMyUnit;
         private readonly int _Position;
+        private readonly string textDead = "Dead";
 
         public BattlefieldUnit(SpawnedHero spawnedHeroes, int position, bool isMyUnit, Transform canvasUnits__Transform)
         {
@@ -102,11 +105,15 @@ namespace Assets.GameData.Scenes.Battlefield
             _ImageHero_Image.type = Image.Type.Simple;
 
 
-            _Health__RectTransform = GameObjectFinder.FindByName<RectTransform>("Health", gameObject.transform);
-            _HealthImagePercent__RectTransform = GameObjectFinder.FindByName<RectTransform>("HealthImagePercent", gameObject.transform);
-            _HealthImageGreenBar__RectTransform = GameObjectFinder.FindByName<RectTransform>("HealthImageGreenBar", gameObject.transform);
-            _HealthText_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("HealthText", gameObject.transform);
-            _HealthText__RectTransform = _HealthText_TextMeshProUGUI.GetComponent<RectTransform>();
+            progressBar = GameObjectFinder.FindByName<ProgressBar__prefab__script>("ProgressBar__prefab", gameObject.transform);
+            progressBar.SetTextRightOffsetRight(20);
+            progressBar.Initialize();
+            textDead = LM.GetValue(L.UI.Label.Dead).ToUpperInvariant();
+            //_Health__RectTransform = GameObjectFinder.FindByName<RectTransform>("Health", gameObject.transform);
+            //_HealthImagePercent__RectTransform = GameObjectFinder.FindByName<RectTransform>("HealthImagePercent", gameObject.transform);
+            //_HealthImageGreenBar__RectTransform = GameObjectFinder.FindByName<RectTransform>("HealthImageGreenBar", gameObject.transform);
+            //_HealthText_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("HealthText", gameObject.transform);
+            //_HealthText__RectTransform = _HealthText_TextMeshProUGUI.GetComponent<RectTransform>();
 
 
             _HealthImageStat__RectTransform = GameObjectFinder.FindByName<RectTransform>("HealthImageStat", gameObject.transform);
@@ -139,7 +146,7 @@ namespace Assets.GameData.Scenes.Battlefield
             RefreshActionPoints(SpawnedHero.ActionPoints);
         }
 
-        
+
         public void OnResize()
         {
             float coefHeight = G.GetCoefHeight();
@@ -158,9 +165,9 @@ namespace Assets.GameData.Scenes.Battlefield
             _ImageHeroMask__RectTransform.offsetMax = new(-imageHeroMask_Padding, -imageHeroMask_Padding);
 
 
-            _Health__RectTransform.sizeDelta = new Vector2(0, text_Height);
-            _Health__RectTransform.anchoredPosition = new Vector2(0, -3 * coefHeight);
-            _HealthImageGreenBar__RectTransform.sizeDelta = new Vector2(_Width * coefHeight, text_Height);
+            //_Health__RectTransform.sizeDelta = new Vector2(0, text_Height);
+            //_Health__RectTransform.anchoredPosition = new Vector2(0, -3 * coefHeight);
+            //_HealthImageGreenBar__RectTransform.sizeDelta = new Vector2(_Width * coefHeight, text_Height);
 
             Vector2 miniIconStat_Size_Vector2 = new(miniIconStat_Size, miniIconStat_Size);
             Vector2 miniIconStat_X_Vector2 = new(miniIconStat_X, 0);
@@ -168,8 +175,8 @@ namespace Assets.GameData.Scenes.Battlefield
             _HealthImageStat__RectTransform.sizeDelta = miniIconStat_Size_Vector2;
             _HealthImageStat__RectTransform.anchoredPosition = miniIconStat_X_Vector2;
 
-            _HealthText__RectTransform.sizeDelta = new Vector2(text_Width, text_Height);
-            _HealthText_TextMeshProUGUI.fontSize = 22 * coefHeight;
+            //_HealthText__RectTransform.sizeDelta = new Vector2(text_Width, text_Height);
+            //_HealthText_TextMeshProUGUI.fontSize = 22 * coefHeight;
 
 
             _Level_RectTransform.sizeDelta = new Vector2(50 * coefHeight, 25 * coefHeight);
@@ -193,13 +200,19 @@ namespace Assets.GameData.Scenes.Battlefield
         /// <summary> Изменение текста и полоски здоровья. </summary>
         public void RefreshHealth()
         {
-            _HealthText_TextMeshProUGUI.text = SpawnedHero.Health > 0 ? SpawnedHero.Health.ToStr() : LM.GetValue(L.UI.Label.Dead).ToUpperInvariant();
-
-            float coefHeight = G.GetCoefHeight();
-            float width = (_Width - (1f * 2)) * SpawnedHero.HealthPercent;
-            _HealthImagePercent__RectTransform.sizeDelta = new Vector2(width, _Health_Height * coefHeight);
-
-            _ImageDead_GameObject.SetActive(SpawnedHero.Health <= 0);
+            if (SpawnedHero.Health > 0)
+            {
+                progressBar.SetTextRight(SpawnedHero.Health.ToStr());
+                _ImageDead_GameObject.SetActive(false);
+            }
+            else
+            {
+                progressBar.SetTextRight(textDead);
+                _ImageDead_GameObject.SetActive(true);
+            }
+            progressBar.value = SpawnedHero.Health;
+            progressBar.valueMax = SpawnedHero.HealthMax;
+            progressBar.Refresh();
         }
 
         public void RefreshActionPoints(int ap)

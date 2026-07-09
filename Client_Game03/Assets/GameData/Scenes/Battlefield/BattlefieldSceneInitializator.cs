@@ -51,6 +51,8 @@ namespace Assets.GameData.Scenes.Battlefield
         private int BattlefieldIndexAnimationStarted = -1;
         private bool BattlefieldIndexAnimationActive = false;
 
+        PanelDamage__script panelDamage__script;
+
         private readonly DateTime DateTimeWaitFor = DateTime.MinValue;
 
         private void Start()
@@ -60,6 +62,8 @@ namespace Assets.GameData.Scenes.Battlefield
                 return;
             }
 
+            panelDamage__script = new();
+            panelDamage__script.Initialize();
             this.RunAsync(StartAsync);
         }
 
@@ -170,6 +174,15 @@ namespace Assets.GameData.Scenes.Battlefield
             BattlefieldIndexAnimationStarted = 0;
             BattlefieldIndexAnimationActive = false;
 
+            for (int i = 0; i < PlayerUnits.Count; i++)
+            {
+                panelDamage__script.AddProgressBar(PlayerUnits[i].SpawnedHero.SpawnedId);
+            }
+            for (int i = 0; i < EnemyUnits.Count; i++)
+            {
+                panelDamage__script.AddProgressBar(EnemyUnits[i].SpawnedHero.SpawnedId);
+            }
+            panelDamage__script.ProgressBarsSort();
             Initialized = true;
         }
 
@@ -223,12 +236,10 @@ namespace Assets.GameData.Scenes.Battlefield
                             {
                                 case BattlefieldLogRecord_TurnStart log:
                                     Turn__TextMeshProUGUI.text = $"{LM.GetValue(L.UI.Label.Turn)}: {log.Turn}";
-
                                     break;
                                 //case BattlefieldLogRecord_ChangeActionPoints log:
                                 //    break;
                                 case BattlefieldLogRecord_UseAbility log:
-
                                     switch (log.Ability)
                                     {
                                         case EBattlefieldLogAbility.Attack:

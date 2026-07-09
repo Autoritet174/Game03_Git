@@ -113,7 +113,9 @@
     <Compile Include="Assets\GameData\Scripts\DevAuthConfig.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\PanelCollectionContext.cs" />
     <Compile Include="Assets\GameData\Prefabs\PanelTop__prefab__scriptMB.cs" />
+    <Compile Include="Assets\GameData\Scenes\Battlefield\PanelDamage__script.cs" />
     <Compile Include="Assets\GameData\Scripts\GameSceneManager.cs" />
+    <Compile Include="Assets\GameData\Prefabs\ProgressBar__prefab__script.cs" />
     <Compile Include="Assets\GameData\Scripts\EventHelper.cs" />
     <Compile Include="Assets\GameData\Scripts\GameServerPinger.cs" />
     <Compile Include="Assets\GameData\Prefabs\PanelGroupDivider__prefab__script.cs" />
