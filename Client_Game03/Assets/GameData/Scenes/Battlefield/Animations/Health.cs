@@ -8,9 +8,11 @@ namespace Assets.GameData.Scenes.Battlefield.Animations
 {
     public class Health
     {
-        public Health(GameObject gameObject)
+        private readonly HealthHub healthHub;
+        public Health(GameObject gameObject, HealthHub healthHub)
         {
             this.gameObject = gameObject;
+            this.healthHub = healthHub;
             rectTransform = gameObject.GetComponent<RectTransform>();
             textMeshProUGUI = gameObject.GetComponent<TextMeshProUGUI>();
         }
@@ -27,7 +29,7 @@ namespace Assets.GameData.Scenes.Battlefield.Animations
         public void Start(float value, bool isCrit, RectTransform posParent)
         {
             dtStart = DateTime.Now;
-            dtEnd = dtStart.AddSeconds(HealthHub.AnimationHealthChangeTime / BattlefieldSceneInitializator.AnimationSpeed);
+            dtEnd = dtStart.AddSeconds(healthHub.AnimationHealthChangeTime / BattlefieldSceneInitializator.AnimationSpeed);
 
             string text;
             if (value < 0)
@@ -49,7 +51,7 @@ namespace Assets.GameData.Scenes.Battlefield.Animations
 
             this.posParent = posParent;
             //float angle = RandomShared.NextBool() ? RandomShared.NextSingle(-180, 180) : RandomShared.NextSingle(15, 90);
-            posEnd = HealthHub.GetPointFromAngle(HealthHub.Distance * G.GetCoefHeight(), RandomShared.NextSingle(-180, 180));
+            posEnd = healthHub.GetPointFromAngle(healthHub.Distance * G.GetCoefHeight(), RandomShared.NextSingle(-180, 180));
 
             Active = true;
         }
@@ -70,28 +72,28 @@ namespace Assets.GameData.Scenes.Battlefield.Animations
             {
                 return;
             }
-            try
-            {
-                float animationPercent = Math.Clamp((float)((DateTime.Now - dtStart).TotalSeconds / (dtEnd - dtStart).TotalSeconds), 0, 1);
-                Vector2 posEndShift = posEnd + posParent.anchoredPosition;
+            //try
+            //{
+            float animationPercent = Math.Clamp((float)((DateTime.Now - dtStart).TotalSeconds / (dtEnd - dtStart).TotalSeconds), 0, 1);
+            Vector2 posEndShift = posEnd + posParent.anchoredPosition;
 
-                float xDist = posEndShift.x - posParent.anchoredPosition.x;
-                float yDist = posEndShift.y - posParent.anchoredPosition.y;
-                float x = posParent.anchoredPosition.x + (xDist * animationPercent);
-                float y = posParent.anchoredPosition.y + (yDist * animationPercent);
-                float coefHeight = G.GetCoefHeight();
-                rectTransform.anchoredPosition = new Vector2(x * coefHeight, y * coefHeight);
-                textMeshProUGUI.fontSize = HealthHub.FontSize * coefHeight;
+            float xDist = posEndShift.x - posParent.anchoredPosition.x;
+            float yDist = posEndShift.y - posParent.anchoredPosition.y;
+            float x = posParent.anchoredPosition.x + (xDist * animationPercent);
+            float y = posParent.anchoredPosition.y + (yDist * animationPercent);
+            float coefHeight = G.GetCoefHeight();
+            rectTransform.anchoredPosition = new Vector2(x * coefHeight, y * coefHeight);
+            textMeshProUGUI.fontSize = healthHub.FontSize * coefHeight;
 
-                if (animationPercent == 1)
-                {
-                    Active = false;
-                }
-            }
-            catch (Exception ex)
+            if (animationPercent == 1)
             {
-                Debug.LogException(ex);
+                Active = false;
             }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Debug.LogException(ex);
+            //}
         }
     }
 }

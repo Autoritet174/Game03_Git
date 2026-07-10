@@ -73,11 +73,12 @@ namespace Assets.GameData.Scenes.Battlefield
         private readonly int _Position;
         private readonly string textDead = "Dead";
 
-        public BattlefieldUnit(SpawnedHero spawnedHeroes, int position, bool isMyUnit, Transform canvasUnits__Transform)
+        public BattlefieldUnit(SpawnedHero spawnedHeroes, int position, bool isMyUnit, Transform canvasUnits__Transform, Animations.HealthHub healthHub)
         {
             SpawnedHero = spawnedHeroes;
             _Position = position;
             _IsMyUnit = isMyUnit;
+            this.healthHub = healthHub;
 
             GameObject gameObject = AddressableCache.BattlefieldUnit.SafeInstant(canvasUnits__Transform);
             BaseHero dtoBaseHero = Game03Client.GameData.Container.BaseHeroes.First(a => a.Id == spawnedHeroes.BaseHeroId);

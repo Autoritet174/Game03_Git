@@ -44,6 +44,8 @@ namespace Assets.GameData.Scenes.Battlefield
         //private TextMeshProUGUI _Ability2Button__TextMeshProUGUI;
         //private TextMeshProUGUI _Ability3Button__TextMeshProUGUI;
 
+        private readonly HealthHub healthHub = new();
+
         public static Transform CanvasDamage__Transform { get; private set; }
 
         private RectTransform Turn__RectTransform;
@@ -86,7 +88,7 @@ namespace Assets.GameData.Scenes.Battlefield
             for (int i = 0; i < SpawnedBattlefield.SpawnedHeroPlayerList.Count; i++)
             {
                 SpawnedHero spawnedHeroes = SpawnedBattlefield.SpawnedHeroPlayerList[i];
-                BattlefieldUnit unit = new(spawnedHeroes, i, true, canvasUnits__Transform);
+                BattlefieldUnit unit = new(spawnedHeroes, i, true, canvasUnits__Transform, healthHub);
                 BattlefieldUnits.Add(spawnedHeroes.SpawnedId, unit);
                 PlayerUnits.Add(unit);
             }
@@ -95,7 +97,7 @@ namespace Assets.GameData.Scenes.Battlefield
             for (int i = 0; i < SpawnedBattlefield.SpawnedHeroEnemyList.Count; i++)
             {
                 SpawnedHero spawnedHeroes = SpawnedBattlefield.SpawnedHeroEnemyList[i];
-                BattlefieldUnit unit = new(spawnedHeroes, i, false, canvasUnits__Transform);
+                BattlefieldUnit unit = new(spawnedHeroes, i, false, canvasUnits__Transform, healthHub);
                 BattlefieldUnits.Add(spawnedHeroes.SpawnedId, unit);
                 EnemyUnits.Add(unit);
             }
@@ -306,7 +308,7 @@ namespace Assets.GameData.Scenes.Battlefield
                         }
                     }
 
-                    
+
                 }
             }
 
@@ -329,7 +331,7 @@ namespace Assets.GameData.Scenes.Battlefield
                 }
             }
 
-            HealthHub.Update();
+            healthHub.Update();
 
 
         }

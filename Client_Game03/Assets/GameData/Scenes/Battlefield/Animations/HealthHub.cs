@@ -6,17 +6,17 @@ using UnityEngine;
 
 namespace Assets.GameData.Scenes.Battlefield.Animations
 {
-    public static class HealthHub
+    public class HealthHub
     {
-        public static double AnimationHealthChangeTime { get; } = 3;
-        public static float Height { get; } = 25;
-        public static float FontSize { get; } = 35;
-        public static float Distance { get; } = 80;
+        public double AnimationHealthChangeTime { get; } = 3;
+        public float Height { get; } = 25;
+        public float FontSize { get; } = 35;
+        public float Distance { get; } = 80;
 
-        private static readonly List<Health> animationsList = new();
+        private readonly List<Health> animationsList = new();
 
 
-        public static void Create(float value, bool isCrit, RectTransform posParent)
+        public void Create(float value, bool isCrit, RectTransform posParent)
         {
             if (value == 0)
             {
@@ -27,14 +27,14 @@ namespace Assets.GameData.Scenes.Battlefield.Animations
             Health health = animationsList.FirstOrDefault(a => !a.Active);
             if (health == null)
             {
-                health = new Health(AddressableCache.HealthChange.SafeInstant(BattlefieldSceneInitializator.CanvasDamage__Transform));
+                health = new Health(AddressableCache.HealthChange.SafeInstant(BattlefieldSceneInitializator.CanvasDamage__Transform), this);
                 animationsList.Add(health);
             }
 
             health.Start(value, isCrit, posParent);
         }
 
-        public static void Update()
+        public void Update()
         {
             for (int i = 0; i < animationsList.Count; i++)
             {
@@ -50,7 +50,7 @@ namespace Assets.GameData.Scenes.Battlefield.Animations
         /// <param name="distance">Расстояние от начала координат (должно быть >= 0)</param>
         /// <param name="angleDegrees">Угол в градусах</param>
         /// <returns>Координаты точки Vector2 с Y >= 0</returns>
-        public static Vector2 GetPointFromAngle(float distance, float angleDegrees)
+        public Vector2 GetPointFromAngle(float distance, float angleDegrees)
         {
             if (distance < 0f)
             {

@@ -19,8 +19,8 @@ namespace Assets.GameData.Scenes.Battlefield
         private Vector2 AtimationAttackPosEnd = Vector2.zero;
         private float AnimationAttackDamage = 0;
         private bool AnimationAttackDamageIsCrit = false;
-        Action actionUpdatePanelDamage;
-
+        private Action actionUpdatePanelDamage;
+        private readonly Animations.HealthHub healthHub;
         public void AnimationStartAttackUnit(BattlefieldUnit unitTarget, float animationAttackDamage, bool animationAttackDamageIsCrit, Action actionUpdatePanelDamage)
         {
             AtimationAttackUnitTarget = unitTarget;
@@ -71,7 +71,7 @@ namespace Assets.GameData.Scenes.Battlefield
                     AtimationAttackStart = DateTime.Now;
                     AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage3 / BattlefieldSceneInitializator.AnimationSpeed);
                     AtimationAttackUnitTarget.RefreshHealth();
-                    Animations.HealthHub.Create(
+                    healthHub.Create(
                         -AnimationAttackDamage,
                         AnimationAttackDamageIsCrit,
                         AtimationAttackUnitTarget._RectTransform);
