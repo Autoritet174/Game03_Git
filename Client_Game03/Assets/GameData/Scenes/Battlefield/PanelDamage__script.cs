@@ -18,9 +18,9 @@ public class PanelDamage__script : IPrefab
     private RectTransform LabelHeader__RectTransform;
     private RectTransform PanelProgressBars__RectTransform;
 
-    private readonly List<Bar> bars = new();
+    public List<Bar> bars { get; private set; } = new();
 
-    private class Bar
+    public class Bar
     {
         public Guid heroId { get; }
         public ProgressBar__prefab__script bar { get; }
@@ -42,37 +42,65 @@ public class PanelDamage__script : IPrefab
 
         PanelProgressBars__RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelProgressBars", PanelDamage__RectTransform);
 
-
         OnResized(G.GetCoefHeight());
     }
 
-    public void AddProgressBar(Guid heroId)
+    public void AddProgressBar(Guid heroId, string textLeft, string textRight, string type = "", Color? colorLeft = null, Color? colorRight = null)
     {
-        ProgressBar__prefab__script bar = new();
+        GameObject gameObject = AddressableCache.ProgressBar.SafeInstant(PanelProgressBars__RectTransform.transform);
+        gameObject.name = $"ProgressBar__prefab ({textRight}) [{heroId}]";
+        ProgressBar__prefab__script bar = gameObject.GetComponent<ProgressBar__prefab__script>();
         bars.Add(new Bar(heroId, bar));
-        bar.this__GameObject = AddressableCache.ProgressBar.SafeInstant(PanelProgressBars__RectTransform.transform);
         bar.Initialize();
-        bar.value = UnityEngine.Random.Range(1, 100);
+        bar.this__RectTransform.anchorMin = new Vector2(0, 1);
+        bar.this__RectTransform.anchorMax = new Vector2(0, 1);
+        bar.this__RectTransform.pivot = new Vector2(0, 1);
+        //bar.value = UnityEngine.Random.Range(1, 100);
+        bar.type = type;
+        if (colorLeft != null)
+        {
+            bar.SetColorTextLeft(colorLeft.Value);
+        }
+        if (colorRight != null)
+        {
+            bar.SetColorTextRight(colorRight.Value);
+        }
         //ProgressBarsSort();
+
+
+        bar.SetTextLeft(textLeft);
+        bar.SetTextRight(textRight);
         OnResized(G.GetCoefHeight());
     }
 
     public void ProgressBarsSort()
     {
-        bars.Sort((a,b) => a.bar.value.CompareTo(b.bar.value));
-
-        for (int i = 0; i < bars.Count; i++)
+        float valueMax = bars.Count>0? bars.Max(a => a.bar.value) : 1;
+        if (valueMax < 1)
         {
-            if (bars[i].bar.transform != null)
-            {
-                bars[i].bar.transform.SetSiblingIndex(i);
-            }
+            valueMax = 1;
         }
+        bars.ForEach(a=>a.bar.valueMax = valueMax);
+
+        bars.Sort((b, a) => a.bar.value.CompareTo(b.bar.value));
+
+        OnResized(G.GetCoefHeight());
+    }
+
+    public void Refresh()
+    {
+        bars.ForEach(a => a.bar.Refresh());
+    }
+
+    public void ProgressBarsSortAndRefresh()
+    {
+        ProgressBarsSort();
+        Refresh();
     }
 
     public void OnResized(float coefHeight, float top = 0, float buttom = 0, float left = 0, float right = 0)
     {
-        PanelDamage__RectTransform.sizeDelta = new Vector2(300 * coefHeight, 800 * coefHeight);
+        PanelDamage__RectTransform.sizeDelta = new Vector2(300 * coefHeight, 762.5f * coefHeight);// 10 + 10 + 0.75*30 + 30*24
         PanelDamage__RectTransform.anchoredPosition = new Vector2(20 * coefHeight, 0);
 
         float PanelProgressBars__offsets = 10 * coefHeight;
@@ -87,24 +115,11 @@ public class PanelDamage__script : IPrefab
         foreach (Bar v in bars)
         {
             RectTransform r = v.bar.this__RectTransform;
-            r.anchorMin = new Vector2(0, 1);
-            r.anchorMax = new Vector2(0, 1);
-            r.pivot = new Vector2(0, 1);
+           
             r.anchoredPosition = new Vector2(0, (-barHeight * (i + 1)) + barHeightShift);
             r.sizeDelta = new Vector2(PanelProgressBars__RectTransform.rect.width, barHeight);
             i++;
         }
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
-
+        Refresh();
     }
 }

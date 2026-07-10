@@ -19,8 +19,9 @@ namespace Assets.GameData.Scenes.Battlefield
         private Vector2 AtimationAttackPosEnd = Vector2.zero;
         private float AnimationAttackDamage = 0;
         private bool AnimationAttackDamageIsCrit = false;
+        Action actionUpdatePanelDamage;
 
-        public void AnimationStartAttackUnit(BattlefieldUnit unitTarget, float animationAttackDamage, bool animationAttackDamageIsCrit)
+        public void AnimationStartAttackUnit(BattlefieldUnit unitTarget, float animationAttackDamage, bool animationAttackDamageIsCrit, Action actionUpdatePanelDamage)
         {
             AtimationAttackUnitTarget = unitTarget;
             AnimationAttackStage = 1;
@@ -28,6 +29,7 @@ namespace Assets.GameData.Scenes.Battlefield
             AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage1 / BattlefieldSceneInitializator.AnimationSpeed);
             AnimationAttackDamage = animationAttackDamage;
             AnimationAttackDamageIsCrit = animationAttackDamageIsCrit;
+            this.actionUpdatePanelDamage = actionUpdatePanelDamage;
             _RectTransform.transform.SetAsLastSibling();
         }
 
@@ -73,6 +75,7 @@ namespace Assets.GameData.Scenes.Battlefield
                         -AnimationAttackDamage,
                         AnimationAttackDamageIsCrit,
                         AtimationAttackUnitTarget._RectTransform);
+                    actionUpdatePanelDamage?.Invoke();
                 }
             }
             else if (AnimationAttackStage == 3) // движение от цели до базовой точки

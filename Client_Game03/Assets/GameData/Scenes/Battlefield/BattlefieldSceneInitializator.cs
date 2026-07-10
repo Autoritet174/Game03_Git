@@ -3,6 +3,7 @@ using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using General;
 using General.DTO.Battlefield;
+using General.DTO.Entities.GameData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,7 +52,7 @@ namespace Assets.GameData.Scenes.Battlefield
         private int BattlefieldIndexAnimationStarted = -1;
         private bool BattlefieldIndexAnimationActive = false;
 
-        PanelDamage__script panelDamage__script;
+        private PanelDamage__script panelDamage__script;
 
         private readonly DateTime DateTimeWaitFor = DateTime.MinValue;
 
@@ -174,13 +175,17 @@ namespace Assets.GameData.Scenes.Battlefield
             BattlefieldIndexAnimationStarted = 0;
             BattlefieldIndexAnimationActive = false;
 
+            Color colorHeroesMy = new(100 / 255f, 134 / 255f, 255 / 255f, 1f);
+            Color colorHeroesEnemy = new(255 / 255f, 64 / 255f, 64 / 255f, 1f);
             for (int i = 0; i < PlayerUnits.Count; i++)
             {
-                panelDamage__script.AddProgressBar(PlayerUnits[i].SpawnedHero.SpawnedId);
+                BaseHero h = Game03Client.GameData.GetBaseHeroById(PlayerUnits[i].SpawnedHero.BaseHeroId);
+                panelDamage__script.AddProgressBar(PlayerUnits[i].SpawnedHero.SpawnedId, "", h.Name, "MyHero", null, colorHeroesMy);
             }
             for (int i = 0; i < EnemyUnits.Count; i++)
             {
-                panelDamage__script.AddProgressBar(EnemyUnits[i].SpawnedHero.SpawnedId);
+                BaseHero h = Game03Client.GameData.GetBaseHeroById(EnemyUnits[i].SpawnedHero.BaseHeroId);
+                panelDamage__script.AddProgressBar(EnemyUnits[i].SpawnedHero.SpawnedId, "", h.Name, "EnHero", null, colorHeroesEnemy);
             }
             panelDamage__script.ProgressBarsSort();
             Initialized = true;
@@ -252,7 +257,7 @@ namespace Assets.GameData.Scenes.Battlefield
                                                 BattlefieldLogRecordBase logRecord = fullLog.FirstOrDefault(a => a is BattlefieldLogRecord_Damage d && d.IndexReason == log.Index);
                                                 if (logRecord is not null and BattlefieldLogRecord_Damage logDamage)
                                                 {
-                                                    h1Unit.AnimationStartAttackUnit(h2Unit, logDamage.Damage, logDamage.IsCrit);
+                                                    h1Unit.AnimationStartAttackUnit(h2Unit, logDamage.Damage, logDamage.IsCrit, UpdatePanelDamage);
                                                     h2Unit.SpawnedHero.Health -= logDamage.Damage;
                                                     //dateTimeWaitFor = DateTime.Now.AddSeconds(
                                                     //    0
@@ -260,6 +265,21 @@ namespace Assets.GameData.Scenes.Battlefield
                                                     //    + BattlefieldUnit.AnimationAttackTimeStage2
                                                     //    //+ BattlefieldUnit.AnimationAttackTimeStage3
                                                     //    );
+                                                    void UpdatePanelDamage()
+                                                    {
+                                                        PanelDamage__script.Bar bar = panelDamage__script.bars.FirstOrDefault(a => a.heroId == h1Unit.SpawnedHero.SpawnedId);
+                                                        if (bar == null)
+                                                        {
+                                                            Debug.Log($"bar is null, SpawnedHero.SpawnedId={h1Unit.SpawnedHero.SpawnedId}");
+                                                        }
+                                                        else
+                                                        {
+                                                            bar.bar.value += logDamage.Damage;
+                                                            bar.bar.SetTextLeft(bar.bar.value.ToStr());
+                                                            panelDamage__script.ProgressBarsSortAndRefresh();
+                                                        }
+                                                    }
+
                                                     BattlefieldIndexAnimationActive = true;
                                                 }
 
@@ -285,8 +305,11 @@ namespace Assets.GameData.Scenes.Battlefield
                             break;
                         }
                     }
+
+                    
                 }
             }
+
 
             BattlefieldIndexAnimationActive = false;
             foreach (BattlefieldUnit unit in PlayerUnits)

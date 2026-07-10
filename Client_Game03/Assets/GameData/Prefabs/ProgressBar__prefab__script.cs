@@ -9,6 +9,10 @@ public class ProgressBar__prefab__script : MonoBehaviour, IPrefab
     public float width { get; private set; }
 
     public float height { get; private set; }
+
+    private string textLeft = "";
+    private string textRight = "";
+
     private const float HEALTH_IMAGE_COLOR_BAR_RIGHT = 0.5f;
     private const float POSY_SHIFT = -1.5f;
 
@@ -18,7 +22,7 @@ public class ProgressBar__prefab__script : MonoBehaviour, IPrefab
     private RectTransform _HealthImagePercent__RectTransform;
     private RectTransform _HealthImageColorBar__RectTransform;
 
-    public GameObject this__GameObject { get; set; }
+    //public GameObject this__GameObject { get; set; }
     public RectTransform this__RectTransform { get; private set; }
     private RectTransform _TextLeft__RectTransform;
     private TextMeshProUGUI _TextLeft__TextMeshProUGUI;
@@ -26,21 +30,24 @@ public class ProgressBar__prefab__script : MonoBehaviour, IPrefab
     private TextMeshProUGUI _TextRight__TextMeshProUGUI;
     private float healthimagecolorbar_right = HEALTH_IMAGE_COLOR_BAR_RIGHT;
 
-    public float value { get; set; }
-    public float valueMax { get; set; }
+    public string type { get; set; } = "";
+
+    public float value { get; set; } = 0f;
+    public float valueMax { get; set; } = 1f;
+
     public void Initialize()
     {
-        if (this__GameObject == null)
-        {
-            this__GameObject = gameObject;
-        }
+        //if (this__GameObject == null)
+        //{
+        //    this__GameObject = gameObject;
+        //}
 
-        this__RectTransform = this__GameObject.GetComponent<RectTransform>();
-        _HealthImagePercent__RectTransform = GameObjectFinder.FindByName<RectTransform>("HealthImagePercent", this__GameObject);
-        _HealthImageColorBar__RectTransform = GameObjectFinder.FindByName<RectTransform>("HealthImageColorBar", this__GameObject);
+        this__RectTransform = gameObject.GetComponent<RectTransform>();
+        _HealthImagePercent__RectTransform = GameObjectFinder.FindByName<RectTransform>("HealthImagePercent", gameObject);
+        _HealthImageColorBar__RectTransform = GameObjectFinder.FindByName<RectTransform>("HealthImageColorBar", gameObject);
 
-        _TextLeft__RectTransform = GameObjectFinder.FindByName<RectTransform>("TextLeft", this__GameObject);
-        _TextRight__RectTransform = GameObjectFinder.FindByName<RectTransform>("TextRight", this__GameObject);
+        _TextLeft__RectTransform = GameObjectFinder.FindByName<RectTransform>("TextLeft", gameObject);
+        _TextRight__RectTransform = GameObjectFinder.FindByName<RectTransform>("TextRight", gameObject);
         _TextLeft__TextMeshProUGUI = _TextLeft__RectTransform.GetComponent<TextMeshProUGUI>();
         _TextRight__TextMeshProUGUI = _TextRight__RectTransform.GetComponent<TextMeshProUGUI>();
 
@@ -53,12 +60,22 @@ public class ProgressBar__prefab__script : MonoBehaviour, IPrefab
 
     public void SetTextLeft(string text)
     {
+        textLeft = text;
         _TextLeft__TextMeshProUGUI.SetText(text);
     }
 
     public void SetTextRight(string text)
     {
+        textRight = text;
         _TextRight__TextMeshProUGUI.SetText(text);
+    }
+    public void SetColorTextLeft(Color color)
+    {
+        _TextLeft__TextMeshProUGUI.color = color;
+    }
+    public void SetColorTextRight(Color color)
+    {
+        _TextRight__TextMeshProUGUI.color = color;
     }
 
     public void SetTextLeftOffsetLeft(float value)
@@ -73,14 +90,21 @@ public class ProgressBar__prefab__script : MonoBehaviour, IPrefab
 
     public void Refresh()
     {
-        float width = this__RectTransform.sizeDelta.x * value / valueMax;
+        float progressBarWidth = this__RectTransform.rect.width;
+        float width = valueMax > 0 ? progressBarWidth * value / valueMax : progressBarWidth;
+
+        //if (type != "")
+        //{
+        //    Debug.Log($"{value}/{valueMax} [{textRight}]");
+        //}
+
         if (width < 0)
         {
             width = 0;
         }
-        else if (width > this__RectTransform.sizeDelta.x)
+        else if (width > progressBarWidth)
         {
-            width = this__RectTransform.sizeDelta.x;
+            width = progressBarWidth;
         }
         _HealthImagePercent__RectTransform.sizeDelta = new Vector2(width, 0);
 
@@ -89,9 +113,9 @@ public class ProgressBar__prefab__script : MonoBehaviour, IPrefab
         {
             widthColorBar = 0;
         }
-        else if (widthColorBar > this__RectTransform.sizeDelta.x)
+        else if (widthColorBar > progressBarWidth)
         {
-            widthColorBar = this__RectTransform.sizeDelta.x;
+            widthColorBar = progressBarWidth;
         }
         _HealthImageColorBar__RectTransform.sizeDelta = new Vector2(widthColorBar, 0);
     }
