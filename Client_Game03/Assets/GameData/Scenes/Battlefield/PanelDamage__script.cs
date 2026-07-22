@@ -2,12 +2,10 @@ using Assets.GameData.Scripts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
-using L = General.LocalizationKeys;
-using LM = Game03Client.LocalizationManager;
 public class PanelDamage__script : IPrefab
 {
+    
     public bool initialized { get; private set; }
 
     public float width { get; private set; }
@@ -15,8 +13,10 @@ public class PanelDamage__script : IPrefab
     public float height { get; private set; }
 
     private RectTransform PanelDamage__RectTransform;
-    private RectTransform LabelHeader__RectTransform;
     private RectTransform PanelProgressBars__RectTransform;
+    private RectTransform ButtonDamage__RectTransform;
+    private RectTransform ButtonHeal__RectTransform;
+    private RectTransform ButtonTank__RectTransform;
 
     public List<Bar> bars { get; private set; } = new();
 
@@ -36,11 +36,10 @@ public class PanelDamage__script : IPrefab
     {
         PanelDamage__RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelDamage");
 
-        LabelHeader__RectTransform = GameObjectFinder.FindByName<RectTransform>("LabelHeader", PanelDamage__RectTransform);
-        TextMeshProUGUI LabelHeader__TextMeshProUGUI = LabelHeader__RectTransform.GetComponent<TextMeshProUGUI>();
-        LabelHeader__TextMeshProUGUI.SetText(LM.GetValue(L.UI.Label.Damage));
-
         PanelProgressBars__RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelProgressBars", PanelDamage__RectTransform);
+        ButtonDamage__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonDamage", PanelDamage__RectTransform);
+        ButtonHeal__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonHeal", PanelDamage__RectTransform);
+        ButtonTank__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonTank", PanelDamage__RectTransform);
 
         OnResized(G.GetCoefHeight());
     }
@@ -75,12 +74,12 @@ public class PanelDamage__script : IPrefab
 
     public void ProgressBarsSort()
     {
-        float valueMax = bars.Count>0? bars.Max(a => a.bar.value) : 1;
+        float valueMax = bars.Count > 0 ? bars.Max(a => a.bar.value) : 1;
         if (valueMax < 1)
         {
             valueMax = 1;
         }
-        bars.ForEach(a=>a.bar.valueMax = valueMax);
+        bars.ForEach(a => a.bar.valueMax = valueMax);
 
         bars.Sort((b, a) => a.bar.value.CompareTo(b.bar.value));
 
@@ -106,17 +105,23 @@ public class PanelDamage__script : IPrefab
         float PanelProgressBars__offsets = 10 * coefHeight;
         PanelProgressBars__RectTransform.SetOffsets(PanelProgressBars__offsets, PanelProgressBars__offsets, PanelProgressBars__offsets, PanelProgressBars__offsets);
 
-        float barHeight = 30 * coefHeight;
-        LabelHeader__RectTransform.sizeDelta = new Vector2(0, barHeight);
-        LabelHeader__RectTransform.anchoredPosition = new Vector2(0, -1.5f * coefHeight);
+        float buttonsSize = 70 * coefHeight;
+        float buttonPos = 10 * coefHeight;
+        ButtonDamage__RectTransform.sizeDelta = new Vector2(buttonsSize, buttonsSize);
+        ButtonHeal__RectTransform.sizeDelta = new Vector2(buttonsSize, buttonsSize);
+        ButtonTank__RectTransform.sizeDelta = new Vector2(buttonsSize, buttonsSize);
+        ButtonDamage__RectTransform.anchoredPosition = new Vector2(buttonPos, -buttonPos);
+        ButtonHeal__RectTransform.anchoredPosition = new Vector2((buttonPos * 2) + buttonsSize, -buttonPos);
+        ButtonTank__RectTransform.anchoredPosition = new Vector2((buttonPos * 3) + (buttonsSize * 2), -buttonPos);
 
-        float barHeightShift = barHeight * 0.25f;
+        float barHeight = 30 * coefHeight;
+        float barHeightShift = barHeight * 2f;
         int i = 0;
         foreach (Bar v in bars)
         {
             RectTransform r = v.bar.this__RectTransform;
-           
-            r.anchoredPosition = new Vector2(0, (-barHeight * (i + 1)) + barHeightShift);
+
+            r.anchoredPosition = new Vector2(0, (-barHeight * (i + 1)) - barHeightShift);
             r.sizeDelta = new Vector2(PanelProgressBars__RectTransform.rect.width, barHeight);
             i++;
         }
