@@ -189,9 +189,9 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
             this.equipmentId = equipmentId;
             equipment = CollectionProvider.GetCollectionEquipmentsFromCache().First(a => a.Id == equipmentId);
             labelSelectedEquipment__TextMeshProUGUI.SetText(equipment.BaseEquipment.Name);
-            selectedEquipment__Image.sprite = AddressableCache.Equipments[equipment.BaseEquipment.Name];
+            selectedEquipment__Image.sprite = AddressablePrefabProvider.Equipments[equipment.BaseEquipment.Name];
             selectedEquipment__Image.preserveAspect = true; // Сохраняет пропорции изображения
-            selectedEquipmentRarity__Image.sprite = AddressableCache.GetRarity(equipment.BaseEquipment.Rarity);
+            selectedEquipmentRarity__Image.sprite = AddressablePrefabProvider.GetRarity(equipment.BaseEquipment.Rarity);
 
             isEquipped = CollectionProvider.EquipmentIsEquipped(this.equipmentId);
 

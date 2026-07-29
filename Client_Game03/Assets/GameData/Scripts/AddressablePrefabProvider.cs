@@ -10,7 +10,7 @@ using UnityEngine.AddressableAssets;
 
 namespace Assets.GameData.Scripts
 {
-    internal static class AddressableCache
+    internal static class AddressablePrefabProvider
     {
         private static Sprite NullSprite;
 

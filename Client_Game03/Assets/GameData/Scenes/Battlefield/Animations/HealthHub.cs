@@ -27,7 +27,7 @@ namespace Assets.GameData.Scenes.Battlefield.Animations
             Health health = animationsList.FirstOrDefault(a => !a.Active);
             if (health == null)
             {
-                health = new Health(AddressableCache.HealthChange.SafeInstant(BattlefieldSceneInitializator.CanvasDamage__Transform), this);
+                health = new Health(AddressablePrefabProvider.HealthChange.SafeInstant(BattlefieldSceneInitializator.CanvasDamage__Transform), this);
                 animationsList.Add(health);
             }
 

@@ -29,7 +29,7 @@ namespace Assets.GameData.Prefabs
             _CollectionElementList = groupCollectionElement.List;
             _GroupName = groupCollectionElement.Name;
 
-            _GameObject = AddressableCache.GroupDividerPrefabAddressableGameObject.SafeInstant();
+            _GameObject = AddressablePrefabProvider.GroupDividerPrefabAddressableGameObject.SafeInstant();
             _GameObject.transform.SetParent(parent.panelCollectionViewer_Content__Transform, false);
 
             _RectTransform = _GameObject.GetComponent<RectTransform>();
@@ -151,7 +151,7 @@ namespace Assets.GameData.Prefabs
                 //    // Разворачивание
                 //    // Сначала активируем контейнер, чтобы он участвовал в макете, но с высотой 0
                 _CellsContainer__GameObject.SetActive(true);
-                Image_Arrow__Image.sprite = AddressableCache.UI_button_with_arrow_v4;
+                Image_Arrow__Image.sprite = AddressablePrefabProvider.UI_button_with_arrow_v4;
                 //_CellsContainer_RectTransform.sizeDelta = new Vector2();
                 //    //await AnimateHeightAsync(0, expandedHeight, token);
             }
@@ -161,7 +161,7 @@ namespace Assets.GameData.Prefabs
                 //    //await AnimateHeightAsync(expandedHeight, 0, token);
                 //    // После завершения анимации деактивируем контейнер
                 _CellsContainer__GameObject.SetActive(false);
-                Image_Arrow__Image.sprite = AddressableCache.UI_button_with_arrow_v4_reverse;
+                Image_Arrow__Image.sprite = AddressablePrefabProvider.UI_button_with_arrow_v4_reverse;
             }
             OnResized();
             //await UniTask.Delay(1); // Заглушка для асинхронности

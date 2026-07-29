@@ -136,11 +136,11 @@ public class AllHeroes : MonoBehaviour
         //var selectedSprite = await Addressables.LoadAssetAsync<Sprite>($"raritySelected").ToUniTask();
 
 
-        imageHero.sprite = AddressableCache.Heroes[hero.Name + "_face"];
+        imageHero.sprite = AddressablePrefabProvider.Heroes[hero.Name + "_face"];
         imageHero.preserveAspect = true; // Сохраняет пропорции изображения
         imageHero.type = Image.Type.Simple; // Режим без растягивания;
 
-        imageRarity.sprite = AddressableCache.GetRarity(hero.Rarity);
+        imageRarity.sprite = AddressablePrefabProvider.GetRarity(hero.Rarity);
         imageRarity.preserveAspect = true; // Сохраняет пропорции изображения
         imageRarity.type = Image.Type.Simple; // Режим без растягивания;
 
@@ -152,12 +152,12 @@ public class AllHeroes : MonoBehaviour
 
         async UniTask OnPoinerEnter()
         {
-            imageRarity.sprite = AddressableCache.RaritySelected;
+            imageRarity.sprite = AddressablePrefabProvider.RaritySelected;
             await UniTask.Yield();
         }
         async UniTask OnPoinerExit()
         {
-            imageRarity.sprite = AddressableCache.GetRarity(hero.Rarity);
+            imageRarity.sprite = AddressablePrefabProvider.GetRarity(hero.Rarity);
             await UniTask.Yield();
         }
         _prefabIconHero.SetHoverEvents(OnPoinerEnter, OnPoinerExit);
@@ -288,7 +288,7 @@ public class AllHeroes : MonoBehaviour
         const string imageHeroFull__Name = "Image_HeroFull (id=6z1ddxml)";
         Image imageHero = GameObjectFinder.FindByName<Image>(imageHeroFull__Name);
 
-        imageHero.sprite = AddressableCache.Heroes[hero.Name];
+        imageHero.sprite = AddressablePrefabProvider.Heroes[hero.Name];
         imageHero.preserveAspect = true; // Сохраняет пропорции изображения
         imageHero.type = Image.Type.Simple; // Режим без растягивания;
 

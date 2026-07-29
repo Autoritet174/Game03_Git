@@ -73,14 +73,19 @@ namespace Assets.GameData.Scenes.Battlefield
         private readonly int _Position;
         private readonly string textDead = "Dead";
 
-        public BattlefieldUnit(SpawnedHero spawnedHeroes, int position, bool isMyUnit, Transform canvasUnits__Transform, Animations.HealthHub healthHub)
+        private readonly PanelDamage__script panelDamage__script;
+
+        public BattlefieldUnit(SpawnedHero spawnedHeroes,
+            int position, bool isMyUnit, Transform canvasUnits__Transform,
+            Animations.HealthHub healthHub, PanelDamage__script panelDamage__script)
         {
             SpawnedHero = spawnedHeroes;
             _Position = position;
             _IsMyUnit = isMyUnit;
             this.healthHub = healthHub;
+            this.panelDamage__script = panelDamage__script;
 
-            GameObject gameObject = AddressableCache.BattlefieldUnit.SafeInstant(canvasUnits__Transform);
+            GameObject gameObject = AddressablePrefabProvider.BattlefieldUnit.SafeInstant(canvasUnits__Transform);
             BaseHero dtoBaseHero = Game03Client.GameData.Container.BaseHeroes.First(a => a.Id == spawnedHeroes.BaseHeroId);
 
             gameObject.name = $"Unit{(isMyUnit ? "Player" : "Enemy")}_{dtoBaseHero.Name}";
@@ -93,7 +98,7 @@ namespace Assets.GameData.Scenes.Battlefield
 
 
             Image _ImageRarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity", gameObject.transform);
-            _ImageRarity_Image.sprite = AddressableCache.GetRarity(dtoBaseHero.Rarity);
+            _ImageRarity_Image.sprite = AddressablePrefabProvider.GetRarity(dtoBaseHero.Rarity);
             _ImageRarity_Image.preserveAspect = true;
             _ImageRarity_Image.type = Image.Type.Simple;
 
@@ -101,7 +106,7 @@ namespace Assets.GameData.Scenes.Battlefield
             _ImageHeroMask__RectTransform = GameObjectFinder.FindByName<RectTransform>("ImageHeroMask", gameObject.transform);
 
             Image _ImageHero_Image = GameObjectFinder.FindByName<Image>("ImageHero", gameObject.transform);
-            _ImageHero_Image.sprite = AddressableCache.Heroes[$"{dtoBaseHero.Name}_face"];
+            _ImageHero_Image.sprite = AddressablePrefabProvider.Heroes[$"{dtoBaseHero.Name}_face"];
             _ImageHero_Image.preserveAspect = true;
             _ImageHero_Image.type = Image.Type.Simple;
 
