@@ -75,7 +75,6 @@
     <Compile Include="Assets\GameData\Scripts\SecureStorageProvider.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
     <Compile Include="Assets\GameData\Scripts\MainThreadDispatcher.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\prefabs\PanelSelectedEquipment__prefab__scriptMB.cs" />
     <Compile Include="Assets\GameData\Scenes\Battlefield\BattlefieldUnit.cs" />
     <Compile Include="Assets\GameData\Scenes\Battlefield\ButtonClose_Click_EndBattle.cs" />
     <Compile Include="Assets\GameData\Scenes\SelectBattlefield\BattlefieldCategory.cs" />
@@ -105,6 +104,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\CollectionSceneInitializator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\Prefabs\Stat__prefab__script.cs" />
     <Compile Include="Assets\GameData\Scripts\GameMessage.cs" />
     <Compile Include="Assets\GameData\Scripts\InitializatorStartScene.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
@@ -115,7 +115,6 @@
     <Compile Include="Assets\GameData\Scripts\UniTaskRunner.cs" />
     <Compile Include="Assets\GameData\Scripts\AddressableCache.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\HypercubeInit.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\prefabs\Stat__prefab__script.cs" />
     <Compile Include="Assets\GameData\Scripts\InputManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
@@ -129,12 +128,12 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
     <Compile Include="Assets\GameData\Scripts\CollectionEnums.cs" />
     <Compile Include="Assets\GameData\Scenes\Battlefield\BattlefieldUnit_Animation_AbilityAttack.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\Prefabs\PanelSelectedHero__prefab__scriptMB.cs" />
     <Compile Include="Assets\GameData\Scripts\CancellationTokenManager.cs" />
     <Compile Include="Assets\GameData\Scenes\Auth\Button_Close.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\GameData\Scenes\SelectBattlefield\PanelPrepareBattle.cs" />
     <Compile Include="Assets\GameData\Scripts\GameObjectExtensions.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\prefabs\PanelSelectedHero__prefab__scriptMB.cs" />
     <Compile Include="Assets\GameData\Scripts\DevAuthConfig.cs" />
     <Compile Include="Assets\GameData\Scenes\Collection\PanelCollectionContext.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
@@ -155,6 +154,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
     <Compile Include="Assets\GameData\Scenes\Battlefield\Animations\Health.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\Prefabs\PanelSelectedEquipment__prefab__scriptMB.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
     <Compile Include="Assets\GameData\Prefabs\IPrefab.cs" />
     <Compile Include="Assets\GameData\Scripts\G.cs" />
