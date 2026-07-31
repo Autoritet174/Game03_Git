@@ -42,7 +42,7 @@ namespace Assets.GameData.Scenes.Battlefield
 
             if (AnimationAttackStage == 1) // увеличение масштаба
             {
-                float coef = (1f + (0.3f * animationPercent)) * _Scale;
+                float coef = (1f + (0.3f * animationPercent)) * _ScaleAlive;
                 _RectTransform.localScale = new(coef, coef, 1);
                 if (animationPercent == 1)
                 {
@@ -88,7 +88,7 @@ namespace Assets.GameData.Scenes.Battlefield
                 float y = posStart.y + (distY * animationPercent);
                 _RectTransform.anchoredPosition = new Vector2(x, y);
 
-                float coef = (1f + (0.3f * (1 - animationPercent))) * _Scale;
+                float coef = (1f + (0.3f * (1 - animationPercent))) * _ScaleAlive;
                 _RectTransform.localScale = new(coef, coef, 1);
                 if (animationPercent == 1)
                 {

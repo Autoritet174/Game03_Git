@@ -182,12 +182,12 @@ namespace Assets.GameData.Scenes.Battlefield
             for (int i = 0; i < PlayerUnits.Count; i++)
             {
                 BaseHero h = Game03Client.GameData.GetBaseHeroById(PlayerUnits[i].SpawnedHero.BaseHeroId);
-                panelDamage__script.AddProgressBar(PlayerUnits[i].SpawnedHero.SpawnedId, "", h.Name, "MyHero", null, colorHeroesMy);
+                panelDamage__script.AddProgressBar(PlayerUnits[i].SpawnedHero.SpawnedId, "0", h.Name, PanelDamage__script.Team.MyHeroes, null, colorHeroesMy);
             }
             for (int i = 0; i < EnemyUnits.Count; i++)
             {
                 BaseHero h = Game03Client.GameData.GetBaseHeroById(EnemyUnits[i].SpawnedHero.BaseHeroId);
-                panelDamage__script.AddProgressBar(EnemyUnits[i].SpawnedHero.SpawnedId, "", h.Name, "EnHero", null, colorHeroesEnemy);
+                panelDamage__script.AddProgressBar(EnemyUnits[i].SpawnedHero.SpawnedId, "0", h.Name, PanelDamage__script.Team.EnemyHeroes, null, colorHeroesEnemy);
             }
             panelDamage__script.ProgressBarsSort();
             Initialized = true;

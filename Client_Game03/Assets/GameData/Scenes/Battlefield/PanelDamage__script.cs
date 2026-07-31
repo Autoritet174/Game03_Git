@@ -1,13 +1,13 @@
 using Assets.GameData.Scripts;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PanelDamage__script : IPrefab
 {
     private enum DisplayMode { Damage, Heal, Tank }
+    public enum Team { MyHeroes, EnemyHeroes }
     public bool initialized { get; private set; }
 
     public float width { get; private set; }
@@ -33,11 +33,20 @@ public class PanelDamage__script : IPrefab
 
     private readonly List<ProgressBar__prefab__script> bars_List = new();
 
-    private readonly Dictionary<Guid, float> damageDone = new();
-    private readonly Dictionary<Guid, float> damageRecieved = new();
-    private readonly Dictionary<Guid, float> healDone = new();
-    private readonly Dictionary<Guid, float> healRecieved = new();
+    private readonly Dictionary<Guid, HeroStatistic> HeroesStatistic = new();
 
+    private class HeroStatistic
+    {
+        public HeroStatistic(Guid HeroId)
+        {
+            this.HeroId = HeroId;
+        }
+        public Guid HeroId { get; }
+        public float damageDone { get; set; }
+        public float damageRecieved { get; set; }
+        public float healDone { get; set; }
+        public float healRecieved { get; set; }
+    }
 
 
     private DisplayMode displayMode = DisplayMode.Damage;
@@ -52,11 +61,6 @@ public class PanelDamage__script : IPrefab
     //        //this.bar = bar;
     //    }
     //}
-
-    public void AddBar()
-    {
-
-    }
 
     public void Initialize()
     {
@@ -82,7 +86,7 @@ public class PanelDamage__script : IPrefab
         OnResized(G.GetCoefHeight());
     }
 
-    public void AddProgressBar(Guid heroId, string textLeft, string textRight, string type = "", Color? colorLeft = null, Color? colorRight = null)
+    public void AddProgressBar(Guid spawnedId, string textLeft, string textRight, Team type, Color? colorLeft = null, Color? colorRight = null)
     {
         GameObject gameObject = AddressablePrefabProvider.ProgressBar.SafeInstant(PanelProgressBarsContent__RectTransform.transform);
         if (gameObject == null)
@@ -90,7 +94,7 @@ public class PanelDamage__script : IPrefab
             return;
         }
 
-        gameObject.name = $"ProgressBar__prefab {bars_List.Count+1}";
+        gameObject.name = $"ProgressBar__prefab {bars_List.Count + 1}";
         ProgressBar__prefab__script bar = gameObject.GetComponent<ProgressBar__prefab__script>();
         bars_List.Add(bar);
         bar.Initialize();
@@ -117,7 +121,6 @@ public class PanelDamage__script : IPrefab
 
     public void ProgressBarsSort()
     {
-        
         OnResized(G.GetCoefHeight());
     }
 
@@ -155,7 +158,7 @@ public class PanelDamage__script : IPrefab
         PanelProgressBars__RectTransform.SetOffsets(
             left: PanelProgressBars__offsets,
             right: PanelProgressBars__offsets + verticalBarWidth,
-            top: (PanelProgressBars__offsets*2) + buttonsSize,
+            top: (PanelProgressBars__offsets * 2) + buttonsSize,
             bottom: PanelProgressBars__offsets);
 
         float barHeight = 30 * coefHeight;
@@ -222,7 +225,10 @@ public class PanelDamage__script : IPrefab
 
     public void AddDamage(Guid heroIdSource, Guid heroIdTarget, float value)
     {
+        if (true)
+        {
 
+        }
     }
     public void AddHeal(Guid heroId, float value)
     {

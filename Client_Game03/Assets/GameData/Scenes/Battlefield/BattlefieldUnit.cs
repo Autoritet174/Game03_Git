@@ -19,11 +19,12 @@ namespace Assets.GameData.Scenes.Battlefield
         private static readonly Color colorIntelligence = new(0, 160f / 255f, 255f / 255f);
         private static readonly Color colorUniversal = Color.white;
 
-        private static readonly float _Scale = 0.8f;
+        private static readonly float _ScaleAlive = 0.85f;
+        private static readonly float _ScaleDead = _ScaleAlive * 0.65f;
         private static readonly float _Width = 150;
         private static readonly float _Height = 200;
 
-        private static readonly float yShift1 = _Height * 0.6f * _Scale;
+        private static readonly float yShift1 = _Height * 0.6f * _ScaleAlive;
         private static readonly float yShift = 40;
         private static readonly float yShift2 = yShift1 * 3;
         private static readonly float[] yShiftArray = new float[] {
@@ -32,7 +33,7 @@ namespace Assets.GameData.Scenes.Battlefield
             yShift1 + yShift,//3
             yShift2 + yShift,//4
         };
-        private static readonly float xShift = 200f * _Scale;
+        private static readonly float xShift = 200f * _ScaleAlive;
 
         private readonly RectTransform _RectTransform;
 
@@ -94,7 +95,7 @@ namespace Assets.GameData.Scenes.Battlefield
             _RectTransform.anchorMin = new(0.5f, 0.5f);
             _RectTransform.anchorMax = new(0.5f, 0.5f);
             _RectTransform.pivot = new(0.5f, 0.5f);
-            _RectTransform.localScale = new Vector3(_Scale, _Scale, 1);
+            _RectTransform.localScale = new Vector3(_ScaleAlive, _ScaleAlive, 1);
 
 
             Image _ImageRarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity", gameObject.transform);
@@ -210,11 +211,13 @@ namespace Assets.GameData.Scenes.Battlefield
             {
                 progressBar.SetTextRight(SpawnedHero.Health.ToStr());
                 _ImageDead_GameObject.SetActive(false);
+                _RectTransform.localScale = new Vector3(_ScaleAlive, _ScaleAlive, _ScaleAlive);
             }
             else
             {
                 progressBar.SetTextRight(textDead);
                 _ImageDead_GameObject.SetActive(true);
+                _RectTransform.localScale = new Vector3(_ScaleDead, _ScaleDead, _ScaleDead);
             }
             progressBar.value = SpawnedHero.Health;
             progressBar.valueMax = SpawnedHero.HealthMax;
