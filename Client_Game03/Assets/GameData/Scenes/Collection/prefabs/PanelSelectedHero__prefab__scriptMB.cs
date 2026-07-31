@@ -176,10 +176,10 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
             HeroId = heroId;
             Hero hero = CollectionProvider.GetCollectionHeroesFromCache().First(a => a.Id == heroId);
             _LabelSelectedHero__TextMeshProUGUI.SetText(hero.BaseHero.Name);
-            _SelectedHero_Image.sprite = AddressableCache.GetHeroSprite(hero);
+            _SelectedHero_Image.sprite = AddressablePrefabProvider.GetHeroSprite(hero);
             _SelectedHero_Image.preserveAspect = true;
 
-            _SelectedHeroRarity_Image.sprite = AddressableCache.GetRarity(hero.BaseHero.Rarity);
+            _SelectedHeroRarity_Image.sprite = AddressablePrefabProvider.GetRarity(hero.BaseHero.Rarity);
             _SelectedHeroRarity_Image.preserveAspect = false;
 
             // отображаем всю одетую экипировку

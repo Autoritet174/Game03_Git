@@ -1,11 +1,13 @@
 using Assets.GameData.Scripts;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
+
 public class PanelDamage__script : IPrefab
 {
-    
+    private enum DisplayMode { Damage, Heal, Tank }
+    public enum Team { MyHeroes, EnemyHeroes }
     public bool initialized { get; private set; }
 
     public float width { get; private set; }
@@ -14,23 +16,51 @@ public class PanelDamage__script : IPrefab
 
     private RectTransform PanelDamage__RectTransform;
     private RectTransform PanelProgressBars__RectTransform;
+    //private RectTransform PanelProgressBarsViewport__RectTransform;
+    private RectTransform PanelProgressBarsContent__RectTransform;
+
+    private GameObject ScrollbarVertical__GameObject;
+    private RectTransform ScrollbarVertical__RectTransform;
+
     private RectTransform ButtonDamage__RectTransform;
     private RectTransform ButtonHeal__RectTransform;
     private RectTransform ButtonTank__RectTransform;
+    private Image ButtonDamage__Image;
+    private Image ButtonHeal__Image;
+    private Image ButtonTank__Image;
 
-    public List<Bar> bars { get; private set; } = new();
+    //private readonly List<Bar> bars = new();
 
-    public class Bar
+    private readonly List<ProgressBar__prefab__script> bars_List = new();
+
+    private readonly Dictionary<Guid, HeroStatistic> HeroesStatistic = new();
+
+    private class HeroStatistic
     {
-        public Guid heroId { get; }
-        public ProgressBar__prefab__script bar { get; }
-        public Bar(Guid heroId, ProgressBar__prefab__script bar)
+        public HeroStatistic(Guid HeroId)
         {
-            this.heroId = heroId;
-            this.bar = bar;
+            this.HeroId = HeroId;
         }
-
+        public Guid HeroId { get; }
+        public float damageDone { get; set; }
+        public float damageRecieved { get; set; }
+        public float healDone { get; set; }
+        public float healRecieved { get; set; }
     }
+
+
+    private DisplayMode displayMode = DisplayMode.Damage;
+
+    //private class Bar
+    //{
+    //    //public ProgressBar__prefab__script bar { get; }
+    //    public Bar(//Guid heroId, ProgressBar__prefab__script bar
+    //        )
+    //    {
+    //        //this.heroId = heroId;
+    //        //this.bar = bar;
+    //    }
+    //}
 
     public void Initialize()
     {
@@ -40,16 +70,33 @@ public class PanelDamage__script : IPrefab
         ButtonDamage__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonDamage", PanelDamage__RectTransform);
         ButtonHeal__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonHeal", PanelDamage__RectTransform);
         ButtonTank__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonTank", PanelDamage__RectTransform);
+        ButtonDamage__Image = ButtonDamage__RectTransform.GetComponent<Image>();
+        ButtonHeal__Image = ButtonHeal__RectTransform.GetComponent<Image>();
+        ButtonTank__Image = ButtonTank__RectTransform.GetComponent<Image>();
+        ButtonDamage__RectTransform.gameObject.SetClickOnButton(ButtonDamageOnClick);
+        ButtonHeal__RectTransform.gameObject.SetClickOnButton(ButtonHealOnClick);
+        ButtonTank__RectTransform.gameObject.SetClickOnButton(ButtonTankOnClick);
+
+        RectTransform PanelProgressBarsViewport__RectTransform = GameObjectFinder.FindByName<RectTransform>("Viewport", PanelProgressBars__RectTransform);
+        PanelProgressBarsContent__RectTransform = GameObjectFinder.FindByName<RectTransform>("Content", PanelProgressBarsViewport__RectTransform);
+
+        ScrollbarVertical__GameObject = GameObjectFinder.FindByName("ScrollbarVertical", PanelProgressBars__RectTransform);
+        ScrollbarVertical__RectTransform = ScrollbarVertical__GameObject.GetComponent<RectTransform>();
 
         OnResized(G.GetCoefHeight());
     }
 
-    public void AddProgressBar(Guid heroId, string textLeft, string textRight, string type = "", Color? colorLeft = null, Color? colorRight = null)
+    public void AddProgressBar(Guid spawnedId, string textLeft, string textRight, Team type, Color? colorLeft = null, Color? colorRight = null)
     {
-        GameObject gameObject = AddressableCache.ProgressBar.SafeInstant(PanelProgressBars__RectTransform.transform);
-        gameObject.name = $"ProgressBar__prefab ({textRight}) [{heroId}]";
+        GameObject gameObject = AddressablePrefabProvider.ProgressBar.SafeInstant(PanelProgressBarsContent__RectTransform.transform);
+        if (gameObject == null)
+        {
+            return;
+        }
+
+        gameObject.name = $"ProgressBar__prefab {bars_List.Count + 1}";
         ProgressBar__prefab__script bar = gameObject.GetComponent<ProgressBar__prefab__script>();
-        bars.Add(new Bar(heroId, bar));
+        bars_List.Add(bar);
         bar.Initialize();
         bar.this__RectTransform.anchorMin = new Vector2(0, 1);
         bar.this__RectTransform.anchorMax = new Vector2(0, 1);
@@ -74,21 +121,12 @@ public class PanelDamage__script : IPrefab
 
     public void ProgressBarsSort()
     {
-        float valueMax = bars.Count > 0 ? bars.Max(a => a.bar.value) : 1;
-        if (valueMax < 1)
-        {
-            valueMax = 1;
-        }
-        bars.ForEach(a => a.bar.valueMax = valueMax);
-
-        bars.Sort((b, a) => a.bar.value.CompareTo(b.bar.value));
-
         OnResized(G.GetCoefHeight());
     }
 
     public void Refresh()
     {
-        bars.ForEach(a => a.bar.Refresh());
+        //bars.ForEach(a => a.bar.Refresh());
     }
 
     public void ProgressBarsSortAndRefresh()
@@ -99,11 +137,9 @@ public class PanelDamage__script : IPrefab
 
     public void OnResized(float coefHeight, float top = 0, float buttom = 0, float left = 0, float right = 0)
     {
-        PanelDamage__RectTransform.sizeDelta = new Vector2(300 * coefHeight, 762.5f * coefHeight);// 10 + 10 + 0.75*30 + 30*24
+        PanelDamage__RectTransform.sizeDelta = new Vector2(343 * coefHeight, 820 * coefHeight);// 10 + 10 + 0.75*30 + 30*24
         PanelDamage__RectTransform.anchoredPosition = new Vector2(20 * coefHeight, 0);
 
-        float PanelProgressBars__offsets = 10 * coefHeight;
-        PanelProgressBars__RectTransform.SetOffsets(PanelProgressBars__offsets, PanelProgressBars__offsets, PanelProgressBars__offsets, PanelProgressBars__offsets);
 
         float buttonsSize = 70 * coefHeight;
         float buttonPos = 10 * coefHeight;
@@ -114,17 +150,92 @@ public class PanelDamage__script : IPrefab
         ButtonHeal__RectTransform.anchoredPosition = new Vector2((buttonPos * 2) + buttonsSize, -buttonPos);
         ButtonTank__RectTransform.anchoredPosition = new Vector2((buttonPos * 3) + (buttonsSize * 2), -buttonPos);
 
+        float verticalBarWidth = 13 * coefHeight;
+        ScrollbarVertical__RectTransform.anchoredPosition = new Vector2(verticalBarWidth, 0);
+        ScrollbarVertical__RectTransform.sizeDelta = new Vector2(verticalBarWidth, 0);
+
+        float PanelProgressBars__offsets = 10 * coefHeight;
+        PanelProgressBars__RectTransform.SetOffsets(
+            left: PanelProgressBars__offsets,
+            right: PanelProgressBars__offsets + verticalBarWidth,
+            top: (PanelProgressBars__offsets * 2) + buttonsSize,
+            bottom: PanelProgressBars__offsets);
+
         float barHeight = 30 * coefHeight;
         float barHeightShift = barHeight * 2f;
         int i = 0;
-        foreach (Bar v in bars)
+        foreach (ProgressBar__prefab__script v in bars_List)
         {
-            RectTransform r = v.bar.this__RectTransform;
+            RectTransform r = v.this__RectTransform;
 
             r.anchoredPosition = new Vector2(0, (-barHeight * (i + 1)) - barHeightShift);
             r.sizeDelta = new Vector2(PanelProgressBars__RectTransform.rect.width, barHeight);
             i++;
         }
         Refresh();
+    }
+
+    private void ButtonDamageOnClick()
+    {
+        ChangeDisplayMode(DisplayMode.Damage);
+    }
+
+    private void ButtonHealOnClick()
+    {
+        ChangeDisplayMode(DisplayMode.Heal);
+    }
+
+    private void ButtonTankOnClick()
+    {
+        ChangeDisplayMode(DisplayMode.Tank);
+    }
+
+    private void ChangeDisplayMode(DisplayMode displayMode)
+    {
+        this.displayMode = displayMode;
+        ButtonDamage__Image.color = Color.white;
+        ButtonHeal__Image.color = Color.white;
+        ButtonTank__Image.color = Color.white;
+        switch (displayMode)
+        {
+            case DisplayMode.Damage:
+                ButtonDamage__Image.color = Color.white;
+                ButtonHeal__Image.color = Color.gray;
+                ButtonTank__Image.color = Color.gray;
+                break;
+            case DisplayMode.Heal:
+                ButtonDamage__Image.color = Color.gray;
+                ButtonHeal__Image.color = Color.white;
+                ButtonTank__Image.color = Color.gray;
+                break;
+            case DisplayMode.Tank:
+                ButtonDamage__Image.color = Color.gray;
+                ButtonHeal__Image.color = Color.gray;
+                ButtonTank__Image.color = Color.white;
+                break;
+            default:
+                throw new NotImplementedException();
+        }
+    }
+
+    public void Update()
+    {
+
+    }
+
+    public void AddDamage(Guid heroIdSource, Guid heroIdTarget, float value)
+    {
+        if (true)
+        {
+
+        }
+    }
+    public void AddHeal(Guid heroId, float value)
+    {
+
+    }
+    public void AddTank(Guid heroId, float value)
+    {
+
     }
 }

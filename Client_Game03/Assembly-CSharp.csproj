@@ -75,6 +75,8 @@
     <Compile Include="Assets\GameData\Scripts\SecureStorageProvider.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
     <Compile Include="Assets\GameData\Scripts\MainThreadDispatcher.cs" />
+    <Compile Include="Assets\GameData\Scripts\AddressablePrefabProvider.cs" />
+    <Compile Include="Assets\GameData\Scenes\Collection\prefabs\PanelSelectedEquipment__prefab__scriptMB.cs" />
     <Compile Include="Assets\GameData\Scenes\Battlefield\BattlefieldUnit.cs" />
     <Compile Include="Assets\GameData\Scenes\Battlefield\ButtonClose_Click_EndBattle.cs" />
     <Compile Include="Assets\GameData\Scenes\SelectBattlefield\BattlefieldCategory.cs" />
@@ -113,7 +115,6 @@
     <Compile Include="Assets\GameData\Scripts\UnityObject.cs" />
     <Compile Include="Assets\GameData\Prefabs\FilterButton.cs" />
     <Compile Include="Assets\GameData\Scripts\UniTaskRunner.cs" />
-    <Compile Include="Assets\GameData\Scripts\AddressableCache.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\HypercubeInit.cs" />
     <Compile Include="Assets\GameData\Scripts\InputManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />

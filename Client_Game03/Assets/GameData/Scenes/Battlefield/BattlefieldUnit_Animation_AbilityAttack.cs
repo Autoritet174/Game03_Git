@@ -19,9 +19,8 @@ namespace Assets.GameData.Scenes.Battlefield
         private Vector2 AtimationAttackPosEnd = Vector2.zero;
         private float AnimationAttackDamage = 0;
         private bool AnimationAttackDamageIsCrit = false;
-        private Action actionUpdatePanelDamage;
         private readonly Animations.HealthHub healthHub;
-        public void AnimationStartAttackUnit(BattlefieldUnit unitTarget, float animationAttackDamage, bool animationAttackDamageIsCrit, Action actionUpdatePanelDamage)
+        public void AnimationStartAttackUnit(BattlefieldUnit unitTarget, float animationAttackDamage, bool animationAttackDamageIsCrit)
         {
             AtimationAttackUnitTarget = unitTarget;
             AnimationAttackStage = 1;
@@ -29,7 +28,6 @@ namespace Assets.GameData.Scenes.Battlefield
             AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage1 / BattlefieldSceneInitializator.AnimationSpeed);
             AnimationAttackDamage = animationAttackDamage;
             AnimationAttackDamageIsCrit = animationAttackDamageIsCrit;
-            this.actionUpdatePanelDamage = actionUpdatePanelDamage;
             _RectTransform.transform.SetAsLastSibling();
         }
 
@@ -44,7 +42,7 @@ namespace Assets.GameData.Scenes.Battlefield
 
             if (AnimationAttackStage == 1) // увеличение масштаба
             {
-                float coef = (1f + (0.3f * animationPercent)) * _Scale;
+                float coef = (1f + (0.3f * animationPercent)) * _ScaleAlive;
                 _RectTransform.localScale = new(coef, coef, 1);
                 if (animationPercent == 1)
                 {
@@ -75,7 +73,9 @@ namespace Assets.GameData.Scenes.Battlefield
                         -AnimationAttackDamage,
                         AnimationAttackDamageIsCrit,
                         AtimationAttackUnitTarget._RectTransform);
-                    actionUpdatePanelDamage?.Invoke();
+
+                    // тут добавляем весь урон (урон при ударе, кливы, проки в момент удара)
+                    panelDamage__script.Update();
                 }
             }
             else if (AnimationAttackStage == 3) // движение от цели до базовой точки
@@ -88,7 +88,7 @@ namespace Assets.GameData.Scenes.Battlefield
                 float y = posStart.y + (distY * animationPercent);
                 _RectTransform.anchoredPosition = new Vector2(x, y);
 
-                float coef = (1f + (0.3f * (1 - animationPercent))) * _Scale;
+                float coef = (1f + (0.3f * (1 - animationPercent))) * _ScaleAlive;
                 _RectTransform.localScale = new(coef, coef, 1);
                 if (animationPercent == 1)
                 {

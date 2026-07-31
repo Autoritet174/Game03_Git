@@ -60,12 +60,12 @@ namespace Assets.GameData.Scenes.Battlefield
 
         private void Start()
         {
+            panelDamage__script = new();
             if (!TryInitialize())
             {
                 return;
             }
 
-            panelDamage__script = new();
             panelDamage__script.Initialize();
             this.RunAsync(StartAsync);
         }
@@ -88,7 +88,7 @@ namespace Assets.GameData.Scenes.Battlefield
             for (int i = 0; i < SpawnedBattlefield.SpawnedHeroPlayerList.Count; i++)
             {
                 SpawnedHero spawnedHeroes = SpawnedBattlefield.SpawnedHeroPlayerList[i];
-                BattlefieldUnit unit = new(spawnedHeroes, i, true, canvasUnits__Transform, healthHub);
+                BattlefieldUnit unit = new(spawnedHeroes, i, true, canvasUnits__Transform, healthHub, panelDamage__script);
                 BattlefieldUnits.Add(spawnedHeroes.SpawnedId, unit);
                 PlayerUnits.Add(unit);
             }
@@ -97,7 +97,7 @@ namespace Assets.GameData.Scenes.Battlefield
             for (int i = 0; i < SpawnedBattlefield.SpawnedHeroEnemyList.Count; i++)
             {
                 SpawnedHero spawnedHeroes = SpawnedBattlefield.SpawnedHeroEnemyList[i];
-                BattlefieldUnit unit = new(spawnedHeroes, i, false, canvasUnits__Transform, healthHub);
+                BattlefieldUnit unit = new(spawnedHeroes, i, false, canvasUnits__Transform, healthHub, panelDamage__script);
                 BattlefieldUnits.Add(spawnedHeroes.SpawnedId, unit);
                 EnemyUnits.Add(unit);
             }
@@ -182,12 +182,12 @@ namespace Assets.GameData.Scenes.Battlefield
             for (int i = 0; i < PlayerUnits.Count; i++)
             {
                 BaseHero h = Game03Client.GameData.GetBaseHeroById(PlayerUnits[i].SpawnedHero.BaseHeroId);
-                panelDamage__script.AddProgressBar(PlayerUnits[i].SpawnedHero.SpawnedId, "", h.Name, "MyHero", null, colorHeroesMy);
+                panelDamage__script.AddProgressBar(PlayerUnits[i].SpawnedHero.SpawnedId, "0", h.Name, PanelDamage__script.Team.MyHeroes, null, colorHeroesMy);
             }
             for (int i = 0; i < EnemyUnits.Count; i++)
             {
                 BaseHero h = Game03Client.GameData.GetBaseHeroById(EnemyUnits[i].SpawnedHero.BaseHeroId);
-                panelDamage__script.AddProgressBar(EnemyUnits[i].SpawnedHero.SpawnedId, "", h.Name, "EnHero", null, colorHeroesEnemy);
+                panelDamage__script.AddProgressBar(EnemyUnits[i].SpawnedHero.SpawnedId, "0", h.Name, PanelDamage__script.Team.EnemyHeroes, null, colorHeroesEnemy);
             }
             panelDamage__script.ProgressBarsSort();
             Initialized = true;
@@ -259,7 +259,7 @@ namespace Assets.GameData.Scenes.Battlefield
                                                 BattlefieldLogRecordBase logRecord = fullLog.FirstOrDefault(a => a is BattlefieldLogRecord_Damage d && d.IndexReason == log.Index);
                                                 if (logRecord is not null and BattlefieldLogRecord_Damage logDamage)
                                                 {
-                                                    h1Unit.AnimationStartAttackUnit(h2Unit, logDamage.Damage, logDamage.IsCrit, UpdatePanelDamage);
+                                                    h1Unit.AnimationStartAttackUnit(h2Unit, logDamage.Damage, logDamage.IsCrit);
                                                     h2Unit.SpawnedHero.Health -= logDamage.Damage;
                                                     //dateTimeWaitFor = DateTime.Now.AddSeconds(
                                                     //    0
@@ -267,20 +267,21 @@ namespace Assets.GameData.Scenes.Battlefield
                                                     //    + BattlefieldUnit.AnimationAttackTimeStage2
                                                     //    //+ BattlefieldUnit.AnimationAttackTimeStage3
                                                     //    );
-                                                    void UpdatePanelDamage()
-                                                    {
-                                                        PanelDamage__script.Bar bar = panelDamage__script.bars.FirstOrDefault(a => a.heroId == h1Unit.SpawnedHero.SpawnedId);
-                                                        if (bar == null)
-                                                        {
-                                                            Debug.Log($"bar is null, SpawnedHero.SpawnedId={h1Unit.SpawnedHero.SpawnedId}");
-                                                        }
-                                                        else
-                                                        {
-                                                            bar.bar.value += logDamage.Damage;
-                                                            bar.bar.SetTextLeft(bar.bar.value.ToStr());
-                                                            panelDamage__script.ProgressBarsSortAndRefresh();
-                                                        }
-                                                    }
+                                                    //void UpdatePanelDamage()
+                                                    //{
+                                                    //    PanelDamage__script.Bar bar = panelDamage__script.bars.FirstOrDefault(a => a.heroId == h1Unit.SpawnedHero.SpawnedId);
+                                                    //    if (bar == null)
+                                                    //    {
+                                                    //        Debug.Log($"bar is null, SpawnedHero.SpawnedId={h1Unit.SpawnedHero.SpawnedId}");
+                                                    //    }
+                                                    //    else
+                                                    //    {
+                                                    //        bar.bar.value += logDamage.Damage;
+                                                    //        bar.bar.SetTextLeft(bar.bar.value.ToStr());
+                                                    //        panelDamage__script.ProgressBarsSortAndRefresh();
+                                                    //    }
+                                                    //}
+                                                    
 
                                                     BattlefieldIndexAnimationActive = true;
                                                 }

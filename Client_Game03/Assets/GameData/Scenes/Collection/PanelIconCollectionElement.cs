@@ -25,7 +25,7 @@ namespace Assets.GameData.Scenes.Collection
             _CollectionElement = collectionElement;
             _PanelCollection = panelCollection;
 
-            _GameObject = AddressableCache.IconCollectionElementAddressableGameObject.SafeInstant();
+            _GameObject = AddressablePrefabProvider.IconCollectionElementAddressableGameObject.SafeInstant();
             _GameObject.name = $"IconCollectionElement [{Id}]";
             _GameObject.transform.SetParent(panelGroupDivider.CellsContainer__Transform);
             _RarityImage_GameObject = GameObjectFinder.FindByName("ImageMaskRarity", _GameObject.transform);
@@ -77,14 +77,14 @@ namespace Assets.GameData.Scenes.Collection
 
             textMeshPro.text = _CollectionElement.Name;//.ToUpper1Char();
             textMeshPro.fontSize = TEXT_COLLECTION_ELEMENT_FONTSIZE;
-            imageRarity.sprite = AddressableCache.GetRarity(_CollectionElement.Rarity);
+            imageRarity.sprite = AddressablePrefabProvider.GetRarity(_CollectionElement.Rarity);
             imageRarity.preserveAspect = true;
             imageRarity.type = Image.Type.Simple; // Режим без растягивания;
 
             imageCollectionElement.sprite = _PanelCollection.collectionMode switch
             {
-                ECollectionMode.Hero => AddressableCache.Heroes[$"{_CollectionElement.Name}_face"],
-                ECollectionMode.Equipment => AddressableCache.Equipments[_CollectionElement.Name],
+                ECollectionMode.Hero => AddressablePrefabProvider.Heroes[$"{_CollectionElement.Name}_face"],
+                ECollectionMode.Equipment => AddressablePrefabProvider.Equipments[_CollectionElement.Name],
                 _ => throw new NotImplementedException(),
             };
             imageCollectionElement.preserveAspect = true;
@@ -139,8 +139,8 @@ namespace Assets.GameData.Scenes.Collection
                 if (_Equipment.HeroId != null)
                 {
                     Hero hero = CollectionProvider.GetCollectionHeroesFromCache().First(a => a.Id == _Equipment.HeroId);
-                    _OwnerImageHero_Image.sprite = AddressableCache.GetHeroFaceSprite(hero);
-                    _OwnerImageRarity_Image.sprite = AddressableCache.GetRarity(hero.BaseHero.Rarity);
+                    _OwnerImageHero_Image.sprite = AddressablePrefabProvider.GetHeroFaceSprite(hero);
+                    _OwnerImageRarity_Image.sprite = AddressablePrefabProvider.GetRarity(hero.BaseHero.Rarity);
                     _OwnerHeroIcon_GameObject.SetActive(true);
                 }
                 else
@@ -184,12 +184,12 @@ namespace Assets.GameData.Scenes.Collection
 
         private void OnPointerEnter()
         {
-            _Rarity_Image.sprite = AddressableCache.RaritySelected;
+            _Rarity_Image.sprite = AddressablePrefabProvider.RaritySelected;
         }
 
         private void OnPointerExit()
         {
-            _Rarity_Image.sprite = AddressableCache.GetRarity(_CollectionElement.Rarity);
+            _Rarity_Image.sprite = AddressablePrefabProvider.GetRarity(_CollectionElement.Rarity);
         }
     }
 }

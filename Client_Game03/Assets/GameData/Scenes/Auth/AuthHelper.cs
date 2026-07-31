@@ -100,7 +100,7 @@ namespace Assets.GameData.Scenes.Auth
                 }
 
                 // Предзагрузка AdressableAssets героев и редкости
-                await AddressableCache.PreLoadAssets();
+                await AddressablePrefabProvider.PreLoadAssets();
 
 
                 // Загрузка коллекции пользователя
