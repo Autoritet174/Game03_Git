@@ -31,8 +31,14 @@ public class PanelDamage__script : IPrefab
 
     //private readonly List<Bar> bars = new();
 
+    /// <summary>
+    /// Прогресс бары, которые отображаются в панели.
+    /// </summary>
     private readonly List<ProgressBar__prefab__script> bars_List = new();
 
+    /// <summary>
+    /// Статистика героев, которая хранится в панели.
+    /// </summary>
     private readonly Dictionary<Guid, HeroStatistic> HeroesStatistic = new();
 
     private class HeroStatistic

@@ -30,7 +30,7 @@ public class ProgressBar__prefab__script : MonoBehaviour, IPrefab
     private TextMeshProUGUI _TextRight__TextMeshProUGUI;
     private float healthimagecolorbar_right = HEALTH_IMAGE_COLOR_BAR_RIGHT;
 
-    public string type { get; set; } = "";
+    public PanelDamage__script.Team type { get; set; }
 
     public float value { get; set; } = 0f;
     public float valueMax { get; set; } = 1f;

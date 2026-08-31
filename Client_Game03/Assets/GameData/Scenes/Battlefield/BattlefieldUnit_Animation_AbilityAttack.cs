@@ -25,7 +25,7 @@ namespace Assets.GameData.Scenes.Battlefield
             AtimationAttackUnitTarget = unitTarget;
             AnimationAttackStage = 1;
             AtimationAttackStart = DateTime.Now;
-            AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage1 / BattlefieldSceneInitializator.AnimationSpeed);
+            AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage1 / BattlefieldSceneInitializator.animationSpeed);
             AnimationAttackDamage = animationAttackDamage;
             AnimationAttackDamageIsCrit = animationAttackDamageIsCrit;
             _RectTransform.transform.SetAsLastSibling();
@@ -48,7 +48,7 @@ namespace Assets.GameData.Scenes.Battlefield
                 {
                     AnimationAttackStage = 2;
                     AtimationAttackStart = DateTime.Now;
-                    AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage2 / BattlefieldSceneInitializator.AnimationSpeed);
+                    AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage2 / BattlefieldSceneInitializator.animationSpeed);
                 }
             }
             else if (AnimationAttackStage == 2) // движение от базовой точки до цели
@@ -67,7 +67,7 @@ namespace Assets.GameData.Scenes.Battlefield
                 {
                     AnimationAttackStage = 3;
                     AtimationAttackStart = DateTime.Now;
-                    AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage3 / BattlefieldSceneInitializator.AnimationSpeed);
+                    AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage3 / BattlefieldSceneInitializator.animationSpeed);
                     AtimationAttackUnitTarget.RefreshHealth();
                     healthHub.Create(
                         -AnimationAttackDamage,
@@ -94,7 +94,7 @@ namespace Assets.GameData.Scenes.Battlefield
                 {
                     AnimationAttackStage = 4;
                     AtimationAttackStart = DateTime.Now;
-                    AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage4 / BattlefieldSceneInitializator.AnimationSpeed);
+                    AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage4 / BattlefieldSceneInitializator.animationSpeed);
                 }
             }
             else if (AnimationAttackStage == 4) // ожидание перед сбросом параметров

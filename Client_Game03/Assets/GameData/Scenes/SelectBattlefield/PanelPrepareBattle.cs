@@ -180,15 +180,15 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             battleStarting = true;
             try
             {
-                BattlefieldSceneInitializator.SpawnedBattlefield = await Game03Client.Battlefield.BattlefieldProvider.LoadBattlefieldAsync(
+                BattlefieldSceneInitializator.spawnedBattlefield = await Game03Client.Battlefield.BattlefieldProvider.LoadBattlefieldAsync(
                     battlefieldId,
                     heroIds,
                     CancellationTokenManager.Create($"{nameof(PanelPrepareBattle)}.{nameof(StartBattleAsync)}"));
 
-                if (BattlefieldSceneInitializator.SpawnedBattlefield != null)
+                if (BattlefieldSceneInitializator.spawnedBattlefield != null)
                 {
-                    BattlefieldSceneInitializator.SpawnedBattlefield.SpawnedHeroPlayerList.Sort((a, b) => b.Initiative.CompareTo(a.Initiative));
-                    BattlefieldSceneInitializator.SpawnedBattlefield.SpawnedHeroEnemyList.Sort((a, b) => b.Initiative.CompareTo(a.Initiative));
+                    BattlefieldSceneInitializator.spawnedBattlefield.SpawnedHeroPlayerList.Sort((a, b) => b.Initiative.CompareTo(a.Initiative));
+                    BattlefieldSceneInitializator.spawnedBattlefield.SpawnedHeroEnemyList.Sort((a, b) => b.Initiative.CompareTo(a.Initiative));
                     Hide();
                     GameSceneManager.Load(GameSceneManager.SceneName.Battlefield);
                 }
