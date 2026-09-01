@@ -67,6 +67,7 @@ namespace Assets.GameData.Scenes.Battlefield
             }
 
             panelDamage__script.Initialize();
+            panelDamage__script.battlefieldSceneInitializator = this;
             this.RunAsync(StartAsync);
         }
 

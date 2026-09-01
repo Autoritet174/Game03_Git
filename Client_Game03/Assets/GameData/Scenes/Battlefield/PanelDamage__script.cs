@@ -1,6 +1,9 @@
+using Assets.GameData.Scenes.Battlefield;
 using Assets.GameData.Scripts;
+using General.DTO.Battlefield;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -48,10 +51,10 @@ public class PanelDamage__script : IPrefab
             this.HeroId = HeroId;
         }
         public Guid HeroId { get; }
-        public float damageDone { get; set; }
-        public float damageRecieved { get; set; }
-        public float healDone { get; set; }
-        public float healRecieved { get; set; }
+        public float damageDone { get; set; } = 0f;
+        public float damageRecieved { get; set; } = 0f;
+        public float healDone { get; set; } = 0f;
+        public float healRecieved { get; set; } = 0f;
     }
 
 
@@ -67,7 +70,7 @@ public class PanelDamage__script : IPrefab
     //        //this.bar = bar;
     //    }
     //}
-
+    public BattlefieldSceneInitializator battlefieldSceneInitializator { get; set; }
     public void Initialize()
     {
         PanelDamage__RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelDamage");
@@ -224,9 +227,27 @@ public class PanelDamage__script : IPrefab
         }
     }
 
+    int indexAdded = 0;
     public void Update()
     {
+        int i = battlefieldSceneInitializator.battlefieldIndexAnimationStarted;
+        IEnumerable<BattlefieldLogRecordBase> logs = BattlefieldSceneInitializator.spawnedBattlefield.BattlefieldLog.Where(a => a.Index <= i && a.Index >= indexAdded);
+        indexAdded = i+1;
+        foreach (var log in logs)
+        {
+            switch (log)
+            {
+                case BattlefieldLogRecord_Damage d:
 
+                    if (HeroesStatistic.TryGetValue(d.SpawnedHeroId, out HeroStatistic v)) {
+
+                    }
+
+                    break;
+                //case BattlefieldLogRecord_TurnStart t:
+                //    break;
+            }
+        }
     }
 
     public void AddDamage(Guid heroIdSource, Guid heroIdTarget, float value)
