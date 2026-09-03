@@ -16,22 +16,22 @@
             Класс, представляющий бросок кубиков в формате "2d3+5",
             </summary>
         </member>
-        <member name="P:General.DTO.Dice.Count">
+        <member name="P:General.DTO.Dice.count">
             <summary> Count. Количество бросаемых кубиков. </summary>
         </member>
-        <member name="P:General.DTO.Dice.Sides">
+        <member name="P:General.DTO.Dice.sides">
             <summary> Sides. Размер кубика (число граней). </summary>
         </member>
-        <member name="P:General.DTO.Dice.Modificator">
+        <member name="P:General.DTO.Dice.modificator">
             <summary> Modificator. Модификатор к броску кубиков. </summary>
         </member>
-        <member name="P:General.DTO.Dice.Min">
+        <member name="P:General.DTO.Dice.min">
             <summary> Минимальное значение. </summary>
         </member>
-        <member name="P:General.DTO.Dice.Max">
+        <member name="P:General.DTO.Dice.max">
             <summary> Максимальное значение. </summary>
         </member>
-        <member name="P:General.DTO.Dice.Expected">
+        <member name="P:General.DTO.Dice.expected">
             <summary> Ожидаемое значение. </summary>
         </member>
         <member name="M:General.DTO.Dice.#ctor(System.String)">
@@ -62,31 +62,31 @@
         <member name="M:General.DTO.Entities.GameData.BaseEquipment.#ctor(System.Int32,System.String,System.Int32,System.Boolean,System.Int32,System.Nullable{System.Int32},System.Collections.Generic.Dictionary{General.EStatType,General.DTO.Dice})">
             <summary> Представляет базовую сущность предмета. </summary>
         </member>
-        <member name="P:General.DTO.Entities.GameData.X_Battlefield_BaseHero.GuarantSpawn">
+        <member name="P:General.DTO.Entities.GameData.X_Battlefield_BaseHero.guarantSpawn">
             <summary> Гарантированное появление на поле боя. </summary>
         </member>
-        <member name="P:General.DTO.Entities.GameData.X_Battlefield_BaseHero.ProbabilitySpawn">
+        <member name="P:General.DTO.Entities.GameData.X_Battlefield_BaseHero.probabilitySpawn">
             <summary> Вероятность появления на поле боя. Чем выше число тем выше шанс. Игнорируется при GuarantSpawn=true. </summary>
         </member>
-        <member name="P:General.DTO.Entities.GameData.X_Battlefield_BaseHero.PossibleRank">
+        <member name="P:General.DTO.Entities.GameData.X_Battlefield_BaseHero.possibleRank">
             <summary> При респауне может иметь ранг. </summary>
         </member>
         <member name="T:General.DTO.Interfaces.ICreatedAt">
             <summary> Интерфейс для времени создания. </summary>
         </member>
-        <member name="P:General.DTO.Interfaces.ICreatedAt.CreatedAt">
+        <member name="P:General.DTO.Interfaces.ICreatedAt.createdAt">
             <summary> UTC дата время создания. Контролируется на уровне EF автоматически при сохранении по интерфейсу <see cref="T:General.DTO.Interfaces.ICreatedAt"/>. </summary>
         </member>
         <member name="T:General.DTO.Interfaces.IUpdatedAt">
             <summary> Интерфейс для времени обновления. </summary>
         </member>
-        <member name="P:General.DTO.Interfaces.IUpdatedAt.UpdatedAt">
+        <member name="P:General.DTO.Interfaces.IUpdatedAt.updatedAt">
             <summary> UTC дата время обновления. Контролируется на уровне EF автоматически при сохранении по интерфейсу <see cref="T:General.DTO.Interfaces.IUpdatedAt"/>. </summary>
         </member>
         <member name="T:General.DTO.Interfaces.IVersion">
             <summary> Интерфейс для переменной Version используемой для оптимистической блокировки. </summary>
         </member>
-        <member name="P:General.DTO.Interfaces.IVersion.Version">
+        <member name="P:General.DTO.Interfaces.IVersion.version">
             <summary> Версия записи для оптимистической блокировки. </summary>
         </member>
         <member name="T:General.DTO.RestRequest.DtoRequestAuthReg">
@@ -145,124 +145,124 @@
             <param name="systemInfo_npotSupport">Указывает, поддерживает ли графическая карта текстуры с размерами, не являющимися степенью двойки (NPOT).</param>
             <param name="refreshToken"></param>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.Email">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.email">
             <summary>
             Получает или задаёт адрес электронной почты пользователя.
             </summary>
             <value>Строка, содержащая email пользователя.</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.Password">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.password">
             <summary>
             Получает или задаёт пароль пользователя.
             </summary>
             <value>Строка с паролем. Передача должна осуществляться по защищённому соединению.</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.TimeZoneInfo_Local_BaseUtcOffset_Minutes">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.timeZoneInfo_Local_BaseUtcOffset_Minutes">
             <summary>
             Получает или задаёт смещение локального часового пояса от UTC в минутах.
             </summary>
             <value>Целое число, представляющее разницу во времени (например, +180 для UTC+3).</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.System_Environment_UserName">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.system_Environment_UserName">
             <summary>
             Получает или задаёт имя пользователя операционной системы.
             </summary>
             <value>Имя пользователя, под которым запущено приложение (например, 'JohnDoe').</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.DeviceModel">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.deviceModel">
             <summary>
             Получает или задаёт модель устройства.
             </summary>
             <value>Описание аппаратной модели устройства.</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.DeviceType">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.deviceType">
             <summary>
             Получает или задаёт тип устройства.
             </summary>
             <value>Категория устройства: мобильное, настольное, игровая консоль и т.д.</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.OperatingSystem">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.operatingSystem">
             <summary>
             Получает или задаёт операционную систему устройства.
             </summary>
             <value>Название и версия ОС (например, 'Windows 10', 'iOS 17').</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.ProcessorType">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.processorType">
             <summary>
             Получает или задаёт тип процессора устройства.
             </summary>
             <value>Архитектура и модель процессора (например, 'Intel Core i7', 'Apple M1').</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.ProcessorCount">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.processorCount">
             <summary>
             Получает или задаёт количество логических ядер процессора.
             </summary>
             <value>Число, равное количеству потоков процессора.</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.SystemMemorySize">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.systemMemorySize">
             <summary>
             Получает или задаёт объём оперативной памяти устройства в мегабайтах.
             </summary>
             <value>Размер ОЗУ в мегабайтах (например, 16384 для 16 ГБ).</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.GraphicsDeviceName">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.graphicsDeviceName">
             <summary>
             Получает или задаёт название графического устройства.
             </summary>
             <value>Модель видеокарты или встроенного GPU.</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.GraphicsMemorySize">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.graphicsMemorySize">
             <summary>
             Получает или задаёт объём видеопамяти в мегабайтах.
             </summary>
             <value>Размер видеопамяти (VRAM) в МБ.</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.DeviceUniqueIdentifier">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.deviceUniqueIdentifier">
             <summary>
             Получает или задаёт уникальный идентификатор устройства.
             </summary>
             <value>Уникальная строка, идентифицирующая устройство (например, IMEI, UUID).</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.SystemInfo_supportsInstancing">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.systemInfo_supportsInstancing">
             <summary>
             Получает или задаёт признак поддержки графической системой инстансинга.
             </summary>
             <value><c>true</c>, если поддерживается; иначе <c>false</c>.</value>
         </member>
-        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.SystemInfo_npotSupport">
+        <member name="P:General.DTO.RestRequest.DtoRequestAuthReg.systemInfo_npotSupport">
             <summary>
             Получает или задаёт информацию о поддержке текстур с размерами, не являющимися степенью двойки (NPOT).
             </summary>
             <value>Строка, описывающая уровень поддержки NPOT (например, 'Full', 'Restricted', 'None').</value>
         </member>
-        <member name="F:General.ESlotType.Weapon">
+        <member name="F:General.ESlotType.weapon">
             <summary> Оружие </summary>
         </member>
-        <member name="F:General.ESlotType.Shield">
+        <member name="F:General.ESlotType.shield">
             <summary> Щит </summary>
         </member>
-        <member name="F:General.ESlotType.Head">
+        <member name="F:General.ESlotType.head">
             <summary> Голова </summary>
         </member>
-        <member name="F:General.ESlotType.Armor">
+        <member name="F:General.ESlotType.armor">
             <summary> Доспех </summary>
         </member>
-        <member name="F:General.ESlotType.Hands">
+        <member name="F:General.ESlotType.hands">
             <summary> Руки </summary>
         </member>
-        <member name="F:General.ESlotType.Feet">
+        <member name="F:General.ESlotType.feet">
             <summary> Ступни </summary>
         </member>
-        <member name="F:General.ESlotType.Bracelet">
+        <member name="F:General.ESlotType.bracelet">
             <summary> Браслет </summary>
         </member>
-        <member name="F:General.ESlotType.Ring">
+        <member name="F:General.ESlotType.ring">
             <summary> Кольцо </summary>
         </member>
-        <member name="F:General.ESlotType.Trinket">
+        <member name="F:General.ESlotType.trinket">
             <summary> Аксессуар </summary>
         </member>
-        <member name="F:General.ESlotType.Neck">
+        <member name="F:General.ESlotType.neck">
             <summary> Шея </summary>
         </member>
         <member name="T:General.GlobalHelper">
@@ -685,7 +685,7 @@
             где требуется изменяемый (mutable) объект для хранения строки.
             </summary>
         </member>
-        <member name="F:General.StringCapsule.Value">
+        <member name="F:General.StringCapsule.value">
             <summary>
             Фактическое строковое значение, хранимое в капсуле.
             Инициализировано пустой строкой.
@@ -731,19 +731,19 @@
             <see langword="false"/> в противном случае.
             </returns>
         </member>
-        <member name="F:General.StringExt.SnakeCaseRegex">
+        <member name="F:General.StringExt.snakeCaseRegex">
             <summary>
             Регулярное выражение для преобразования строки в snake_case.
             Ищет заглавные буквы, которые следуют после строчных букв.
             </summary>
         </member>
-        <member name="F:General.StringExt.WordSplitWithUnderscoresRegex">
+        <member name="F:General.StringExt.wordSplitWithUnderscoresRegex">
             <summary>
             Регулярное выражение для разделения строк на слова при преобразовании в PascalCase/camelCase.
             Сохраняет символы подчеркивания как часть итогового имени.
             </summary>
         </member>
-        <member name="F:General.StringExt.WordSplitRegex">
+        <member name="F:General.StringExt.wordSplitRegex">
             <summary>
             Регулярное выражение для разделения строк на слова при полном разбиении.
             </summary>

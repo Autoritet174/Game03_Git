@@ -40,8 +40,8 @@ namespace Assets.GameData.Scripts
             NullSprite = await Addressables.LoadAssetAsync<Sprite>("Null").ToUniTask();
 
             // 3. Подготовка коллекций (аллокация заранее известного размера)
-            int heroesCount = dtoContainer.BaseHeroes.Count();
-            int equipCount = dtoContainer.BaseEquipments.Count();
+            int heroesCount = dtoContainer.baseHeroes.Count();
+            int equipCount = dtoContainer.baseEquipments.Count();
 
             Heroes = new Dictionary<string, Sprite>(heroesCount * 2);
             Equipments.Clear();
@@ -57,11 +57,11 @@ namespace Assets.GameData.Scripts
             };
 
             // Heroes
-            foreach (BaseHero hero in dtoContainer.BaseHeroes)
+            foreach (BaseHero hero in dtoContainer.baseHeroes)
             {
                 // Используем TryAdd для избежания крэша при дубликатах в конфиге
-                tasks.Add(SafeLoadAsync($"Heroes-{hero.Name}", s => Heroes.TryAdd(hero.Name, s)));
-                tasks.Add(SafeLoadAsync($"Heroes-{hero.Name}_face", s => Heroes.TryAdd($"{hero.Name}_face", s)));
+                tasks.Add(SafeLoadAsync($"Heroes-{hero.name}", s => Heroes.TryAdd(hero.name, s)));
+                tasks.Add(SafeLoadAsync($"Heroes-{hero.name}_face", s => Heroes.TryAdd($"{hero.name}_face", s)));
             }
 
 
@@ -81,9 +81,9 @@ namespace Assets.GameData.Scripts
 
 
             // Equipments
-            foreach (BaseEquipment equipment in dtoContainer.BaseEquipments)
+            foreach (BaseEquipment equipment in dtoContainer.baseEquipments)
             {
-                tasks.Add(SafeLoadAsync($"Equipments-{equipment.Name}", s => Equipments.TryAdd(equipment.Name, s)));
+                tasks.Add(SafeLoadAsync($"Equipments-{equipment.name}", s => Equipments.TryAdd(equipment.name, s)));
             }
 
 
@@ -146,19 +146,19 @@ namespace Assets.GameData.Scripts
 
         public static Sprite GetHeroSprite(Hero hero)
         {
-            BaseHero baseHero = hero.BaseHero!;
-            return Heroes[baseHero.Name];
+            BaseHero baseHero = hero.baseHero!;
+            return Heroes[baseHero.name];
         }
         public static Sprite GetHeroFaceSprite(Hero hero)
         {
-            BaseHero baseHero = hero.BaseHero!;
-            return Heroes[$"{baseHero.Name}_face"];
+            BaseHero baseHero = hero.baseHero!;
+            return Heroes[$"{baseHero.name}_face"];
         }
 
         public static Sprite GetEquipmentSprite(Equipment equipment)
         {
-            BaseEquipment baseEquipment = equipment.BaseEquipment!;
-            return Equipments[baseEquipment.Name];
+            BaseEquipment baseEquipment = equipment.baseEquipment!;
+            return Equipments[baseEquipment.name];
         }
     }
 }

@@ -92,7 +92,7 @@ public class AllHeroes : MonoBehaviour
     private async UniTask AddAllImageOnContent()
     {
         List<UniTask> list = new();
-        foreach (BaseHero heroStats in Game03Client.GameData.Container.BaseHeroes.OrderByDescending(static a => a.Rarity))
+        foreach (BaseHero heroStats in Game03Client.GameData.Container.baseHeroes.OrderByDescending(static a => a.rarity))
         {
             list.Add(LoadHeroByName(heroStats));
         }
@@ -103,7 +103,7 @@ public class AllHeroes : MonoBehaviour
     private async UniTask LoadHeroByName(BaseHero hero)
     {
         GameObject _prefabIconHero = prefabIconHero.SafeInstant();
-        _prefabIconHero.name = hero.Name;
+        _prefabIconHero.name = hero.name;
 
         Transform transform = _prefabIconHero.transform;
         transform.SetParent(content.transform, false);
@@ -112,7 +112,7 @@ public class AllHeroes : MonoBehaviour
         Transform childText = _prefabIconHero.transform.Find("TextCollectionElement");
         if (childText != null && childText.TryGetComponent(out TextMeshProUGUI textMeshPro))
         {
-            textMeshPro.text = hero.Name.ToUpper1Char();
+            textMeshPro.text = hero.name.ToUpper1Char();
             list_TextMeshProUGUI_heroNames.Add(textMeshPro);
         }
         else
@@ -136,11 +136,11 @@ public class AllHeroes : MonoBehaviour
         //var selectedSprite = await Addressables.LoadAssetAsync<Sprite>($"raritySelected").ToUniTask();
 
 
-        imageHero.sprite = AddressablePrefabProvider.Heroes[hero.Name + "_face"];
+        imageHero.sprite = AddressablePrefabProvider.Heroes[hero.name + "_face"];
         imageHero.preserveAspect = true; // Сохраняет пропорции изображения
         imageHero.type = Image.Type.Simple; // Режим без растягивания;
 
-        imageRarity.sprite = AddressablePrefabProvider.GetRarity(hero.Rarity);
+        imageRarity.sprite = AddressablePrefabProvider.GetRarity(hero.rarity);
         imageRarity.preserveAspect = true; // Сохраняет пропорции изображения
         imageRarity.type = Image.Type.Simple; // Режим без растягивания;
 
@@ -157,7 +157,7 @@ public class AllHeroes : MonoBehaviour
         }
         async UniTask OnPoinerExit()
         {
-            imageRarity.sprite = AddressablePrefabProvider.GetRarity(hero.Rarity);
+            imageRarity.sprite = AddressablePrefabProvider.GetRarity(hero.rarity);
             await UniTask.Yield();
         }
         _prefabIconHero.SetHoverEvents(OnPoinerEnter, OnPoinerExit);
@@ -256,7 +256,7 @@ public class AllHeroes : MonoBehaviour
         prefabHeroViewer = prefabHeroViewer_handle.Status == AsyncOperationStatus.Succeeded
             ? prefabHeroViewer_handle.Result.SafeInstant()
             : throw new Exception($"{nameof(prefabHeroViewer)} не загружен");
-        prefabHeroViewer.name = $"IconHero_{hero.Name}";
+        prefabHeroViewer.name = $"IconHero_{hero.name}";
 
 
         Canvas canvas = GameObjectFinder.FindByName<Canvas>($"Canvas_HeroViewer (id=6fpbu4db)", prefabHeroViewer.transform);
@@ -277,7 +277,7 @@ public class AllHeroes : MonoBehaviour
         //Имя героя
         const string _Text_HeroName__Name = "Text_HeroName (id=rw8uftqp)";
         TextMeshProUGUI _Text_HeroName = GameObjectFinder.FindByName<TextMeshProUGUI>(_Text_HeroName__Name, prefabHeroViewer.transform);
-        _Text_HeroName.text = hero.Name.ToUpper1Char();
+        _Text_HeroName.text = hero.name.ToUpper1Char();
         RectTransform _Text_HeroName__RT = GameObjectFinder.FindByName<RectTransform>(_Text_HeroName__Name);
         _ = dictOnResizeHeroName.TryAdd($"{_Text_HeroName__Name}{_Text_HeroName__RT.GetHashCode()}", _Text_HeroName__RT);
         TextMeshProUGUI textMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>(_Text_HeroName__Name);
@@ -288,7 +288,7 @@ public class AllHeroes : MonoBehaviour
         const string imageHeroFull__Name = "Image_HeroFull (id=6z1ddxml)";
         Image imageHero = GameObjectFinder.FindByName<Image>(imageHeroFull__Name);
 
-        imageHero.sprite = AddressablePrefabProvider.Heroes[hero.Name];
+        imageHero.sprite = AddressablePrefabProvider.Heroes[hero.name];
         imageHero.preserveAspect = true; // Сохраняет пропорции изображения
         imageHero.type = Image.Type.Simple; // Режим без растягивания;
 

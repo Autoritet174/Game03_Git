@@ -124,18 +124,18 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
                     // Слоты
                     _Slots = new()
                     {
-                        new Slot("Head", 1, 1, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.Head),
-                        new Slot("Armor", 2, 1, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.Armor),
-                        new Slot("Hands", 3, 1, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.Hands),
-                        new Slot("Feet", 4, 1, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.Feet),
-                        new Slot("Bracelet", 5, 1, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.Bracelet),
-                        new Slot("Ring", 1, 2, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.Ring1, "1"),
-                        new Slot("Ring", 2, 2, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.Ring2, "2"),
-                        new Slot("Neck", 3, 2, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.Neck),
-                        new Slot("Trinket", 4, 2, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.Trinket1, "1"),
-                        new Slot("Trinket", 5, 2, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.Trinket2, "2"),
-                        new Slot("Weapon", 1, 3, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.RightHand),
-                        new Slot("WeaponShield", 2, 3, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.LeftHand)
+                        new Slot("Head", 1, 1, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.head),
+                        new Slot("Armor", 2, 1, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.armor),
+                        new Slot("Hands", 3, 1, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.hands),
+                        new Slot("Feet", 4, 1, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.feet),
+                        new Slot("Bracelet", 5, 1, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.bracelet),
+                        new Slot("Ring", 1, 2, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.ring1, "1"),
+                        new Slot("Ring", 2, 2, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.ring2, "2"),
+                        new Slot("Neck", 3, 2, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.neck),
+                        new Slot("Trinket", 4, 2, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.trinket1, "1"),
+                        new Slot("Trinket", 5, 2, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.trinket2, "2"),
+                        new Slot("Weapon", 1, 3, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.rightHand),
+                        new Slot("WeaponShield", 2, 3, _PanelTab1_RectTransform, PanelSelectedEquipment__context, ESlot.leftHand)
                     };
 
                     // Изображение героя
@@ -174,22 +174,22 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
         {
             IsVisible = true;
             HeroId = heroId;
-            Hero hero = CollectionProvider.GetCollectionHeroesFromCache().First(a => a.Id == heroId);
-            _LabelSelectedHero__TextMeshProUGUI.SetText(hero.BaseHero.Name);
+            Hero hero = CollectionProvider.GetCollectionHeroesFromCache().First(a => a.id == heroId);
+            _LabelSelectedHero__TextMeshProUGUI.SetText(hero.baseHero.name);
             _SelectedHero_Image.sprite = AddressablePrefabProvider.GetHeroSprite(hero);
             _SelectedHero_Image.preserveAspect = true;
 
-            _SelectedHeroRarity_Image.sprite = AddressablePrefabProvider.GetRarity(hero.BaseHero.Rarity);
+            _SelectedHeroRarity_Image.sprite = AddressablePrefabProvider.GetRarity(hero.baseHero.rarity);
             _SelectedHeroRarity_Image.preserveAspect = false;
 
             // отображаем всю одетую экипировку
             foreach (Slot slot in _Slots)
             {
                 Equipment eqiup = CollectionProvider.GetCollectionEquipmentsFromCache()
-                    .FirstOrDefault(a => a.SlotId == slot.SlotId && a.HeroId == HeroId);
+                    .FirstOrDefault(a => a.slotId == slot.SlotId && a.heroId == HeroId);
                 if (eqiup != null)
                 {
-                    slot.EquipmentTakeOn(eqiup.Id);
+                    slot.EquipmentTakeOn(eqiup.id);
                 }
                 else
                 {
@@ -200,23 +200,23 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
 
 
             //Экипировка этого героя
-            var equipments = CollectionProvider.GetCollectionEquipmentsFromCache().Where(a => a.HeroId == heroId && a.Stats != null).ToList();
+            var equipments = CollectionProvider.GetCollectionEquipmentsFromCache().Where(a => a.heroId == heroId && a.stats != null).ToList();
 
-            float bonus_Health = equipments.SelectMany(e => e.Stats.Where(s => s.Key == EStatType.Health).SelectMany(s => s.Value)).Sum();
-            float bonus_Strength = equipments.SelectMany(e => e.Stats.Where(s => s.Key == EStatType.Strength).SelectMany(s => s.Value)).Sum();
-            float bonus_Agility = equipments.SelectMany(e => e.Stats.Where(s => s.Key == EStatType.Agility).SelectMany(s => s.Value)).Sum();
-            float bonus_Intelligence = equipments.SelectMany(e => e.Stats.Where(s => s.Key == EStatType.Intelligence).SelectMany(s => s.Value)).Sum();
-            float bonus_CritChance = equipments.SelectMany(e => e.Stats.Where(s => s.Key == EStatType.CritChance).SelectMany(s => s.Value)).Sum();
-            float bonus_CritMultiplier = equipments.SelectMany(e => e.Stats.Where(s => s.Key == EStatType.CritMultiplier).SelectMany(s => s.Value)).Sum();
+            float bonus_Health = equipments.SelectMany(e => e.stats.Where(s => s.Key == EStatType.health).SelectMany(s => s.Value)).Sum();
+            float bonus_Strength = equipments.SelectMany(e => e.stats.Where(s => s.Key == EStatType.strength).SelectMany(s => s.Value)).Sum();
+            float bonus_Agility = equipments.SelectMany(e => e.stats.Where(s => s.Key == EStatType.agility).SelectMany(s => s.Value)).Sum();
+            float bonus_Intelligence = equipments.SelectMany(e => e.stats.Where(s => s.Key == EStatType.intelligence).SelectMany(s => s.Value)).Sum();
+            float bonus_CritChance = equipments.SelectMany(e => e.stats.Where(s => s.Key == EStatType.critChance).SelectMany(s => s.Value)).Sum();
+            float bonus_CritMultiplier = equipments.SelectMany(e => e.stats.Where(s => s.Key == EStatType.critMultiplier).SelectMany(s => s.Value)).Sum();
 
             // Статы
-            _StatLevel.SetValue(hero.Level);
-            _StatHealth.SetValue(hero.Health + bonus_Health);
-            _StatStrength.SetValue(hero.Strength + bonus_Strength);
-            _StatAgility.SetValue(hero.Agility + bonus_Agility);
-            _StatIntelligence.SetValue(hero.Intelligence + bonus_Intelligence);
-            _StatCritChance.SetValuePercent(hero.CritChance + bonus_CritChance);
-            _StatCritMultiplier.SetValuePercent(hero.CritMultiplier + bonus_CritMultiplier);
+            _StatLevel.SetValue(hero.level);
+            _StatHealth.SetValue(hero.health + bonus_Health);
+            _StatStrength.SetValue(hero.strength + bonus_Strength);
+            _StatAgility.SetValue(hero.agility + bonus_Agility);
+            _StatIntelligence.SetValue(hero.intelligence + bonus_Intelligence);
+            _StatCritChance.SetValuePercent(hero.critChance + bonus_CritChance);
+            _StatCritMultiplier.SetValuePercent(hero.critMultiplier + bonus_CritMultiplier);
 
 
             // Изменения статов если выбран предмет

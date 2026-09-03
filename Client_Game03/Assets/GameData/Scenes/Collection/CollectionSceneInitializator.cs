@@ -142,11 +142,11 @@ public class CollectionSceneInitializator : MonoBehaviour
     private async UniTask ShowHeroByEquipmentAsync()
     {
         Equipment eq = Game03Client.Collection.CollectionProvider.GetEquipment(PanelSelectedEquipment__context.equipmentId);
-        if (eq == null || eq.HeroId == null)
+        if (eq == null || eq.heroId == null)
         {
             return;
         }
-        PanelSelectedHero__context.Show(eq.HeroId.Value);
+        PanelSelectedHero__context.Show(eq.heroId.Value);
     }
 
 

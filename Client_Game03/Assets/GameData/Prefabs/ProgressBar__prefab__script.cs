@@ -1,9 +1,11 @@
 using Assets.GameData.Scripts;
+using System;
 using TMPro;
 using UnityEngine;
 
 public class ProgressBar__prefab__script : MonoBehaviour, IPrefab
 {
+    public enum DisplayMode { DamageDone, HealingDone, DamageRecieved, HealingRecieved, HealthBar }
     public bool initialized { get; private set; }
 
     public float width { get; private set; }
@@ -32,7 +34,12 @@ public class ProgressBar__prefab__script : MonoBehaviour, IPrefab
 
     public PanelDamage__script.Team type { get; set; }
 
-    public float value { get; set; } = 0f;
+    public Guid heroId { get; }
+    public float damageDone { get; set; } = 0f;
+    public float damageRecieved { get; set; } = 0f;
+    public float healingDone { get; set; } = 0f;
+    public float healingRecieved { get; set; } = 0f;
+    public float healthBar { get; set; } = 0f;
     public float valueMax { get; set; } = 1f;
 
     public void Initialize()
@@ -88,9 +95,22 @@ public class ProgressBar__prefab__script : MonoBehaviour, IPrefab
         textRight_right = value;
     }
 
-    public void Refresh()
+    /// <summary>
+    /// Обновляет визуальное состояние прогресс бара на панели
+    /// </summary>
+    public void Refresh(DisplayMode displayMode)
     {
         float progressBarWidth = this__RectTransform.rect.width;
+
+        float value = displayMode switch
+        {
+            DisplayMode.DamageDone => damageDone,
+            DisplayMode.HealingDone => healingDone,
+            DisplayMode.DamageRecieved => damageRecieved,
+            DisplayMode.HealingRecieved => healingRecieved,
+            DisplayMode.HealthBar => healthBar,
+            _ => throw new NotImplementedException(),
+        };
         float width = valueMax > 0 ? progressBarWidth * value / valueMax : progressBarWidth;
 
         //if (type != "")

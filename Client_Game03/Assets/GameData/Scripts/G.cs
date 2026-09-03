@@ -74,7 +74,7 @@ namespace Assets.GameData.Scripts
             TextAsset jsonFile = Resources.Load<TextAsset>(path);
             General.StringCapsule capsule = new()
             {
-                Value = jsonFile.text,
+                value = jsonFile.text,
             };
 
             Game03.Init(Path.Combine(Application.dataPath, CONFIG_RELATIVE_PATH), capsule, LogError, LogInfo);

@@ -187,20 +187,20 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
         {
             isVisible = true;
             this.equipmentId = equipmentId;
-            equipment = CollectionProvider.GetCollectionEquipmentsFromCache().First(a => a.Id == equipmentId);
-            labelSelectedEquipment__TextMeshProUGUI.SetText(equipment.BaseEquipment.Name);
-            selectedEquipment__Image.sprite = AddressablePrefabProvider.Equipments[equipment.BaseEquipment.Name];
+            equipment = CollectionProvider.GetCollectionEquipmentsFromCache().First(a => a.id == equipmentId);
+            labelSelectedEquipment__TextMeshProUGUI.SetText(equipment.baseEquipment.name);
+            selectedEquipment__Image.sprite = AddressablePrefabProvider.Equipments[equipment.baseEquipment.name];
             selectedEquipment__Image.preserveAspect = true; // Сохраняет пропорции изображения
-            selectedEquipmentRarity__Image.sprite = AddressablePrefabProvider.GetRarity(equipment.BaseEquipment.Rarity);
+            selectedEquipmentRarity__Image.sprite = AddressablePrefabProvider.GetRarity(equipment.baseEquipment.rarity);
 
             isEquipped = CollectionProvider.EquipmentIsEquipped(this.equipmentId);
 
-            statLevel.SetValue(equipment.Level);
+            statLevel.SetValue(equipment.level);
 
             int i = 0;
-            if (equipment.Stats != null)
+            if (equipment.stats != null)
             {
-                foreach (KeyValuePair<EStatType, List<float>> stat in equipment.Stats)
+                foreach (KeyValuePair<EStatType, List<float>> stat in equipment.stats)
                 {
                     foreach (float value in stat.Value)
                     {
@@ -345,9 +345,9 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
 
         private void ShowHeroOnClick()
         {
-            if (equipment.HeroId != null)
+            if (equipment.heroId != null)
             {
-                panelSelectedHeroContext.Show(equipment.HeroId.Value);
+                panelSelectedHeroContext.Show(equipment.heroId.Value);
             }
         }
 
@@ -358,8 +358,8 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
             {
                 // экипировка надета, снимаем
 
-                _ = equipment.SlotId.Value;
-                Guid heroId = equipment.HeroId.Value;
+                _ = equipment.slotId.Value;
+                Guid heroId = equipment.heroId.Value;
                 result = await CollectionProvider.EquipmentTakeOffAsync(equipmentId,
                     CancellationTokenManager.Create("CollectionProvider.EquipmentTakeOffAsync", 5));
                 if (result)
@@ -386,9 +386,9 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
                 }
 
                 // тут запоминаем экипировку которая может быть одета в этот же слот
-                Hero hero = CollectionProvider.GetCollectionHeroesFromCache().First(a => a.Id == heroId);
+                Hero hero = CollectionProvider.GetCollectionHeroesFromCache().First(a => a.id == heroId);
                 ESlot slotId = CollectionProvider.GetSlotId(equipment, inAltSlot);
-                Equipment equipmentEquipped = CollectionProvider.GetCollectionEquipmentsFromCache().FirstOrDefault(a => a.HeroId == heroId && a.SlotId == slotId);
+                Equipment equipmentEquipped = CollectionProvider.GetCollectionEquipmentsFromCache().FirstOrDefault(a => a.heroId == heroId && a.slotId == slotId);
 
 
                 result = await CollectionProvider.EquipmentTakeOnAsync(equipmentId,
@@ -399,14 +399,14 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
                     if (equipmentEquipped != null)
                     {
                         //Если была одетая экипировка в этот слот, то снимаем её
-                        equipmentEquipped.SlotId = null;
-                        equipmentEquipped.HeroId = null;
-                        RefreshViewerElementOwnerImage(equipmentEquipped.Id);
+                        equipmentEquipped.slotId = null;
+                        equipmentEquipped.heroId = null;
+                        RefreshViewerElementOwnerImage(equipmentEquipped.id);
                     }
 
 
                     Show(equipmentId);
-                    panelSelectedHeroContext.Show(equipment.HeroId.Value);
+                    panelSelectedHeroContext.Show(equipment.heroId.Value);
                     RefreshViewerElementOwnerImage(equipmentId);
                 }
                 else
@@ -436,7 +436,7 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
 
         private bool HaveAltSlot()
         {
-            return equipment != null && equipment.BaseEquipment.EquipmentType.SlotType.HaveAltSlot;
+            return equipment != null && equipment.baseEquipment.equipmentType.slotType.haveAltSlot;
         }
 
         private void SetViewerElementSelected(Guid id, bool selected)

@@ -66,7 +66,7 @@ namespace Assets.GameData.Scenes.Auth
                 GameMessage.ShowLocale(L.Info.Authentication, false);
                 DtoRequestAuthReg dto = AuthManager.GetDtoRequestAuthReg(email, password, refreshToken);
                 success = await Game03Client.Auth.AuthentificationAsync(dto, type,
-                    CancellationTokenManager.Create("Game03Client.Auth.RefreshTokensAsync"));
+                    CancellationTokenManager.Create("Game03Client.Auth.AuthentificationAsync"));
                 if (!success)
                 {
                     ClearTokenInSecureStorageProvider();

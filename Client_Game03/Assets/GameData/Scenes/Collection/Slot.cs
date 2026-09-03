@@ -98,15 +98,15 @@ namespace Assets.GameData.Scenes.Collection
             bool active = false;
             try
             {
-                _Equipment = CollectionProvider.GetCollectionEquipmentsFromCache().FirstOrDefault(a => a.Id == equipmentId);
+                _Equipment = CollectionProvider.GetCollectionEquipmentsFromCache().FirstOrDefault(a => a.id == equipmentId);
                 if (_Equipment == null)
                 {
                     return;
                 }
 
-                int rarity = _Equipment.BaseEquipment.Rarity;
+                int rarity = _Equipment.baseEquipment.rarity;
                 _Rarity_Image.sprite = AddressablePrefabProvider.GetRarity(rarity);
-                _EquipmentFull_Image.sprite = AddressablePrefabProvider.Equipments[_Equipment.BaseEquipment.Name];
+                _EquipmentFull_Image.sprite = AddressablePrefabProvider.Equipments[_Equipment.baseEquipment.name];
                 active = true;
             }
             catch (Exception ex)
@@ -135,7 +135,7 @@ namespace Assets.GameData.Scenes.Collection
         {
             if (_Equipment != null)
             {
-                _Rarity_Image.sprite = AddressablePrefabProvider.GetRarity(_Equipment.BaseEquipment.Rarity);
+                _Rarity_Image.sprite = AddressablePrefabProvider.GetRarity(_Equipment.baseEquipment.rarity);
             }
             await UniTask.Yield();
         }
@@ -144,7 +144,7 @@ namespace Assets.GameData.Scenes.Collection
         {
             if (_Equipment != null)
             {
-                _PanelSelectedEquipment.Show(_Equipment.Id);
+                _PanelSelectedEquipment.Show(_Equipment.id);
             }
         }
     }

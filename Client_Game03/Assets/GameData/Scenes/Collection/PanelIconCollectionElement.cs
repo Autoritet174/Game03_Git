@@ -100,7 +100,7 @@ namespace Assets.GameData.Scenes.Collection
             _SelectedImage_GameObject = GameObjectFinder.FindByName("ImageSelected", _GameObject.transform);
 
             _Equipment = _CollectionElement.TypeCollectionElement == TypeCollectionElement.Equipment
-                ? CollectionProvider.GetCollectionEquipmentsFromCache().First(a => a.Id == _CollectionElement.Id) : null;
+                ? CollectionProvider.GetCollectionEquipmentsFromCache().First(a => a.id == _CollectionElement.Id) : null;
 
             RefreshOwnerImage();
             _PanelCollection.AddElement(this);
@@ -136,11 +136,11 @@ namespace Assets.GameData.Scenes.Collection
         {
             if (_Equipment != null)
             {
-                if (_Equipment.HeroId != null)
+                if (_Equipment.heroId != null)
                 {
-                    Hero hero = CollectionProvider.GetCollectionHeroesFromCache().First(a => a.Id == _Equipment.HeroId);
+                    Hero hero = CollectionProvider.GetCollectionHeroesFromCache().First(a => a.id == _Equipment.heroId);
                     _OwnerImageHero_Image.sprite = AddressablePrefabProvider.GetHeroFaceSprite(hero);
-                    _OwnerImageRarity_Image.sprite = AddressablePrefabProvider.GetRarity(hero.BaseHero.Rarity);
+                    _OwnerImageRarity_Image.sprite = AddressablePrefabProvider.GetRarity(hero.baseHero.rarity);
                     _OwnerHeroIcon_GameObject.SetActive(true);
                 }
                 else

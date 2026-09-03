@@ -75,7 +75,7 @@ namespace Assets.GameData.Scenes.Battlefield
                         AtimationAttackUnitTarget._RectTransform);
 
                     // тут добавляем весь урон (урон при ударе, кливы, проки в момент удара)
-                    panelDamage__script.Update();
+                    panelDamage__script.UpdateData();
                 }
             }
             else if (AnimationAttackStage == 3) // движение от цели до базовой точки

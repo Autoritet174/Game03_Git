@@ -73,7 +73,7 @@ namespace Assets.GameData.Scenes.Battlefield
 
         private bool TryInitialize()
         {
-            if (spawnedBattlefield == null || spawnedBattlefield.SpawnedHeroPlayerList == null)
+            if (spawnedBattlefield == null || spawnedBattlefield.spawnedHeroPlayerList == null)
             {
                 GameMessage.Show("spawnedBattlefield == null || spawnedBattlefield.SpawnedHeroes == null", true);
                 return false;
@@ -86,20 +86,20 @@ namespace Assets.GameData.Scenes.Battlefield
             canvasDamage__Transform = GameObjectFinder.FindByName("CanvasDamage").transform;
 
             // размещение героев игрока
-            for (int i = 0; i < spawnedBattlefield.SpawnedHeroPlayerList.Count; i++)
+            for (int i = 0; i < spawnedBattlefield.spawnedHeroPlayerList.Count; i++)
             {
-                SpawnedHero spawnedHeroes = spawnedBattlefield.SpawnedHeroPlayerList[i];
+                SpawnedHero spawnedHeroes = spawnedBattlefield.spawnedHeroPlayerList[i];
                 BattlefieldUnit unit = new(spawnedHeroes, i, true, canvasUnits__Transform, healthHub, panelDamage__script);
-                battlefieldUnits.Add(spawnedHeroes.SpawnedId, unit);
+                battlefieldUnits.Add(spawnedHeroes.spawnedId, unit);
                 playerUnits.Add(unit);
             }
 
             // размещение героев врага
-            for (int i = 0; i < spawnedBattlefield.SpawnedHeroEnemyList.Count; i++)
+            for (int i = 0; i < spawnedBattlefield.spawnedHeroEnemyList.Count; i++)
             {
-                SpawnedHero spawnedHeroes = spawnedBattlefield.SpawnedHeroEnemyList[i];
+                SpawnedHero spawnedHeroes = spawnedBattlefield.spawnedHeroEnemyList[i];
                 BattlefieldUnit unit = new(spawnedHeroes, i, false, canvasUnits__Transform, healthHub, panelDamage__script);
-                battlefieldUnits.Add(spawnedHeroes.SpawnedId, unit);
+                battlefieldUnits.Add(spawnedHeroes.spawnedId, unit);
                 enemyUnits.Add(unit);
             }
 
@@ -169,12 +169,12 @@ namespace Assets.GameData.Scenes.Battlefield
 
         private async UniTask StartAsync(CancellationToken cancellationToken)
         {
-            spawnedBattlefield.BattlefieldLog = await Game03Client.Battlefield.BattlefieldProvider.GetBattleLogAsync(cancellationToken);
-            if (spawnedBattlefield.BattlefieldLog == null)
+            spawnedBattlefield.battlefieldLog = await Game03Client.Battlefield.BattlefieldProvider.GetBattleLogAsync(cancellationToken);
+            if (spawnedBattlefield.battlefieldLog == null)
             {
                 return;
             }
-            spawnedBattlefield.BattlefieldLog.Sort((a, b) => a.Index.CompareTo(b.Index));
+            spawnedBattlefield.battlefieldLog.Sort((a, b) => a.index.CompareTo(b.index));
             battlefieldIndexAnimationStarted = 0;
             battlefieldIndexAnimationActive = false;
 
@@ -182,13 +182,13 @@ namespace Assets.GameData.Scenes.Battlefield
             Color colorHeroesEnemy = new(255 / 255f, 64 / 255f, 64 / 255f, 1f);
             for (int i = 0; i < playerUnits.Count; i++)
             {
-                BaseHero h = Game03Client.GameData.GetBaseHeroById(playerUnits[i].SpawnedHero.BaseHeroId);
-                panelDamage__script.AddProgressBar(playerUnits[i].SpawnedHero.SpawnedId, "0", h.Name, PanelDamage__script.Team.MyHeroes, null, colorHeroesMy);
+                BaseHero h = Game03Client.GameData.GetBaseHeroById(playerUnits[i].SpawnedHero.baseHeroId);
+                panelDamage__script.AddProgressBar(playerUnits[i].SpawnedHero.spawnedId, "0", h.name, PanelDamage__script.Team.MyHeroes, null, colorHeroesMy);
             }
             for (int i = 0; i < enemyUnits.Count; i++)
             {
-                BaseHero h = Game03Client.GameData.GetBaseHeroById(enemyUnits[i].SpawnedHero.BaseHeroId);
-                panelDamage__script.AddProgressBar(enemyUnits[i].SpawnedHero.SpawnedId, "0", h.Name, PanelDamage__script.Team.EnemyHeroes, null, colorHeroesEnemy);
+                BaseHero h = Game03Client.GameData.GetBaseHeroById(enemyUnits[i].SpawnedHero.baseHeroId);
+                panelDamage__script.AddProgressBar(enemyUnits[i].SpawnedHero.spawnedId, "0", h.name, PanelDamage__script.Team.EnemyHeroes, null, colorHeroesEnemy);
             }
             panelDamage__script.ProgressBarsSort();
             initialized = true;
@@ -232,36 +232,36 @@ namespace Assets.GameData.Scenes.Battlefield
 
             if (dateTimeWaitFor < DateTime.Now)
             {
-                List<BattlefieldLogRecordBase> fullLog = spawnedBattlefield.BattlefieldLog;
+                List<BattlefieldLogRecordBase> fullLog = spawnedBattlefield.battlefieldLog;
                 if (!battlefieldIndexAnimationActive && fullLog != null)
                 {
                     for (int i = 0; i < fullLog.Count; i++)
                     {
                         BattlefieldLogRecordBase iLog = fullLog[i];
-                        if (iLog.Index > battlefieldIndexAnimationStarted)
+                        if (iLog.index > battlefieldIndexAnimationStarted)
                         {
                             switch (iLog)
                             {
                                 case BattlefieldLogRecord_TurnStart log:
-                                    turn__TextMeshProUGUI.text = $"{LM.GetValue(L.UI.Label.Turn)}: {log.Turn}";
+                                    turn__TextMeshProUGUI.text = $"{LM.GetValue(L.UI.Label.Turn)}: {log.turn}";
                                     break;
                                 //case BattlefieldLogRecord_ChangeActionPoints log:
                                 //    break;
                                 case BattlefieldLogRecord_UseAbility log:
-                                    switch (log.Ability)
+                                    switch (log.ability)
                                     {
-                                        case EBattlefieldLogAbility.Attack:
-                                            if (log.SpawnedHeroTargets.Length == 1)
+                                        case EBattlefieldLogAbility.attack:
+                                            if (log.spawnedHeroTargets.Length == 1)
                                             {
-                                                BattlefieldUnit h1Unit = battlefieldUnits[log.SpawnedHero1Id];
-                                                BattlefieldUnit h2Unit = battlefieldUnits[log.SpawnedHeroTargets[0]];
+                                                BattlefieldUnit h1Unit = battlefieldUnits[log.spawnedHero1Id];
+                                                BattlefieldUnit h2Unit = battlefieldUnits[log.spawnedHeroTargets[0]];
 
                                                 // ищем в логе запись которая хранит значения изменения здоровья
-                                                BattlefieldLogRecordBase logRecord = fullLog.FirstOrDefault(a => a is BattlefieldLogRecord_Damage d && d.IndexReason == log.Index);
+                                                BattlefieldLogRecordBase logRecord = fullLog.FirstOrDefault(a => a is BattlefieldLogRecord_Damage d && d.indexReason == log.index);
                                                 if (logRecord is not null and BattlefieldLogRecord_Damage logDamage)
                                                 {
-                                                    h1Unit.AnimationStartAttackUnit(h2Unit, logDamage.Damage, logDamage.IsCrit);
-                                                    h2Unit.SpawnedHero.Health -= logDamage.Damage;
+                                                    h1Unit.AnimationStartAttackUnit(h2Unit, logDamage.damage, logDamage.isCrit);
+                                                    h2Unit.SpawnedHero.health -= logDamage.damage;
                                                     //dateTimeWaitFor = DateTime.Now.AddSeconds(
                                                     //    0
                                                     //    + BattlefieldUnit.AnimationAttackTimeStage1

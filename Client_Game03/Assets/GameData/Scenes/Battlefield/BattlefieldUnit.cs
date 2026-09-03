@@ -87,9 +87,9 @@ namespace Assets.GameData.Scenes.Battlefield
             this.panelDamage__script = panelDamage__script;
 
             GameObject gameObject = AddressablePrefabProvider.BattlefieldUnit.SafeInstant(canvasUnits__Transform);
-            BaseHero dtoBaseHero = Game03Client.GameData.Container.BaseHeroes.First(a => a.Id == spawnedHeroes.BaseHeroId);
+            BaseHero dtoBaseHero = Game03Client.GameData.Container.baseHeroes.First(a => a.id == spawnedHeroes.baseHeroId);
 
-            gameObject.name = $"Unit{(isMyUnit ? "Player" : "Enemy")}_{dtoBaseHero.Name}";
+            gameObject.name = $"Unit{(isMyUnit ? "Player" : "Enemy")}_{dtoBaseHero.name}";
 
             _RectTransform = gameObject.GetComponent<RectTransform>();
             _RectTransform.anchorMin = new(0.5f, 0.5f);
@@ -99,7 +99,7 @@ namespace Assets.GameData.Scenes.Battlefield
 
 
             Image _ImageRarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity", gameObject.transform);
-            _ImageRarity_Image.sprite = AddressablePrefabProvider.GetRarity(dtoBaseHero.Rarity);
+            _ImageRarity_Image.sprite = AddressablePrefabProvider.GetRarity(dtoBaseHero.rarity);
             _ImageRarity_Image.preserveAspect = true;
             _ImageRarity_Image.type = Image.Type.Simple;
 
@@ -107,7 +107,7 @@ namespace Assets.GameData.Scenes.Battlefield
             _ImageHeroMask__RectTransform = GameObjectFinder.FindByName<RectTransform>("ImageHeroMask", gameObject.transform);
 
             Image _ImageHero_Image = GameObjectFinder.FindByName<Image>("ImageHero", gameObject.transform);
-            _ImageHero_Image.sprite = AddressablePrefabProvider.Heroes[$"{dtoBaseHero.Name}_face"];
+            _ImageHero_Image.sprite = AddressablePrefabProvider.Heroes[$"{dtoBaseHero.name}_face"];
             _ImageHero_Image.preserveAspect = true;
             _ImageHero_Image.type = Image.Type.Simple;
 
@@ -128,14 +128,14 @@ namespace Assets.GameData.Scenes.Battlefield
 
             _Level_RectTransform = GameObjectFinder.FindByName<RectTransform>("Level", gameObject.transform);
             _LevelText_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("LevelText", gameObject.transform);
-            _LevelText_TextMeshProUGUI.SetText(spawnedHeroes.Level.ToString());
+            _LevelText_TextMeshProUGUI.SetText(spawnedHeroes.level.ToString());
             Image _Level_Image = _Level_RectTransform.GetComponent<Image>();
-            _Level_Image.color = dtoBaseHero.MainStat switch
+            _Level_Image.color = dtoBaseHero.mainStat switch
             {
-                EMainStat.Strength => colorStrength,
-                EMainStat.Agility => colorAgility,
-                EMainStat.Intelligence => colorIntelligence,
-                EMainStat.Universal => colorUniversal,
+                EMainStat.strength => colorStrength,
+                EMainStat.agility => colorAgility,
+                EMainStat.intelligence => colorIntelligence,
+                EMainStat.universal => colorUniversal,
                 _ => throw new NotImplementedException()
             };
 
@@ -150,7 +150,7 @@ namespace Assets.GameData.Scenes.Battlefield
             OnResize();
 
             RefreshHealth();
-            RefreshActionPoints(SpawnedHero.ActionPoints);
+            RefreshActionPoints(SpawnedHero.actionPoints);
         }
 
 
@@ -207,9 +207,9 @@ namespace Assets.GameData.Scenes.Battlefield
         /// <summary> Изменение текста и полоски здоровья. </summary>
         public void RefreshHealth()
         {
-            if (SpawnedHero.Health > 0)
+            if (SpawnedHero.health > 0)
             {
-                progressBar.SetTextRight(SpawnedHero.Health.ToStr());
+                progressBar.SetTextRight(SpawnedHero.health.ToStr());
                 _ImageDead_GameObject.SetActive(false);
                 _RectTransform.localScale = new Vector3(_ScaleAlive, _ScaleAlive, _ScaleAlive);
             }
@@ -219,14 +219,14 @@ namespace Assets.GameData.Scenes.Battlefield
                 _ImageDead_GameObject.SetActive(true);
                 _RectTransform.localScale = new Vector3(_ScaleDead, _ScaleDead, _ScaleDead);
             }
-            progressBar.value = SpawnedHero.Health;
-            progressBar.valueMax = SpawnedHero.HealthMax;
-            progressBar.Refresh();
+            progressBar.healthBar = SpawnedHero.health;
+            progressBar.valueMax = SpawnedHero.healthMax;
+            progressBar.Refresh(ProgressBar__prefab__script.DisplayMode.HealthBar);
         }
 
         public void RefreshActionPoints(int ap)
         {
-            SpawnedHero.ActionPoints = ap;
+            SpawnedHero.actionPoints = ap;
             _ActionPointsText_TextMeshProUGUI.text = ap.ToString();
         }
 

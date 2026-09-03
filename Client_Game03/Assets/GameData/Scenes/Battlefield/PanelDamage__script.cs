@@ -9,7 +9,6 @@ using UnityEngine.UI;
 
 public class PanelDamage__script : IPrefab
 {
-    private enum DisplayMode { Damage, Heal, Tank }
     public enum Team { MyHeroes, EnemyHeroes }
     public bool initialized { get; private set; }
 
@@ -39,26 +38,8 @@ public class PanelDamage__script : IPrefab
     /// </summary>
     private readonly List<ProgressBar__prefab__script> bars_List = new();
 
-    /// <summary>
-    /// Статистика героев, которая хранится в панели.
-    /// </summary>
-    private readonly Dictionary<Guid, HeroStatistic> HeroesStatistic = new();
 
-    private class HeroStatistic
-    {
-        public HeroStatistic(Guid HeroId)
-        {
-            this.HeroId = HeroId;
-        }
-        public Guid HeroId { get; }
-        public float damageDone { get; set; } = 0f;
-        public float damageRecieved { get; set; } = 0f;
-        public float healDone { get; set; } = 0f;
-        public float healRecieved { get; set; } = 0f;
-    }
-
-
-    private DisplayMode displayMode = DisplayMode.Damage;
+    private ProgressBar__prefab__script.DisplayMode displayMode = ProgressBar__prefab__script.DisplayMode.DamageDone;
 
     //private class Bar
     //{
@@ -135,7 +116,7 @@ public class PanelDamage__script : IPrefab
 
     public void Refresh()
     {
-        //bars.ForEach(a => a.bar.Refresh());
+        bars_List.ForEach(a => a.Refresh(displayMode));
     }
 
     public void ProgressBarsSortAndRefresh()
@@ -186,20 +167,20 @@ public class PanelDamage__script : IPrefab
 
     private void ButtonDamageOnClick()
     {
-        ChangeDisplayMode(DisplayMode.Damage);
+        ChangeDisplayMode(ProgressBar__prefab__script.DisplayMode.DamageDone);
     }
 
     private void ButtonHealOnClick()
     {
-        ChangeDisplayMode(DisplayMode.Heal);
+        ChangeDisplayMode(ProgressBar__prefab__script.DisplayMode.HealingDone);
     }
 
     private void ButtonTankOnClick()
     {
-        ChangeDisplayMode(DisplayMode.Tank);
+        ChangeDisplayMode(ProgressBar__prefab__script.DisplayMode.DamageRecieved);
     }
 
-    private void ChangeDisplayMode(DisplayMode displayMode)
+    private void ChangeDisplayMode(ProgressBar__prefab__script.DisplayMode displayMode)
     {
         this.displayMode = displayMode;
         ButtonDamage__Image.color = Color.white;
@@ -207,17 +188,17 @@ public class PanelDamage__script : IPrefab
         ButtonTank__Image.color = Color.white;
         switch (displayMode)
         {
-            case DisplayMode.Damage:
+            case ProgressBar__prefab__script.DisplayMode.DamageDone:
                 ButtonDamage__Image.color = Color.white;
                 ButtonHeal__Image.color = Color.gray;
                 ButtonTank__Image.color = Color.gray;
                 break;
-            case DisplayMode.Heal:
+            case ProgressBar__prefab__script.DisplayMode.HealingDone:
                 ButtonDamage__Image.color = Color.gray;
                 ButtonHeal__Image.color = Color.white;
                 ButtonTank__Image.color = Color.gray;
                 break;
-            case DisplayMode.Tank:
+            case ProgressBar__prefab__script.DisplayMode.DamageRecieved:
                 ButtonDamage__Image.color = Color.gray;
                 ButtonHeal__Image.color = Color.gray;
                 ButtonTank__Image.color = Color.white;
@@ -227,27 +208,42 @@ public class PanelDamage__script : IPrefab
         }
     }
 
-    int indexAdded = 0;
-    public void Update()
+    private int indexAdded = 0;
+
+    /// <summary>
+    /// Обновление данных на текущий ход
+    /// </summary>
+    public void UpdateData()
     {
+        
         int i = battlefieldSceneInitializator.battlefieldIndexAnimationStarted;
-        IEnumerable<BattlefieldLogRecordBase> logs = BattlefieldSceneInitializator.spawnedBattlefield.BattlefieldLog.Where(a => a.Index <= i && a.Index >= indexAdded);
-        indexAdded = i+1;
-        foreach (var log in logs)
+        IEnumerable<BattlefieldLogRecordBase> logs = BattlefieldSceneInitializator.spawnedBattlefield.battlefieldLog.Where(a => a.index <= i && a.index >= indexAdded);
+        foreach (BattlefieldLogRecordBase log in logs)
         {
             switch (log)
             {
                 case BattlefieldLogRecord_Damage d:
 
-                    if (HeroesStatistic.TryGetValue(d.SpawnedHeroId, out HeroStatistic v)) {
+                    // Запись нанесённого урона
+                    {
+                        ProgressBar__prefab__script v = bars_List.First(a=>a.heroId == d.hero1Id);
+                        v.damageDone += d.damage;
+                    }
 
+
+                    // Запись полученного урона
+                    {
+                        ProgressBar__prefab__script v = bars_List.First(a => a.heroId == d.hero2Id);
+                        v.damageRecieved += d.damage;
                     }
 
                     break;
-                //case BattlefieldLogRecord_TurnStart t:
-                //    break;
+                    //case BattlefieldLogRecord_TurnStart t:
+                    //    break;
             }
         }
+
+        indexAdded = i + 1;
     }
 
     public void AddDamage(Guid heroIdSource, Guid heroIdTarget, float value)

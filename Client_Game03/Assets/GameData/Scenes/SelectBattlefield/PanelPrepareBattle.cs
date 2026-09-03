@@ -109,7 +109,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             _GameObject.SetActive(true);
             
 
-            battlefield = Game03Client.GameData.Container.Battlefields.First(a => a.Id == battlefieldId);
+            battlefield = Game03Client.GameData.Container.battlefields.First(a => a.id == battlefieldId);
 
             //_PanelCollectionContext.Actions.Clear();
             //_PanelCollectionContext.Actions.Add(UpdateHeroesSelectedAndMaxLabel);
@@ -159,7 +159,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
         private void UpdateHeroesSelectedAndMaxLabel()
         {
             int selectedCount = panelCollection__prefab.GetSelectedElements().Count;
-            int max = battlefield.MaxHeroCount;
+            int max = battlefield.maxHeroCount;
             _HeroesSelectedAndMaxLabel__TextMeshProUGUI.SetText($"{LM.GetValue(L.UI.Button.Heroes)} {selectedCount}/{max}");
         }
 
@@ -187,8 +187,8 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
                 if (BattlefieldSceneInitializator.spawnedBattlefield != null)
                 {
-                    BattlefieldSceneInitializator.spawnedBattlefield.SpawnedHeroPlayerList.Sort((a, b) => b.Initiative.CompareTo(a.Initiative));
-                    BattlefieldSceneInitializator.spawnedBattlefield.SpawnedHeroEnemyList.Sort((a, b) => b.Initiative.CompareTo(a.Initiative));
+                    BattlefieldSceneInitializator.spawnedBattlefield.spawnedHeroPlayerList.Sort((a, b) => b.initiative.CompareTo(a.initiative));
+                    BattlefieldSceneInitializator.spawnedBattlefield.spawnedHeroEnemyList.Sort((a, b) => b.initiative.CompareTo(a.initiative));
                     Hide();
                     GameSceneManager.Load(GameSceneManager.SceneName.Battlefield);
                 }
