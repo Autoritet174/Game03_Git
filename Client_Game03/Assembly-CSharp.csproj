@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_InBattle.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
+    <Compile Include="Assets\GameData\Scenes\Battlefield\StatisticsHero.cs" />
     <Compile Include="Assets\GameData\Scenes\AllHeroes\AllHeroesConsts.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\Button_AllHeroes.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="Assets\GameData\Scenes\Battlefield\PanelDamage__script.cs" />
     <Compile Include="Assets\GameData\Scripts\GameSceneManager.cs" />
     <Compile Include="Assets\GameData\Prefabs\ProgressBar__prefab__script.cs" />
+    <Compile Include="Assets\GameData\Scenes\Battlefield\StatisticsBattle.cs" />
     <Compile Include="Assets\GameData\Scripts\EventHelper.cs" />
     <Compile Include="Assets\GameData\Scripts\GameServerPinger.cs" />
     <Compile Include="Assets\GameData\Prefabs\PanelGroupDivider__prefab__script.cs" />

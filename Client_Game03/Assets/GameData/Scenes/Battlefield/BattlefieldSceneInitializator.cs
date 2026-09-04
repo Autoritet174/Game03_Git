@@ -18,6 +18,9 @@ namespace Assets.GameData.Scenes.Battlefield
 {
     public class BattlefieldSceneInitializator : MonoBehaviour
     {
+        /// <summary>
+        /// Делаем static так как объект передаётся между сценами
+        /// </summary>
         public static SpawnedBattlefield spawnedBattlefield { get; set; } = null;
 
         private readonly Dictionary<Guid, BattlefieldUnit> battlefieldUnits = new();
@@ -57,17 +60,17 @@ namespace Assets.GameData.Scenes.Battlefield
         private PanelDamage__script panelDamage__script;
 
         private readonly DateTime dateTimeWaitFor = DateTime.MinValue;
+        private StatisticsBattle statisticsBattle;
 
         private void Start()
         {
             panelDamage__script = new();
+            statisticsBattle = new(this);
             if (!TryInitialize())
             {
                 return;
             }
-
             panelDamage__script.Initialize();
-            panelDamage__script.battlefieldSceneInitializator = this;
             this.RunAsync(StartAsync);
         }
 
@@ -89,18 +92,22 @@ namespace Assets.GameData.Scenes.Battlefield
             for (int i = 0; i < spawnedBattlefield.spawnedHeroPlayerList.Count; i++)
             {
                 SpawnedHero spawnedHeroes = spawnedBattlefield.spawnedHeroPlayerList[i];
-                BattlefieldUnit unit = new(spawnedHeroes, i, true, canvasUnits__Transform, healthHub, panelDamage__script);
+                BattlefieldUnit unit = new(spawnedHeroes, i, true, canvasUnits__Transform, healthHub, statisticsBattle);
                 battlefieldUnits.Add(spawnedHeroes.spawnedId, unit);
                 playerUnits.Add(unit);
+
+                statisticsBattle.AddHero(spawnedHeroes.spawnedId, true);
             }
 
             // размещение героев врага
             for (int i = 0; i < spawnedBattlefield.spawnedHeroEnemyList.Count; i++)
             {
                 SpawnedHero spawnedHeroes = spawnedBattlefield.spawnedHeroEnemyList[i];
-                BattlefieldUnit unit = new(spawnedHeroes, i, false, canvasUnits__Transform, healthHub, panelDamage__script);
+                BattlefieldUnit unit = new(spawnedHeroes, i, false, canvasUnits__Transform, healthHub, statisticsBattle);
                 battlefieldUnits.Add(spawnedHeroes.spawnedId, unit);
                 enemyUnits.Add(unit);
+
+                statisticsBattle.AddHero(spawnedHeroes.spawnedId, false);
             }
 
             animationSpeedButton__RectTransform = GameObjectFinder.FindByName<RectTransform>("AnimationSpeedButton");

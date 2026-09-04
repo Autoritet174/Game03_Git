@@ -73,18 +73,17 @@ namespace Assets.GameData.Scenes.Battlefield
         private readonly bool _IsMyUnit;
         private readonly int _Position;
         private readonly string textDead = "Dead";
-
-        private readonly PanelDamage__script panelDamage__script;
+        private readonly StatisticsBattle statisticsBattle;
 
         public BattlefieldUnit(SpawnedHero spawnedHeroes,
             int position, bool isMyUnit, Transform canvasUnits__Transform,
-            Animations.HealthHub healthHub, PanelDamage__script panelDamage__script)
+            Animations.HealthHub healthHub, StatisticsBattle statisticsBattle)
         {
             SpawnedHero = spawnedHeroes;
             _Position = position;
             _IsMyUnit = isMyUnit;
             this.healthHub = healthHub;
-            this.panelDamage__script = panelDamage__script;
+            this.statisticsBattle = statisticsBattle;
 
             GameObject gameObject = AddressablePrefabProvider.BattlefieldUnit.SafeInstant(canvasUnits__Transform);
             BaseHero dtoBaseHero = Game03Client.GameData.Container.baseHeroes.First(a => a.id == spawnedHeroes.baseHeroId);
@@ -219,9 +218,9 @@ namespace Assets.GameData.Scenes.Battlefield
                 _ImageDead_GameObject.SetActive(true);
                 _RectTransform.localScale = new Vector3(_ScaleDead, _ScaleDead, _ScaleDead);
             }
-            progressBar.healthBar = SpawnedHero.health;
+            progressBar.value = SpawnedHero.health;
             progressBar.valueMax = SpawnedHero.healthMax;
-            progressBar.Refresh(ProgressBar__prefab__script.DisplayMode.HealthBar);
+            progressBar.Refresh();
         }
 
         public void RefreshActionPoints(int ap)

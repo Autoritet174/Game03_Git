@@ -123,10 +123,10 @@ namespace Assets.GameData.Prefabs
         private readonly IEnumerable<CollectionElement> _CollectionElementList;
         private readonly List<PanelIconCollectionElement> _PanelIconCollectionElementList;
 
-        /// <summary>
-        /// Флаг, переключаем в true при вызове OnDestroy для остановки анимаций.
-        /// </summary>
-        private bool _Destroying = false;
+        ///// <summary>
+        ///// Флаг, переключаем в true при вызове OnDestroy для остановки анимаций.
+        ///// </summary>
+        //private bool _Destroying = false;
 
         /// <summary>
         /// Текущее состояние группы (true - развернута, false - свернута).
@@ -235,7 +235,7 @@ namespace Assets.GameData.Prefabs
 
         public void Destroy()
         {
-            _Destroying = true;
+            //_Destroying = true;
             UnityEngine.Object.Destroy(_GameObject);
         }
 
