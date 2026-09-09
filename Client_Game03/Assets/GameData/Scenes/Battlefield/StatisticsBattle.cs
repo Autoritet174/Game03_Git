@@ -13,14 +13,15 @@ namespace Assets.GameData.Scenes.Battlefield
             this.battlefieldSceneInitializator = battlefieldSceneInitializator;
         }
 
-        private readonly List<StatisticsHero> list_StatisticsHero = new();
+        public List<StatisticsHero> list_StatisticsHero { get; private set; } = new();
 
         private int turnAdded = 0;
 
-        public void AddHero(Guid heroId, bool inTeam1)
+        public void AddHero(Guid heroId, bool inTeam1, string name)
         {
-            list_StatisticsHero.Add(new StatisticsHero(heroId, inTeam1));
+            list_StatisticsHero.Add(new StatisticsHero(heroId, inTeam1, name));
         }
+
         public void Update()
         {
             int i = battlefieldSceneInitializator.battlefieldIndexAnimationStarted;
@@ -51,6 +52,8 @@ namespace Assets.GameData.Scenes.Battlefield
             }
 
             turnAdded = i + 1;
+
+            list_StatisticsHero.Sort((a, b) => b.damageDone.CompareTo(a.damageDone));
         }
     }
 }

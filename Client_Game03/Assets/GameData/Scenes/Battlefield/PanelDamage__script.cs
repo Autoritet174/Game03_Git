@@ -1,5 +1,4 @@
 using Assets.GameData.Scripts;
-using General.DTO.Battlefield;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +30,7 @@ namespace Assets.GameData.Scenes.Battlefield
         private Image ButtonDamage__Image;
         private Image ButtonHeal__Image;
         private Image ButtonTank__Image;
+        public BattlefieldSceneInitializator battlefieldSceneInitializator { get; set; }
 
         //private readonly List<Bar> bars = new();
 
@@ -76,7 +76,7 @@ namespace Assets.GameData.Scenes.Battlefield
             OnResized(G.GetCoefHeight());
         }
 
-        public void AddProgressBar(Guid spawnedId, string textLeft, string textRight, Team type, Color? colorLeft = null, Color? colorRight = null)
+        public void AddProgressBar()
         {
             GameObject gameObject = AddressablePrefabProvider.ProgressBar.SafeInstant(PanelProgressBarsContent__RectTransform.transform);
             if (gameObject == null)
@@ -91,36 +91,33 @@ namespace Assets.GameData.Scenes.Battlefield
             bar.this__RectTransform.anchorMin = new Vector2(0, 1);
             bar.this__RectTransform.anchorMax = new Vector2(0, 1);
             bar.this__RectTransform.pivot = new Vector2(0, 1);
-            if (colorLeft != null)
-            {
-                bar.SetColorTextLeft(colorLeft.Value);
-            }
-            if (colorRight != null)
-            {
-                bar.SetColorTextRight(colorRight.Value);
-            }
-            //ProgressBarsSort();
-
-
-            bar.SetTextLeft(textLeft);
-            bar.SetTextRight(textRight);
             OnResized(G.GetCoefHeight());
         }
 
-        public void ProgressBarsSort()
-        {
-            OnResized(G.GetCoefHeight());
-        }
+        Color color1 = new(100 / 255f, 134 / 255f, 255 / 255f, 1f);
+        Color color2 = new(255 / 255f, 64 / 255f, 64 / 255f, 1f);
 
         public void Refresh()
         {
-            listProgressBars.ForEach(a => a.Refresh());
-        }
+            if (listProgressBars.Count == 0)
+            {
+                return;
+            }
+            float max = battlefieldSceneInitializator.statisticsBattle.list_StatisticsHero.Max(a => a.damageDone);
+            for (int i = 0; i < listProgressBars.Count; i++)
+            {
+                var stat = battlefieldSceneInitializator.statisticsBattle.list_StatisticsHero[i];
+                ProgressBar__prefab__script bar = listProgressBars[i];
+                bar.SetTextLeft(stat.name);
+                bar.SetTextRight(stat.damageDone.ToStr());
+                bar.SetColorTextLeft(stat.inTeam1 ? color1 : color2);
+                bar.SetColorTextRight(stat.inTeam1 ? color1 : color2);
+                bar.value = stat.damageDone;
+                bar.valueMax = max;
 
-        public void ProgressBarsSortAndRefresh()
-        {
-            ProgressBarsSort();
-            Refresh();
+
+                bar.Refresh();
+            }
         }
 
         public void OnResized(float coefHeight, float top = 0, float buttom = 0, float left = 0, float right = 0)
@@ -157,7 +154,7 @@ namespace Assets.GameData.Scenes.Battlefield
                 RectTransform r = v.this__RectTransform;
 
                 r.anchoredPosition = new Vector2(0, (-barHeight * (i + 1)) - barHeightShift);
-                r.sizeDelta = new Vector2(PanelProgressBars__RectTransform.rect.width, barHeight);
+                r.sizeDelta = new Vector2(PanelProgressBars__RectTransform.rect.width - (10 * coefHeight), barHeight);
                 i++;
             }
             Refresh();

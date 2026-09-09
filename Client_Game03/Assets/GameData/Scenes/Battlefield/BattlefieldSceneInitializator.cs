@@ -60,7 +60,7 @@ namespace Assets.GameData.Scenes.Battlefield
         private PanelDamage__script panelDamage__script;
 
         private readonly DateTime dateTimeWaitFor = DateTime.MinValue;
-        private StatisticsBattle statisticsBattle;
+        public StatisticsBattle statisticsBattle { get; private set; }
 
         private void Start()
         {
@@ -96,7 +96,8 @@ namespace Assets.GameData.Scenes.Battlefield
                 battlefieldUnits.Add(spawnedHeroes.spawnedId, unit);
                 playerUnits.Add(unit);
 
-                statisticsBattle.AddHero(spawnedHeroes.spawnedId, true);
+                var baseHero = Game03Client.GameData.Container.baseHeroes.First(a=>a.id == spawnedHeroes.baseHeroId);
+                statisticsBattle.AddHero(spawnedHeroes.spawnedId, true, baseHero.name);
             }
 
             // размещение героев врага
@@ -107,7 +108,8 @@ namespace Assets.GameData.Scenes.Battlefield
                 battlefieldUnits.Add(spawnedHeroes.spawnedId, unit);
                 enemyUnits.Add(unit);
 
-                statisticsBattle.AddHero(spawnedHeroes.spawnedId, false);
+                var baseHero = Game03Client.GameData.Container.baseHeroes.First(a => a.id == spawnedHeroes.baseHeroId);
+                statisticsBattle.AddHero(spawnedHeroes.spawnedId, false, baseHero.name);
             }
 
             animationSpeedButton__RectTransform = GameObjectFinder.FindByName<RectTransform>("AnimationSpeedButton");
@@ -184,20 +186,18 @@ namespace Assets.GameData.Scenes.Battlefield
             spawnedBattlefield.battlefieldLog.Sort((a, b) => a.index.CompareTo(b.index));
             battlefieldIndexAnimationStarted = 0;
             battlefieldIndexAnimationActive = false;
+            panelDamage__script.battlefieldSceneInitializator = this;
 
-            Color colorHeroesMy = new(100 / 255f, 134 / 255f, 255 / 255f, 1f);
-            Color colorHeroesEnemy = new(255 / 255f, 64 / 255f, 64 / 255f, 1f);
             for (int i = 0; i < playerUnits.Count; i++)
             {
                 BaseHero h = Game03Client.GameData.GetBaseHeroById(playerUnits[i].SpawnedHero.baseHeroId);
-                panelDamage__script.AddProgressBar(playerUnits[i].SpawnedHero.spawnedId, "0", h.name, PanelDamage__script.Team.MyHeroes, null, colorHeroesMy);
+                panelDamage__script.AddProgressBar();
             }
             for (int i = 0; i < enemyUnits.Count; i++)
             {
                 BaseHero h = Game03Client.GameData.GetBaseHeroById(enemyUnits[i].SpawnedHero.baseHeroId);
-                panelDamage__script.AddProgressBar(enemyUnits[i].SpawnedHero.spawnedId, "0", h.name, PanelDamage__script.Team.EnemyHeroes, null, colorHeroesEnemy);
+                panelDamage__script.AddProgressBar();
             }
-            panelDamage__script.ProgressBarsSort();
             initialized = true;
         }
 
@@ -321,6 +321,7 @@ namespace Assets.GameData.Scenes.Battlefield
                 }
             }
 
+            panelDamage__script.Refresh();
 
             battlefieldIndexAnimationActive = false;
             foreach (BattlefieldUnit unit in playerUnits)
