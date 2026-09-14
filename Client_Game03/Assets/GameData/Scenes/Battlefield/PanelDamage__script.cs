@@ -94,8 +94,8 @@ namespace Assets.GameData.Scenes.Battlefield
             OnResized(G.GetCoefHeight());
         }
 
-        Color color1 = new(100 / 255f, 134 / 255f, 255 / 255f, 1f);
-        Color color2 = new(255 / 255f, 64 / 255f, 64 / 255f, 1f);
+        private Color color1 = new(100 / 255f, 134 / 255f, 255 / 255f, 1f);
+        private Color color2 = new(255 / 255f, 64 / 255f, 64 / 255f, 1f);
 
         public void Refresh()
         {
@@ -106,7 +106,7 @@ namespace Assets.GameData.Scenes.Battlefield
             float max = battlefieldSceneInitializator.statisticsBattle.list_StatisticsHero.Max(a => a.damageDone);
             for (int i = 0; i < listProgressBars.Count; i++)
             {
-                var stat = battlefieldSceneInitializator.statisticsBattle.list_StatisticsHero[i];
+                StatisticsHero stat = battlefieldSceneInitializator.statisticsBattle.list_StatisticsHero[i];
                 ProgressBar__prefab__script bar = listProgressBars[i];
                 bar.SetTextLeft(stat.name);
                 bar.SetTextRight(stat.damageDone.ToStr());
