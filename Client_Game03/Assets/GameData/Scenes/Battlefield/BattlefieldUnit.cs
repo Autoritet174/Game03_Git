@@ -21,6 +21,7 @@ namespace Assets.GameData.Scenes.Battlefield
 
         private static readonly float _ScaleAlive = 0.85f;
         private static readonly float _ScaleDead = _ScaleAlive * 0.65f;
+        private static readonly double _AnimationDeathScaleTime = 2.0;
         private static readonly float _Width = 150;
         private static readonly float _Height = 200;
 
@@ -67,6 +68,11 @@ namespace Assets.GameData.Scenes.Battlefield
         private readonly RectTransform _ImageDead_RectTransform;
 
         private readonly ProgressBar__prefab__script progressBar;
+
+        private bool _AnimationDeathScaleActive;
+        private DateTime _AnimationDeathScaleStart;
+        private DateTime _AnimationDeathScaleEnd;
+        private float _AnimationDeathScaleFrom;
 
         public SpawnedHero SpawnedHero { get; }
 
@@ -148,7 +154,7 @@ namespace Assets.GameData.Scenes.Battlefield
 
             OnResize();
 
-            RefreshHealth();
+            RefreshHealth(false);
             RefreshActionPoints(SpawnedHero.actionPoints);
         }
 
@@ -189,7 +195,7 @@ namespace Assets.GameData.Scenes.Battlefield
             _LevelText_TextMeshProUGUI.fontSize = 22 * coefHeight;
 
 
-            RefreshHealth();
+            RefreshHealth(false);
 
 
             _ActionPoints_RectTransform.anchoredPosition = new Vector2(0, text_Height);
@@ -204,23 +210,54 @@ namespace Assets.GameData.Scenes.Battlefield
         }
 
         /// <summary> Изменение текста и полоски здоровья. </summary>
-        public void RefreshHealth()
+        public void RefreshHealth(bool animateScale = true)
         {
             if (SpawnedHero.health > 0)
             {
                 progressBar.SetTextRight(SpawnedHero.health.ToStr());
                 _ImageDead_GameObject.SetActive(false);
+                _AnimationDeathScaleActive = false;
                 _RectTransform.localScale = new Vector3(_ScaleAlive, _ScaleAlive, _ScaleAlive);
             }
             else
             {
                 progressBar.SetTextRight(textDead);
                 _ImageDead_GameObject.SetActive(true);
-                _RectTransform.localScale = new Vector3(_ScaleDead, _ScaleDead, _ScaleDead);
+                if (animateScale)
+                {
+                    if (!_AnimationDeathScaleActive)
+                    {
+                        _AnimationDeathScaleFrom = _RectTransform.localScale.x;
+                        _AnimationDeathScaleStart = DateTime.Now;
+                        _AnimationDeathScaleEnd = _AnimationDeathScaleStart.AddSeconds(_AnimationDeathScaleTime / BattlefieldSceneInitializator.animationSpeed);
+                        _AnimationDeathScaleActive = true;
+                    }
+                }
+                else
+                {
+                    _AnimationDeathScaleActive = false;
+                    _RectTransform.localScale = new Vector3(_ScaleDead, _ScaleDead, _ScaleDead);
+                }
             }
             progressBar.value = SpawnedHero.health;
             progressBar.valueMax = SpawnedHero.healthMax;
             progressBar.Refresh();
+        }
+
+        public void UpdateAnimationDeathScale()
+        {
+            if (!_AnimationDeathScaleActive)
+            {
+                return;
+            }
+
+            float animationPercent = Math.Clamp((float)((DateTime.Now - _AnimationDeathScaleStart).TotalSeconds / (_AnimationDeathScaleEnd - _AnimationDeathScaleStart).TotalSeconds), 0, 1);
+            float scale = _AnimationDeathScaleFrom + ((_ScaleDead - _AnimationDeathScaleFrom) * animationPercent);
+            _RectTransform.localScale = new Vector3(scale, scale, scale);
+            if (animationPercent == 1)
+            {
+                _AnimationDeathScaleActive = false;
+            }
         }
 
         public void RefreshActionPoints(int ap)

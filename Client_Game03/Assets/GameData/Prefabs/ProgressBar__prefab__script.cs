@@ -1,7 +1,7 @@
 using Assets.GameData.Scripts;
-using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ProgressBar__prefab__script : MonoBehaviour, IPrefab
 {
@@ -30,6 +30,7 @@ public class ProgressBar__prefab__script : MonoBehaviour, IPrefab
     private TextMeshProUGUI _TextLeft__TextMeshProUGUI;
     private RectTransform _TextRight__RectTransform;
     private TextMeshProUGUI _TextRight__TextMeshProUGUI;
+    private Image _HealthImageColorBar__Image;
     private float healthimagecolorbar_right = HEALTH_IMAGE_COLOR_BAR_RIGHT;
 
     public float value { get; set; } = 0f;
@@ -51,11 +52,14 @@ public class ProgressBar__prefab__script : MonoBehaviour, IPrefab
         _TextLeft__TextMeshProUGUI = _TextLeft__RectTransform.GetComponent<TextMeshProUGUI>();
         _TextRight__TextMeshProUGUI = _TextRight__RectTransform.GetComponent<TextMeshProUGUI>();
 
+        _HealthImageColorBar__Image = _HealthImageColorBar__RectTransform.gameObject.GetComponent<Image>();
+
         SetTextRight("");
         SetTextLeft("");
 
         initialized = true;
         OnResized(G.GetCoefHeight());
+        Refresh();
     }
 
     public void SetTextLeft(string text)
@@ -77,6 +81,10 @@ public class ProgressBar__prefab__script : MonoBehaviour, IPrefab
     {
         _TextRight__TextMeshProUGUI.color = color;
     }
+    public void SetColorBar(Color color)
+    {
+        _HealthImageColorBar__Image.color = color;
+    }
 
     public void SetTextLeftOffsetLeft(float value)
     {
@@ -94,7 +102,7 @@ public class ProgressBar__prefab__script : MonoBehaviour, IPrefab
     public void Refresh()
     {
         float progressBarWidth = this__RectTransform.rect.width;
-        float width = valueMax > 0 ? progressBarWidth * value / valueMax : progressBarWidth;
+        float width = valueMax > 0 ? progressBarWidth * value / valueMax : 0f;
 
         //if (type != "")
         //{

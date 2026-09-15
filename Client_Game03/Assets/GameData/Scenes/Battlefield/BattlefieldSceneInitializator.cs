@@ -96,7 +96,7 @@ namespace Assets.GameData.Scenes.Battlefield
                 battlefieldUnits.Add(spawnedHeroes.spawnedId, unit);
                 playerUnits.Add(unit);
 
-                var baseHero = Game03Client.GameData.Container.baseHeroes.First(a=>a.id == spawnedHeroes.baseHeroId);
+                BaseHero baseHero = Game03Client.GameData.Container.baseHeroes.First(a => a.id == spawnedHeroes.baseHeroId);
                 statisticsBattle.AddHero(spawnedHeroes.spawnedId, true, baseHero.name);
             }
 
@@ -108,7 +108,7 @@ namespace Assets.GameData.Scenes.Battlefield
                 battlefieldUnits.Add(spawnedHeroes.spawnedId, unit);
                 enemyUnits.Add(unit);
 
-                var baseHero = Game03Client.GameData.Container.baseHeroes.First(a => a.id == spawnedHeroes.baseHeroId);
+                BaseHero baseHero = Game03Client.GameData.Container.baseHeroes.First(a => a.id == spawnedHeroes.baseHeroId);
                 statisticsBattle.AddHero(spawnedHeroes.spawnedId, false, baseHero.name);
             }
 
@@ -208,6 +208,11 @@ namespace Assets.GameData.Scenes.Battlefield
                 OnResized();
             }
 
+            List<BattlefieldLogRecordBase> fullLog = spawnedBattlefield.battlefieldLog;
+            if (battlefieldIndexAnimationStarted > fullLog.Count)
+            {
+                return;
+            }
 
             //if (!playerUnits.Any(a => a.AnimationAttackStage > 0))
             //{
@@ -239,7 +244,6 @@ namespace Assets.GameData.Scenes.Battlefield
 
             if (dateTimeWaitFor < DateTime.Now)
             {
-                List<BattlefieldLogRecordBase> fullLog = spawnedBattlefield.battlefieldLog;
                 if (!battlefieldIndexAnimationActive && fullLog != null)
                 {
                     for (int i = 0; i < fullLog.Count; i++)
@@ -289,7 +293,7 @@ namespace Assets.GameData.Scenes.Battlefield
                                                     //        panelDamage__script.ProgressBarsSortAndRefresh();
                                                     //    }
                                                     //}
-                                                    
+
 
                                                     battlefieldIndexAnimationActive = true;
                                                 }
@@ -327,6 +331,7 @@ namespace Assets.GameData.Scenes.Battlefield
             foreach (BattlefieldUnit unit in playerUnits)
             {
                 unit.UpdateAnimationAttack();
+                unit.UpdateAnimationDeathScale();
                 if (!battlefieldIndexAnimationActive && unit.AnimationAttackStage > 0)
                 {
                     battlefieldIndexAnimationActive = true;
@@ -335,6 +340,7 @@ namespace Assets.GameData.Scenes.Battlefield
             foreach (BattlefieldUnit unit in enemyUnits)
             {
                 unit.UpdateAnimationAttack();
+                unit.UpdateAnimationDeathScale();
                 if (!battlefieldIndexAnimationActive && unit.AnimationAttackStage > 0)
                 {
                     battlefieldIndexAnimationActive = true;

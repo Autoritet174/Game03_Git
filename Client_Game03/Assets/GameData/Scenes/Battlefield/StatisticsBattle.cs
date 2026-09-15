@@ -24,7 +24,7 @@ namespace Assets.GameData.Scenes.Battlefield
 
         public void Update()
         {
-            int i = battlefieldSceneInitializator.battlefieldIndexAnimationStarted;
+            int i = battlefieldSceneInitializator.battlefieldIndexAnimationStarted+1;
             IEnumerable<BattlefieldLogRecordBase> logs = BattlefieldSceneInitializator.spawnedBattlefield.battlefieldLog.Where(a => a.index <= i && a.index >= turnAdded);
             foreach (BattlefieldLogRecordBase log in logs)
             {
@@ -34,14 +34,14 @@ namespace Assets.GameData.Scenes.Battlefield
 
                         // Запись нанесённого урона
                         {
-                            var v = list_StatisticsHero.First(a => a.heroId == d.hero1Id);
+                            StatisticsHero v = list_StatisticsHero.First(a => a.heroId == d.hero1Id);
                             v.damageDone += d.damage;
                         }
 
 
                         // Запись полученного урона
                         {
-                            var v = list_StatisticsHero.First(a => a.heroId == d.hero2Id);
+                            StatisticsHero v = list_StatisticsHero.First(a => a.heroId == d.hero2Id);
                             v.damageReceived += d.damage;
                         }
 

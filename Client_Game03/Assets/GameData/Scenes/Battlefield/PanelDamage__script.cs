@@ -24,12 +24,14 @@ namespace Assets.GameData.Scenes.Battlefield
         private GameObject ScrollbarVertical__GameObject;
         private RectTransform ScrollbarVertical__RectTransform;
 
-        private RectTransform ButtonDamage__RectTransform;
-        private RectTransform ButtonHeal__RectTransform;
-        private RectTransform ButtonTank__RectTransform;
-        private Image ButtonDamage__Image;
-        private Image ButtonHeal__Image;
-        private Image ButtonTank__Image;
+        private RectTransform ButtonDamageDone__RectTransform;
+        private RectTransform ButtonHealingDone__RectTransform;
+        private RectTransform ButtonDamageRecieved__RectTransform;
+        private RectTransform ButtonHealingRecieved__RectTransform;
+        private Image ButtonDamageDone__Image;
+        private Image ButtonHealingDone__Image;
+        private Image ButtonDamageRecieved__Image;
+        private Image ButtonHealingRecieved__Image;
         public BattlefieldSceneInitializator battlefieldSceneInitializator { get; set; }
 
         //private readonly List<Bar> bars = new();
@@ -57,15 +59,18 @@ namespace Assets.GameData.Scenes.Battlefield
             PanelDamage__RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelDamage");
 
             PanelProgressBars__RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelProgressBars", PanelDamage__RectTransform);
-            ButtonDamage__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonDamage", PanelDamage__RectTransform);
-            ButtonHeal__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonHeal", PanelDamage__RectTransform);
-            ButtonTank__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonTank", PanelDamage__RectTransform);
-            ButtonDamage__Image = ButtonDamage__RectTransform.GetComponent<Image>();
-            ButtonHeal__Image = ButtonHeal__RectTransform.GetComponent<Image>();
-            ButtonTank__Image = ButtonTank__RectTransform.GetComponent<Image>();
-            ButtonDamage__RectTransform.gameObject.SetClickOnButton(ButtonDamageOnClick);
-            ButtonHeal__RectTransform.gameObject.SetClickOnButton(ButtonHealOnClick);
-            ButtonTank__RectTransform.gameObject.SetClickOnButton(ButtonTankOnClick);
+            ButtonDamageDone__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonDamageDone", PanelDamage__RectTransform);
+            ButtonHealingDone__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonHealingDone", PanelDamage__RectTransform);
+            ButtonDamageRecieved__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonDamageRecieved", PanelDamage__RectTransform);
+            ButtonHealingRecieved__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonHealingRecieved", PanelDamage__RectTransform);
+            ButtonDamageDone__Image = ButtonDamageDone__RectTransform.GetComponent<Image>();
+            ButtonHealingDone__Image = ButtonHealingDone__RectTransform.GetComponent<Image>();
+            ButtonDamageRecieved__Image = ButtonDamageRecieved__RectTransform.GetComponent<Image>();
+            ButtonHealingRecieved__Image = ButtonHealingRecieved__RectTransform.GetComponent<Image>();
+            ButtonDamageDone__RectTransform.gameObject.SetClickOnButton(ButtonDamageDoneOnClick);
+            ButtonHealingDone__RectTransform.gameObject.SetClickOnButton(ButtonHealingDoneOnClick);
+            ButtonDamageRecieved__RectTransform.gameObject.SetClickOnButton(ButtonDamageRecievedOnClick);
+            ButtonHealingRecieved__RectTransform.gameObject.SetClickOnButton(ButtonHealingRecievedOnClick);
 
             RectTransform PanelProgressBarsViewport__RectTransform = GameObjectFinder.FindByName<RectTransform>("Viewport", PanelProgressBars__RectTransform);
             PanelProgressBarsContent__RectTransform = GameObjectFinder.FindByName<RectTransform>("Content", PanelProgressBarsViewport__RectTransform);
@@ -94,8 +99,8 @@ namespace Assets.GameData.Scenes.Battlefield
             OnResized(G.GetCoefHeight());
         }
 
-        private Color color1 = new(100 / 255f, 134 / 255f, 255 / 255f, 1f);
-        private Color color2 = new(255 / 255f, 64 / 255f, 64 / 255f, 1f);
+        private Color color1 = new(0f, 228 / 255f, 0f, 1f);
+        private Color color2 = new(228 / 255f, 0f, 0f, 1f);
 
         public void Refresh()
         {
@@ -110,8 +115,9 @@ namespace Assets.GameData.Scenes.Battlefield
                 ProgressBar__prefab__script bar = listProgressBars[i];
                 bar.SetTextLeft(stat.name);
                 bar.SetTextRight(stat.damageDone.ToStr());
-                bar.SetColorTextLeft(stat.inTeam1 ? color1 : color2);
-                bar.SetColorTextRight(stat.inTeam1 ? color1 : color2);
+                //bar.SetColorTextLeft(stat.inTeam1 ? color1 : color2);
+                //bar.SetColorTextRight(stat.inTeam1 ? color1 : color2);
+                bar.SetColorBar(stat.inTeam1 ? color1 : color2);
                 bar.value = stat.damageDone;
                 bar.valueMax = max;
 
@@ -128,12 +134,12 @@ namespace Assets.GameData.Scenes.Battlefield
 
             float buttonsSize = 70 * coefHeight;
             float buttonPos = 10 * coefHeight;
-            ButtonDamage__RectTransform.sizeDelta = new Vector2(buttonsSize, buttonsSize);
-            ButtonHeal__RectTransform.sizeDelta = new Vector2(buttonsSize, buttonsSize);
-            ButtonTank__RectTransform.sizeDelta = new Vector2(buttonsSize, buttonsSize);
-            ButtonDamage__RectTransform.anchoredPosition = new Vector2(buttonPos, -buttonPos);
-            ButtonHeal__RectTransform.anchoredPosition = new Vector2((buttonPos * 2) + buttonsSize, -buttonPos);
-            ButtonTank__RectTransform.anchoredPosition = new Vector2((buttonPos * 3) + (buttonsSize * 2), -buttonPos);
+            ButtonDamageDone__RectTransform.sizeDelta = new Vector2(buttonsSize, buttonsSize);
+            ButtonHealingDone__RectTransform.sizeDelta = new Vector2(buttonsSize, buttonsSize);
+            ButtonDamageRecieved__RectTransform.sizeDelta = new Vector2(buttonsSize, buttonsSize);
+            ButtonDamageDone__RectTransform.anchoredPosition = new Vector2(buttonPos, -buttonPos);
+            ButtonHealingDone__RectTransform.anchoredPosition = new Vector2((buttonPos * 2) + buttonsSize, -buttonPos);
+            ButtonDamageRecieved__RectTransform.anchoredPosition = new Vector2((buttonPos * 3) + (buttonsSize * 2), -buttonPos);
 
             float verticalBarWidth = 13 * coefHeight;
             ScrollbarVertical__RectTransform.anchoredPosition = new Vector2(verticalBarWidth, 0);
@@ -160,43 +166,57 @@ namespace Assets.GameData.Scenes.Battlefield
             Refresh();
         }
 
-        private void ButtonDamageOnClick()
+        private void ButtonDamageDoneOnClick()
         {
             ChangeDisplayMode(ProgressBar__prefab__script.DisplayMode.DamageDone);
         }
 
-        private void ButtonHealOnClick()
+        private void ButtonHealingDoneOnClick()
         {
             ChangeDisplayMode(ProgressBar__prefab__script.DisplayMode.HealingDone);
         }
 
-        private void ButtonTankOnClick()
+        private void ButtonDamageRecievedOnClick()
         {
             ChangeDisplayMode(ProgressBar__prefab__script.DisplayMode.DamageRecieved);
+        }
+
+        private void ButtonHealingRecievedOnClick()
+        {
+            ChangeDisplayMode(ProgressBar__prefab__script.DisplayMode.HealingRecieved);
         }
 
         private void ChangeDisplayMode(ProgressBar__prefab__script.DisplayMode displayMode)
         {
             this.displayMode = displayMode;
-            ButtonDamage__Image.color = Color.white;
-            ButtonHeal__Image.color = Color.white;
-            ButtonTank__Image.color = Color.white;
+            //ButtonDamageDone__Image.color = Color.white;
+            //ButtonHealingDone__Image.color = Color.white;
+            //ButtonDamageRecieved__Image.color = Color.white;
             switch (displayMode)
             {
                 case ProgressBar__prefab__script.DisplayMode.DamageDone:
-                    ButtonDamage__Image.color = Color.white;
-                    ButtonHeal__Image.color = Color.gray;
-                    ButtonTank__Image.color = Color.gray;
+                    ButtonDamageDone__Image.color = Color.white;
+                    ButtonHealingDone__Image.color = Color.gray;
+                    ButtonDamageRecieved__Image.color = Color.gray;
+                    ButtonHealingRecieved__Image.color = Color.gray;
                     break;
                 case ProgressBar__prefab__script.DisplayMode.HealingDone:
-                    ButtonDamage__Image.color = Color.gray;
-                    ButtonHeal__Image.color = Color.white;
-                    ButtonTank__Image.color = Color.gray;
+                    ButtonDamageDone__Image.color = Color.gray;
+                    ButtonHealingDone__Image.color = Color.white;
+                    ButtonDamageRecieved__Image.color = Color.gray;
+                    ButtonHealingRecieved__Image.color = Color.gray;
                     break;
                 case ProgressBar__prefab__script.DisplayMode.DamageRecieved:
-                    ButtonDamage__Image.color = Color.gray;
-                    ButtonHeal__Image.color = Color.gray;
-                    ButtonTank__Image.color = Color.white;
+                    ButtonDamageDone__Image.color = Color.gray;
+                    ButtonHealingDone__Image.color = Color.gray;
+                    ButtonDamageRecieved__Image.color = Color.white;
+                    ButtonHealingRecieved__Image.color = Color.gray;
+                    break;
+                case ProgressBar__prefab__script.DisplayMode.HealingRecieved:
+                    ButtonDamageDone__Image.color = Color.gray;
+                    ButtonHealingDone__Image.color = Color.gray;
+                    ButtonDamageRecieved__Image.color = Color.gray;
+                    ButtonHealingRecieved__Image.color = Color.white;
                     break;
                 default:
                     throw new NotImplementedException();
