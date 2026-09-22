@@ -1,59 +1,38 @@
 using General.DTO.Battlefield;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Assets.GameData.Scenes.Battlefield
 {
+    /// <summary>Накапливает статистику только по уже воспроизведённым последствиям боя.</summary>
     public class StatisticsBattle
     {
-        private readonly BattlefieldSceneInitializator battlefieldSceneInitializator;
-        public StatisticsBattle(BattlefieldSceneInitializator battlefieldSceneInitializator)
-        {
-            this.battlefieldSceneInitializator = battlefieldSceneInitializator;
-        }
+        /// <summary>Статистика участников в порядке регистрации для отображения на панели.</summary>
+        public List<StatisticsHero> list_StatisticsHero { get; } = new();
 
-        public List<StatisticsHero> list_StatisticsHero { get; private set; } = new();
+        /// <summary>Быстрый доступ к статистике героя по серверному идентификатору.</summary>
+        private readonly Dictionary<Guid, StatisticsHero> heroes = new();
 
-        private int turnAdded = 0;
+        /// <summary>Индексы уже учтённых последствий для защиты от повторного начисления.</summary>
+        private readonly HashSet<int> appliedRecords = new();
 
+        /// <summary>Регистрирует участника боя с нулевыми начальными показателями.</summary>
         public void AddHero(Guid heroId, bool inTeam1, string name)
         {
-            list_StatisticsHero.Add(new StatisticsHero(heroId, inTeam1, name));
+            StatisticsHero hero = new(heroId, inTeam1, name);
+            heroes.Add(heroId, hero);
+            list_StatisticsHero.Add(hero);
         }
 
-        public void Update()
+        /// <summary>Учитывает конкретное показанное событие без поиска будущих записей в логе.</summary>
+        public void ApplyDamage(BattlefieldLogRecord_Damage record)
         {
-            int i = battlefieldSceneInitializator.battlefieldIndexAnimationStarted+1;
-            IEnumerable<BattlefieldLogRecordBase> logs = BattlefieldSceneInitializator.spawnedBattlefield.battlefieldLog.Where(a => a.index <= i && a.index >= turnAdded);
-            foreach (BattlefieldLogRecordBase log in logs)
-            {
-                switch (log)
-                {
-                    case BattlefieldLogRecord_Damage d:
-
-                        // Запись нанесённого урона
-                        {
-                            StatisticsHero v = list_StatisticsHero.First(a => a.heroId == d.hero1Id);
-                            v.damageDone += d.damage;
-                        }
-
-
-                        // Запись полученного урона
-                        {
-                            StatisticsHero v = list_StatisticsHero.First(a => a.heroId == d.hero2Id);
-                            v.damageReceived += d.damage;
-                        }
-
-                        break;
-                        //case BattlefieldLogRecord_TurnStart t:
-                        //    break;
-                }
-            }
-
-            turnAdded = i + 1;
-
-            list_StatisticsHero.Sort((a, b) => b.damageDone.CompareTo(a.damageDone));
+            if (!appliedRecords.Add(record.index))
+                return;
+            if (heroes.TryGetValue(record.hero1Id, out StatisticsHero source))
+                source.damageDone += record.damage;
+            if (heroes.TryGetValue(record.hero2Id, out StatisticsHero target))
+                target.damageReceived += record.damage;
         }
     }
 }

@@ -6,7 +6,6 @@ using General.DTO.Battlefield;
 using General.DTO.Entities.GameData;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using TMPro;
 using UnityEngine;
@@ -16,414 +15,294 @@ using LM = Game03Client.LocalizationManager;
 
 namespace Assets.GameData.Scenes.Battlefield
 {
+    /// <summary>Создаёт поле боя и асинхронно воспроизводит полученный от сервера лог.</summary>
     public class BattlefieldSceneInitializator : MonoBehaviour
     {
-        /// <summary>
-        /// Делаем static так как объект передаётся между сценами
-        /// </summary>
-        public static SpawnedBattlefield spawnedBattlefield { get; set; } = null;
+        /// <summary>Начальное состояние боя, передаваемое между сценами.</summary>
+        public static SpawnedBattlefield spawnedBattlefield { get; set; }
 
+        /// <summary>Карточки героев по серверным идентификаторам.</summary>
         private readonly Dictionary<Guid, BattlefieldUnit> battlefieldUnits = new();
-        private readonly List<BattlefieldUnit> playerUnits = new();
-        private readonly List<BattlefieldUnit> enemyUnits = new();
-        private bool initialized = false;
-        public static float width { get; private set; } = 0f;
-        public static float height { get; private set; } = 0f;
 
+        /// <summary>Параллельные визуальные последствия, завершения которых дожидается сцена.</summary>
+        private readonly List<UniTask> feedbackTasks = new();
+
+        /// <summary>Последняя ширина экрана, для которой выполнена раскладка.</summary>
+        public static float width { get; private set; }
+
+        /// <summary>Последняя высота экрана, для которой выполнена раскладка.</summary>
+        public static float height { get; private set; }
+
+        /// <summary>Текущий множитель скорости воспроизведения боя.</summary>
         public static float animationSpeed { get; private set; } = 1f;
 
+        /// <summary>Ключ сохранения выбранной скорости.</summary>
         private const string ANIMATION_SPEED_PREFS_KEY = "Battlefield.AnimationSpeed";
 
-        private static readonly float animationSpeedButton_Size = 128;
-        private static readonly float button_Padding = 25;
-        //private static readonly float _AbilityButton_FontSize = 24;
-        private static readonly float animationSpeedButton_FontSize = 50;
-        private RectTransform animationSpeedButton__RectTransform;
-        //private RectTransform _Ability1Button__RectTransform;
-        //private RectTransform _Ability2Button__RectTransform;
-        //private RectTransform _Ability3Button__RectTransform;
-        private TextMeshProUGUI animationSpeedButton__TextMeshProUGUI;
-        //private TextMeshProUGUI _Ability1Button__TextMeshProUGUI;
-        //private TextMeshProUGUI _Ability2Button__TextMeshProUGUI;
-        //private TextMeshProUGUI _Ability3Button__TextMeshProUGUI;
+        /// <summary>Базовый размер кнопки скорости.</summary>
+        private const float AnimationSpeedButtonSize = 128f;
 
-        private readonly HealthHub healthHub = new();
+        /// <summary>Базовый отступ кнопки скорости от края экрана.</summary>
+        private const float ButtonPadding = 25f;
 
+        /// <summary>Базовый размер шрифта кнопки скорости.</summary>
+        private const float AnimationSpeedButtonFontSize = 50f;
+
+        /// <summary>Область кнопки скорости.</summary>
+        private RectTransform animationSpeedButtonRect;
+
+        /// <summary>Подпись кнопки скорости.</summary>
+        private TextMeshProUGUI animationSpeedButtonText;
+
+        /// <summary>Кнопка изменения скорости.</summary>
+        private Button animationSpeedButton;
+
+        /// <summary>Контейнер всплывающих чисел.</summary>
         public static Transform canvasDamage__Transform { get; private set; }
 
-        private RectTransform turn__RectTransform;
-        private TextMeshProUGUI turn__TextMeshProUGUI;
+        /// <summary>Область надписи текущего хода.</summary>
+        private RectTransform turnRect;
 
+        /// <summary>Надпись текущего хода.</summary>
+        private TextMeshProUGUI turnText;
+
+        /// <summary>Фактический серверный индекс последнего начатого события.</summary>
         public int battlefieldIndexAnimationStarted { get; private set; } = -1;
-        private bool battlefieldIndexAnimationActive = false;
 
-        private PanelDamage__script panelDamage__script;
-
-        private readonly DateTime dateTimeWaitFor = DateTime.MinValue;
+        /// <summary>Накопленная статистика уже показанных последствий.</summary>
         public StatisticsBattle statisticsBattle { get; private set; }
 
+        /// <summary>Панель статистики боя.</summary>
+        private PanelDamage__script damagePanel;
+
+        /// <summary>Проигрыватель DOTween-анимаций этой сцены.</summary>
+        private BattlefieldAnimationPlayer animations;
+
+        /// <summary>Пул всплывающих чисел изменения здоровья.</summary>
+        private HealthHub healthHub;
+
+        /// <summary>Отмена загрузки и воспроизведения при отключении или уничтожении сцены.</summary>
+        private CancellationTokenSource playbackCancellation;
+
+        /// <summary>Признак завершённой инициализации интерфейса.</summary>
+        private bool initialized;
+
+        /// <summary>Подготавливает представление и запускает единственный асинхронный сценарий боя.</summary>
         private void Start()
         {
-            panelDamage__script = new();
-            statisticsBattle = new(this);
             if (!TryInitialize())
-            {
                 return;
-            }
-            panelDamage__script.Initialize();
+            Canvas.willRenderCanvases += RefreshLayoutIfNeeded;
             this.RunAsync(StartAsync);
         }
 
+        /// <summary>Создаёт карточки героев, статистику и обработчики интерфейса.</summary>
         private bool TryInitialize()
         {
-            if (spawnedBattlefield == null || spawnedBattlefield.spawnedHeroPlayerList == null)
+            if (spawnedBattlefield?.spawnedHeroPlayerList == null || spawnedBattlefield.spawnedHeroEnemyList == null)
             {
-                GameMessage.Show("spawnedBattlefield == null || spawnedBattlefield.SpawnedHeroes == null", true);
+                GameMessage.Show("Отсутствует начальное состояние боя.", true);
                 return false;
             }
 
-            //Debug.Log(Newtonsoft.Json.JsonConvert.SerializeObject(SpawnedBattlefield));
-            battlefieldUnits.Clear();
-
-            Transform canvasUnits__Transform = GameObjectFinder.FindByName("CanvasUnits").transform;
-            canvasDamage__Transform = GameObjectFinder.FindByName("CanvasDamage").transform;
-
-            // размещение героев игрока
-            for (int i = 0; i < spawnedBattlefield.spawnedHeroPlayerList.Count; i++)
-            {
-                SpawnedHero spawnedHeroes = spawnedBattlefield.spawnedHeroPlayerList[i];
-                BattlefieldUnit unit = new(spawnedHeroes, i, true, canvasUnits__Transform, healthHub, statisticsBattle);
-                battlefieldUnits.Add(spawnedHeroes.spawnedId, unit);
-                playerUnits.Add(unit);
-
-                BaseHero baseHero = Game03Client.GameData.Container.baseHeroes.First(a => a.id == spawnedHeroes.baseHeroId);
-                statisticsBattle.AddHero(spawnedHeroes.spawnedId, true, baseHero.name);
-            }
-
-            // размещение героев врага
-            for (int i = 0; i < spawnedBattlefield.spawnedHeroEnemyList.Count; i++)
-            {
-                SpawnedHero spawnedHeroes = spawnedBattlefield.spawnedHeroEnemyList[i];
-                BattlefieldUnit unit = new(spawnedHeroes, i, false, canvasUnits__Transform, healthHub, statisticsBattle);
-                battlefieldUnits.Add(spawnedHeroes.spawnedId, unit);
-                enemyUnits.Add(unit);
-
-                BaseHero baseHero = Game03Client.GameData.Container.baseHeroes.First(a => a.id == spawnedHeroes.baseHeroId);
-                statisticsBattle.AddHero(spawnedHeroes.spawnedId, false, baseHero.name);
-            }
-
-            animationSpeedButton__RectTransform = GameObjectFinder.FindByName<RectTransform>("AnimationSpeedButton");
-            animationSpeedButton__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", animationSpeedButton__RectTransform);
-
             animationSpeed = LoadAnimationSpeed();
-            animationSpeedButton__TextMeshProUGUI.text = $"X{animationSpeed:0}";
+            animations = new BattlefieldAnimationPlayer(animationSpeed);
+            statisticsBattle = new StatisticsBattle();
+            Transform unitsCanvas = GameObjectFinder.FindByName("CanvasUnits").transform;
+            canvasDamage__Transform = GameObjectFinder.FindByName("CanvasDamage").transform;
+            healthHub = new HealthHub(animations, canvasDamage__Transform);
+            CreateUnits(spawnedBattlefield.spawnedHeroPlayerList, true, unitsCanvas);
+            CreateUnits(spawnedBattlefield.spawnedHeroEnemyList, false, unitsCanvas);
 
-            Button AnimationSpeedButton__Button = animationSpeedButton__RectTransform.gameObject.GetComponent<Button>();
-            AnimationSpeedButton__Button.onClick.RemoveAllListeners();
-            AnimationSpeedButton__Button.onClick.AddListener(AnimationSpeedChange);
+            animationSpeedButtonRect = GameObjectFinder.FindByName<RectTransform>("AnimationSpeedButton");
+            animationSpeedButtonText = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", animationSpeedButtonRect);
+            animationSpeedButtonText.text = $"X{animationSpeed:0}";
+            animationSpeedButton = animationSpeedButtonRect.GetComponent<Button>();
+            animationSpeedButton.onClick.AddListener(AnimationSpeedChange);
+            turnRect = GameObjectFinder.FindByName<RectTransform>("TurnText");
+            turnText = turnRect.GetComponent<TextMeshProUGUI>();
 
-            //_Ability1Button__RectTransform = GameObjectFinder.FindByName<RectTransform>("Ability1Button");
-            //_Ability1Button__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _Ability1Button__RectTransform.transform);
-            //EventHelper.SetClickEvent(_Ability1Button__RectTransform.gameObject, Ability1OnClickAsync, true);
-
-            //_Ability2Button__RectTransform = GameObjectFinder.FindByName<RectTransform>("Ability2Button");
-            //_Ability2Button__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _Ability2Button__RectTransform.transform);
-            //EventHelper.SetClickEvent(_Ability2Button__RectTransform.gameObject, Ability2OnClickAsync, true);
-
-            //_Ability3Button__RectTransform = GameObjectFinder.FindByName<RectTransform>("Ability3Button");
-            //_Ability3Button__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _Ability3Button__RectTransform.transform);
-            //EventHelper.SetClickEvent(_Ability3Button__RectTransform.gameObject, Ability3OnClickAsync, true);
-
-            turn__RectTransform = GameObjectFinder.FindByName<RectTransform>("TurnText");
-            turn__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("TurnText");
-
+            damagePanel = new PanelDamage__script { battlefieldSceneInitializator = this };
+            damagePanel.Initialize();
+            foreach (BattlefieldUnit unit in battlefieldUnits.Values)
+                damagePanel.AddProgressBar();
+            damagePanel.Refresh();
+            initialized = true;
+            OnResized();
             return true;
         }
 
+        /// <summary>Создаёт карточки одной команды и начальные строки статистики.</summary>
+        private void CreateUnits(List<SpawnedHero> heroes, bool isPlayer, Transform canvas)
+        {
+            for (int i = 0; i < heroes.Count; i++)
+            {
+                SpawnedHero hero = heroes[i];
+                battlefieldUnits.Add(hero.spawnedId, new BattlefieldUnit(hero, i, isPlayer, canvas, animations, healthHub));
+                BaseHero baseHero = Game03Client.GameData.GetBaseHeroById(hero.baseHeroId);
+                statisticsBattle.AddHero(hero.spawnedId, isPlayer, baseHero.name);
+            }
+        }
+
+        /// <summary>Загружает лог, ожидает все действия и параллельные визуальные последствия.</summary>
+        private async UniTask StartAsync(CancellationToken destructionToken)
+        {
+            using CancellationTokenSource cancellation = CancellationTokenSource.CreateLinkedTokenSource(destructionToken);
+            playbackCancellation = cancellation;
+            CancellationToken token = cancellation.Token;
+            try
+            {
+                spawnedBattlefield.battlefieldLog = await Game03Client.Battlefield.BattlefieldProvider.GetBattleLogAsync(token);
+                token.ThrowIfCancellationRequested();
+                if (spawnedBattlefield.battlefieldLog == null)
+                    return;
+
+                BattlefieldLogPlayer player = new(spawnedBattlefield.battlefieldLog, message => Debug.LogWarning(message));
+                player.RecordStarted += SetCurrentRecord;
+                player.RegisterRecord<BattlefieldLogRecord_TurnStart>(PlayTurnAsync);
+                player.RegisterRecord<BattlefieldLogRecord_ChangeActionPoints>(PlayActionPointsAsync);
+                player.RegisterRecord<BattlefieldLogRecord_Damage>(PlayDamageAsync);
+                player.RegisterImpactEffect<BattlefieldLogRecord_Damage>(record => record.isPerodic ? null : record.indexReason);
+                player.RegisterAbility(EBattlefieldLogAbility.attack, PlayAttackAsync);
+
+                try
+                {
+                    await player.PlayAsync(token);
+                }
+                catch
+                {
+                    cancellation.Cancel();
+                    await UniTask.WhenAll(feedbackTasks).SuppressCancellationThrow();
+                    throw;
+                }
+                await UniTask.WhenAll(feedbackTasks);
+                feedbackTasks.Clear();
+            }
+            catch (OperationCanceledException) when (token.IsCancellationRequested)
+            {
+                // Уход со сцены является штатным завершением воспроизведения.
+            }
+            finally
+            {
+                cancellation.Cancel();
+                animations.Dispose();
+                playbackCancellation = null;
+            }
+        }
+
+        /// <summary>Запоминает реальный индекс записи, а не её порядковый номер в коллекции.</summary>
+        private void SetCurrentRecord(int index)
+        {
+            battlefieldIndexAnimationStarted = index;
+        }
+
+        /// <summary>Отображает начало серверного хода.</summary>
+        private UniTask PlayTurnAsync(BattlefieldLogRecord_TurnStart record, CancellationToken token)
+        {
+            token.ThrowIfCancellationRequested();
+            turnText.text = $"{LM.GetValue(L.UI.Label.Turn)}: {record.turn}";
+            return UniTask.CompletedTask;
+        }
+
+        /// <summary>Применяет серверное изменение очков действия как приращение текущего значения.</summary>
+        private UniTask PlayActionPointsAsync(BattlefieldLogRecord_ChangeActionPoints record, CancellationToken token)
+        {
+            token.ThrowIfCancellationRequested();
+            if (TryGetUnit(record.spawnedHeroId, out BattlefieldUnit unit))
+                unit.RefreshActionPoints(unit.SpawnedHero.actionPoints + record.countAP);
+            return UniTask.CompletedTask;
+        }
+
+        /// <summary>Применяет урон и статистику сразу, сохраняя ожидание параллельных чисел и анимации смерти.</summary>
+        private UniTask PlayDamageAsync(BattlefieldLogRecord_Damage record, CancellationToken token)
+        {
+            token.ThrowIfCancellationRequested();
+            if (TryGetUnit(record.hero2Id, out BattlefieldUnit target))
+                feedbackTasks.Add(target.ApplyDamageAsync(record.damage, record.isCrit, token));
+            statisticsBattle.ApplyDamage(record);
+            damagePanel.Refresh();
+            return UniTask.CompletedTask;
+        }
+
+        /// <summary>Воспроизводит атаку по первой доступной цели; все записанные последствия обрабатываются в момент попадания.</summary>
+        private async UniTask PlayAttackAsync(BattlefieldLogRecord_UseAbility record,
+            Func<CancellationToken, UniTask> impact, CancellationToken token)
+        {
+            if (TryGetUnit(record.spawnedHero1Id, out BattlefieldUnit attacker) && record.spawnedHeroTargets != null)
+            {
+                foreach (Guid targetId in record.spawnedHeroTargets)
+                {
+                    if (battlefieldUnits.TryGetValue(targetId, out BattlefieldUnit target))
+                    {
+                        await attacker.PlayAttackAsync(target, impact, token);
+                        return;
+                    }
+                }
+            }
+            Debug.LogWarning($"Атака {record.index}: нет доступной карточки атакующего или цели; применяются последствия.");
+            await impact(token);
+        }
+
+        /// <summary>Находит карточку или сообщает об отсутствующем участнике серверного события.</summary>
+        private bool TryGetUnit(Guid id, out BattlefieldUnit unit)
+        {
+            if (battlefieldUnits.TryGetValue(id, out unit))
+                return true;
+            Debug.LogWarning($"В событии боя указан отсутствующий герой {id}.");
+            return false;
+        }
+
+        /// <summary>Циклически переключает и сохраняет скорость всех анимаций текущего боя.</summary>
         private void AnimationSpeedChange()
         {
-            if (animationSpeedButton__RectTransform != null)
-            {
-                if (animationSpeed == 1f)
-                {
-                    animationSpeed = 2f;
-                    animationSpeedButton__TextMeshProUGUI.text = "X2";
-                }
-                else if (animationSpeed == 2f)
-                {
-                    animationSpeed = 5f;
-                    animationSpeedButton__TextMeshProUGUI.text = "X5";
-                }
-                else if (animationSpeed == 5f)
-                {
-                    animationSpeed = 10f;
-                    animationSpeedButton__TextMeshProUGUI.text = "X10";
-                }
-                else
-                {
-                    animationSpeed = 1f;
-                    animationSpeedButton__TextMeshProUGUI.text = "X1";
-                }
-
-                PlayerPrefs.SetFloat(ANIMATION_SPEED_PREFS_KEY, animationSpeed);
-                PlayerPrefs.Save();
-            }
+            animationSpeed = animationSpeed switch { 1f => 2f, 2f => 5f, 5f => 10f, _ => 1f };
+            animations.SetSpeed(animationSpeed);
+            animationSpeedButtonText.text = $"X{animationSpeed:0}";
+            PlayerPrefs.SetFloat(ANIMATION_SPEED_PREFS_KEY, animationSpeed);
+            PlayerPrefs.Save();
         }
 
+        /// <summary>Возвращает сохранённую скорость либо стандартное значение.</summary>
         private static float LoadAnimationSpeed()
         {
-            float storedValue = PlayerPrefs.GetFloat(ANIMATION_SPEED_PREFS_KEY, 1f);
-            return storedValue is 1f or 2f or 5f or 10f ? storedValue : 1f;
+            float value = PlayerPrefs.GetFloat(ANIMATION_SPEED_PREFS_KEY, 1f);
+            return value is 1f or 2f or 5f or 10f ? value : 1f;
         }
 
-        private async UniTask StartAsync(CancellationToken cancellationToken)
+        /// <summary>Реагирует на изменение экрана перед отрисовкой Canvas, не управляя временем анимаций.</summary>
+        private void RefreshLayoutIfNeeded()
         {
-            spawnedBattlefield.battlefieldLog = await Game03Client.Battlefield.BattlefieldProvider.GetBattleLogAsync(cancellationToken);
-            if (spawnedBattlefield.battlefieldLog == null)
-            {
-                return;
-            }
-            spawnedBattlefield.battlefieldLog.Sort((a, b) => a.index.CompareTo(b.index));
-
-
-            battlefieldIndexAnimationStarted = 0;
-            battlefieldIndexAnimationActive = false;
-            panelDamage__script.battlefieldSceneInitializator = this;
-
-            for (int i = 0; i < playerUnits.Count; i++)
-            {
-                BaseHero h = Game03Client.GameData.GetBaseHeroById(playerUnits[i].SpawnedHero.baseHeroId);
-                panelDamage__script.AddProgressBar();
-            }
-            for (int i = 0; i < enemyUnits.Count; i++)
-            {
-                BaseHero h = Game03Client.GameData.GetBaseHeroById(enemyUnits[i].SpawnedHero.baseHeroId);
-                panelDamage__script.AddProgressBar();
-            }
-            initialized = true;
-        }
-
-        private void Update()
-        {
-            if (initialized && (!Mathf.Approximately(Screen.height, height) || !Mathf.Approximately(Screen.width, width)))
-            {
+            if (initialized && (Screen.width != width || Screen.height != height))
                 OnResized();
-            }
-
-            List<BattlefieldLogRecordBase> fullLog = spawnedBattlefield.battlefieldLog;
-            if (battlefieldIndexAnimationStarted > fullLog.Count)
-            {
-                return;
-            }
-
-            //if (!playerUnits.Any(a => a.AnimationAttackStage > 0))
-            //{
-            //    var list = enemyUnits.Where(a => a.SpawnedHero.Health > 0).ToList();
-            //    if (list.Count > 0)
-            //    {
-            //        BattlefieldUnit myUnit = playerUnits[RandomShared.Next(playerUnits.Count)];
-            //        BattlefieldUnit enemyUnit = list[RandomShared.Next(list.Count)];
-            //        myUnit.AnimationStartAttackUnit(enemyUnit);
-            //    }
-            //}
-
-            //foreach (BattlefieldUnit unit in playerUnits)
-            //{
-            //    if (unit.AnimationAttackStage == 0)
-            //    {
-            //        BattlefieldUnit enemyUnit = enemyUnits[RandomShared.Next(enemyUnits.Count)];
-            //        unit.AnimationStartAttackUnit(enemyUnit);
-            //    }
-            //}
-
-
-            //if (battlefieldIndexAnimationActive && SpawnedBattlefield.BattlefieldLog[^1].Index <= battlefieldIndexAnimationStarted)
-            //{
-            //    battlefieldIndexAnimationStarted = -1;
-            //    battlefieldIndexAnimationActive = false;
-            //}
-
-
-            if (dateTimeWaitFor < DateTime.Now)
-            {
-                if (!battlefieldIndexAnimationActive && fullLog != null)
-                {
-                    for (int i = 0; i < fullLog.Count; i++)
-                    {
-                        BattlefieldLogRecordBase iLog = fullLog[i];
-                        if (iLog.index > battlefieldIndexAnimationStarted)
-                        {
-                            switch (iLog)
-                            {
-                                case BattlefieldLogRecord_TurnStart log:
-                                    turn__TextMeshProUGUI.text = $"{LM.GetValue(L.UI.Label.Turn)}: {log.turn}";
-                                    break;
-                                //case BattlefieldLogRecord_ChangeActionPoints log:
-                                //    break;
-                                case BattlefieldLogRecord_UseAbility log:
-                                    switch (log.ability)
-                                    {
-                                        case EBattlefieldLogAbility.attack:
-                                            if (log.spawnedHeroTargets.Length == 1)
-                                            {
-                                                BattlefieldUnit h1Unit = battlefieldUnits[log.spawnedHero1Id];
-                                                BattlefieldUnit h2Unit = battlefieldUnits[log.spawnedHeroTargets[0]];
-
-                                                // ищем в логе запись которая хранит значения изменения здоровья
-                                                BattlefieldLogRecordBase logRecord = fullLog.FirstOrDefault(a => a is BattlefieldLogRecord_Damage d && d.indexReason == log.index);
-                                                if (logRecord is not null and BattlefieldLogRecord_Damage logDamage)
-                                                {
-                                                    h1Unit.AnimationStartAttackUnit(h2Unit, logDamage.damage, logDamage.isCrit);
-                                                    h2Unit.SpawnedHero.health -= logDamage.damage;
-                                                    //dateTimeWaitFor = DateTime.Now.AddSeconds(
-                                                    //    0
-                                                    //    + BattlefieldUnit.AnimationAttackTimeStage1
-                                                    //    + BattlefieldUnit.AnimationAttackTimeStage2
-                                                    //    //+ BattlefieldUnit.AnimationAttackTimeStage3
-                                                    //    );
-                                                    //void UpdatePanelDamage()
-                                                    //{
-                                                    //    PanelDamage__script.Bar bar = panelDamage__script.bars.FirstOrDefault(a => a.heroId == h1Unit.SpawnedHero.SpawnedId);
-                                                    //    if (bar == null)
-                                                    //    {
-                                                    //        Debug.Log($"bar is null, SpawnedHero.SpawnedId={h1Unit.SpawnedHero.SpawnedId}");
-                                                    //    }
-                                                    //    else
-                                                    //    {
-                                                    //        bar.bar.value += logDamage.Damage;
-                                                    //        bar.bar.SetTextLeft(bar.bar.value.ToStr());
-                                                    //        panelDamage__script.ProgressBarsSortAndRefresh();
-                                                    //    }
-                                                    //}
-
-
-                                                    battlefieldIndexAnimationActive = true;
-                                                }
-
-
-                                            }
-
-                                            break;
-                                        default:
-                                            break;
-                                    }
-
-                                    //Debug.Log(dateTimeWaitFor);
-
-                                    break;
-                                    //case BattlefieldLogRecord_Damage log:
-                                    //    break;
-
-                                    //default:
-                                    //    break;
-                            }
-
-                            battlefieldIndexAnimationStarted++;
-                            break;
-                        }
-                    }
-
-
-                }
-            }
-
-            panelDamage__script.Refresh();
-
-            battlefieldIndexAnimationActive = false;
-            foreach (BattlefieldUnit unit in playerUnits)
-            {
-                unit.UpdateAnimationAttack();
-                unit.UpdateAnimationDeathScale();
-                if (!battlefieldIndexAnimationActive && unit.AnimationAttackStage > 0)
-                {
-                    battlefieldIndexAnimationActive = true;
-                }
-            }
-            foreach (BattlefieldUnit unit in enemyUnits)
-            {
-                unit.UpdateAnimationAttack();
-                unit.UpdateAnimationDeathScale();
-                if (!battlefieldIndexAnimationActive && unit.AnimationAttackStage > 0)
-                {
-                    battlefieldIndexAnimationActive = true;
-                }
-            }
-
-            healthHub.Update();
-
-
         }
 
+        /// <summary>Пересчитывает раскладку, сохраняя текущую позицию и масштаб анимируемых карточек.</summary>
         private void OnResized()
         {
-            if (!initialized)
-            {
-                return;
-            }
-
-            height = Screen.height;
             width = Screen.width;
-
-            foreach (BattlefieldUnit unit in playerUnits)
-            {
+            height = Screen.height;
+            foreach (BattlefieldUnit unit in battlefieldUnits.Values)
                 unit.OnResize();
-            }
-            foreach (BattlefieldUnit unit in enemyUnits)
-            {
-                unit.OnResize();
-            }
-
-            float coefHeight = G.GetCoefHeight();
-            float animationSpeedButton_Size = BattlefieldSceneInitializator.animationSpeedButton_Size * coefHeight;
-            Vector2 animationSpeedButton_SizeVector = new(animationSpeedButton_Size, animationSpeedButton_Size);
-
-            animationSpeedButton__RectTransform.sizeDelta = animationSpeedButton_SizeVector;
-            //_Ability1Button__RectTransform.sizeDelta = abilityButton_SizeVector;
-            //_Ability2Button__RectTransform.sizeDelta = abilityButton_SizeVector;
-            //_Ability3Button__RectTransform.sizeDelta = abilityButton_SizeVector;
-
-            float abilityButton_Padding = button_Padding * coefHeight;
-            animationSpeedButton__RectTransform.anchoredPosition = new Vector2(-abilityButton_Padding, abilityButton_Padding);
-            //_Ability1Button__RectTransform.anchoredPosition = new Vector2((-abilityButton_Padding * 2) - abilityButton_Size, abilityButton_Padding);
-            //_Ability2Button__RectTransform.anchoredPosition = new Vector2((-abilityButton_Padding * 3) - (abilityButton_Size * 2), abilityButton_Padding);
-            //_Ability3Button__RectTransform.anchoredPosition = new Vector2((-abilityButton_Padding * 4) - (abilityButton_Size * 3), abilityButton_Padding);
-
-            animationSpeedButton__TextMeshProUGUI.fontSize = animationSpeedButton_FontSize * coefHeight;
-            //_Ability1Button__TextMeshProUGUI.fontSize = _AbilityButton_FontSize * coefHeight;
-            //_Ability2Button__TextMeshProUGUI.fontSize = _AbilityButton_FontSize * coefHeight;
-            //_Ability3Button__TextMeshProUGUI.fontSize = _AbilityButton_FontSize * coefHeight;
-
-            turn__RectTransform.anchoredPosition = new Vector2(-25 * coefHeight, -108 * coefHeight);
-            turn__TextMeshProUGUI.fontSize = 70 * coefHeight;
+            healthHub.OnResize();
+            float coefficient = G.GetCoefHeight();
+            animationSpeedButtonRect.sizeDelta = Vector2.one * (AnimationSpeedButtonSize * coefficient);
+            animationSpeedButtonRect.anchoredPosition = new Vector2(-ButtonPadding, ButtonPadding) * coefficient;
+            animationSpeedButtonText.fontSize = AnimationSpeedButtonFontSize * coefficient;
+            turnRect.anchoredPosition = new Vector2(-25, -108) * coefficient;
+            turnText.fontSize = 70 * coefficient;
+            damagePanel.OnResized(coefficient);
         }
 
-        //private async UniTask AbilityAttackOnClickAsync()
-        //{
-        //    SpawnedBattlefield.BattlefieldLog = await BattlefieldProvider.GetBattleLogAsync(
-        //        CancellationTokenManager.Create($"{nameof(BattlefieldProvider)}.{nameof(BattlefieldProvider.GetBattleLogAsync)}()"));
-
-        //    if (SpawnedBattlefield.BattlefieldLog == null)
-        //    {
-        //        return;
-        //    }
-        //    SpawnedBattlefield.BattlefieldLog.Sort((a, b) => a.Index.CompareTo(b.Index));
-        //    battlefieldIndexAnimationStarted = 0;
-        //    battlefieldIndexAnimationActive = false;
-        //    //Debug.Log("количество записей в логе = "+SpawnedBattlefield.BattlefieldLog.Count.ToString());
-        //    //string s = JSON.Serialize(SpawnedBattlefield.BattlefieldLog);
-        //}
-        //private async UniTask Ability1OnClickAsync()
-        //{
-
-        //}
-        //private async UniTask Ability2OnClickAsync()
-        //{
-
-        //}
-        //private async UniTask Ability3OnClickAsync()
-        //{
-
-        //}
-
+        /// <summary>Отменяет воспроизведение и снимает подписки при выходе со сцены.</summary>
+        private void OnDisable()
+        {
+            initialized = false;
+            Canvas.willRenderCanvases -= RefreshLayoutIfNeeded;
+            if (animationSpeedButton != null)
+                animationSpeedButton.onClick.RemoveListener(AnimationSpeedChange);
+            playbackCancellation?.Cancel();
+            animations?.Dispose();
+            canvasDamage__Transform = null;
+        }
     }
 }

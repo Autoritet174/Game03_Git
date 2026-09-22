@@ -1,4 +1,8 @@
 using Assets.GameData.Scripts;
+using Assets.GameData.Scenes.Battlefield.Animations;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using System.Threading;
 using General;
 using General.DTO.Battlefield;
 using General.DTO.Entities.GameData;
@@ -12,84 +16,139 @@ using LM = Game03Client.LocalizationManager;
 
 namespace Assets.GameData.Scenes.Battlefield
 {
+    /// <summary>Карточка героя с независимыми асинхронными анимациями атаки и последствий.</summary>
     public partial class BattlefieldUnit
     {
+        /// <summary>Цвет уровня героя силы.</summary>
         private static readonly Color colorStrength = new(224f / 255f, 0, 0);
+        /// <summary>Цвет уровня героя ловкости.</summary>
         private static readonly Color colorAgility = new(0, 239f / 255f, 17f / 255f);
+        /// <summary>Цвет уровня героя интеллекта.</summary>
         private static readonly Color colorIntelligence = new(0, 160f / 255f, 255f / 255f);
+        /// <summary>Цвет уровня универсального героя.</summary>
         private static readonly Color colorUniversal = Color.white;
 
+        /// <summary>Исходный масштаб живого героя.</summary>
         private static readonly float _ScaleAlive = 0.85f;
+        /// <summary>Итоговый масштаб погибшего героя.</summary>
         private static readonly float _ScaleDead = _ScaleAlive * 0.65f;
-        private static readonly double _AnimationDeathScaleTime = 2.0;
+        /// <summary>Длительность уменьшения погибшего героя при скорости ×1.</summary>
+        private const float AnimationDeathScaleTime = 2f;
+        /// <summary>Ширина карточки при базовом разрешении.</summary>
         private static readonly float _Width = 150;
+        /// <summary>Высота карточки при базовом разрешении.</summary>
         private static readonly float _Height = 200;
 
+        /// <summary>Вертикальное смещение внутреннего ряда.</summary>
         private static readonly float yShift1 = _Height * 0.6f * _ScaleAlive;
+        /// <summary>Общее вертикальное смещение построения.</summary>
         private static readonly float yShift = 40;
+        /// <summary>Вертикальное смещение внешнего ряда.</summary>
         private static readonly float yShift2 = yShift1 * 3;
+        /// <summary>Вертикальные позиции четырёх рядов.</summary>
         private static readonly float[] yShiftArray = new float[] {
             -yShift2 + yShift,//1
             -yShift1 + yShift,//2
             yShift1 + yShift,//3
             yShift2 + yShift,//4
         };
+        /// <summary>Горизонтальное расстояние между колонками.</summary>
         private static readonly float xShift = 200f * _ScaleAlive;
 
+        /// <summary>Корневой Transform карточки.</summary>
         private readonly RectTransform _RectTransform;
 
-
-        //private readonly RectTransform _Health__RectTransform;
-        //private readonly RectTransform _HealthImagePercent__RectTransform;
-        //private readonly RectTransform _HealthImageGreenBar__RectTransform;
-
+        /// <summary>Базовая высота полосы здоровья.</summary>
         private static readonly float _Health_Height = 30;
-        //private readonly TextMeshProUGUI _HealthText_TextMeshProUGUI;
-        //private readonly RectTransform _HealthText__RectTransform;
 
+        /// <summary>Маска портрета героя.</summary>
         private readonly RectTransform _ImageHeroMask__RectTransform;
 
+        /// <summary>Значок основной характеристики у полосы здоровья.</summary>
         private readonly RectTransform _HealthImageStat__RectTransform;
 
+        /// <summary>Область уровня героя.</summary>
         private readonly RectTransform _Level_RectTransform;
 
+        /// <summary>Подпись уровня героя.</summary>
         private readonly TextMeshProUGUI _LevelText_TextMeshProUGUI;
 
-        //private static readonly float _HealthChange_Height = 25;
-        //private readonly RectTransform _HealthChange_RectTransform;
-        //private readonly TextMeshProUGUI _HealthChange_TextMeshProUGUI;
-
+        /// <summary>Область очков действия.</summary>
         private readonly RectTransform _ActionPoints_RectTransform;
+        /// <summary>Значок очков действия.</summary>
         private readonly RectTransform _ActionPointsImage_RectTransform;
+        /// <summary>Область подписи очков действия.</summary>
         private readonly RectTransform _ActionPointsText_RectTransform;
+        /// <summary>Подпись очков действия.</summary>
         private readonly TextMeshProUGUI _ActionPointsText_TextMeshProUGUI;
 
+        /// <summary>Объект отметки смерти.</summary>
         private readonly GameObject _ImageDead_GameObject;
+        /// <summary>Область отметки смерти.</summary>
         private readonly RectTransform _ImageDead_RectTransform;
 
+        /// <summary>Полоса здоровья героя.</summary>
         private readonly ProgressBar__prefab__script progressBar;
 
-        private bool _AnimationDeathScaleActive;
-        private DateTime _AnimationDeathScaleStart;
-        private DateTime _AnimationDeathScaleEnd;
-        private float _AnimationDeathScaleFrom;
-
+        /// <summary>Текущее отображаемое состояние героя.</summary>
         public SpawnedHero SpawnedHero { get; }
 
+        /// <summary>Принадлежность карточки команде игрока.</summary>
         private readonly bool _IsMyUnit;
+        /// <summary>Позиция героя в построении команды.</summary>
         private readonly int _Position;
+        /// <summary>Локализованная подпись погибшего героя.</summary>
         private readonly string textDead = "Dead";
-        private readonly StatisticsBattle statisticsBattle;
+        /// <summary>Проигрыватель анимаций, принадлежащих текущей сцене.</summary>
+        private readonly BattlefieldAnimationPlayer animations;
 
+        /// <summary>Пул чисел изменения здоровья.</summary>
+        private readonly HealthHub healthHub;
+
+        /// <summary>Позиция карточки в координатах базового разрешения.</summary>
+        private Vector2 animationPosition;
+
+        /// <summary>Текущая позиция; DOTween интерполирует её независимо от разрешения экрана.</summary>
+        private Vector2 AnimationPosition
+        {
+            get => animationPosition;
+            set
+            {
+                animationPosition = value;
+                _RectTransform.anchoredPosition = value * G.GetCoefHeight();
+            }
+        }
+
+        /// <summary>Множитель увеличения карточки во время атаки.</summary>
+        private float attackScale = 1f;
+
+        /// <summary>Масштаб жизни или смерти, независимый от анимации атаки.</summary>
+        private float lifeScale = _ScaleAlive;
+
+        /// <summary>Свойство масштаба атаки, изменяемое DOTween.</summary>
+        private float AttackScale
+        {
+            get => attackScale;
+            set { attackScale = value; RefreshScale(); }
+        }
+
+        /// <summary>Свойство масштаба жизни, изменяемое DOTween.</summary>
+        private float LifeScale
+        {
+            get => lifeScale;
+            set { lifeScale = value; RefreshScale(); }
+        }
+
+        /// <summary>Создаёт карточку героя, связывает элементы интерфейса и задаёт начальное состояние.</summary>
         public BattlefieldUnit(SpawnedHero spawnedHeroes,
             int position, bool isMyUnit, Transform canvasUnits__Transform,
-            Animations.HealthHub healthHub, StatisticsBattle statisticsBattle)
+            BattlefieldAnimationPlayer animations, HealthHub healthHub)
         {
             SpawnedHero = spawnedHeroes;
             _Position = position;
             _IsMyUnit = isMyUnit;
             this.healthHub = healthHub;
-            this.statisticsBattle = statisticsBattle;
+            this.animations = animations;
 
             GameObject gameObject = AddressablePrefabProvider.BattlefieldUnit.SafeInstant(canvasUnits__Transform);
             BaseHero dtoBaseHero = Game03Client.GameData.Container.baseHeroes.First(a => a.id == spawnedHeroes.baseHeroId);
@@ -102,12 +161,10 @@ namespace Assets.GameData.Scenes.Battlefield
             _RectTransform.pivot = new(0.5f, 0.5f);
             _RectTransform.localScale = new Vector3(_ScaleAlive, _ScaleAlive, 1);
 
-
             Image _ImageRarity_Image = GameObjectFinder.FindByName<Image>("ImageRarity", gameObject.transform);
             _ImageRarity_Image.sprite = AddressablePrefabProvider.GetRarity(dtoBaseHero.rarity);
             _ImageRarity_Image.preserveAspect = true;
             _ImageRarity_Image.type = Image.Type.Simple;
-
 
             _ImageHeroMask__RectTransform = GameObjectFinder.FindByName<RectTransform>("ImageHeroMask", gameObject.transform);
 
@@ -116,20 +173,12 @@ namespace Assets.GameData.Scenes.Battlefield
             _ImageHero_Image.preserveAspect = true;
             _ImageHero_Image.type = Image.Type.Simple;
 
-
             progressBar = GameObjectFinder.FindByName<ProgressBar__prefab__script>("ProgressBar__prefab", gameObject.transform);
             progressBar.SetTextRightOffsetRight(20);
             progressBar.Initialize();
             textDead = LM.GetValue(L.UI.Label.Dead).ToUpperInvariant();
-            //_Health__RectTransform = GameObjectFinder.FindByName<RectTransform>("Health", gameObject.transform);
-            //_HealthImagePercent__RectTransform = GameObjectFinder.FindByName<RectTransform>("HealthImagePercent", gameObject.transform);
-            //_HealthImageGreenBar__RectTransform = GameObjectFinder.FindByName<RectTransform>("HealthImageGreenBar", gameObject.transform);
-            //_HealthText_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("HealthText", gameObject.transform);
-            //_HealthText__RectTransform = _HealthText_TextMeshProUGUI.GetComponent<RectTransform>();
-
 
             _HealthImageStat__RectTransform = GameObjectFinder.FindByName<RectTransform>("HealthImageStat", gameObject.transform);
-
 
             _Level_RectTransform = GameObjectFinder.FindByName<RectTransform>("Level", gameObject.transform);
             _LevelText_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("LevelText", gameObject.transform);
@@ -152,13 +201,15 @@ namespace Assets.GameData.Scenes.Battlefield
             _ImageDead_GameObject = GameObjectFinder.FindByName("ImageDead", gameObject.transform);
             _ImageDead_RectTransform = _ImageDead_GameObject.GetComponent<RectTransform>();
 
+            AnimationPosition = GetFormationPosition();
+            LifeScale = SpawnedHero.health > 0 ? _ScaleAlive : _ScaleDead;
             OnResize();
 
-            RefreshHealth(false);
+            RefreshHealth();
             RefreshActionPoints(SpawnedHero.actionPoints);
         }
 
-
+        /// <summary>Обновляет размеры интерфейса, сохраняя текущие значения анимации.</summary>
         public void OnResize()
         {
             float coefHeight = G.GetCoefHeight();
@@ -168,18 +219,12 @@ namespace Assets.GameData.Scenes.Battlefield
             float miniIconStat_X = -2 * coefHeight;
             float miniIconStat_Size = 17 * coefHeight;
 
-
-            _RectTransform.anchoredPosition = GetCoords();
+            _RectTransform.anchoredPosition = AnimationPosition * coefHeight;
             _RectTransform.sizeDelta = new Vector2(_Width * coefHeight, _Height * coefHeight);
 
             float imageHeroMask_Padding = 10 * coefHeight;
             _ImageHeroMask__RectTransform.offsetMin = new(imageHeroMask_Padding, imageHeroMask_Padding);
             _ImageHeroMask__RectTransform.offsetMax = new(-imageHeroMask_Padding, -imageHeroMask_Padding);
-
-
-            //_Health__RectTransform.sizeDelta = new Vector2(0, text_Height);
-            //_Health__RectTransform.anchoredPosition = new Vector2(0, -3 * coefHeight);
-            //_HealthImageGreenBar__RectTransform.sizeDelta = new Vector2(_Width * coefHeight, text_Height);
 
             Vector2 miniIconStat_Size_Vector2 = new(miniIconStat_Size, miniIconStat_Size);
             Vector2 miniIconStat_X_Vector2 = new(miniIconStat_X, 0);
@@ -187,16 +232,10 @@ namespace Assets.GameData.Scenes.Battlefield
             _HealthImageStat__RectTransform.sizeDelta = miniIconStat_Size_Vector2;
             _HealthImageStat__RectTransform.anchoredPosition = miniIconStat_X_Vector2;
 
-            //_HealthText__RectTransform.sizeDelta = new Vector2(text_Width, text_Height);
-            //_HealthText_TextMeshProUGUI.fontSize = 22 * coefHeight;
-
-
             _Level_RectTransform.sizeDelta = new Vector2(50 * coefHeight, 25 * coefHeight);
             _LevelText_TextMeshProUGUI.fontSize = 22 * coefHeight;
 
-
-            RefreshHealth(false);
-
+            RefreshHealth();
 
             _ActionPoints_RectTransform.anchoredPosition = new Vector2(0, text_Height);
             _ActionPoints_RectTransform.sizeDelta = new Vector2(0, text_Height);
@@ -209,81 +248,52 @@ namespace Assets.GameData.Scenes.Battlefield
             _ImageDead_RectTransform.sizeDelta = new Vector2(imageDead, imageDead);
         }
 
-        /// <summary> Изменение текста и полоски здоровья. </summary>
-        public void RefreshHealth(bool animateScale = true)
+        /// <summary>Обновляет здоровье и отметку смерти, не сбрасывая активные анимации масштаба.</summary>
+        private void RefreshHealth()
         {
-            if (SpawnedHero.health > 0)
-            {
-                progressBar.SetTextRight(SpawnedHero.health.ToStr());
-                _ImageDead_GameObject.SetActive(false);
-                _AnimationDeathScaleActive = false;
-                _RectTransform.localScale = new Vector3(_ScaleAlive, _ScaleAlive, _ScaleAlive);
-            }
-            else
-            {
-                progressBar.SetTextRight(textDead);
-                _ImageDead_GameObject.SetActive(true);
-                if (animateScale)
-                {
-                    if (!_AnimationDeathScaleActive)
-                    {
-                        _AnimationDeathScaleFrom = _RectTransform.localScale.x;
-                        _AnimationDeathScaleStart = DateTime.Now;
-                        _AnimationDeathScaleEnd = _AnimationDeathScaleStart.AddSeconds(_AnimationDeathScaleTime / BattlefieldSceneInitializator.animationSpeed);
-                        _AnimationDeathScaleActive = true;
-                    }
-                }
-                else
-                {
-                    _AnimationDeathScaleActive = false;
-                    _RectTransform.localScale = new Vector3(_ScaleDead, _ScaleDead, _ScaleDead);
-                }
-            }
+            progressBar.SetTextRight(SpawnedHero.health > 0 ? SpawnedHero.health.ToStr() : textDead);
+            _ImageDead_GameObject.SetActive(SpawnedHero.health <= 0);
             progressBar.value = SpawnedHero.health;
             progressBar.valueMax = SpawnedHero.healthMax;
             progressBar.Refresh();
         }
 
-        public void UpdateAnimationDeathScale()
+        /// <summary>Применяет серверный урон в момент попадания и ожидает параллельные визуальные последствия.</summary>
+        public async UniTask ApplyDamageAsync(float damage, bool isCrit, CancellationToken token)
         {
-            if (!_AnimationDeathScaleActive)
+            token.ThrowIfCancellationRequested();
+            bool wasAlive = SpawnedHero.health > 0;
+            SpawnedHero.health -= damage;
+            RefreshHealth();
+            UniTask death = UniTask.CompletedTask;
+            if (wasAlive && SpawnedHero.health <= 0)
             {
-                return;
+                death = animations.PlayAsync(
+                    DOTween.To(() => LifeScale, value => LifeScale = value, _ScaleDead, AnimationDeathScaleTime)
+                        .SetEase(Ease.Linear), token);
             }
-
-            float animationPercent = Math.Clamp((float)((DateTime.Now - _AnimationDeathScaleStart).TotalSeconds / (_AnimationDeathScaleEnd - _AnimationDeathScaleStart).TotalSeconds), 0, 1);
-            float scale = _AnimationDeathScaleFrom + ((_ScaleDead - _AnimationDeathScaleFrom) * animationPercent);
-            _RectTransform.localScale = new Vector3(scale, scale, scale);
-            if (animationPercent == 1)
-            {
-                _AnimationDeathScaleActive = false;
-            }
+            await UniTask.WhenAll(death, healthHub.PlayAsync(-damage, isCrit, _RectTransform, token));
         }
 
+        /// <summary>Совмещает независимые масштабы атаки и смерти без конкурирующих записей в Transform.</summary>
+        private void RefreshScale()
+        {
+            if (_RectTransform != null)
+                _RectTransform.localScale = new Vector3(lifeScale * attackScale, lifeScale * attackScale, 1f);
+        }
+
+        /// <summary>Обновляет очки действия в модели и подписи карточки.</summary>
         public void RefreshActionPoints(int ap)
         {
             SpawnedHero.actionPoints = ap;
             _ActionPointsText_TextMeshProUGUI.text = ap.ToString();
         }
 
-        public Vector2 GetCoords()
+        /// <summary>Возвращает исходную позицию героя в координатах базового разрешения.</summary>
+        private Vector2 GetFormationPosition()
         {
-            float coefHeight = G.GetCoefHeight();
             float x = xShift * ((_Position / 4) + 1);
-            if (_IsMyUnit)
-            {
-                x = -x;
-            }
-            float y = yShiftArray[_Position % 4];
-            return new Vector2(x * coefHeight, y * coefHeight);
+            return new Vector2(_IsMyUnit ? -x : x, yShiftArray[_Position % 4]);
         }
-
-        public static float AnimationShiftPower(float x, float p = 6f)
-        {
-            x = Math.Clamp(x, 0f, 1f);
-            return 1f - MathF.Pow(1f - x, p);
-        }
-
-
     }
 }

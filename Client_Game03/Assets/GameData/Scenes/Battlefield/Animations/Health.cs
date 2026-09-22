@@ -1,99 +1,91 @@
 using Assets.GameData.Scripts;
-using General;
-using System;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using System.Threading;
 using TMPro;
 using UnityEngine;
 
 namespace Assets.GameData.Scenes.Battlefield.Animations
 {
+    /// <summary>Одно число изменения здоровья, возвращаемое в пул после завершения DOTween-анимации.</summary>
     public class Health
     {
+        /// <summary>Настройки показа чисел.</summary>
         private readonly HealthHub healthHub;
-        public Health(GameObject gameObject, HealthHub healthHub)
+
+        /// <summary>Проигрыватель времени текущего боя.</summary>
+        private readonly BattlefieldAnimationPlayer animations;
+
+        /// <summary>Переиспользуемый объект числа.</summary>
+        private readonly GameObject gameObject;
+
+        /// <summary>Область числа на Canvas.</summary>
+        private readonly RectTransform rectTransform;
+
+        /// <summary>Текст и цвет числа.</summary>
+        private readonly TextMeshProUGUI text;
+
+        /// <summary>Карточка, за которой следует число.</summary>
+        private RectTransform parent;
+
+        /// <summary>Текущее смещение от карточки в координатах базового разрешения.</summary>
+        private Vector2 offset;
+
+        /// <summary>Признак занятости объекта анимацией.</summary>
+        public bool Active { get; private set; }
+
+        /// <summary>Сохраняет ссылки на компоненты переиспользуемого числа.</summary>
+        public Health(GameObject gameObject, HealthHub healthHub, BattlefieldAnimationPlayer animations)
         {
             this.gameObject = gameObject;
             this.healthHub = healthHub;
+            this.animations = animations;
             rectTransform = gameObject.GetComponent<RectTransform>();
-            textMeshProUGUI = gameObject.GetComponent<TextMeshProUGUI>();
+            text = gameObject.GetComponent<TextMeshProUGUI>();
+            gameObject.SetActive(false);
         }
 
-        private readonly GameObject gameObject;
-        private readonly RectTransform rectTransform;
-        private readonly TextMeshProUGUI textMeshProUGUI;
-        private DateTime dtStart;
-        private DateTime dtEnd;
-        private bool active = true;
-        private RectTransform posParent;
-        private Vector2 posEnd = Vector2.zero;
-
-        public void Start(float value, bool isCrit, RectTransform posParent)
+        /// <summary>Показывает значение, ожидает линейный разлёт и освобождает объект даже при отмене.</summary>
+        public async UniTask PlayAsync(float value, bool isCrit, RectTransform parent, Vector2 destination, CancellationToken token)
         {
-            dtStart = DateTime.Now;
-            dtEnd = dtStart.AddSeconds(healthHub.AnimationHealthChangeTime / BattlefieldSceneInitializator.animationSpeed);
-
-            string text;
-            if (value < 0)
-            {
-                text = value.ToStr();
-                textMeshProUGUI.color = Color.red;
-            }
-            else
-            {
-                text = $"+{value.ToStr()}";
-                textMeshProUGUI.color = Color.green;
-            }
-
-            if (isCrit)
-            {
-                text = $"{text} CRIT";
-            }
-            textMeshProUGUI.text = text;
-
-            this.posParent = posParent;
-            //float angle = RandomShared.NextBool() ? RandomShared.NextSingle(-180, 180) : RandomShared.NextSingle(15, 90);
-            posEnd = healthHub.GetPointFromAngle(healthHub.Distance * G.GetCoefHeight(), RandomShared.NextSingle(-180, 180));
-
+            token.ThrowIfCancellationRequested();
+            this.parent = parent;
+            offset = Vector2.zero;
+            text.color = value < 0 ? Color.red : Color.green;
+            text.text = (value < 0 ? value.ToStr() : $"+{value.ToStr()}") + (isCrit ? " CRIT" : "");
             Active = true;
-        }
-
-        public bool Active
-        {
-            get => active;
-            private set
+            gameObject.SetActive(true);
+            OnResize();
+            try
             {
-                active = value;
-                gameObject.SetActive(value);
+                await animations.PlayAsync(
+                    DOTween.To(() => offset, value => offset = value, destination, healthHub.AnimationHealthChangeTime)
+                        .SetEase(Ease.Linear).OnUpdate(RefreshPosition), token);
             }
-        }
-
-        public void Update()
-        {
-            if (!Active)
-            {
-                return;
-            }
-            //try
-            //{
-            float animationPercent = Math.Clamp((float)((DateTime.Now - dtStart).TotalSeconds / (dtEnd - dtStart).TotalSeconds), 0, 1);
-            Vector2 posEndShift = posEnd + posParent.anchoredPosition;
-
-            float xDist = posEndShift.x - posParent.anchoredPosition.x;
-            float yDist = posEndShift.y - posParent.anchoredPosition.y;
-            float x = posParent.anchoredPosition.x + (xDist * animationPercent);
-            float y = posParent.anchoredPosition.y + (yDist * animationPercent);
-            float coefHeight = G.GetCoefHeight();
-            rectTransform.anchoredPosition = new Vector2(x * coefHeight, y * coefHeight);
-            textMeshProUGUI.fontSize = healthHub.FontSize * coefHeight;
-
-            if (animationPercent == 1)
+            finally
             {
                 Active = false;
+                this.parent = null;
+                if (gameObject != null)
+                    gameObject.SetActive(false);
             }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Debug.LogException(ex);
-            //}
+        }
+
+        /// <summary>Обновляет размер шрифта и позицию при изменении разрешения.</summary>
+        public void OnResize()
+        {
+            text.fontSize = healthHub.FontSize * G.GetCoefHeight();
+            RefreshPosition();
+        }
+
+        /// <summary>Привязывает рассчитанное DOTween смещение к движущейся карточке без собственного расчёта времени.</summary>
+        private void RefreshPosition()
+        {
+            if (parent != null && rectTransform != null)
+            {
+                Vector3 origin = rectTransform.parent.InverseTransformPoint(parent.position);
+                rectTransform.localPosition = origin + (Vector3)(offset * G.GetCoefHeight());
+            }
         }
     }
 }

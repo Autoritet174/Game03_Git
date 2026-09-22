@@ -1,110 +1,71 @@
-using Assets.GameData.Scripts;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using System;
+using System.Threading;
 using UnityEngine;
 
 namespace Assets.GameData.Scenes.Battlefield
 {
     public partial class BattlefieldUnit
     {
-        //private static readonly double AnimationSpeed = 1.5;
-        public static readonly double AnimationAttackTimeStage1 = 0.3;
-        public static readonly double AnimationAttackTimeStage2 = 0.5;
-        public static readonly double AnimationAttackTimeStage3 = 0.4;
-        public static readonly double AnimationAttackTimeStage4 = 0.5;
+        /// <summary>Длительность увеличения карточки при скорости ×1.</summary>
+        public const float AnimationAttackTimeStage1 = 0.3f;
 
-        public int AnimationAttackStage { get; private set; } = 0;
-        private DateTime AtimationAttackStart = DateTime.Now;
-        private DateTime AtimationAttackEnd = DateTime.Now;
-        private BattlefieldUnit AtimationAttackUnitTarget;
-        private Vector2 AtimationAttackPosEnd = Vector2.zero;
-        private float AnimationAttackDamage = 0;
-        private bool AnimationAttackDamageIsCrit = false;
-        private readonly Animations.HealthHub healthHub;
-        public void AnimationStartAttackUnit(BattlefieldUnit unitTarget, float animationAttackDamage, bool animationAttackDamageIsCrit)
+        /// <summary>Номинальная длительность рывка; фактический рывок заканчивается на расстоянии ширины карточки.</summary>
+        public const float AnimationAttackTimeStage2 = 0.5f;
+
+        /// <summary>Длительность возврата и уменьшения карточки.</summary>
+        public const float AnimationAttackTimeStage3 = 0.4f;
+
+        /// <summary>Пауза после возврата перед следующим действием.</summary>
+        public const float AnimationAttackTimeStage4 = 0.5f;
+
+        /// <summary>Последовательно ожидает увеличение, рывок, попадание, возврат и заключительную паузу.</summary>
+        public async UniTask PlayAttackAsync(BattlefieldUnit target, Func<CancellationToken, UniTask> impact, CancellationToken token)
         {
-            AtimationAttackUnitTarget = unitTarget;
-            AnimationAttackStage = 1;
-            AtimationAttackStart = DateTime.Now;
-            AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage1 / BattlefieldSceneInitializator.animationSpeed);
-            AnimationAttackDamage = animationAttackDamage;
-            AnimationAttackDamageIsCrit = animationAttackDamageIsCrit;
-            _RectTransform.transform.SetAsLastSibling();
-        }
-
-        public void UpdateAnimationAttack()
-        {
-            if (AnimationAttackStage == 0)
+            token.ThrowIfCancellationRequested();
+            _RectTransform.SetAsLastSibling();
+            Vector2 origin = GetFormationPosition();
+            try
             {
-                return;
-            }
+                await animations.PlayAsync(
+                    DOTween.To(() => AttackScale, value => AttackScale = value, 1.3f, AnimationAttackTimeStage1)
+                        .SetEase(Ease.Linear), token);
 
-            float animationPercent = Math.Clamp((float)((DateTime.Now - AtimationAttackStart).TotalSeconds / (AtimationAttackEnd - AtimationAttackStart).TotalSeconds), 0, 1);
-
-            if (AnimationAttackStage == 1) // увеличение масштаба
-            {
-                float coef = (1f + (0.3f * animationPercent)) * _ScaleAlive;
-                _RectTransform.localScale = new(coef, coef, 1);
-                if (animationPercent == 1)
+                Vector2 destination = target.GetFormationPosition();
+                float distance = Vector2.Distance(origin, destination);
+                if (distance > _Width)
                 {
-                    AnimationAttackStage = 2;
-                    AtimationAttackStart = DateTime.Now;
-                    AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage2 / BattlefieldSceneInitializator.animationSpeed);
+                    // Аналитическое время прежнего порога попадания: 1 - (1 - 1.2t)^6.
+                    float remaining = _Width / distance;
+                    float impactProgress = (1f - Mathf.Pow(remaining, 1f / 6f)) / 1.2f;
+                    float travelled = 1f - remaining;
+                    Vector2 contact = Vector2.LerpUnclamped(origin, destination, travelled);
+                    await animations.PlayAsync(
+                        DOTween.To(() => AnimationPosition, value => AnimationPosition = value,
+                            contact, AnimationAttackTimeStage2 * impactProgress)
+                            .SetEase((time, duration, overshoot, period) =>
+                                (1f - Mathf.Pow(1f - 1.2f * impactProgress * time / duration, 6f)) / travelled), token);
+                }
+
+                await impact(token);
+                token.ThrowIfCancellationRequested();
+                Sequence returning = DOTween.Sequence()
+                    .Join(DOTween.To(() => AnimationPosition, value => AnimationPosition = value,
+                        origin, AnimationAttackTimeStage3).SetEase(Ease.Linear))
+                    .Join(DOTween.To(() => AttackScale, value => AttackScale = value,
+                        1f, AnimationAttackTimeStage3).SetEase(Ease.Linear));
+                await animations.PlayAsync(returning, token);
+                await animations.DelayAsync(AnimationAttackTimeStage4, token);
+            }
+            finally
+            {
+                if (_RectTransform != null)
+                {
+                    AnimationPosition = origin;
+                    AttackScale = 1f;
                 }
             }
-            else if (AnimationAttackStage == 2) // движение от базовой точки до цели
-            {
-                float animationPercentForPos = AnimationShiftPower(animationPercent * 1.2f);
-
-                Vector2 posStart = GetCoords();
-                Vector2 posEnd = AtimationAttackUnitTarget.GetCoords();
-                float distX = posEnd.x - posStart.x;
-                float distY = posEnd.y - posStart.y;
-                float x = posStart.x + (distX * animationPercentForPos);
-                float y = posStart.y + (distY * animationPercentForPos);
-                AtimationAttackPosEnd = new Vector2(x, y);
-                _RectTransform.anchoredPosition = AtimationAttackPosEnd;
-                if (animationPercent == 1 || MathF.Sqrt(MathF.Pow(posEnd.x - x, 2) + MathF.Pow(posEnd.y - y, 2)) < _Width * G.GetCoefHeight())
-                {
-                    AnimationAttackStage = 3;
-                    AtimationAttackStart = DateTime.Now;
-                    AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage3 / BattlefieldSceneInitializator.animationSpeed);
-                    AtimationAttackUnitTarget.RefreshHealth();
-                    healthHub.Create(
-                        -AnimationAttackDamage,
-                        AnimationAttackDamageIsCrit,
-                        AtimationAttackUnitTarget._RectTransform);
-
-                    // тут добавляем весь урон (урон при ударе, кливы, проки в момент удара)
-                    statisticsBattle.Update();
-                }
-            }
-            else if (AnimationAttackStage == 3) // движение от цели до базовой точки
-            {
-                Vector2 posStart = AtimationAttackPosEnd;
-                Vector2 posEnd = GetCoords();
-                float distX = posEnd.x - posStart.x;
-                float distY = posEnd.y - posStart.y;
-                float x = posStart.x + (distX * animationPercent);
-                float y = posStart.y + (distY * animationPercent);
-                _RectTransform.anchoredPosition = new Vector2(x, y);
-
-                float coef = (1f + (0.3f * (1 - animationPercent))) * _ScaleAlive;
-                _RectTransform.localScale = new(coef, coef, 1);
-                if (animationPercent == 1)
-                {
-                    AnimationAttackStage = 4;
-                    AtimationAttackStart = DateTime.Now;
-                    AtimationAttackEnd = AtimationAttackStart.AddSeconds(AnimationAttackTimeStage4 / BattlefieldSceneInitializator.animationSpeed);
-                }
-            }
-            else if (AnimationAttackStage == 4) // ожидание перед сбросом параметров
-            {
-                if (animationPercent == 1)
-                {
-                    AnimationAttackStage = 0;
-                }
-            }
-
         }
     }
 }

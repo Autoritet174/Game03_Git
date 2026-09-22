@@ -7,53 +7,57 @@ using UnityEngine.UI;
 
 namespace Assets.GameData.Scenes.Battlefield
 {
+    /// <summary>Показывает статистику уже воспроизведённых событий боя.</summary>
     public class PanelDamage__script : IPrefab
     {
-        public enum Team { MyHeroes, EnemyHeroes }
+        /// <summary>Признак готовности элементов панели.</summary>
         public bool initialized { get; private set; }
 
+        /// <summary>Ширина панели для интерфейса IPrefab.</summary>
         public float width { get; private set; }
 
+        /// <summary>Высота панели для интерфейса IPrefab.</summary>
         public float height { get; private set; }
 
+        /// <summary>Корневая область панели статистики.</summary>
         private RectTransform PanelDamage__RectTransform;
+        /// <summary>Область прокручиваемого списка показателей.</summary>
         private RectTransform PanelProgressBars__RectTransform;
-        //private RectTransform PanelProgressBarsViewport__RectTransform;
+        /// <summary>Контейнер строк статистики.</summary>
         private RectTransform PanelProgressBarsContent__RectTransform;
 
+        /// <summary>Объект вертикальной полосы прокрутки.</summary>
         private GameObject ScrollbarVertical__GameObject;
+        /// <summary>Область вертикальной полосы прокрутки.</summary>
         private RectTransform ScrollbarVertical__RectTransform;
 
+        /// <summary>Область кнопки нанесённого урона.</summary>
         private RectTransform ButtonDamageDone__RectTransform;
+        /// <summary>Область кнопки выполненного лечения.</summary>
         private RectTransform ButtonHealingDone__RectTransform;
+        /// <summary>Область кнопки полученного урона.</summary>
         private RectTransform ButtonDamageRecieved__RectTransform;
+        /// <summary>Область кнопки полученного лечения.</summary>
         private RectTransform ButtonHealingRecieved__RectTransform;
+        /// <summary>Фон кнопки нанесённого урона.</summary>
         private Image ButtonDamageDone__Image;
+        /// <summary>Фон кнопки выполненного лечения.</summary>
         private Image ButtonHealingDone__Image;
+        /// <summary>Фон кнопки полученного урона.</summary>
         private Image ButtonDamageRecieved__Image;
+        /// <summary>Фон кнопки полученного лечения.</summary>
         private Image ButtonHealingRecieved__Image;
+        /// <summary>Сцена, предоставляющая текущую статистику боя.</summary>
         public BattlefieldSceneInitializator battlefieldSceneInitializator { get; set; }
-
-        //private readonly List<Bar> bars = new();
 
         /// <summary>
         /// Прогресс бары, которые отображаются в панели.
         /// </summary>
         private readonly List<ProgressBar__prefab__script> listProgressBars = new();
 
-
+        /// <summary>Выбранный показатель статистики.</summary>
         private ProgressBar__prefab__script.DisplayMode displayMode = ProgressBar__prefab__script.DisplayMode.DamageDone;
-
-        //private class Bar
-        //{
-        //    //public ProgressBar__prefab__script bar { get; }
-        //    public Bar(//Guid heroId, ProgressBar__prefab__script bar
-        //        )
-        //    {
-        //        //this.heroId = heroId;
-        //        //this.bar = bar;
-        //    }
-        //}
+        /// <summary>Находит элементы панели и подключает кнопки выбора показателя.</summary>
         public void Initialize()
         {
             PanelDamage__RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelDamage");
@@ -78,9 +82,11 @@ namespace Assets.GameData.Scenes.Battlefield
             ScrollbarVertical__GameObject = GameObjectFinder.FindByName("ScrollbarVertical", PanelProgressBars__RectTransform);
             ScrollbarVertical__RectTransform = ScrollbarVertical__GameObject.GetComponent<RectTransform>();
 
+            initialized = true;
             OnResized(G.GetCoefHeight());
         }
 
+        /// <summary>Создаёт строку статистики и обновляет раскладку панели.</summary>
         public void AddProgressBar()
         {
             GameObject gameObject = AddressablePrefabProvider.ProgressBar.SafeInstant(PanelProgressBarsContent__RectTransform.transform);
@@ -99,38 +105,53 @@ namespace Assets.GameData.Scenes.Battlefield
             OnResized(G.GetCoefHeight());
         }
 
+        /// <summary>Цвет полосы героя команды игрока.</summary>
         private Color color1 = new(0f, 228 / 255f, 0f, 1f);
+        /// <summary>Цвет полосы героя противника.</summary>
         private Color color2 = new(228 / 255f, 0f, 0f, 1f);
 
+        /// <summary>Сортирует и отображает текущий показатель; вызывается при изменении данных или режима.</summary>
         public void Refresh()
         {
             if (listProgressBars.Count == 0)
             {
                 return;
             }
-            float max = battlefieldSceneInitializator.statisticsBattle.list_StatisticsHero.Max(a => a.damageDone);
+            StatisticsHero[] heroes = battlefieldSceneInitializator.statisticsBattle.list_StatisticsHero
+                .OrderByDescending(GetValue).ToArray();
+            float max = heroes.Length > 0 ? GetValue(heroes[0]) : 0f;
             for (int i = 0; i < listProgressBars.Count; i++)
             {
-                StatisticsHero stat = battlefieldSceneInitializator.statisticsBattle.list_StatisticsHero[i];
+                StatisticsHero stat = heroes[i];
                 ProgressBar__prefab__script bar = listProgressBars[i];
                 bar.SetTextLeft(stat.name);
-                bar.SetTextRight(stat.damageDone.ToStr());
-                //bar.SetColorTextLeft(stat.inTeam1 ? color1 : color2);
-                //bar.SetColorTextRight(stat.inTeam1 ? color1 : color2);
+                bar.SetTextRight(GetValue(stat).ToStr());
                 bar.SetColorBar(stat.inTeam1 ? color1 : color2);
-                bar.value = stat.damageDone;
+                bar.value = GetValue(stat);
                 bar.valueMax = max;
-
 
                 bar.Refresh();
             }
         }
 
+        /// <summary>Возвращает показатель героя для выбранного режима панели.</summary>
+        private float GetValue(StatisticsHero hero)
+        {
+            return displayMode switch
+            {
+                ProgressBar__prefab__script.DisplayMode.DamageDone => hero.damageDone,
+                ProgressBar__prefab__script.DisplayMode.DamageRecieved => hero.damageReceived,
+                ProgressBar__prefab__script.DisplayMode.HealingDone => hero.healingDone,
+                ProgressBar__prefab__script.DisplayMode.HealingRecieved => hero.healingReceived,
+                _ => 0f
+            };
+        }
+
+        /// <summary>Обновляет размеры и положение элементов панели.</summary>
         public void OnResized(float coefHeight, float top = 0, float buttom = 0, float left = 0, float right = 0)
         {
             PanelDamage__RectTransform.sizeDelta = new Vector2(343 * coefHeight, 820 * coefHeight);// 10 + 10 + 0.75*30 + 30*24
             PanelDamage__RectTransform.anchoredPosition = new Vector2(20 * coefHeight, 0);
-
 
             float buttonsSize = 70 * coefHeight;
             float buttonPos = 10 * coefHeight;
@@ -166,32 +187,34 @@ namespace Assets.GameData.Scenes.Battlefield
             Refresh();
         }
 
+        /// <summary>Выбирает отображение нанесённого урона.</summary>
         private void ButtonDamageDoneOnClick()
         {
             ChangeDisplayMode(ProgressBar__prefab__script.DisplayMode.DamageDone);
         }
 
+        /// <summary>Выбирает отображение выполненного лечения.</summary>
         private void ButtonHealingDoneOnClick()
         {
             ChangeDisplayMode(ProgressBar__prefab__script.DisplayMode.HealingDone);
         }
 
+        /// <summary>Выбирает отображение полученного урона.</summary>
         private void ButtonDamageRecievedOnClick()
         {
             ChangeDisplayMode(ProgressBar__prefab__script.DisplayMode.DamageRecieved);
         }
 
+        /// <summary>Выбирает отображение полученного лечения.</summary>
         private void ButtonHealingRecievedOnClick()
         {
             ChangeDisplayMode(ProgressBar__prefab__script.DisplayMode.HealingRecieved);
         }
 
+        /// <summary>Переключает показатель и немедленно обновляет панель без покадрового опроса.</summary>
         private void ChangeDisplayMode(ProgressBar__prefab__script.DisplayMode displayMode)
         {
             this.displayMode = displayMode;
-            //ButtonDamageDone__Image.color = Color.white;
-            //ButtonHealingDone__Image.color = Color.white;
-            //ButtonDamageRecieved__Image.color = Color.white;
             switch (displayMode)
             {
                 case ProgressBar__prefab__script.DisplayMode.DamageDone:
@@ -221,6 +244,7 @@ namespace Assets.GameData.Scenes.Battlefield
                 default:
                     throw new NotImplementedException();
             }
+            Refresh();
         }
     }
 }
