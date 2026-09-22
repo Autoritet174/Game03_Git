@@ -184,6 +184,8 @@ namespace Assets.GameData.Scenes.Battlefield
                 return;
             }
             spawnedBattlefield.battlefieldLog.Sort((a, b) => a.index.CompareTo(b.index));
+
+
             battlefieldIndexAnimationStarted = 0;
             battlefieldIndexAnimationActive = false;
             panelDamage__script.battlefieldSceneInitializator = this;
