@@ -18,7 +18,7 @@
     <LangVersion>9.0</LangVersion>
     <RootNamespace></RootNamespace>
     <OutputType>Library</OutputType>
-    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <AssemblyName>Assembly-CSharp-firstpass</AssemblyName>
     <TargetFramework>netstandard2.1</TargetFramework>
     <BaseDirectory>.</BaseDirectory>
   </PropertyGroup>
@@ -38,7 +38,7 @@
     <UnityProjectGenerator>Package</UnityProjectGenerator>
     <UnityProjectGeneratorVersion>2.0.27</UnityProjectGeneratorVersion>
     <UnityProjectGeneratorStyle>SDK</UnityProjectGeneratorStyle>
-    <UnityProjectType>Game:1</UnityProjectType>
+    <UnityProjectType>GamePlugins:3</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>6000.3.23f1</UnityVersion>
   </PropertyGroup>
@@ -63,273 +63,34 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.3.23f1\Editor\Data\Tools\BuildPipeline\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\GameData\Scenes\MainMenu\Button_InBattle.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
-    <Compile Include="Assets\GameData\Scenes\Battlefield\StatisticsHero.cs" />
-    <Compile Include="Assets\GameData\Scenes\AllHeroes\AllHeroesConsts.cs" />
-    <Compile Include="Assets\GameData\Scenes\MainMenu\Button_AllHeroes.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
-    <Compile Include="Assets\GameData\Scenes\Battlefield\BattlefieldLogPlayer.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
-    <Compile Include="Assets\GameData\Prefabs\IPanelCollectionContext.cs" />
-    <Compile Include="Assets\GameData\Scripts\ButtonCloseHelper.cs" />
-    <Compile Include="Assets\GameData\Scenes\Battlefield\Animations\BattlefieldAnimationPlayer.cs" />
-    <Compile Include="Assets\GameData\Prefabs\PanelReconnecting__prefab__scriptMB.cs" />
-    <Compile Include="Assets\GameData\Scripts\SecureStorageProvider.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
-    <Compile Include="Assets\GameData\Scripts\MainThreadDispatcher.cs" />
-    <Compile Include="Assets\GameData\Scripts\AddressablePrefabProvider.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\prefabs\PanelSelectedEquipment__prefab__scriptMB.cs" />
-    <Compile Include="Assets\GameData\Scenes\Battlefield\BattlefieldUnit.cs" />
-    <Compile Include="Assets\GameData\Scenes\Battlefield\ButtonClose_Click_EndBattle.cs" />
-    <Compile Include="Assets\GameData\Scenes\SelectBattlefield\BattlefieldCategory.cs" />
-    <Compile Include="Assets\GameData\Scripts\LoggerException.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
-    <Compile Include="Assets\GameData\Scenes\SelectBattlefield\BattlefieldButton.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
-    <Compile Include="Assets\GameData\Scenes\SelectBattlefield\SelectBattlefieldSceneInitializator.cs" />
-    <Compile Include="Assets\GameData\Scripts\GameExitHandler.cs" />
-    <Compile Include="Assets\GameData\Scenes\Auth\Button_Reg.cs" />
-    <Compile Include="Assets\GameData\AddressableAssets\GameMessage\Init_PrefabGameMessage.cs" />
-    <Compile Include="Assets\GameData\Scenes\Auth\AuthSceneInitializator.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\PanelIconCollectionElement.cs" />
-    <Compile Include="Assets\GameData\Scripts\ToStringService.cs" />
-    <Compile Include="Assets\GameData\Scenes\MainMenu\Button_Collection.cs" />
-    <Compile Include="Assets\GameData\Scenes\SelectBattlefield\PanelCollectionContext.cs" />
-    <Compile Include="Assets\GameData\Scripts\Redactor\SpriteGenerator.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\TabButton.cs" />
-    <Compile Include="Assets\GameData\Scripts\StaticRemover.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
-    <Compile Include="Assets\GameData\Scenes\MainMenu\MainMenuSceneInitializator.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\CollectionSceneInitializator.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />
-    <Compile Include="Assets\GameData\Scripts\GameMessage.cs" />
-    <Compile Include="Assets\GameData\Scripts\InitializatorStartScene.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
-    <Compile Include="Assets\GameData\Scenes\Battlefield\Animations\HealthHub.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
-    <Compile Include="Assets\GameData\Scripts\UnityObject.cs" />
-    <Compile Include="Assets\GameData\Prefabs\FilterButton.cs" />
-    <Compile Include="Assets\GameData\Scripts\UniTaskRunner.cs" />
-    <Compile Include="Assets\GameData\Scenes\MainMenu\HypercubeInit.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\prefabs\Stat__prefab__script.cs" />
-    <Compile Include="Assets\GameData\Scripts\InputManager.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
-    <Compile Include="Assets\GameData\Scripts\RectTransformExtensions.cs" />
-    <Compile Include="Assets\GameData\Scenes\Auth\AuthManager.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
-    <Compile Include="Assets\GameData\Scripts\CollectionEnums.cs" />
-    <Compile Include="Assets\GameData\Scenes\Battlefield\BattlefieldUnit_Animation_AbilityAttack.cs" />
-    <Compile Include="Assets\GameData\Scripts\CancellationTokenManager.cs" />
-    <Compile Include="Assets\GameData\Scenes\Auth\Button_Close.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
-    <Compile Include="Assets\GameData\Scenes\SelectBattlefield\PanelPrepareBattle.cs" />
-    <Compile Include="Assets\GameData\Scripts\GameObjectExtensions.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\prefabs\PanelSelectedHero__prefab__scriptMB.cs" />
-    <Compile Include="Assets\GameData\Scripts\DevAuthConfig.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\PanelCollectionContext.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
-    <Compile Include="Assets\GameData\Prefabs\PanelTop__prefab__scriptMB.cs" />
-    <Compile Include="Assets\GameData\Scenes\Battlefield\PanelDamage__script.cs" />
-    <Compile Include="Assets\GameData\Scripts\GameSceneManager.cs" />
-    <Compile Include="Assets\GameData\Prefabs\ProgressBar__prefab__script.cs" />
-    <Compile Include="Assets\GameData\Scenes\Battlefield\StatisticsBattle.cs" />
-    <Compile Include="Assets\GameData\Scripts\EventHelper.cs" />
-    <Compile Include="Assets\GameData\Scripts\GameServerPinger.cs" />
-    <Compile Include="Assets\GameData\Prefabs\PanelGroupDivider__prefab__script.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexColorCycler.cs" />
-    <Compile Include="Assets\GameData\Scripts\HardwareIdentifier.cs" />
-    <Compile Include="Assets\GameData\Scripts\GameObjectFinder.cs" />
-    <Compile Include="Assets\GameData\Scenes\TEST_01\TestScript.cs" />
-    <Compile Include="Assets\GameData\Prefabs\PanelCollection__prefab__scriptMB.cs" />
-    <Compile Include="Assets\GameData\Scenes\AllHeroes\AllHeroes.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
-    <Compile Include="Assets\GameData\Scenes\Battlefield\Animations\Health.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
-    <Compile Include="Assets\GameData\Prefabs\IPrefab.cs" />
-    <Compile Include="Assets\GameData\Scripts\G.cs" />
-    <Compile Include="Assets\GameData\Scenes\Auth\AuthHelper.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
-    <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
-    <Compile Include="Assets\GameData\Scenes\Collection\Slot.cs" />
-    <Compile Include="Assets\GameData\Scripts\GlobalClassesForNetStandard2.cs" />
-    <Compile Include="Assets\GameData\Scenes\Battlefield\BattlefieldSceneInitializator.cs" />
-    <Compile Include="Assets\GameData\Prefabs\Backgrounds\Background_BlueClouds_v1__prefab__scriptMB.cs" />
-    <Compile Include="Assets\GameData\Scenes\Auth\Button_Auth.cs" />
-    <Compile Include="Assets\GameData\Scripts\RichTextBuilder.cs" />
+    <Compile Include="Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleUtils.cs" />
+    <Compile Include="Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleAudio.cs" />
+    <Compile Include="Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModulePhysics2D.cs" />
+    <Compile Include="Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModulePhysics.cs" />
+    <Compile Include="Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleSprite.cs" />
+    <Compile Include="Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleUIToolkit.cs" />
+    <Compile Include="Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleUI.cs" />
+    <Compile Include="Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleUnityVersion.cs" />
+    <Compile Include="Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleEPOOutline.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Packages\Microsoft.AspNetCore.Http.Connections.Common.10.0.9\THIRD-PARTY-NOTICES.TXT" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn3.11\cs\tr\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.AspNetCore.SignalR.Client.Core.10.0.9\lib\netstandard2.1\Microsoft.AspNetCore.SignalR.Client.Core.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Options.10.0.9\THIRD-PARTY-NOTICES.TXT" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
-    <None Include="Assets\Packages\Microsoft.AspNetCore.SignalR.Protocols.Json.10.0.9\lib\netstandard2.0\Microsoft.AspNetCore.SignalR.Protocols.Json.xml" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.4\cs\ko\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn3.11\cs\cs\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Roboto-Bold - License.txt" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.4\cs\fr\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\useSharedDesignerContext.txt" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile-2-Pass.shader" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.0\cs\fr\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Options.10.0.9\analyzers\dotnet\roslyn4.4\cs\pt-BR\Microsoft.Extensions.Options.SourceGeneration.resources.dll" />
-    <None Include="Assets\Packages\System.Security.Cryptography.ProtectedData.10.0.9\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.xml" />
-    <None Include="Assets\Packages\Microsoft.Extensions.DependencyInjection.Abstractions.10.0.9\THIRD-PARTY-NOTICES.TXT" />
-    <None Include="Assets\Packages\Microsoft.AspNetCore.SignalR.Client.10.0.9\lib\netstandard2.0\Microsoft.AspNetCore.SignalR.Client.dll" />
-    <None Include="Assets\Packages\System.Threading.Channels.10.0.9\useSharedDesignerContext.txt" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.4\cs\ru\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn3.11\cs\ru\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.AspNetCore.SignalR.Client.10.0.9\lib\netstandard2.0\Microsoft.AspNetCore.SignalR.Client.xml" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn3.11\cs\pt-BR\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Options.10.0.9\analyzers\dotnet\roslyn4.4\cs\de\Microsoft.Extensions.Options.SourceGeneration.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.0\cs\ko\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Unity - OFL.txt" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
-    <None Include="Assets\Packages\Microsoft.Extensions.DependencyInjection.10.0.9\useSharedDesignerContext.txt" />
-    <None Include="Assets\Packages\Microsoft.Bcl.TimeProvider.10.0.9\lib\netstandard2.0\Microsoft.Bcl.TimeProvider.xml" />
-    <None Include="Assets\Packages\Microsoft.Extensions.DependencyInjection.Abstractions.10.0.9\lib\netstandard2.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn3.11\cs\fr\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Options.10.0.9\analyzers\dotnet\roslyn4.4\cs\pl\Microsoft.Extensions.Options.SourceGeneration.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.4\cs\cs\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\System.Threading.Channels.10.0.9\THIRD-PARTY-NOTICES.TXT" />
-    <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Oswald-Bold - OFL.txt" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.0\cs\ja\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Roboto-Bold - AFL.txt" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Primitives.10.0.9\useSharedDesignerContext.txt" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Features.10.0.9\THIRD-PARTY-NOTICES.TXT" />
-    <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Anton OFL.txt" />
-    <None Include="Assets\Packages\Microsoft.AspNetCore.SignalR.Common.10.0.9\lib\netstandard2.0\Microsoft.AspNetCore.SignalR.Common.xml" />
-    <None Include="Assets\Packages\Microsoft.AspNetCore.SignalR.Client.Core.10.0.9\lib\netstandard2.1\Microsoft.AspNetCore.SignalR.Client.Core.xml" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.0\cs\zh-Hans\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Primitives.10.0.9\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn3.11\cs\Microsoft.Extensions.Logging.Generators.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.DependencyInjection.Abstractions.10.0.9\useSharedDesignerContext.txt" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.4\cs\it\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.AspNetCore.SignalR.Common.10.0.9\THIRD-PARTY-NOTICES.TXT" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Options.10.0.9\analyzers\dotnet\roslyn4.4\cs\cs\Microsoft.Extensions.Options.SourceGeneration.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.4\cs\de\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.xml" />
-    <None Include="Assets\Packages\Microsoft.AspNetCore.SignalR.Protocols.Json.10.0.9\THIRD-PARTY-NOTICES.TXT" />
-    <None Include="Assets\Packages\System.Net.ServerSentEvents.10.0.9\useSharedDesignerContext.txt" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Options.10.0.9\analyzers\dotnet\roslyn4.4\cs\ru\Microsoft.Extensions.Options.SourceGeneration.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.0\cs\es\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\System.Threading.Channels.10.0.9\lib\netstandard2.1\System.Threading.Channels.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\THIRD-PARTY-NOTICES.TXT" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn3.11\cs\pl\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.0\cs\it\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.DependencyInjection.10.0.9\lib\netstandard2.1\Microsoft.Extensions.DependencyInjection.xml" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.0\cs\ru\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn3.11\cs\zh-Hant\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.AspNetCore.Http.Connections.Client.10.0.9\lib\netstandard2.1\Microsoft.AspNetCore.Http.Connections.Client.xml" />
-    <None Include="Assets\TextMesh Pro\Shaders\SDFFunctions.hlsl" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Options.10.0.9\useSharedDesignerContext.txt" />
-    <None Include="Assets\Packages\System.Security.Cryptography.ProtectedData.10.0.9\useSharedDesignerContext.txt" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.10.0.9\lib\netstandard2.1\Microsoft.Extensions.Logging.xml" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Primitives.10.0.9\lib\netstandard2.0\Microsoft.Extensions.Primitives.xml" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.4\cs\pt-BR\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Options.10.0.9\lib\netstandard2.1\Microsoft.Extensions.Options.dll" />
-    <None Include="Assets\Packages\Microsoft.AspNetCore.Http.Connections.Client.10.0.9\lib\netstandard2.1\Microsoft.AspNetCore.Http.Connections.Client.dll" />
-    <None Include="Assets\GameData\Shaders\UIGrayscale.shader" />
-    <None Include="Assets\Packages\Microsoft.AspNetCore.Http.Connections.Common.10.0.9\lib\netstandard2.0\Microsoft.AspNetCore.Http.Connections.Common.dll" />
-    <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Features.10.0.9\lib\netstandard2.0\Microsoft.Extensions.Features.dll" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />
-    <None Include="Assets\Packages\System.Security.Cryptography.ProtectedData.10.0.9\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll" />
-    <None Include="Assets\Packages\Microsoft.AspNetCore.SignalR.Protocols.Json.10.0.9\lib\netstandard2.0\Microsoft.AspNetCore.SignalR.Protocols.Json.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn3.11\cs\de\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\System.Diagnostics.DiagnosticSource.10.0.9\lib\netstandard2.0\System.Diagnostics.DiagnosticSource.xml" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.4\cs\Microsoft.Extensions.Logging.Generators.dll" />
-    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
-    <None Include="Assets\Packages\ini-parser-netstandard.2.5.3\lib\netstandard2.0\INIFileParser.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Options.10.0.9\analyzers\dotnet\roslyn4.4\cs\ja\Microsoft.Extensions.Options.SourceGeneration.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.AspNetCore.Http.Connections.Client.10.0.9\THIRD-PARTY-NOTICES.TXT" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
-    <None Include="Assets\Packages\System.Threading.Channels.10.0.9\lib\netstandard2.1\System.Threading.Channels.xml" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.0\cs\pt-BR\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Options.10.0.9\lib\netstandard2.1\Microsoft.Extensions.Options.xml" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Options.10.0.9\analyzers\dotnet\roslyn4.4\cs\tr\Microsoft.Extensions.Options.SourceGeneration.resources.dll" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.4\cs\tr\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\ini-parser-netstandard.2.5.3\lib\netstandard2.0\INIFileParser.xml" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Options.10.0.9\analyzers\dotnet\roslyn4.4\cs\Microsoft.Extensions.Options.SourceGeneration.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Options.10.0.9\analyzers\dotnet\roslyn4.4\cs\es\Microsoft.Extensions.Options.SourceGeneration.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Options.10.0.9\analyzers\dotnet\roslyn4.4\cs\fr\Microsoft.Extensions.Options.SourceGeneration.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Features.10.0.9\lib\netstandard2.0\Microsoft.Extensions.Features.xml" />
-    <None Include="Assets\Packages\Microsoft.Bcl.TimeProvider.10.0.9\lib\netstandard2.0\Microsoft.Bcl.TimeProvider.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.10.0.9\THIRD-PARTY-NOTICES.TXT" />
-    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.4\cs\zh-Hans\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn3.11\cs\zh-Hans\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.AspNetCore.SignalR.Client.Core.10.0.9\THIRD-PARTY-NOTICES.TXT" />
-    <None Include="Assets\Packages\Microsoft.AspNetCore.SignalR.Client.10.0.9\THIRD-PARTY-NOTICES.TXT" />
-    <None Include="Assets\Packages\Microsoft.Extensions.DependencyInjection.Abstractions.10.0.9\lib\netstandard2.1\Microsoft.Extensions.DependencyInjection.Abstractions.xml" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Primitives.10.0.9\THIRD-PARTY-NOTICES.TXT" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn3.11\cs\es\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\System.Diagnostics.DiagnosticSource.10.0.9\useSharedDesignerContext.txt" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.4\cs\zh-Hant\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\System.Diagnostics.DiagnosticSource.10.0.9\THIRD-PARTY-NOTICES.TXT" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Options.10.0.9\analyzers\dotnet\roslyn4.4\cs\zh-Hant\Microsoft.Extensions.Options.SourceGeneration.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.AspNetCore.Connections.Abstractions.10.0.9\lib\netstandard2.1\Microsoft.AspNetCore.Connections.Abstractions.xml" />
-    <None Include="Assets\Packages\Microsoft.AspNetCore.SignalR.Common.10.0.9\lib\netstandard2.0\Microsoft.AspNetCore.SignalR.Common.dll" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Options.10.0.9\analyzers\dotnet\roslyn4.4\cs\zh-Hans\Microsoft.Extensions.Options.SourceGeneration.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.Bcl.TimeProvider.10.0.9\THIRD-PARTY-NOTICES.TXT" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn3.11\cs\it\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.10.0.9\useSharedDesignerContext.txt" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn3.11\cs\ko\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\System.Net.ServerSentEvents.10.0.9\lib\netstandard2.0\System.Net.ServerSentEvents.xml" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.4\cs\ja\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\System.Diagnostics.DiagnosticSource.10.0.9\lib\netstandard2.0\System.Diagnostics.DiagnosticSource.dll" />
-    <None Include="Assets\Packages\System.Security.Cryptography.ProtectedData.10.0.9\THIRD-PARTY-NOTICES.TXT" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
-    <None Include="Assets\Packages\Microsoft.Bcl.TimeProvider.10.0.9\useSharedDesignerContext.txt" />
-    <None Include="Assets\Packages\Microsoft.AspNetCore.Http.Connections.Common.10.0.9\lib\netstandard2.0\Microsoft.AspNetCore.Http.Connections.Common.xml" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.0\cs\tr\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Options.10.0.9\analyzers\dotnet\roslyn4.4\cs\ko\Microsoft.Extensions.Options.SourceGeneration.resources.dll" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
-    <None Include="Assets\Packages\Microsoft.AspNetCore.Connections.Abstractions.10.0.9\THIRD-PARTY-NOTICES.TXT" />
-    <None Include="Assets\Packages\Microsoft.Extensions.DependencyInjection.10.0.9\THIRD-PARTY-NOTICES.TXT" />
-    <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.0\cs\Microsoft.Extensions.Logging.Generators.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.0\cs\de\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.4\cs\es\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.10.0.9\lib\netstandard2.1\Microsoft.Extensions.Logging.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.0\cs\pl\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.AspNetCore.Connections.Abstractions.10.0.9\lib\netstandard2.1\Microsoft.AspNetCore.Connections.Abstractions.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn3.11\cs\ja\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\System.Net.ServerSentEvents.10.0.9\THIRD-PARTY-NOTICES.TXT" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
-    <None Include="Assets\Packages\Microsoft.Extensions.DependencyInjection.10.0.9\lib\netstandard2.1\Microsoft.Extensions.DependencyInjection.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.4\cs\pl\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\System.Net.ServerSentEvents.10.0.9\lib\netstandard2.0\System.Net.ServerSentEvents.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.0\cs\cs\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Logging.Abstractions.10.0.9\analyzers\dotnet\roslyn4.0\cs\zh-Hant\Microsoft.Extensions.Logging.Generators.resources.dll" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />
-    <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Bangers - OFL.txt" />
-    <None Include="Assets\Packages\Microsoft.Extensions.Options.10.0.9\analyzers\dotnet\roslyn4.4\cs\it\Microsoft.Extensions.Options.SourceGeneration.resources.dll" />
+    <None Include="Assets\Plugins\System.Runtime.CompilerServices.Unsafe.dll" />
+    <None Include="Assets\Plugins\System.Numerics.Vectors.dll" />
+    <None Include="Assets\Plugins\System.Memory.dll" />
+    <None Include="Assets\Plugins\Microsoft.Bcl.AsyncInterfaces.dll" />
+    <None Include="Assets\Plugins\Game03Client.xml" />
+    <None Include="Assets\Plugins\Demigiant\DOTween\DOTween.XML" />
+    <None Include="Assets\Plugins\Demigiant\DOTween\DOTween.dll" />
+    <None Include="Assets\Plugins\System.Threading.Tasks.Extensions.dll" />
+    <None Include="Assets\Plugins\General.xml" />
+    <None Include="Assets\Plugins\System.Text.Encodings.Web.dll" />
+    <None Include="Assets\Plugins\System.Buffers.dll" />
+    <None Include="Assets\Plugins\General.dll" />
+    <None Include="Assets\Plugins\Demigiant\DOTween\readme.txt" />
+    <None Include="Assets\Plugins\System.Text.Json.dll" />
+    <None Include="Assets\Plugins\System.ComponentModel.Annotations.dll" />
+    <None Include="Assets\Plugins\System.IO.Pipelines.dll" />
+    <None Include="Assets\Plugins\Game03Client.dll" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -1906,7 +1667,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp-firstpass.csproj" />
   </ItemGroup>
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
   <ItemGroup>

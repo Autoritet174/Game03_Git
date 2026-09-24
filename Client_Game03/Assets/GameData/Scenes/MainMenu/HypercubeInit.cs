@@ -1,63 +1,112 @@
 using UnityEngine;
 
+/// <summary>Создаёт и вращает проекцию гиперкуба с восстановлением геометрии после перезагрузки сборок.</summary>
 public class HypercubeInit : MonoBehaviour
 {
+    /// <summary>Текстура граней гиперкуба.</summary>
     [Header("Настройки граней (Плоскостей)")]
     public Texture2D facetTexture;
+    /// <summary>Цвет грани при отсутствии индивидуального цвета.</summary>
     public Color faceTint = Color.white;
-    [Range(0f, 1f)] public float transparency = 0.4f;
+    /// <summary>Прозрачность граней.</summary>
+    [Range(0f, 1f)]
+    public float transparency = 0.4f;
 
+    /// <summary>Индивидуальные цвета 24 граней.</summary>
     [Tooltip("Цвета для каждой из 24 граней. Если массив пустой или элементов меньше 24, применится faceTint.")]
     public Color[] faceColors = new Color[24]; // Массив для индивидуальных цветов
 
+    /// <summary>Материал рёбер.</summary>
     [Header("Настройки ребер (Линий)")]
     public Material lineMaterial;
+    /// <summary>Толщина рёбер.</summary>
     public float lineWidth = 0.04f;
+    /// <summary>Цвет рёбер.</summary>
     public Color lineColor = Color.white;
 
+    /// <summary>Разрешает вращение в плоскости XY.</summary>
     [Header("Активация осей вращения")]
     public bool rotateXY = true;
+    /// <summary>Разрешает вращение в плоскости XZ.</summary>
     public bool rotateXZ = true;
+    /// <summary>Разрешает вращение в плоскости XW.</summary>
     public bool rotateXW = true;
+    /// <summary>Разрешает вращение в плоскости YZ.</summary>
     public bool rotateYZ = true;
+    /// <summary>Разрешает вращение в плоскости YW.</summary>
     public bool rotateYW = true;
+    /// <summary>Разрешает вращение в плоскости ZW.</summary>
     public bool rotateZW = true;
 
+    /// <summary>Скорость вращения в плоскости XY в радианах в секунду.</summary>
     [Header("Скорости вращения (если ось активна)")]
     public float speedXY = 0.1f;
+    /// <summary>Скорость вращения в плоскости XZ в радианах в секунду.</summary>
     public float speedXZ = 0.1f;
+    /// <summary>Скорость вращения в плоскости XW в радианах в секунду.</summary>
     public float speedXW = 0.5f;
+    /// <summary>Скорость вращения в плоскости YZ в радианах в секунду.</summary>
     public float speedYZ = 0f;
+    /// <summary>Скорость вращения в плоскости YW в радианах в секунду.</summary>
     public float speedYW = 0.5f;
+    /// <summary>Скорость вращения в плоскости ZW в радианах в секунду.</summary>
     public float speedZW = 0f;
 
+    /// <summary>Активная скорость вращения в плоскости XY либо отсутствие вращения.</summary>
     private float? xy => rotateXY ? speedXY : null;
+    /// <summary>Активная скорость вращения в плоскости XZ либо отсутствие вращения.</summary>
     private float? xz => rotateXZ ? speedXZ : null;
+    /// <summary>Активная скорость вращения в плоскости XW либо отсутствие вращения.</summary>
     private float? xw => rotateXW ? speedXW : null;
+    /// <summary>Активная скорость вращения в плоскости YZ либо отсутствие вращения.</summary>
     private float? yz => rotateYZ ? speedYZ : null;
+    /// <summary>Активная скорость вращения в плоскости YW либо отсутствие вращения.</summary>
     private float? yw => rotateYW ? speedYW : null;
+    /// <summary>Активная скорость вращения в плоскости ZW либо отсутствие вращения.</summary>
     private float? zw => rotateZW ? speedZW : null;
 
+    /// <summary>Расстояние наблюдателя для проекции из четырёх измерений.</summary>
     [Header("Настройки 4D -> 3D проекции")]
     public float wDistance = 3f;
+    /// <summary>Общий масштаб проекции.</summary>
     public float objectScale = 7f;
 
+    /// <summary>Глубина камеры для перспективной проекции.</summary>
     [Header("Настройки 3D -> 2D перспективы")]
     public float camera3DDepth = 4f;
+    /// <summary>Признак использования перспективы при проекции на плоскость.</summary>
     public bool use2DPerspective = true;
 
+    /// <summary>Шестнадцать исходных четырёхмерных вершин.</summary>
     private Vector4[] points;
+    /// <summary>Компоненты отображения 32 рёбер.</summary>
     private LineRenderer[] lines;
+    /// <summary>Индексы концов рёбер; многомерный массив восстанавливается после перезагрузки сборок.</summary>
     private int[,] edges;
+    /// <summary>Индексы вершин граней; многомерный массив восстанавливается после перезагрузки сборок.</summary>
     private int[,] faces;
+    /// <summary>Меши 24 граней.</summary>
     private Mesh[] meshes;
+    /// <summary>Компоненты отображения граней.</summary>
     private MeshRenderer[] meshRenderers; // Сохраняем ссылки на рендереры для смены цвета на лету
 
+    /// <summary>Текущие углы поворота в шести координатных плоскостях.</summary>
     private float angleXY, angleXZ, angleXW, angleYZ, angleYW, angleZW;
+    /// <summary>Признак полного завершения подготовки геометрии.</summary>
     private bool isInitialized = false;
 
-    private void Start()
+    /// <summary>Восстанавливает геометрию при запуске и после перезагрузки сборок в Play Mode.</summary>
+    private void OnEnable()
     {
+        if (Application.isPlaying)
+            InitializeGeometry();
+    }
+
+    /// <summary>Восстанавливает несериализуемые таблицы связей, переиспользуя существующие объекты, материалы и меши.</summary>
+    private void InitializeGeometry()
+    {
+        bool initializeColors = !isInitialized;
+        isInitialized = false;
         points = new Vector4[16];
         lines = new LineRenderer[32];
         edges = new int[32, 2];
@@ -70,7 +119,7 @@ public class HypercubeInit : MonoBehaviour
         {
             System.Array.Resize(ref faceColors, 24);
         }
-        for (int i = 0; i < 24; i++)
+        for (int i = 0; initializeColors && i < 24; i++)
         {
             // Переводим HSV в стандартный Unity RGB Color.
             // Насыщенность (Saturation) и Яркость (Value) выставляем на максимум (1.0),
@@ -102,11 +151,14 @@ public class HypercubeInit : MonoBehaviour
                     edges[lineIndex, 0] = i;
                     edges[lineIndex, 1] = i | bit;
 
-                    var lineObj = new GameObject("Line_" + lineIndex);
-                    lineObj.transform.parent = transform;
+                    Transform existingLine = transform.Find("Line_" + lineIndex);
+                    GameObject lineObj = existingLine != null ? existingLine.gameObject : new GameObject("Line_" + lineIndex);
+                    lineObj.transform.SetParent(transform, false);
                     lineObj.transform.localPosition = Vector3.zero;
 
-                    LineRenderer lr = lineObj.AddComponent<LineRenderer>();
+                    LineRenderer lr = lineObj.GetComponent<LineRenderer>();
+                    if (lr == null)
+                        lr = lineObj.AddComponent<LineRenderer>();
                     lines[lineIndex] = lr;
 
                     lineIndex++;
@@ -114,17 +166,7 @@ public class HypercubeInit : MonoBehaviour
             }
         }
 
-        isInitialized = true;
-
-        // Применяем настройки ребер
-        UpdateLineSettings();
-
-        // Базовый шаблон материала граней
-        var baseFaceMat = new Material(Shader.Find("Sprites/Default"));
-        if (facetTexture != null)
-        {
-            baseFaceMat.mainTexture = facetTexture;
-        }
+        Shader faceShader = Shader.Find("Sprites/Default");
 
         // --- 3. Грани (Плоскости) ---
         int faceIndex = 0;
@@ -144,23 +186,26 @@ public class HypercubeInit : MonoBehaviour
                         faces[faceIndex, 2] = i | b1 | b2;
                         faces[faceIndex, 3] = i | b2;
 
-                        var faceObj = new GameObject("Face_" + faceIndex);
-                        faceObj.transform.parent = transform;
+                        Transform existingFace = transform.Find("Face_" + faceIndex);
+                        GameObject faceObj = existingFace != null ? existingFace.gameObject : new GameObject("Face_" + faceIndex);
+                        faceObj.transform.SetParent(transform, false);
                         faceObj.transform.localPosition = Vector3.zero;
 
-                        MeshFilter mf = faceObj.AddComponent<MeshFilter>();
-                        MeshRenderer mr = faceObj.AddComponent<MeshRenderer>();
+                        MeshFilter mf = faceObj.GetComponent<MeshFilter>();
+                        if (mf == null)
+                            mf = faceObj.AddComponent<MeshFilter>();
+                        MeshRenderer mr = faceObj.GetComponent<MeshRenderer>();
+                        if (mr == null)
+                            mr = faceObj.AddComponent<MeshRenderer>();
 
-                        // Создаем уникальный материал для этой грани
-                        mr.material = new Material(baseFaceMat);
+                        if (mr.sharedMaterial == null)
+                            mr.sharedMaterial = new Material(faceShader);
+                        mr.sharedMaterial.mainTexture = facetTexture;
                         meshRenderers[faceIndex] = mr;
 
-                        var mesh = new Mesh
-                        {
-                            name = "FaceMesh_" + faceIndex
-                        };
-                        mf.mesh = mesh;
-                        meshes[faceIndex] = mesh;
+                        if (mf.sharedMesh == null)
+                            mf.sharedMesh = new Mesh { name = "FaceMesh_" + faceIndex };
+                        meshes[faceIndex] = mf.sharedMesh;
 
                         faceIndex++;
                     }
@@ -168,7 +213,8 @@ public class HypercubeInit : MonoBehaviour
             }
         }
 
-        // Применяем цвета граней, заданные в инспекторе
+        isInitialized = true;
+        UpdateLineSettings();
         UpdateFaceColors();
     }
 
@@ -193,7 +239,8 @@ public class HypercubeInit : MonoBehaviour
             {
                 LineRenderer lr = lines[i];
                 lr.useWorldSpace = false;
-                lr.material = lineMaterial;
+                lr.sharedMaterial = lineMaterial;
+                lr.positionCount = 2;
                 lr.startWidth = lineWidth;
                 lr.endWidth = lineWidth;
                 lr.startColor = lineColor;
@@ -225,11 +272,12 @@ public class HypercubeInit : MonoBehaviour
                 // Накладываем прозрачность из общего ползунка transparency
                 chosenColor.a = transparency;
 
-                meshRenderers[i].material.color = chosenColor;
+                meshRenderers[i].sharedMaterial.color = chosenColor;
             }
         }
     }
 
+    /// <summary>Применяет изменённые в инспекторе настройки к готовой геометрии.</summary>
     private void OnValidate()
     {
         if (Application.isPlaying)
@@ -239,8 +287,12 @@ public class HypercubeInit : MonoBehaviour
         }
     }
 
+    /// <summary>Вращает вершины и обновляет проекции готовых рёбер и граней.</summary>
     private void Update()
     {
+        if (!isInitialized || points == null || lines == null || edges == null || faces == null || meshes == null)
+            return;
+
         // Константа полного оборота в радианах (360 градусов)
         float twoPi = Mathf.PI * 2f;
 
@@ -353,13 +405,18 @@ public class HypercubeInit : MonoBehaviour
 
         for (int i = 0; i < 32; i++)
         {
-            lines[i].SetPosition(0, projected2DPoints[edges[i, 0]]);
-            lines[i].SetPosition(1, projected2DPoints[edges[i, 1]]);
+            LineRenderer line = lines[i];
+            if (line == null)
+                continue;
+            line.SetPosition(0, projected2DPoints[edges[i, 0]]);
+            line.SetPosition(1, projected2DPoints[edges[i, 1]]);
         }
 
         for (int i = 0; i < 24; i++)
         {
             Mesh mesh = meshes[i];
+            if (mesh == null)
+                continue;
 
             mesh.vertices = new Vector3[]
             {
@@ -380,16 +437,22 @@ public class HypercubeInit : MonoBehaviour
         }
     }
 
+    /// <summary>Возвращает вершину после поворота в плоскости XY.</summary>
     private Vector4 RotateXY(Vector4 v, float rad)
     { float s = Mathf.Sin(rad), c = Mathf.Cos(rad); return new Vector4((v.x * c) - (v.y * s), (v.x * s) + (v.y * c), v.z, v.w); }
+    /// <summary>Возвращает вершину после поворота в плоскости XZ.</summary>
     private Vector4 RotateXZ(Vector4 v, float rad)
     { float s = Mathf.Sin(rad), c = Mathf.Cos(rad); return new Vector4((v.x * c) - (v.z * s), v.y, (v.x * s) + (v.z * c), v.w); }
+    /// <summary>Возвращает вершину после поворота в плоскости XW.</summary>
     private Vector4 RotateXW(Vector4 v, float rad)
     { float s = Mathf.Sin(rad), c = Mathf.Cos(rad); return new Vector4((v.x * c) - (v.w * s), v.y, v.z, (v.x * s) + (v.w * c)); }
+    /// <summary>Возвращает вершину после поворота в плоскости YZ.</summary>
     private Vector4 RotateYZ(Vector4 v, float rad)
     { float s = Mathf.Sin(rad), c = Mathf.Cos(rad); return new Vector4(v.x, (v.y * c) - (v.z * s), (v.y * s) + (v.z * c), v.w); }
+    /// <summary>Возвращает вершину после поворота в плоскости YW.</summary>
     private Vector4 RotateYW(Vector4 v, float rad)
     { float s = Mathf.Sin(rad), c = Mathf.Cos(rad); return new Vector4(v.x, (v.y * c) - (v.w * s), v.z, (v.y * s) + (v.w * c)); }
+    /// <summary>Возвращает вершину после поворота в плоскости ZW.</summary>
     private Vector4 RotateZW(Vector4 v, float rad)
     { float s = Mathf.Sin(rad), c = Mathf.Cos(rad); return new Vector4(v.x, v.y, (v.z * c) - (v.w * s), (v.z * s) + (v.w * c)); }
 }

@@ -66,6 +66,7 @@
     <Compile Include="Assets\GameData\Editor\PanelCollectionPrefabCreator.cs" />
     <Compile Include="Assets\GameData\Scenes\Battlefield\Editor\BattlefieldPlaybackTests.cs" />
     <Compile Include="Assets\GameData\Editor\AddressableNamesGenerator.cs" />
+    <Compile Include="Assets\GameData\Scenes\MainMenu\Editor\HypercubeInitTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\MobileDependencyResolver\Editor\Google.VersionHandler.dll" />
@@ -1762,8 +1763,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj" />
     <ProjectReference Include="Assembly-CSharp.csproj" />
-    <ProjectReference Include="DOTween.Modules.csproj" />
   </ItemGroup>
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
   <ItemGroup>
