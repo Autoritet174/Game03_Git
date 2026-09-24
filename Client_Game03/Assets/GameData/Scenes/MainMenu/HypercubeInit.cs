@@ -90,16 +90,36 @@ public class HypercubeInit : MonoBehaviour
     /// <summary>Компоненты отображения граней.</summary>
     private MeshRenderer[] meshRenderers; // Сохраняем ссылки на рендереры для смены цвета на лету
 
+    /// <summary>Переиспользуемый массив проекций шестнадцати вершин.</summary>
+    private Vector3[] projected2DPoints;
+    /// <summary>Общий буфер четырёх вершин; SetVertices копирует его содержимое в меш.</summary>
+    private Vector3[] faceVertices;
+    /// <summary>Неизменные индексы треугольников для двух сторон каждой грани.</summary>
+    private static readonly int[] FaceTriangles = { 0, 1, 2, 0, 2, 3, 2, 1, 0, 3, 2, 0 };
+    /// <summary>Неизменные координаты текстуры каждой грани.</summary>
+    private static readonly Vector2[] FaceUVs = { new(0, 0), new(1, 0), new(1, 1), new(0, 1) };
+
     /// <summary>Текущие углы поворота в шести координатных плоскостях.</summary>
     private float angleXY, angleXZ, angleXW, angleYZ, angleYW, angleZW;
     /// <summary>Признак полного завершения подготовки геометрии.</summary>
     private bool isInitialized = false;
 
-    /// <summary>Восстанавливает геометрию при запуске и после перезагрузки сборок в Play Mode.</summary>
+    /// <summary>Создаёт геометрию после подготовки Canvas, как при исходной инициализации в Start.</summary>
+    private void Start()
+    {
+        if (!isInitialized)
+        {
+            InitializeGeometry();
+        }
+    }
+
+    /// <summary>Восстанавливает уже созданную геометрию после повторного включения или перезагрузки сборок.</summary>
     private void OnEnable()
     {
-        if (Application.isPlaying)
+        if (Application.isPlaying && isInitialized)
+        {
             InitializeGeometry();
+        }
     }
 
     /// <summary>Восстанавливает несериализуемые таблицы связей, переиспользуя существующие объекты, материалы и меши.</summary>
@@ -113,6 +133,8 @@ public class HypercubeInit : MonoBehaviour
         faces = new int[24, 4];
         meshes = new Mesh[24];
         meshRenderers = new MeshRenderer[24];
+        projected2DPoints = new Vector3[16];
+        faceVertices = new Vector3[4];
 
         // Инициализация массива цветов по умолчанию, если пользователь его не настроил
         if (faceColors == null || faceColors.Length < 24)
@@ -153,12 +175,15 @@ public class HypercubeInit : MonoBehaviour
 
                     Transform existingLine = transform.Find("Line_" + lineIndex);
                     GameObject lineObj = existingLine != null ? existingLine.gameObject : new GameObject("Line_" + lineIndex);
-                    lineObj.transform.SetParent(transform, false);
+                    // Сохраняем мировой масштаб, как в main: Canvas может быть сильно уменьшен.
+                    lineObj.transform.SetParent(transform, true);
                     lineObj.transform.localPosition = Vector3.zero;
 
-                    LineRenderer lr = lineObj.GetComponent<LineRenderer>();
-                    if (lr == null)
+                    if (!lineObj.TryGetComponent(out LineRenderer lr))
+                    {
                         lr = lineObj.AddComponent<LineRenderer>();
+                    }
+
                     lines[lineIndex] = lr;
 
                     lineIndex++;
@@ -166,7 +191,7 @@ public class HypercubeInit : MonoBehaviour
             }
         }
 
-        Shader faceShader = Shader.Find("Sprites/Default");
+        var faceShader = Shader.Find("Sprites/Default");
 
         // --- 3. Грани (Плоскости) ---
         int faceIndex = 0;
@@ -188,24 +213,41 @@ public class HypercubeInit : MonoBehaviour
 
                         Transform existingFace = transform.Find("Face_" + faceIndex);
                         GameObject faceObj = existingFace != null ? existingFace.gameObject : new GameObject("Face_" + faceIndex);
-                        faceObj.transform.SetParent(transform, false);
+                        // Размер проекции задан в мировых единицах, а не в единицах Canvas.
+                        faceObj.transform.SetParent(transform, true);
                         faceObj.transform.localPosition = Vector3.zero;
 
-                        MeshFilter mf = faceObj.GetComponent<MeshFilter>();
-                        if (mf == null)
+                        if (!faceObj.TryGetComponent(out MeshFilter mf))
+                        {
                             mf = faceObj.AddComponent<MeshFilter>();
-                        MeshRenderer mr = faceObj.GetComponent<MeshRenderer>();
-                        if (mr == null)
+                        }
+
+                        if (!faceObj.TryGetComponent(out MeshRenderer mr))
+                        {
                             mr = faceObj.AddComponent<MeshRenderer>();
+                        }
 
                         if (mr.sharedMaterial == null)
+                        {
                             mr.sharedMaterial = new Material(faceShader);
+                        }
+
                         mr.sharedMaterial.mainTexture = facetTexture;
                         meshRenderers[faceIndex] = mr;
 
                         if (mf.sharedMesh == null)
+                        {
                             mf.sharedMesh = new Mesh { name = "FaceMesh_" + faceIndex };
+                        }
+
                         meshes[faceIndex] = mf.sharedMesh;
+                        Mesh mesh = meshes[faceIndex];
+                        if (mesh.vertexCount != 4)
+                        {
+                            mesh.SetVertices(faceVertices);
+                        }
+                        mesh.triangles = FaceTriangles;
+                        mesh.SetUVs(0, FaceUVs);
 
                         faceIndex++;
                     }
@@ -291,7 +333,9 @@ public class HypercubeInit : MonoBehaviour
     private void Update()
     {
         if (!isInitialized || points == null || lines == null || edges == null || faces == null || meshes == null)
+        {
             return;
+        }
 
         // Константа полного оборота в радианах (360 градусов)
         float twoPi = Mathf.PI * 2f;
@@ -334,8 +378,6 @@ public class HypercubeInit : MonoBehaviour
         {
             angleZW += twoPi;
         }
-
-        var projected2DPoints = new Vector3[16];
 
         for (int i = 0; i < 16; i++)
         {
@@ -407,7 +449,10 @@ public class HypercubeInit : MonoBehaviour
         {
             LineRenderer line = lines[i];
             if (line == null)
+            {
                 continue;
+            }
+
             line.SetPosition(0, projected2DPoints[edges[i, 0]]);
             line.SetPosition(1, projected2DPoints[edges[i, 1]]);
         }
@@ -416,22 +461,15 @@ public class HypercubeInit : MonoBehaviour
         {
             Mesh mesh = meshes[i];
             if (mesh == null)
+            {
                 continue;
+            }
 
-            mesh.vertices = new Vector3[]
-            {
-                projected2DPoints[faces[i, 0]],
-                projected2DPoints[faces[i, 1]],
-                projected2DPoints[faces[i, 2]],
-                projected2DPoints[faces[i, 3]]
-            };
-
-            mesh.triangles = new int[] { 0, 1, 2, 0, 2, 3, 2, 1, 0, 3, 2, 0 };
-
-            mesh.uv = new Vector2[]
-            {
-                new(0, 0), new(1, 0), new(1, 1), new(0, 1)
-            };
+            faceVertices[0] = projected2DPoints[faces[i, 0]];
+            faceVertices[1] = projected2DPoints[faces[i, 1]];
+            faceVertices[2] = projected2DPoints[faces[i, 2]];
+            faceVertices[3] = projected2DPoints[faces[i, 3]];
+            mesh.SetVertices(faceVertices);
 
             mesh.RecalculateBounds();
         }

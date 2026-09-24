@@ -25,10 +25,18 @@ public class HypercubeInitTests
     public void TearDown()
     {
         foreach (MeshFilter filter in root.GetComponentsInChildren<MeshFilter>())
+        {
             Object.DestroyImmediate(filter.sharedMesh);
+        }
+
         foreach (Material material in root.GetComponentsInChildren<Renderer>().Select(renderer => renderer.sharedMaterial).Distinct())
+        {
             if (material != null)
+            {
                 Object.DestroyImmediate(material);
+            }
+        }
+
         Object.DestroyImmediate(root);
     }
 
@@ -72,6 +80,43 @@ public class HypercubeInitTests
         Assert.That(root.transform.Find("Line_0").GetComponent<LineRenderer>().positionCount, Is.EqualTo(2));
     }
 
+    /// <summary>Масштаб и поворот родителя не меняют исходный мировой размер и ориентацию проекции.</summary>
+    [TestCase(0.01f)]
+    [TestCase(1f)]
+    [TestCase(2f)]
+    public void InitializationPreservesWorldGeometryUnderScaledParent(float parentScale)
+    {
+        root.transform.localScale = Vector3.one * parentScale;
+        root.transform.rotation = Quaternion.Euler(0f, 0f, 30f);
+        root.transform.position = new Vector3(3f, -2f, 10f);
+        hypercube.rotateXY = hypercube.rotateXZ = hypercube.rotateXW = false;
+        hypercube.rotateYZ = hypercube.rotateYW = hypercube.rotateZW = false;
+        hypercube.wDistance = 5f;
+        hypercube.objectScale = 6f;
+        hypercube.camera3DDepth = 4f;
+
+        Invoke("Start");
+        Invoke("Update");
+
+        // Первая вершина (-1,-1,-1,-1): 4D -> 3D -> 2D даёт (-0.96,-0.96,0).
+        Vector3 expectedVertex = root.transform.position + new Vector3(-0.96f, -0.96f, 0f);
+        LineRenderer line = root.transform.Find("Line_0").GetComponent<LineRenderer>();
+        MeshFilter face = root.transform.Find("Face_0").GetComponent<MeshFilter>();
+        Assert.That(Vector3.Distance(line.transform.TransformPoint(line.GetPosition(0)), expectedVertex), Is.LessThan(0.0001f));
+        Assert.That(Vector3.Distance(face.transform.TransformPoint(face.sharedMesh.vertices[0]), expectedVertex), Is.LessThan(0.0001f));
+
+        Invoke("InitializeGeometry");
+        Invoke("Update");
+
+        foreach (Transform child in root.transform)
+        {
+            Assert.That(Vector3.Distance(child.lossyScale, Vector3.one), Is.LessThan(0.0001f));
+            Assert.That(Quaternion.Angle(child.rotation, Quaternion.identity), Is.LessThan(0.001f));
+        }
+        Assert.That(Vector3.Distance(line.transform.TransformPoint(line.GetPosition(0)), expectedVertex), Is.LessThan(0.0001f));
+        Assert.That(Vector3.Distance(face.transform.TransformPoint(face.sharedMesh.vertices[0]), expectedVertex), Is.LessThan(0.0001f));
+    }
+
     /// <summary>Обновление до завершения подготовки не обращается к пустым массивам.</summary>
     [Test]
     public void UpdateBeforeInitializationDoesNotThrow()
@@ -83,6 +128,6 @@ public class HypercubeInitTests
     /// <summary>Вызывает закрытый метод жизненного цикла или инициализации компонента.</summary>
     private void Invoke(string name)
     {
-        typeof(HypercubeInit).GetMethod(name, BindingFlags.Instance | BindingFlags.NonPublic).Invoke(hypercube, null);
+        _ = typeof(HypercubeInit).GetMethod(name, BindingFlags.Instance | BindingFlags.NonPublic).Invoke(hypercube, null);
     }
 }
