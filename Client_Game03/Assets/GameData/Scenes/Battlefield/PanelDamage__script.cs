@@ -154,19 +154,23 @@ namespace Assets.GameData.Scenes.Battlefield
             PanelDamage__RectTransform.anchoredPosition = new Vector2(20 * coefHeight, 0);
 
             float buttonsSize = 70 * coefHeight;
-            float buttonPos = 10 * coefHeight;
+            float buttonPos = 4 * coefHeight;
+
             ButtonDamageDone__RectTransform.sizeDelta = new Vector2(buttonsSize, buttonsSize);
             ButtonHealingDone__RectTransform.sizeDelta = new Vector2(buttonsSize, buttonsSize);
             ButtonDamageRecieved__RectTransform.sizeDelta = new Vector2(buttonsSize, buttonsSize);
+            ButtonHealingRecieved__RectTransform.sizeDelta = new Vector2(buttonsSize, buttonsSize);
+
             ButtonDamageDone__RectTransform.anchoredPosition = new Vector2(buttonPos, -buttonPos);
             ButtonHealingDone__RectTransform.anchoredPosition = new Vector2((buttonPos * 2) + buttonsSize, -buttonPos);
             ButtonDamageRecieved__RectTransform.anchoredPosition = new Vector2((buttonPos * 3) + (buttonsSize * 2), -buttonPos);
+            ButtonHealingRecieved__RectTransform.anchoredPosition = new Vector2((buttonPos * 4) + (buttonsSize * 3), -buttonPos);
 
             float verticalBarWidth = 13 * coefHeight;
             ScrollbarVertical__RectTransform.anchoredPosition = new Vector2(verticalBarWidth, 0);
             ScrollbarVertical__RectTransform.sizeDelta = new Vector2(verticalBarWidth, 0);
 
-            float PanelProgressBars__offsets = 10 * coefHeight;
+            float PanelProgressBars__offsets = 4 * coefHeight;
             PanelProgressBars__RectTransform.SetOffsets(
                 left: PanelProgressBars__offsets,
                 right: PanelProgressBars__offsets + verticalBarWidth,

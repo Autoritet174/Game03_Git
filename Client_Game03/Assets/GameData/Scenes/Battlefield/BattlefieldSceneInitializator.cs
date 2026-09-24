@@ -91,7 +91,10 @@ namespace Assets.GameData.Scenes.Battlefield
         private void Start()
         {
             if (!TryInitialize())
+            {
                 return;
+            }
+
             Canvas.willRenderCanvases += RefreshLayoutIfNeeded;
             this.RunAsync(StartAsync);
         }
@@ -125,7 +128,10 @@ namespace Assets.GameData.Scenes.Battlefield
             damagePanel = new PanelDamage__script { battlefieldSceneInitializator = this };
             damagePanel.Initialize();
             foreach (BattlefieldUnit unit in battlefieldUnits.Values)
+            {
                 damagePanel.AddProgressBar();
+            }
+
             damagePanel.Refresh();
             initialized = true;
             OnResized();
@@ -147,7 +153,7 @@ namespace Assets.GameData.Scenes.Battlefield
         /// <summary>Загружает лог, ожидает все действия и параллельные визуальные последствия.</summary>
         private async UniTask StartAsync(CancellationToken destructionToken)
         {
-            using CancellationTokenSource cancellation = CancellationTokenSource.CreateLinkedTokenSource(destructionToken);
+            using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(destructionToken);
             playbackCancellation = cancellation;
             CancellationToken token = cancellation.Token;
             try
@@ -155,7 +161,9 @@ namespace Assets.GameData.Scenes.Battlefield
                 spawnedBattlefield.battlefieldLog = await Game03Client.Battlefield.BattlefieldProvider.GetBattleLogAsync(token);
                 token.ThrowIfCancellationRequested();
                 if (spawnedBattlefield.battlefieldLog == null)
+                {
                     return;
+                }
 
                 BattlefieldLogPlayer player = new(spawnedBattlefield.battlefieldLog, message => Debug.LogWarning(message));
                 player.RecordStarted += SetCurrentRecord;
@@ -172,7 +180,7 @@ namespace Assets.GameData.Scenes.Battlefield
                 catch
                 {
                     cancellation.Cancel();
-                    await UniTask.WhenAll(feedbackTasks).SuppressCancellationThrow();
+                    _ = await UniTask.WhenAll(feedbackTasks).SuppressCancellationThrow();
                     throw;
                 }
                 await UniTask.WhenAll(feedbackTasks);
@@ -189,7 +197,8 @@ namespace Assets.GameData.Scenes.Battlefield
                 playbackCancellation = null;
             }
         }
-
+        #region Фукнции делающие какое то действие
+        #endregion Фукнции делающие какое то действие
         /// <summary>Запоминает реальный индекс записи, а не её порядковый номер в коллекции.</summary>
         private void SetCurrentRecord(int index)
         {
@@ -209,7 +218,10 @@ namespace Assets.GameData.Scenes.Battlefield
         {
             token.ThrowIfCancellationRequested();
             if (TryGetUnit(record.spawnedHeroId, out BattlefieldUnit unit))
+            {
                 unit.RefreshActionPoints(unit.SpawnedHero.actionPoints + record.countAP);
+            }
+
             return UniTask.CompletedTask;
         }
 
@@ -218,7 +230,10 @@ namespace Assets.GameData.Scenes.Battlefield
         {
             token.ThrowIfCancellationRequested();
             if (TryGetUnit(record.hero2Id, out BattlefieldUnit target))
+            {
                 feedbackTasks.Add(target.ApplyDamageAsync(record.damage, record.isCrit, token));
+            }
+
             statisticsBattle.ApplyDamage(record);
             damagePanel.Refresh();
             return UniTask.CompletedTask;
@@ -247,7 +262,10 @@ namespace Assets.GameData.Scenes.Battlefield
         private bool TryGetUnit(Guid id, out BattlefieldUnit unit)
         {
             if (battlefieldUnits.TryGetValue(id, out unit))
+            {
                 return true;
+            }
+
             Debug.LogWarning($"В событии боя указан отсутствующий герой {id}.");
             return false;
         }
@@ -273,7 +291,9 @@ namespace Assets.GameData.Scenes.Battlefield
         private void RefreshLayoutIfNeeded()
         {
             if (initialized && (Screen.width != width || Screen.height != height))
+            {
                 OnResized();
+            }
         }
 
         /// <summary>Пересчитывает раскладку, сохраняя текущую позицию и масштаб анимируемых карточек.</summary>
@@ -282,7 +302,10 @@ namespace Assets.GameData.Scenes.Battlefield
             width = Screen.width;
             height = Screen.height;
             foreach (BattlefieldUnit unit in battlefieldUnits.Values)
+            {
                 unit.OnResize();
+            }
+
             healthHub.OnResize();
             float coefficient = G.GetCoefHeight();
             animationSpeedButtonRect.sizeDelta = Vector2.one * (AnimationSpeedButtonSize * coefficient);
@@ -299,7 +322,10 @@ namespace Assets.GameData.Scenes.Battlefield
             initialized = false;
             Canvas.willRenderCanvases -= RefreshLayoutIfNeeded;
             if (animationSpeedButton != null)
+            {
                 animationSpeedButton.onClick.RemoveListener(AnimationSpeedChange);
+            }
+
             playbackCancellation?.Cancel();
             animations?.Dispose();
             canvasDamage__Transform = null;
