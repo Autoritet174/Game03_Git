@@ -1,4 +1,4 @@
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using Game03Client;
 using System;
 using System.IO;
@@ -11,9 +11,7 @@ using UnityEngine.SceneManagement;
 namespace Assets.GameData.Scripts
 {
 
-    /// <summary>
-    /// Глобальный статический класс.
-    /// </summary>
+    /// <summary>Глобальный статический класс.</summary>
     public static class G
     {
         public const float PANELTOP_HEIGHT = 60f;
@@ -21,13 +19,13 @@ namespace Assets.GameData.Scripts
         /// <summary>
         /// Флаг, указывающий на то, что приложение находится в процессе завершения работы.
         /// Должен быть установлен извне.
-        /// </summary>
-        public static bool IsApplicationQuitting { get; private set; } = false;
+        ///</summary>
+        public static bool isApplicationQuitting { get; private set; } = false;
 
         static G()
         {
             // Мониторим состояние через AppDomain
-            AppDomain.CurrentDomain.DomainUnload += (s, e) => IsApplicationQuitting = true;
+            AppDomain.CurrentDomain.DomainUnload += (s, e) => isApplicationQuitting = true;
         }
 
         private const string CURSOR_TEXTURE_ADDRESS = "UI-cursors-cursor_var2_green_64x64";
@@ -36,6 +34,7 @@ namespace Assets.GameData.Scripts
         private const string SECTION_SERVER = "Server";
         private const string KEY_BASE_URL = "BaseUrl";
 
+        /// <summary>Отслеживает запуск и завершение приложения.</summary>
         private class AppStateMonitor : MonoBehaviour
         {
             private void Awake()
@@ -52,7 +51,7 @@ namespace Assets.GameData.Scripts
 
             private void OnApplicationQuit()
             {
-                IsApplicationQuitting = true;
+                isApplicationQuitting = true;
             }
         }
 
@@ -144,12 +143,14 @@ namespace Assets.GameData.Scripts
             Debug.LogError($"[Library: {nameof(Game03Client)}] {m}");
             LogGameMessage(m);
         }
+
         private static void LogInfo(object message)
         {
             string m = message.ToString();
             Debug.Log($"[Library: {nameof(Game03Client)}] {m}");
             LogGameMessage(m);
         }
+
         private static void LogGameMessage(string m)
         {
             int index = m.IndexOf(General.LocalizationKeys.KEY_LOCALIZATION);
@@ -168,7 +169,6 @@ namespace Assets.GameData.Scripts
             }
         }
 
-
         private static async UniTask LoadCursorTextureAsync(CancellationToken cancellationToken)
         {
             AsyncOperationHandle<Texture2D> operationHandle = Addressables.LoadAssetAsync<Texture2D>(CURSOR_TEXTURE_ADDRESS);
@@ -182,10 +182,7 @@ namespace Assets.GameData.Scripts
             Cursor.SetCursor(operationHandle.Result, Vector2.zero, CursorMode.Auto);
         }
 
-        /// <summary>
-        /// Возвращает True если запущена в десктопной операционной системе (Windows, Mac, Linux).
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Возвращает True если запущена в десктопной операционной системе (Windows, Mac, Linux).</summary>
         public static bool WorkingOnDesktop()
         {
             //return Application.platform switch
@@ -197,9 +194,7 @@ namespace Assets.GameData.Scripts
             return Application.platform is RuntimePlatform.WindowsPlayer or RuntimePlatform.OSXPlayer or RuntimePlatform.LinuxPlayer or RuntimePlatform.WindowsEditor;
         }
 
-        /// <summary>
-        /// Коэфициент высоты относительно высоты FullHD монитора = "Screen.height / 1080"
-        /// </summary>
+        /// <summary>Коэфициент высоты относительно высоты FullHD монитора = "Screen.height / 1080"</summary>
         public static float GetCoefHeight()
         {
             return (Screen.width > Screen.height ? Screen.height : Screen.width) / 1080f;
@@ -207,13 +202,13 @@ namespace Assets.GameData.Scripts
 
         public static void ButtonCloseOnClick()
         {
-            if (SceneManager.GetActiveScene().name == $"{GameSceneManager.SceneName.MainMenu}Scene")
+            if (SceneManager.GetActiveScene().name == GameSceneManager.GetSceneName(GameSceneManager.ESceneName.mainMenu))
             {
                 GameExitHandler.ExitGame();
             }
             else
             {
-                GameSceneManager.Load(GameSceneManager.SceneName.MainMenu);
+                GameSceneManager.Load(GameSceneManager.ESceneName.mainMenu);
             }
         }
     }

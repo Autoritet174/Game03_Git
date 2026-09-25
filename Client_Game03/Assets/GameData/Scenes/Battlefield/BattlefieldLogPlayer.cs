@@ -27,27 +27,41 @@ namespace Assets.GameData.Scenes.Battlefield
         private readonly Action<string> warning;
 
         /// <summary>Сообщает фактический индекс обрабатываемой записи.</summary>
-        public event Action<int> RecordStarted;
+        public event Action<int> recordStarted;
 
         /// <summary>Проверяет идентификаторы и сохраняет отсортированный лог.</summary>
         public BattlefieldLogPlayer(IEnumerable<BattlefieldLogRecordBase> records, Action<string> warning)
         {
             if (records == null)
+            {
                 throw new ArgumentNullException(nameof(records));
+            }
+
             this.records = records.ToArray();
             if (this.records.Any(record => record == null))
+            {
                 throw new ArgumentException("Лог содержит пустую запись.", nameof(records));
+            }
+
             Array.Sort(this.records, (left, right) => left.index.CompareTo(right.index));
             if (this.records.Select(record => record.index).Distinct().Count() != this.records.Length)
+            {
                 throw new ArgumentException("Индексы записей боя должны быть уникальны.", nameof(records));
+            }
+
             this.warning = warning ?? (_ => { });
         }
+
+        #region Регистрация обработчиков
 
         /// <summary>Регистрирует обработчик нового типа записи без изменения основного цикла воспроизведения.</summary>
         public void RegisterRecord<T>(Func<T, CancellationToken, UniTask> handler) where T : BattlefieldLogRecordBase
         {
             if (handler == null)
+            {
                 throw new ArgumentNullException(nameof(handler));
+            }
+
             handlers[typeof(T)] = (record, token) => handler((T)record, token);
         }
 
@@ -55,7 +69,10 @@ namespace Assets.GameData.Scenes.Battlefield
         public void RegisterImpactEffect<T>(Func<T, int?> getReason) where T : BattlefieldLogRecordBase
         {
             if (getReason == null)
+            {
                 throw new ArgumentNullException(nameof(getReason));
+            }
+
             impactReasons[typeof(T)] = record => getReason((T)record);
         }
 
@@ -66,6 +83,10 @@ namespace Assets.GameData.Scenes.Battlefield
             abilities[ability] = handler ?? throw new ArgumentNullException(nameof(handler));
         }
 
+        #endregion Регистрация обработчиков
+
+        #region Воспроизведение записей
+
         /// <summary>Ожидает каждое действие по порядку, не пересматривая уже обработанные записи на следующих кадрах.</summary>
         public async UniTask PlayAsync(CancellationToken cancellationToken)
         {
@@ -75,7 +96,7 @@ namespace Assets.GameData.Scenes.Battlefield
                 BattlefieldLogRecordBase record = records[position];
                 if (record is BattlefieldLogRecord_UseAbility ability)
                 {
-                    RecordStarted?.Invoke(ability.index);
+                    recordStarted?.Invoke(ability.index);
                     int effectsEnd = FindImpactEffectsEnd(position, ability.index);
                     await PlayAbilityAsync(ability, position + 1, effectsEnd, cancellationToken);
                     position = effectsEnd - 1;
@@ -92,12 +113,15 @@ namespace Assets.GameData.Scenes.Battlefield
         {
             HashSet<int> reasons = new() { reason };
             int end = position + 1;
-            while (end < records.Length && impactReasons.TryGetValue(records[end].GetType(), out var getReason))
+            while (end < records.Length && impactReasons.TryGetValue(records[end].GetType(), out Func<BattlefieldLogRecordBase, int?> getReason))
             {
                 int? parent = getReason(records[end]);
                 if (!parent.HasValue || !reasons.Contains(parent.Value))
+                {
                     break;
-                reasons.Add(records[end].index);
+                }
+
+                _ = reasons.Add(records[end].index);
                 end++;
             }
             return end;
@@ -113,31 +137,47 @@ namespace Assets.GameData.Scenes.Battlefield
             {
                 impactToken.ThrowIfCancellationRequested();
                 if (impactPlayed)
+                {
                     return;
+                }
+
                 impactPlayed = true;
                 for (int i = start; i < end; i++)
+                {
                     await DispatchAsync(records[i], impactToken);
+                }
             }
 
-            if (abilities.TryGetValue(ability.ability, out var handler))
+            if (abilities.TryGetValue(ability.ability, out Func<BattlefieldLogRecord_UseAbility, Func<CancellationToken, UniTask>, CancellationToken, UniTask> handler))
+            {
                 await handler(ability, ImpactAsync, token);
+            }
             else
+            {
                 warning($"Способность {ability.ability}: отображаются известные последствия без специальной анимации.");
+            }
 
             token.ThrowIfCancellationRequested();
             if (!impactPlayed)
+            {
                 await ImpactAsync(token);
+            }
         }
 
         /// <summary>Передаёт запись её обработчику или диагностирует неизвестный тип, не останавливая оставшийся лог.</summary>
         private UniTask DispatchAsync(BattlefieldLogRecordBase record, CancellationToken token)
         {
             token.ThrowIfCancellationRequested();
-            RecordStarted?.Invoke(record.index);
-            if (handlers.TryGetValue(record.GetType(), out var handler))
+            recordStarted?.Invoke(record.index);
+            if (handlers.TryGetValue(record.GetType(), out Func<BattlefieldLogRecordBase, CancellationToken, UniTask> handler))
+            {
                 return handler(record, token);
+            }
+
             warning($"Нет обработчика события {record.GetType().Name}, индекс {record.index}.");
             return UniTask.CompletedTask;
         }
+
+        #endregion Воспроизведение записей
     }
 }

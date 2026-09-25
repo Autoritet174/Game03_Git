@@ -12,41 +12,49 @@ using LM = Game03Client.LocalizationManager;
 
 namespace Assets.GameData.Scenes.SelectBattlefield
 {
-    public class PanelPrepareBattle: IPrefab
+    /// <summary>Показывает параметры сражения, выбор героев и запускает бой.</summary>
+    public class PanelPrepareBattle : IPrefab
     {
         public bool initialized { get; private set; }
+
         public float width { get; private set; }
+
         public float height { get; private set; }
-        public PanelTop__prefab__scriptMB PanelTop__prefab__context { get; private set; }
-        private GameObject _GameObject;
-        private RectTransform _RectTransform;
 
-        private  RectTransform _PanelBattlefield__RectTransform;
+        public PanelTop__prefab__scriptMB panelTop__prefab__context { get; private set; }
 
-        private  GameObject _StartBattleButton__GameObject;
-        private  RectTransform _StartBattleButton__RectTransform;
+        private GameObject gameObject;
+        private RectTransform rectTransform;
 
-        private  RectTransform _HeroesSelectedAndMaxLabel__RectTransform;
-        private  TextMeshProUGUI _HeroesSelectedAndMaxLabel__TextMeshProUGUI;
+        private RectTransform panelBattlefield__RectTransform;
+
+        private GameObject startBattleButton__GameObject;
+        private RectTransform startBattleButton__RectTransform;
+
+        private RectTransform heroesSelectedAndMaxLabel__RectTransform;
+        private TextMeshProUGUI heroesSelectedAndMaxLabel__TextMeshProUGUI;
 
         private EBattleFiled battlefieldId;
         private bool battleStarting;
 
         private General.DTO.Entities.GameData.Battlefield battlefield = null;
         public PanelCollection__prefab__scriptMB panelCollection__prefab { get; set; }
-        public Action SceneOnResized { get; set; }
+
+        public Action sceneOnResized { get; set; }
+
         public SelectBattlefieldSceneInitializator selectBattlefieldSceneInitializator { get; set; }
+
         public void Initialize()
         {
-            _GameObject = GameObjectFinder.FindByName("PanelPrepareBattle");
-            _RectTransform = _GameObject.GetComponent<RectTransform>();
-            _RectTransform.SetHorizontalOffsets(0, 0);//переместить в пределы экрана
+            gameObject = GameObjectFinder.FindByName("PanelPrepareBattle");
+            rectTransform = gameObject.GetComponent<RectTransform>();
+            rectTransform.SetHorizontalOffsets(0, 0);//переместить в пределы экрана
 
-            PanelTop__prefab__context = GameObjectFinder.FindByName("PanelPrepareBattle_PanelTop__prefab").GetComponent<PanelTop__prefab__scriptMB>();
-            PanelTop__prefab__context.Initialize();
-            PanelTop__prefab__context.SetActionOnButtonClose(Hide);
+            panelTop__prefab__context = GameObjectFinder.FindByName("PanelPrepareBattle_PanelTop__prefab").GetComponent<PanelTop__prefab__scriptMB>();
+            panelTop__prefab__context.Initialize();
+            panelTop__prefab__context.SetActionOnButtonClose(Hide);
 
-            panelCollection__prefab = GameObjectFinder.FindByName<PanelCollection__prefab__scriptMB>("PanelCollection", startParent: _RectTransform);
+            panelCollection__prefab = GameObjectFinder.FindByName<PanelCollection__prefab__scriptMB>("PanelCollection", startParent: rectTransform);
 
             PanelCollectionContext panelCollectionContext = new();
             panelCollectionContext.OnCollectionLoaded(selectBattlefieldSceneInitializator, UpdateHeroesSelectedAndMaxLabel);
@@ -56,27 +64,22 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
             //GameObjectFinder.FindByName("ImageButtonEquipments (id=vuhjngaz)", PanelCollection__prefab.gameObject).SetActive(false);
 
-
-
-            _StartBattleButton__GameObject = GameObjectFinder.FindByName("StartBattleButton", _GameObject);
-            _StartBattleButton__RectTransform = _StartBattleButton__GameObject.GetComponent<RectTransform>();
-            GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _StartBattleButton__GameObject).SetText(LM.GetValue(L.UI.Button.StartBattle));
-            _StartBattleButton__GameObject.GetComponent<Button>().onClick.AddListener(() => StartBattleAsync().Forget());
-
-
+            startBattleButton__GameObject = GameObjectFinder.FindByName("StartBattleButton", gameObject);
+            startBattleButton__RectTransform = startBattleButton__GameObject.GetComponent<RectTransform>();
+            GameObjectFinder.FindByName<TextMeshProUGUI>("Text", startBattleButton__GameObject).SetText(LM.GetValue(L.UI.Button.StartBattle));
+            startBattleButton__GameObject.GetComponent<Button>().onClick.AddListener(() => StartBattleAsync().Forget());
 
             // Панель подготовки к бою
             {
-                _PanelBattlefield__RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelBattlefield", _GameObject);
-
+                panelBattlefield__RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelBattlefield", gameObject);
 
                 // Лейбл "Выбрано X/Y героев"
-                _HeroesSelectedAndMaxLabel__RectTransform = GameObjectFinder.FindByName<RectTransform>("HeroesSelectedAndMaxLabel", _PanelBattlefield__RectTransform);
-                _HeroesSelectedAndMaxLabel__TextMeshProUGUI = _HeroesSelectedAndMaxLabel__RectTransform.GetComponent<TextMeshProUGUI>();
-              
+                heroesSelectedAndMaxLabel__RectTransform = GameObjectFinder.FindByName<RectTransform>("HeroesSelectedAndMaxLabel", panelBattlefield__RectTransform);
+                heroesSelectedAndMaxLabel__TextMeshProUGUI = heroesSelectedAndMaxLabel__RectTransform.GetComponent<TextMeshProUGUI>();
+
             }
 
-            _GameObject.SetActive(false);
+            gameObject.SetActive(false);
 
             {
                 //GameObject buttonClose__GameObject = GameObjectFinder.FindByName("PanelTop", _GameObject)
@@ -97,8 +100,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             }
         }
 
-
-        public bool IsVisible => _GameObject.activeSelf;
+        public bool isVisible => gameObject.activeSelf;
 
         public void Show(EBattleFiled battlefieldId)
         {
@@ -106,8 +108,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             battleStarting = false;
             panelCollection__prefab.UnselectAll();
             panelCollection__prefab.PanelTopButtons_ResetPageCurrent();
-            _GameObject.SetActive(true);
-            
+            gameObject.SetActive(true);
 
             battlefield = Game03Client.GameData.Container.battlefields.First(a => a.id == battlefieldId);
 
@@ -115,52 +116,49 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             //_PanelCollectionContext.Actions.Add(UpdateHeroesSelectedAndMaxLabel);
             UpdateHeroesSelectedAndMaxLabel();
 
-            panelCollection__prefab.InstantiateCollection(ECollectionMode.Hero);
-            SceneOnResized();
+            panelCollection__prefab.InstantiateCollection(ECollectionMode.hero);
+            sceneOnResized();
         }
 
         public void Hide()
         {
             battleStarting = false;
             panelCollection__prefab.UnselectAll();
-            _GameObject.SetActive(false);
-            SceneOnResized();
+            gameObject.SetActive(false);
+            sceneOnResized();
         }
 
-        public void OnResized(float coefHeight, float top = 0, float buttom = 0, float left = 0, float right=0)
+        public void OnResized(float coefHeight, float top = 0, float buttom = 0, float left = 0, float right = 0)
         {
-            if (!_GameObject.activeSelf)
+            if (!gameObject.activeSelf)
             {
                 return;
             }
 
-            PanelTop__prefab__context.OnResized(coefHeight);
-            float _height = Screen.height - PanelTop__prefab__context.height;
-            float _width = Screen.width*0.3333f;
-            _PanelBattlefield__RectTransform.sizeDelta = new Vector2(_width, _height);
-            _HeroesSelectedAndMaxLabel__TextMeshProUGUI.fontSize = 70f * coefHeight;
-
+            panelTop__prefab__context.OnResized(coefHeight);
+            float heightValue = Screen.height - panelTop__prefab__context.height;
+            float widthValue = Screen.width * 0.3333f;
+            panelBattlefield__RectTransform.sizeDelta = new(widthValue, heightValue);
+            heroesSelectedAndMaxLabel__TextMeshProUGUI.fontSize = 70f * coefHeight;
 
             float offset = 20f * coefHeight;
-            _HeroesSelectedAndMaxLabel__RectTransform.SetHorizontalOffsets(offset, offset);
-            _HeroesSelectedAndMaxLabel__RectTransform.anchoredPosition = new Vector2(0, -offset);
-            _HeroesSelectedAndMaxLabel__RectTransform.sizeDelta = new Vector2(0, 90f * coefHeight);
+            heroesSelectedAndMaxLabel__RectTransform.SetHorizontalOffsets(offset, offset);
+            heroesSelectedAndMaxLabel__RectTransform.anchoredPosition = new(0, -offset);
+            heroesSelectedAndMaxLabel__RectTransform.sizeDelta = new(0, 90f * coefHeight);
 
+            startBattleButton__RectTransform.anchoredPosition = new(-25 * coefHeight, 25 * coefHeight);
+            startBattleButton__RectTransform.sizeDelta = new(325 * coefHeight, 100 * coefHeight);
 
-            _StartBattleButton__RectTransform.anchoredPosition = new Vector2(-25 * coefHeight, 25 * coefHeight);
-            _StartBattleButton__RectTransform.sizeDelta = new Vector2(325 * coefHeight, 100 * coefHeight);
+            panelCollection__prefab.OnResized(coefHeight, top: panelTop__prefab__context.height, right: widthValue);
 
-
-            panelCollection__prefab.OnResized(coefHeight, top: PanelTop__prefab__context.height, right: _width);
-
-            UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(_RectTransform);
+            UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
         }
 
         private void UpdateHeroesSelectedAndMaxLabel()
         {
             int selectedCount = panelCollection__prefab.GetSelectedElements().Count;
             int max = battlefield.maxHeroCount;
-            _HeroesSelectedAndMaxLabel__TextMeshProUGUI.SetText($"{LM.GetValue(L.UI.Button.Heroes)} {selectedCount}/{max}");
+            heroesSelectedAndMaxLabel__TextMeshProUGUI.SetText($"{LM.GetValue(L.UI.Button.Heroes)} {selectedCount}/{max}");
         }
 
         private async UniTask StartBattleAsync()
@@ -190,7 +188,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
                     BattlefieldSceneInitializator.spawnedBattlefield.spawnedHeroPlayerList.Sort((a, b) => b.initiative.CompareTo(a.initiative));
                     BattlefieldSceneInitializator.spawnedBattlefield.spawnedHeroEnemyList.Sort((a, b) => b.initiative.CompareTo(a.initiative));
                     Hide();
-                    GameSceneManager.Load(GameSceneManager.SceneName.Battlefield);
+                    GameSceneManager.Load(GameSceneManager.ESceneName.battlefield);
                 }
                 else
                 {

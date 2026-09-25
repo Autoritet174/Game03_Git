@@ -5,18 +5,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using L = General.LocalizationKeys;
 
+/// <summary>Отображает состояние восстановления соединения и кнопку отмены.</summary>
 public class PanelReconnecting__prefab__scriptMB : MonoBehaviour
 {
-    private bool _Initialized = false;
-    private float Width = 0f, Height = 0f;
-    private RectTransform Panel__RectTransform;
+    private bool initialized = false;
+    private float width = 0f, height = 0f;
+    private RectTransform panel__RectTransform;
 
-    private Button ButtonCancel__Button;
-    private RectTransform ButtonCancel__RectTransform;
-    private TextMeshProUGUI ButtonCancel__TextMeshProUGUI;
+    private Button buttonCancel__Button;
+    private RectTransform buttonCancel__RectTransform;
+    private TextMeshProUGUI buttonCancel__TextMeshProUGUI;
 
-    private RectTransform LabelReconnecting__RectTransform;
-    private TextMeshProUGUI LabelReconnecting__TextMeshProUGUI;
+    private RectTransform labelReconnecting__RectTransform;
+    private TextMeshProUGUI labelReconnecting__TextMeshProUGUI;
 
     private GameObject canvas__GameObject;
     private bool visible = true;
@@ -27,22 +28,22 @@ public class PanelReconnecting__prefab__scriptMB : MonoBehaviour
 
     private void Start()
     {
-        GameObject PanelReconnecting = GameObjectFinder.FindByName("PanelReconnecting");
+        GameObject panelReconnecting = GameObjectFinder.FindByName("PanelReconnecting");
 
-        Canvas canvas = GameObjectFinder.FindByName<Canvas>("Canvas", PanelReconnecting.transform);
+        Canvas canvas = GameObjectFinder.FindByName<Canvas>("Canvas", panelReconnecting.transform);
         canvas.worldCamera = Camera.main;
 
         canvas__GameObject = canvas.gameObject;
 
-        Panel__RectTransform = GameObjectFinder.FindByName<RectTransform>("Panel", PanelReconnecting.transform);
+        panel__RectTransform = GameObjectFinder.FindByName<RectTransform>("Panel", panelReconnecting.transform);
 
-        ButtonCancel__Button = GameObjectFinder.FindByName<Button>("ButtonCancel", PanelReconnecting.transform);
-        ButtonCancel__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonCancel", PanelReconnecting.transform);
-        ButtonCancel__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", ButtonCancel__RectTransform.transform);
-        ButtonCancel__TextMeshProUGUI.text = Game03Client.LocalizationManager.GetValue(L.UI.Button.Cancel);
+        buttonCancel__Button = GameObjectFinder.FindByName<Button>("ButtonCancel", panelReconnecting.transform);
+        buttonCancel__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonCancel", panelReconnecting.transform);
+        buttonCancel__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", buttonCancel__RectTransform.transform);
+        buttonCancel__TextMeshProUGUI.text = Game03Client.LocalizationManager.GetValue(L.UI.Button.Cancel);
 
-        LabelReconnecting__RectTransform = GameObjectFinder.FindByName<RectTransform>("LabelReconnecting", PanelReconnecting.transform);
-        LabelReconnecting__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("LabelReconnecting", PanelReconnecting.transform);
+        labelReconnecting__RectTransform = GameObjectFinder.FindByName<RectTransform>("LabelReconnecting", panelReconnecting.transform);
+        labelReconnecting__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("LabelReconnecting", panelReconnecting.transform);
 
         textConnectionLost = Game03Client.LocalizationManager.GetValue(L.UI.Label.ConnectionLost);
         textReconnecting = Game03Client.LocalizationManager.GetValue(L.UI.Label.Reconnecting);
@@ -51,17 +52,17 @@ public class PanelReconnecting__prefab__scriptMB : MonoBehaviour
 
         UpdateState();
 
-        ButtonCancel__Button.onClick.RemoveAllListeners();
-        ButtonCancel__Button.onClick.AddListener(() =>
+        buttonCancel__Button.onClick.RemoveAllListeners();
+        buttonCancel__Button.onClick.AddListener(() =>
         {
             _ = WebSocketProvider.DisconnectAsync();
-            GameSceneManager.Load(GameSceneManager.SceneName.Auth);
+            GameSceneManager.Load(GameSceneManager.ESceneName.auth);
         });
 
-        _Initialized = true;
+        initialized = true;
         OnResized();
 
-        DontDestroyOnLoad(PanelReconnecting);
+        DontDestroyOnLoad(panelReconnecting);
         Visible(false);
     }
 
@@ -73,7 +74,7 @@ public class PanelReconnecting__prefab__scriptMB : MonoBehaviour
 
     private void Update()
     {
-        if (_Initialized && (!Mathf.Approximately(Screen.height, Height) || !Mathf.Approximately(Screen.width, Width)))
+        if (initialized && (!Mathf.Approximately(Screen.height, height) || !Mathf.Approximately(Screen.width, width)))
         {
             OnResized();
         }
@@ -82,25 +83,25 @@ public class PanelReconnecting__prefab__scriptMB : MonoBehaviour
 
     private void OnResized()
     {
-        if (!_Initialized)
+        if (!initialized)
         {
             return;
         }
 
-        Height = Screen.height;
-        Width = Screen.width;
+        height = Screen.height;
+        width = Screen.width;
 
         float coefHeight = G.GetCoefHeight();
 
-        Panel__RectTransform.sizeDelta = new Vector2(1200 * coefHeight, 400 * coefHeight);
+        panel__RectTransform.sizeDelta = new(1200 * coefHeight, 400 * coefHeight);
 
-        ButtonCancel__RectTransform.sizeDelta = new Vector2(512 * coefHeight, 128 * coefHeight);
-        ButtonCancel__RectTransform.anchoredPosition = new Vector2(0, -89 * coefHeight);
-        ButtonCancel__TextMeshProUGUI.fontSize = 40 * coefHeight;
+        buttonCancel__RectTransform.sizeDelta = new(512 * coefHeight, 128 * coefHeight);
+        buttonCancel__RectTransform.anchoredPosition = new(0, -89 * coefHeight);
+        buttonCancel__TextMeshProUGUI.fontSize = 40 * coefHeight;
 
-        LabelReconnecting__RectTransform.sizeDelta = new Vector2(1200 * coefHeight, 200 * coefHeight);
-        LabelReconnecting__RectTransform.anchoredPosition = new Vector2(0, 100 * coefHeight);
-        LabelReconnecting__TextMeshProUGUI.fontSize = 60 * coefHeight;
+        labelReconnecting__RectTransform.sizeDelta = new(1200 * coefHeight, 200 * coefHeight);
+        labelReconnecting__RectTransform.anchoredPosition = new(0, 100 * coefHeight);
+        labelReconnecting__TextMeshProUGUI.fontSize = 60 * coefHeight;
     }
 
     private void UpdateState()
@@ -115,7 +116,7 @@ public class PanelReconnecting__prefab__scriptMB : MonoBehaviour
             double sec = Game03Client.WebSocketProvider.retryPolicy?.SecondsUntilNextAttempt ?? 0;
             long attempt = Game03Client.WebSocketProvider.retryPolicy?.CurrentAttemptCount ?? 1;
 
-            LabelReconnecting__TextMeshProUGUI.text = $"{textConnectionLost}\r\n{(sec <= 0 ? textReconnecting + "..." : $"{textTry} ({attempt}), {textAfter} {sec:0.0}")}";
+            labelReconnecting__TextMeshProUGUI.text = $"{textConnectionLost}\r\n{(sec <= 0 ? textReconnecting + "..." : $"{textTry} ({attempt}), {textAfter} {sec:0.0}")}";
         }
         else
         {

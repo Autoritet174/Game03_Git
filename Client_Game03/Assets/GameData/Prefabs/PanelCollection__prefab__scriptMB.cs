@@ -1,29 +1,29 @@
 using Assets.GameData.Prefabs;
 using Assets.GameData.Scenes.Collection;
 using Assets.GameData.Scripts;
-using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>Отображает страницы коллекции, группы элементов и кнопки навигации.</summary>
 [RequireComponent(typeof(RectTransform))]
 public class PanelCollection__prefab__scriptMB : MonoBehaviour, IPrefab
 {
     public bool initialized { get; private set; }
+
     public float width { get; private set; }
+
     public float height { get; private set; }
 
     private RectTransform rectTransform;
 
-
     private readonly List<PanelGroupDivider__prefab__script> groupDividers = new();
     private readonly Dictionary<Guid, PanelIconCollectionElement> elements = new();
 
-    public ECollectionMode collectionMode { get; private set; } = ECollectionMode.Hero;
+    public ECollectionMode collectionMode { get; private set; } = ECollectionMode.hero;
 
     public int pageCurrent { get; private set; } = 1;
     public int pageMax { get; private set; } = 1;
@@ -40,8 +40,7 @@ public class PanelCollection__prefab__scriptMB : MonoBehaviour, IPrefab
         initialized = true;
     }
 
-
-    #region ================ PanelTopButtons ================
+    #region Кнопки верхней панели
 
     private GameObject panelTopButtons__GameObject;
     private RectTransform panelTopButtons__RectTransform;
@@ -58,7 +57,8 @@ public class PanelCollection__prefab__scriptMB : MonoBehaviour, IPrefab
     private TextMeshProUGUI panelTopButtons_LabelRangePage__TextMeshProUGUI;
     public float panelTopButtons_Height { get; private set; }
 
-    private void PanelTopButtons_Initialize() {
+    private void PanelTopButtons_Initialize()
+    {
         panelTopButtons__GameObject = GameObjectFinder.FindByName("PanelTopButtons", gameObject);
         panelTopButtons__RectTransform = panelTopButtons__GameObject.GetComponent<RectTransform>();
 
@@ -115,7 +115,7 @@ public class PanelCollection__prefab__scriptMB : MonoBehaviour, IPrefab
     {
         panelTopButtons_Height = 113f * coefHeight;
 
-        panelTopButtons__RectTransform.sizeDelta = new Vector2(width, panelTopButtons_Height);
+        panelTopButtons__RectTransform.sizeDelta = new(width, panelTopButtons_Height);
 
         panelTopButtons_FilterButtonHeroes.OnResized(0);
         panelTopButtons_FilterButtonEquipments.OnResized(0);
@@ -126,29 +126,31 @@ public class PanelCollection__prefab__scriptMB : MonoBehaviour, IPrefab
         float panelRangeLeft = (((FilterButton.SIZE + FilterButton.SPACING) * 4) + (FilterButton.SPACING_ADDITIONAL * 2)) * coefHeight;
 
         float rangePanelWidth = 230f * coefHeight;
-        panelTopButtons_RangePanel__RectTransform.anchoredPosition = new Vector2(panelRangeLeft, FilterButton.SPACING * coefHeight);
-        panelTopButtons_RangePanel__RectTransform.sizeDelta = new Vector2(rangePanelWidth, 90f * coefHeight);
+        panelTopButtons_RangePanel__RectTransform.anchoredPosition = new(panelRangeLeft, FilterButton.SPACING * coefHeight);
+        panelTopButtons_RangePanel__RectTransform.sizeDelta = new(rangePanelWidth, 90f * coefHeight);
 
         float buttonPageWidth = 100f * coefHeight;
         float buttonPageHeight = 60f * coefHeight;
-        panelTopButtons_ButtonPrevPage__RectTransform.sizeDelta = new Vector2(buttonPageWidth, buttonPageHeight);
-        panelTopButtons_ButtonNextPage__RectTransform.sizeDelta = new Vector2(buttonPageWidth, buttonPageHeight);
-        panelTopButtons_LabelRangePage__RectTransform.sizeDelta = new Vector2(rangePanelWidth, 30f * coefHeight);
+        panelTopButtons_ButtonPrevPage__RectTransform.sizeDelta = new(buttonPageWidth, buttonPageHeight);
+        panelTopButtons_ButtonNextPage__RectTransform.sizeDelta = new(buttonPageWidth, buttonPageHeight);
+        panelTopButtons_LabelRangePage__RectTransform.sizeDelta = new(rangePanelWidth, 30f * coefHeight);
         panelTopButtons_LabelRangePage__TextMeshProUGUI.fontSize = 18f * coefHeight;
     }
 
-    #endregion ================ PanelTopButtons ================
+    #endregion Кнопки верхней панели
 
-
-    #region ================ PanelCollectionViewer ================
+    #region Область просмотра коллекции
     private RectTransform panelCollectionViewer__RectTransform;
     private RectTransform panelCollectionViewer_ScrollbarVertical__RectTransform;
     public Transform panelCollectionViewer_Content__Transform { get; private set; }
+
     public float panelCollectionViewer_Width { get; private set; }
+
     private VerticalLayoutGroup panelCollectionViewer_Content__VerticalLayoutGroup;
     private RectTransform panelCollectionViewer_ViewerViewport__RectTransform;
 
-    private void PanelCollectionViewer_Initialize() {
+    private void PanelCollectionViewer_Initialize()
+    {
 
         panelCollectionViewer__RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelCollectionViewer", gameObject);
         panelCollectionViewer_ScrollbarVertical__RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollbarVertical", panelCollectionViewer__RectTransform);
@@ -162,12 +164,12 @@ public class PanelCollection__prefab__scriptMB : MonoBehaviour, IPrefab
         float scrollBarWidth = 32f * coefHeight;
         float viewportContentSpacing = 5f;
 
-        panelCollectionViewer__RectTransform.sizeDelta = new Vector2(width, height - panelTopButtons_Height);
+        panelCollectionViewer__RectTransform.sizeDelta = new(width, height - panelTopButtons_Height);
 
-        panelCollectionViewer_ScrollbarVertical__RectTransform.sizeDelta = new Vector2(scrollBarWidth, 0);
+        panelCollectionViewer_ScrollbarVertical__RectTransform.sizeDelta = new(scrollBarWidth, 0);
 
         panelCollectionViewer_Width = width - scrollBarWidth;
-        panelCollectionViewer_ViewerViewport__RectTransform.sizeDelta = new Vector2(panelCollectionViewer_Width, 0);
+        panelCollectionViewer_ViewerViewport__RectTransform.sizeDelta = new(panelCollectionViewer_Width, 0);
 
         panelCollectionViewer_Content__VerticalLayoutGroup.spacing = viewportContentSpacing * coefHeight;
 
@@ -177,31 +179,31 @@ public class PanelCollection__prefab__scriptMB : MonoBehaviour, IPrefab
         }
     }
 
-    #endregion ================ PanelCollectionViewer ================
-
-
+    #endregion Область просмотра коллекции
 
     public int GetCollectionCount(ECollectionMode collectionMode)
     {
         return collectionMode switch
         {
-            ECollectionMode.Hero => Game03Client.Collection.CollectionProvider.GetCountHeroes(),
-            ECollectionMode.Equipment => Game03Client.Collection.CollectionProvider.GetCountEquipments(),
+            ECollectionMode.hero => Game03Client.Collection.CollectionProvider.GetCountHeroes(),
+            ECollectionMode.equipment => Game03Client.Collection.CollectionProvider.GetCountEquipments(),
             _ => 0,
         };
     }
+
     public void UnselectAll()
     {
         groupDividers.ForEach(a => a.UnselectAll());
     }
 
-    public List<Guid> GetSelectedElements() {
+    public List<Guid> GetSelectedElements()
+    {
         return groupDividers.SelectMany(a => a.GetSelectedElements()).ToList();
     }
 
     public void AddElement(PanelIconCollectionElement e)
     {
-        elements.Add(e.Id, e);
+        elements.Add(e.id, e);
     }
 
     public PanelIconCollectionElement GetElement(Guid id)
@@ -222,25 +224,22 @@ public class PanelCollection__prefab__scriptMB : MonoBehaviour, IPrefab
 
             maxCollectionElements = Game03Client.Collection.CollectionProvider.PAGE_SIZE * pageCurrent;
 
-
             // Переопределение максимального элемента в диапазоне на последней странице
             if (pageCurrent >= pageMax)
             {
                 maxCollectionElements = collectionMode switch
                 {
-                    ECollectionMode.Hero => Game03Client.Collection.CollectionProvider.GetCountHeroes(),
-                    ECollectionMode.Equipment => Game03Client.Collection.CollectionProvider.GetCountEquipments(),
+                    ECollectionMode.hero => Game03Client.Collection.CollectionProvider.GetCountHeroes(),
+                    ECollectionMode.equipment => Game03Client.Collection.CollectionProvider.GetCountEquipments(),
                     _ => throw new NotImplementedException(),
                 };
             }
 
-
-
             // Добавление GroupDividers
             IEnumerable<Game03Client.Collection.GroupCollectionElement> grouped = collectionMode switch
             {
-                ECollectionMode.Hero => Game03Client.Collection.CollectionProvider.GetCollectionHeroesGroupedByGroupNames(pageCurrent),
-                ECollectionMode.Equipment => Game03Client.Collection.CollectionProvider.GetCollectionEquipmentesGroupByGroups(pageCurrent),
+                ECollectionMode.hero => Game03Client.Collection.CollectionProvider.GetCollectionHeroesGroupedByGroupNames(pageCurrent),
+                ECollectionMode.equipment => Game03Client.Collection.CollectionProvider.GetCollectionEquipmentesGroupByGroups(pageCurrent),
                 _ => throw new NotImplementedException(),
             };
 
@@ -252,8 +251,6 @@ public class PanelCollection__prefab__scriptMB : MonoBehaviour, IPrefab
             {
                 groupDividers.Add(new(item, this));
             }
-
-
 
             PanelTopButtons_UpdatePageMax();
             PanelTopButtons_SetPageDiapason();
@@ -273,18 +270,17 @@ public class PanelCollection__prefab__scriptMB : MonoBehaviour, IPrefab
     {
         width = Screen.width - right;
         height = Screen.height - top;
-        rectTransform.sizeDelta = new Vector2(width, height);
+        rectTransform.sizeDelta = new(width, height);
         PanelTopButtons_OnResized(coefHeight, top, buttom, left, right);
         PanelCollectionViewer_OnResized(coefHeight, top, buttom, left, right);
     }
-
 
     private static int GetPageMax(ECollectionElement collectionElementEnum)
     {
         int count = collectionElementEnum switch
         {
-            ECollectionElement.Hero => Game03Client.Collection.CollectionProvider.GetCountHeroes(),
-            ECollectionElement.Equipment => Game03Client.Collection.CollectionProvider.GetCountEquipments(),
+            ECollectionElement.hero => Game03Client.Collection.CollectionProvider.GetCountHeroes(),
+            ECollectionElement.equipment => Game03Client.Collection.CollectionProvider.GetCountEquipments(),
             _ => throw new NotImplementedException(),
         };
 

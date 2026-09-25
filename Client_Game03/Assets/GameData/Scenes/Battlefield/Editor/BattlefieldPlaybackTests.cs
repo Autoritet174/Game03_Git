@@ -35,8 +35,11 @@ namespace Assets.GameData.Scenes.Battlefield.Tests
             StatisticsBattle statistics = new();
             BattlefieldLogRecord_Damage[] damages = records.OfType<BattlefieldLogRecord_Damage>().ToArray();
             foreach (Guid id in damages.SelectMany(damage => new[] { damage.hero1Id, damage.hero2Id }).Distinct())
+            {
                 statistics.AddHero(id, true, id.ToString());
-            player.RecordStarted += processed.Add;
+            }
+
+            player.recordStarted += processed.Add;
             player.RegisterRecord<BattlefieldLogRecord_TurnStart>((record, token) => UniTask.CompletedTask);
             player.RegisterRecord<BattlefieldLogRecord_ChangeActionPoints>((record, token) => UniTask.CompletedTask);
             player.RegisterRecord<BattlefieldLogRecord_Damage>((record, token) =>
@@ -73,12 +76,15 @@ namespace Assets.GameData.Scenes.Battlefield.Tests
             List<int> processed = new();
             List<int> impactRecords = new();
             bool duringImpact = false;
-            player.RecordStarted += processed.Add;
+            player.recordStarted += processed.Add;
             player.RegisterRecord<BattlefieldLogRecord_TurnStart>((record, token) => UniTask.CompletedTask);
             player.RegisterRecord<BattlefieldLogRecord_Damage>((record, token) =>
             {
                 if (duringImpact)
+                {
                     impactRecords.Add(record.index);
+                }
+
                 return UniTask.CompletedTask;
             });
             player.RegisterImpactEffect<BattlefieldLogRecord_Damage>(record => record.isPerodic ? null : record.indexReason);

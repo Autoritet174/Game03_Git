@@ -4,15 +4,16 @@ using System;
 
 namespace Assets.GameData.Scenes.SelectBattlefield
 {
+    /// <summary>Связывает выбор элементов коллекции с панелями текущей сцены.</summary>
     public class PanelCollectionContext : IPanelCollectionContext
     {
         //private SelectBattlefieldSceneInitializator selectBattlefieldSceneInitializator;
         private PanelCollection__prefab__scriptMB panelCollection__prefab;
-        private Action UpdateHeroesSelectedAndMaxLabel;
+        private Action updateHeroesSelectedAndMaxLabel;
         public void OnCollectionLoaded(SelectBattlefieldSceneInitializator selectBattlefieldSceneInitializator
-            , Action UpdateHeroesSelectedAndMaxLabel)
+            , Action updateHeroesSelectedAndMaxLabel)
         {
-            this.UpdateHeroesSelectedAndMaxLabel = UpdateHeroesSelectedAndMaxLabel;
+            this.updateHeroesSelectedAndMaxLabel = updateHeroesSelectedAndMaxLabel;
             panelCollection__prefab = selectBattlefieldSceneInitializator.panelPrepareBattle.panelCollection__prefab;
         }
 
@@ -20,7 +21,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
         {
             PanelIconCollectionElement e = panelCollection__prefab.GetElement(elementId);
             e?.SetSelected(!e.selected, false);
-            UpdateHeroesSelectedAndMaxLabel();
+            updateHeroesSelectedAndMaxLabel();
         }
     }
 }

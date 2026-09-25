@@ -9,6 +9,7 @@ using L = General.LocalizationKeys;
 
 namespace Assets.GameData.Scenes.Auth
 {
+    /// <summary>Управляет сохранением токенов, авторизацией и загрузкой данных игрока.</summary>
     public class AuthHelper : MonoBehaviour
     {
         public static void LogRefreshToken(string refreshToken = null)
@@ -24,14 +25,14 @@ namespace Assets.GameData.Scenes.Auth
 
         public static void ClearTokenInSecureStorageProvider()
         {
-            SecureStorageProvider.SetValue(SecureStorageKey.RefreshToken, string.Empty);
-            SecureStorageProvider.SetValue(SecureStorageKey.RefreshTokenExpirationAt, string.Empty);
+            SecureStorageProvider.SetValue(ESecureStorageKey.refreshToken, string.Empty);
+            SecureStorageProvider.SetValue(ESecureStorageKey.refreshTokenExpirationAt, string.Empty);
         }
 
         private static void SaveTokenInSecureStorageProvider()
         {
-            SecureStorageProvider.SetValue(SecureStorageKey.RefreshToken, Game03Client.Auth.RefreshToken);
-            SecureStorageProvider.SetValue(SecureStorageKey.RefreshTokenExpirationAt, Game03Client.Auth.RefreshTokenExpirationAt);
+            SecureStorageProvider.SetValue(ESecureStorageKey.refreshToken, Game03Client.Auth.RefreshToken);
+            SecureStorageProvider.SetValue(ESecureStorageKey.refreshTokenExpirationAt, Game03Client.Auth.RefreshTokenExpirationAt);
         }
 
         public static async UniTask<bool> AuthAndLoadDataAsync(string email = null, string password = null, string refreshToken = null)
@@ -78,14 +79,13 @@ namespace Assets.GameData.Scenes.Auth
                 GameMessage.ShowLocale(L.Info.OpeningWebSocket, false);
                 success = await Game03Client.WebSocketProvider.ConnectAsync(
                     CancellationTokenManager.Create("Game03Client.WebSocketClient.ConnectAsync", 5),
-                    CancellationTokenManager.GlobalQuitToken);
+                    CancellationTokenManager.globalQuitToken);
                 if (!success)
                 {
                     ClearTokenInSecureStorageProvider();
                     GameMessage.ShowLocale(L.Error.Server.OpeningWebSocketFailed, true);
                     return false;
                 }
-
 
                 // Загрузка игровых данных не связанных с конкретным пользователем
                 GameMessage.ShowLocale(L.Info.LoadingData, false);
@@ -100,8 +100,7 @@ namespace Assets.GameData.Scenes.Auth
                 }
 
                 // Предзагрузка AdressableAssets героев и редкости
-                await AddressablePrefabProvider.PreLoadAssets();
-
+                await AddressablePrefabProvider.PreLoadAssetsAsync();
 
                 // Загрузка коллекции пользователя
                 GameMessage.ShowLocale(L.Info.LoadingCollection, false);
@@ -118,7 +117,7 @@ namespace Assets.GameData.Scenes.Auth
 
                 SaveTokenInSecureStorageProvider();
 
-                GameSceneManager.Load(GameSceneManager.SceneName.MainMenu);
+                GameSceneManager.Load(GameSceneManager.ESceneName.mainMenu);
                 return true;
             }
             catch (Exception ex)

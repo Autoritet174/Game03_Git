@@ -47,7 +47,7 @@
 
 ////        /// <summary>
 ////        /// Регистрация обработчика через делегат
-////        /// </summary>
+////        ///</summary>
 ////        /// <param name="key1">Основная клавиша</param>
 ////        /// <param name="handler">Обработчик</param>
 ////        /// <param name="priority">Приоритет (чем больше число, тем выше приоритет)</param>
@@ -185,7 +185,7 @@
 //    /// Централизованный менеджер ввода, реализованный как синглтон.
 //    /// Он предоставляет старый интерфейс KeyCode, но использует новую Input System
 //    /// для обработки событий, обеспечивая совместимость с существующим кодом.
-//    /// </summary>
+//    ///</summary>
 //    public sealed class InputManager : MonoBehaviour
 //    {
 //        // Флаг для отслеживания состояния выхода из приложения
@@ -203,7 +203,7 @@
 //        /// <summary>
 //        /// Свойство для доступа к единственному экземпляру InputManager.
 //        /// Реализует логику ленивой инициализации синглтона.
-//        /// </summary>
+//        ///</summary>
 //        private static InputManager Instance
 //        {
 //            get
@@ -232,12 +232,12 @@
 
 //        /// <summary>
 //        /// Делегат для обработки нажатия клавиши.
-//        /// </summary>
+//        ///</summary>
 //        public delegate void Handler();
 
 //        /// <summary>
 //        /// Регистрирует обработчик по KeyCode, используя внутреннюю реализацию через Input System.
-//        /// </summary>
+//        ///</summary>
 //        /// <param name="key1">Основная клавиша KeyCode.</param>
 //        /// <param name="handler">Метод-обработчик, который будет вызван при выполнении действия.</param>
 //        /// <param name="priority">Приоритет обработки (чем больше число, тем выше приоритет).</param>
@@ -267,7 +267,7 @@
 //        /// <summary>
 //        /// Дерегистрирует обработчик по ссылке на делегат.
 //        /// Если вызов происходит во время колбэка ввода, очистка будет отложена до LateUpdate.
-//        /// </summary>
+//        ///</summary>
 //        /// <param name="handler">Обработчик, который необходимо удалить.</param>
 //        public static void Unregister(Handler handler)
 //        {
@@ -295,9 +295,9 @@
 
 //        /// <summary>
 //        /// Метод, вызываемый после всех Update().
-//        /// Используется для безопасного уничтожения InputAction, 
+//        /// Используется для безопасного уничтожения InputAction,
 //        /// которые были отменены в ходе обработки ввода.
-//        /// </summary>
+//        ///</summary>
 //        private void LateUpdate()
 //        {
 //            if (handlersToDispose.Count > 0)
@@ -314,7 +314,7 @@
 //        /// <summary>
 //        /// Внутренний класс-обертка, использующий InputAction для обработки событий ввода.
 //        /// Реализует IDisposable для корректной отписки и очистки ресурсов.
-//        /// </summary>
+//        ///</summary>
 //        private class InputHandler : IDisposable
 //        {
 //            public KeyCode Key1 { get; }
@@ -328,7 +328,7 @@
 
 //            /// <summary>
 //            /// Конструктор обработчика, который создает и привязывает InputAction к заданным KeyCode.
-//            /// </summary>
+//            ///</summary>
 //            public InputHandler(KeyCode key1, KeyCode key2, KeyCode key3, Handler handler, int priority)
 //            {
 //                Key1 = key1;
@@ -375,7 +375,7 @@
 //            /// <summary>
 //            /// Преобразует KeyCode в корректную строку привязки Input System.
 //            /// Обрабатывает исключения, такие как Return и KeypadEnter.
-//            /// </summary>
+//            ///</summary>
 //            /// <param name="keyCode">Исходный KeyCode.</param>
 //            /// <returns>Строка привязки Input System (например, "escape", "enter", "space").</returns>
 //            private static string GetInputSystemBindingName(KeyCode keyCode)
@@ -391,10 +391,9 @@
 //                };
 //            }
 
-
 //            /// <summary>
 //            /// Обработчик события выполнения действия Input System.
-//            /// </summary>
+//            ///</summary>
 //            /// <param name="context">Контекст колбэка действия.</param>
 //            private void OnActionPerformed(InputAction.CallbackContext context)
 //            {
@@ -407,7 +406,7 @@
 
 //            /// <summary>
 //            /// Метод для отписки от события и очистки ресурсов Input Action.
-//            /// </summary>
+//            ///</summary>
 //            public void Dispose()
 //            {
 //                action.performed -= OnActionPerformed;
@@ -418,7 +417,7 @@
 
 //        /// <summary>
 //        /// Сортирует обработчики по приоритету.
-//        /// </summary>
+//        ///</summary>
 //        private void SortHandlers()
 //        {
 //            // Сортируем по убыванию (чем больше число, тем выше приоритет)
@@ -426,11 +425,11 @@
 //        }
 
 //        // Метод Update() более не требуется для обработки ввода.
-//        // private void Update() { } 
+//        // private void Update() { }
 
 //        /// <summary>
 //        /// Гарантированная инициализация синглтона при загрузке сцены.
-//        /// </summary>
+//        ///</summary>
 //        private void Awake()
 //        {
 //            if (instance == null)
@@ -446,7 +445,7 @@
 
 //        /// <summary>
 //        /// Очистка ресурсов при уничтожении объекта.
-//        /// </summary>
+//        ///</summary>
 //        private void OnDestroy()
 //        {
 //            if (instance == this)
@@ -471,7 +470,7 @@
 
 //        /// <summary>
 //        /// Отслеживание выхода из приложения и окончательная очистка.
-//        /// </summary>
+//        ///</summary>
 //        private void OnApplicationQuit()
 //        {
 //            isApplicationQuitting = true;

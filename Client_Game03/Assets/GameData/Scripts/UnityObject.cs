@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 namespace Assets.GameData.Scripts
 {
+    /// <summary>Находит объект интерфейса и запрошенные компоненты по имени.</summary>
     internal class UnityObject
     {
         internal readonly GameObject gameObject;
@@ -20,24 +21,5 @@ namespace Assets.GameData.Scripts
             image = findImage ? GameObjectFinder.FindByName<Image>(name) : null;
             button = findButton ? GameObjectFinder.FindByName<Button>(name) : null;
         }
-        //internal void AddButtonListener(UnityAction action)
-        //{
-        //    if (button != null)
-        //    {
-        //        button.onClick.AddListener(action);
-        //    }
-        //}
-        //internal void SetText(string text)
-        //{
-        //    if (textMeshProUGUI != null)
-        //    {
-        //        textMeshProUGUI.text = text;
-        //    }
-        //}
-        //internal void SetImage(Image image) {
-        //    if (this.image != null) {
-        //        this.image.sprite = image.sprite;
-        //    }
-        //}
     }
 }

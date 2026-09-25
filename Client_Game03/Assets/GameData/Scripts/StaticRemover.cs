@@ -2,6 +2,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>Предоставляет редактору очистку статических флагов объектов сцен и префабов.</summary>
 public class StaticRemover : EditorWindow
 {
     [MenuItem("_Game03/Remove Static From Everything")]

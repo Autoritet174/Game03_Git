@@ -10,98 +10,89 @@ using UnityEngine.AddressableAssets;
 
 namespace Assets.GameData.Scripts
 {
+    /// <summary>Предварительно загружает и хранит спрайты и префабы игрового интерфейса.</summary>
     internal static class AddressablePrefabProvider
     {
-        private static Sprite NullSprite;
+        private static Sprite nullSprite;
 
-        public static Sprite UI_button_with_arrow_v4;
-        public static Sprite UI_button_with_arrow_v4_reverse;
+        public static Sprite ui_button_with_arrow_v4;
+        public static Sprite ui_button_with_arrow_v4_reverse;
 
-        private static readonly Sprite[] Rarityes = new Sprite[7];
-        public static Sprite RaritySelected { get; private set; }
+        private static readonly Sprite[] rarityes = new Sprite[7];
+        public static Sprite raritySelected { get; private set; }
 
+        public static Dictionary<string, Sprite> heroes = new();
+        public static Dictionary<string, Sprite> equipments = new();
 
-        public static Dictionary<string, Sprite> Heroes = new();
-        public static Dictionary<string, Sprite> Equipments = new();
+        public static GameObject groupDividerPrefabAddressableGameObject { get; private set; }
 
-        public static GameObject GroupDividerPrefabAddressableGameObject { get; private set; }
-        public static GameObject IconCollectionElementAddressableGameObject;
+        public static GameObject iconCollectionElementAddressableGameObject;
 
-        public static GameObject BattlefieldUnit;
-        public static GameObject HealthChange;
-        public static GameObject ProgressBar;
+        public static GameObject battlefieldUnit;
+        public static GameObject healthChange;
+        public static GameObject progressBar;
 
-        /// <summary> Выполняет параллельную предварительную загрузку ассетов. </summary>
-        public static async UniTask PreLoadAssets()
+        #region Загрузка ресурсов
+
+        /// <summary>Выполняет параллельную предварительную загрузку ассетов.</summary>
+        public static async UniTask PreLoadAssetsAsync()
         {
-            //DateTime start = DateTime.Now;
             DtoContainerGameData dtoContainer = Game03Client.GameData.Container;
 
-            NullSprite = await Addressables.LoadAssetAsync<Sprite>("Null").ToUniTask();
+            nullSprite = await Addressables.LoadAssetAsync<Sprite>("Null").ToUniTask();
 
             // 3. Подготовка коллекций (аллокация заранее известного размера)
             int heroesCount = dtoContainer.baseHeroes.Count();
             int equipCount = dtoContainer.baseEquipments.Count();
 
-            Heroes = new Dictionary<string, Sprite>(heroesCount * 2);
-            Equipments.Clear();
+            heroes = new(heroesCount * 2);
+            equipments.Clear();
 
             // Список задач. Используем Capacity для избежания лишних аллокаций списка.
             // Примерное кол-во: 2 ui + heroes*2 + 7 rarities + equip*2 + 2 prefabs
             int estimatedTasks = 15 + (heroesCount * 2) + equipCount;
-            var tasks = new List<UniTask>(estimatedTasks)
+            List<UniTask> tasks = new(estimatedTasks)
             {
-                // UI Elements
-                SafeLoadAsync("button_with_arrow_v4", s => UI_button_with_arrow_v4 = s),
-                SafeLoadAsync("button_with_arrow_v4_reverse", s => UI_button_with_arrow_v4_reverse = s)
+                // Элементы интерфейса
+                SafeLoadAsync("button_with_arrow_v4", s => ui_button_with_arrow_v4 = s),
+                SafeLoadAsync("button_with_arrow_v4_reverse", s => ui_button_with_arrow_v4_reverse = s)
             };
 
-            // Heroes
+            // Герои
             foreach (BaseHero hero in dtoContainer.baseHeroes)
             {
                 // Используем TryAdd для избежания крэша при дубликатах в конфиге
-                tasks.Add(SafeLoadAsync($"Heroes-{hero.name}", s => Heroes.TryAdd(hero.name, s)));
-                tasks.Add(SafeLoadAsync($"Heroes-{hero.name}_face", s => Heroes.TryAdd($"{hero.name}_face", s)));
+                tasks.Add(SafeLoadAsync($"Heroes-{hero.name}", s => heroes.TryAdd(hero.name, s)));
+                tasks.Add(SafeLoadAsync($"Heroes-{hero.name}_face", s => heroes.TryAdd($"{hero.name}_face", s)));
             }
 
-
-            // Rarityes
-            tasks.Add(SafeLoadAsync("UI-raritySelected", s => RaritySelected = s));
+            // Редкость
+            tasks.Add(SafeLoadAsync("UI-raritySelected", s => raritySelected = s));
             for (int i = 1; i <= 6; i++)
             {
-                int index = i; // capture index
-                tasks.Add(SafeLoadAsync($"UI-rarity{index}", s => Rarityes[index] = s));
+                int index = i; // Сохраняем индекс для отложенного обработчика.
+                tasks.Add(SafeLoadAsync($"UI-rarity{index}", s => rarityes[index] = s));
             }
-            //Rarityes_v2[0] = NullSprite;
-            //for (int i = 1; i <= 6; i++)
-            //{
-            //    int index = i; // capture index
-            //    tasks.Add(SafeLoadAsync($"UI-rarity{index}_v2", s => Rarityes_v2[index] = s));
-            //}
 
-
-            // Equipments
+            // Экипировка
             foreach (BaseEquipment equipment in dtoContainer.baseEquipments)
             {
-                tasks.Add(SafeLoadAsync($"Equipments-{equipment.name}", s => Equipments.TryAdd(equipment.name, s)));
+                tasks.Add(SafeLoadAsync($"Equipments-{equipment.name}", s => equipments.TryAdd(equipment.name, s)));
             }
 
-
-            // GameObjects
-            tasks.Add(LoadGameObjectAsync("GroupDividerPrefab", go => GroupDividerPrefabAddressableGameObject = go));
-            tasks.Add(LoadGameObjectAsync("IconCollectionElement", go => IconCollectionElementAddressableGameObject = go));
-            tasks.Add(LoadGameObjectAsync("BattlefieldUnit", go => BattlefieldUnit = go));
-            tasks.Add(LoadGameObjectAsync("HealthChange", go => HealthChange = go));
-            tasks.Add(LoadGameObjectAsync("ProgressBar", go => ProgressBar = go));
+            // Префабы интерфейса
+            tasks.Add(LoadGameObjectAsync("GroupDividerPrefab", go => groupDividerPrefabAddressableGameObject = go));
+            tasks.Add(LoadGameObjectAsync("IconCollectionElement", go => iconCollectionElementAddressableGameObject = go));
+            tasks.Add(LoadGameObjectAsync("BattlefieldUnit", go => battlefieldUnit = go));
+            tasks.Add(LoadGameObjectAsync("HealthChange", go => healthChange = go));
+            tasks.Add(LoadGameObjectAsync("ProgressBar", go => progressBar = go));
 
             // Ожидание всех задач
             await UniTask.WhenAll(tasks);
-
-            //Debug.Log($"[AddressableCache] Assets loaded in: {(DateTime.Now - start).TotalSeconds:F3} sec. Total tasks: {tasks.Count}");
         }
 
-        /// <summary> Безопасная загрузка спрайта с проверкой существования ключа. </summary>
-        /// <param name="key">Addressable Key.</param>
+        /// <summary>Безопасная загрузка спрайта с проверкой существования ключа.</summary>
+        /// <param name="key">Ключ ресурса Addressables.</param>
         /// <param name="onComplete">Action для присвоения результата.</param>
         private static async UniTask SafeLoadAsync(string key, Action<Sprite> onComplete)
         {
@@ -109,16 +100,15 @@ namespace Assets.GameData.Scripts
             {
                 var sprite = await Addressables.LoadAssetAsync<Sprite>(key).ToUniTask();
                 // Проверка на null самого ассета (если файл битый)
-                onComplete(sprite ? sprite : NullSprite!);
+                onComplete(sprite ? sprite : nullSprite!);
             }
             catch (Exception)
             {
-                onComplete(NullSprite!);
-                //Debug.Log(ex.Message);
+                onComplete(nullSprite!);
             }
         }
 
-        /// <summary> Загрузка GameObject (без фоллбэка на спрайт, так как типы разные). </summary>
+        /// <summary>Загрузка GameObject (без фоллбэка на спрайт, так как типы разные).</summary>
         private static async UniTask LoadGameObjectAsync(string key, Action<GameObject> onComplete)
         {
             try
@@ -133,7 +123,11 @@ namespace Assets.GameData.Scripts
             }
         }
 
-        ///// <summary> Проверка существования ключа в каталоге Addressables. </summary>
+        #endregion Загрузка ресурсов
+
+        #region Получение ресурсов
+
+        ///// <summary>Проверка существования ключа в каталоге Addressables.</summary>
         //public static async UniTask<bool> CheckIfKeyExists(object key)
         //{
         //    var locations = await Addressables.LoadResourceLocationsAsync(key).ToUniTask();
@@ -141,24 +135,27 @@ namespace Assets.GameData.Scripts
         //}
         public static Sprite GetRarity(int rarity)
         {
-            return Rarityes[rarity];
+            return rarityes[rarity];
         }
 
         public static Sprite GetHeroSprite(Hero hero)
         {
             BaseHero baseHero = hero.baseHero!;
-            return Heroes[baseHero.name];
+            return heroes[baseHero.name];
         }
+
         public static Sprite GetHeroFaceSprite(Hero hero)
         {
             BaseHero baseHero = hero.baseHero!;
-            return Heroes[$"{baseHero.name}_face"];
+            return heroes[$"{baseHero.name}_face"];
         }
 
         public static Sprite GetEquipmentSprite(Equipment equipment)
         {
             BaseEquipment baseEquipment = equipment.baseEquipment!;
-            return Equipments[baseEquipment.name];
+            return equipments[baseEquipment.name];
         }
+
+        #endregion Получение ресурсов
     }
 }

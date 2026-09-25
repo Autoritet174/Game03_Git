@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 namespace Assets.GameData.Scenes.Collection
 {
+    /// <summary>Настраивает кнопку вкладки и её текст.</summary>
     public class TabButton
     {
         public readonly string name;
@@ -25,6 +26,7 @@ namespace Assets.GameData.Scenes.Collection
             rectTransform.gameObject.GetComponent<Button>().onClick.RemoveAllListeners();
             rectTransform.gameObject.GetComponent<Button>().onClick.AddListener(() => action());
         }
+
         public void SetText(string text)
         {
             textMeshProUGUI.text = text;

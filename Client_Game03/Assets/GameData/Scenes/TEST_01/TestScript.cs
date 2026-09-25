@@ -1,18 +1,12 @@
 using Assets.GameData.Scripts;
 using UnityEngine;
 
+/// <summary>Служит заготовкой компонента для тестовой сцены.</summary>
 public class TestScript : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
         string hwid = HardwareIdentifier.GetRawDeviceIdentifier();
-        Debug.Log("HWID ����������: " + hwid);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Debug.Log("HWID ����������: " + hwid);
     }
 }

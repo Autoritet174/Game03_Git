@@ -9,12 +9,10 @@ namespace Assets.GameData.Scripts
     /// <summary>
     /// Предоставляет уникальный идентификатор устройства (HWID) независимо от ОС.
     /// Поддерживает Windows, macOS, Linux, Android, iOS.
-    /// </summary>
+    ///</summary>
     public static class HardwareIdentifier
     {
-        /// <summary>
-        /// Получает хеш уникального идентификатора устройства.
-        /// </summary>
+        /// <summary>Получает хеш уникального идентификатора устройства.</summary>
         /// <returns>Строка HWID в виде хеша SHA256.</returns>
         /// <exception cref="InvalidOperationException">Выбрасывается, если не удалось получить HWID.</exception>
         public static string GetHWID()
@@ -25,9 +23,7 @@ namespace Assets.GameData.Scripts
                 : ComputeSha256Hash(rawId);
         }
 
-        /// <summary>
-        /// Возвращает строку, уникально идентифицирующую устройство на уровне платформы.
-        /// </summary>
+        /// <summary>Возвращает строку, уникально идентифицирующую устройство на уровне платформы.</summary>
         /// <returns>Сырой уникальный идентификатор.</returns>
         public static string GetRawDeviceIdentifier()
         {
@@ -43,9 +39,7 @@ namespace Assets.GameData.Scripts
             return SystemInfo.deviceUniqueIdentifier;
         }
 
-        /// <summary>
-        /// Вычисляет хеш SHA256 от заданной строки.
-        /// </summary>
+        /// <summary>Вычисляет хеш SHA256 от заданной строки.</summary>
         /// <param name="input">Строка для хеширования.</param>
         /// <returns>Хеш SHA256 в шестнадцатеричном представлении.</returns>
         private static string ComputeSha256Hash(string input)

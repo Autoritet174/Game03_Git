@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 namespace Assets.GameData.Scenes.AllHeroes
 {
+    /// <summary>Хранит настройки каталога героев и анимации появления портретов.</summary>
     internal static class AllHeroesConsts
     {
         internal const string HERO_IMAGE_NULL = "hero-image-null";
@@ -15,12 +16,12 @@ namespace Assets.GameData.Scenes.AllHeroes
             int div = colorsAnimation.Length + 1;
             for (int i = 0; i < colorsAnimation.Length; i++)
             {
-                colorsAnimation[i] = new Color(1f, 1f, 1f, 1f * (i + 1) / div);
+                colorsAnimation[i] = new(1f, 1f, 1f, 1f * (i + 1) / div);
             }
             colorsAnimation[^1] = Color.white;
         }
 
-        internal static async UniTask RunAnimationImage(Image image, float milliseconds = 1000)
+        internal static async UniTask RunAnimationImageAsync(Image image, float milliseconds = 1000)
         {
             try
             {

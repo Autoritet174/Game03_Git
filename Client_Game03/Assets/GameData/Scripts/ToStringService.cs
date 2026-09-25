@@ -1,15 +1,12 @@
 namespace Assets.GameData.Scripts
 {
+    /// <summary>Форматирует числовые значения для игрового интерфейса.</summary>
     public static class ToStringService
     {
         public static int mode = 1;
         public static int modePercent = 1;
 
-        /// <summary>
-        /// В строку формата Game03
-        /// </summary>
-        /// <param name="n"></param>
-        /// <returns></returns>
+        /// <summary>В строку формата Game03</summary>
         public static string ToStr(this float n)
         {
             return mode switch
@@ -29,7 +26,6 @@ namespace Assets.GameData.Scripts
                 _ => n.ToString(),
             }) + "%";
         }
-
 
         private static readonly char[] suffix = { 'K', 'M', 'B', 'T', 'Q' };
         private static readonly int suffix_Length = suffix.Length;

@@ -1,16 +1,15 @@
 using General.DTO.RestRequest;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 namespace Assets.GameData.Scenes.Auth
 {
+    /// <summary>Формирует запрос авторизации с данными устройства и приложения.</summary>
     public static class AuthManager
     {
         public static DtoRequestAuthReg GetDtoRequestAuthReg(string email, string password, string refreshToken)
         {
-            return new DtoRequestAuthReg(
+            return new(
                     email,
                     password,
                     (TimeZoneInfo.Local.BaseUtcOffset.Hours * 60) + TimeZoneInfo.Local.BaseUtcOffset.Minutes,

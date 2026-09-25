@@ -12,10 +12,10 @@
 
 //    /// <summary>
 //    /// Предоставляет функционал для создания и кеширования двух спрайтов с разными настройками из одного исходного изображения.
-//    /// </summary>
+//    ///</summary>
 //    public static class SpriteGenerator
 //    {
-//        /// <summary> Целевой размер для маленького спрайта. </summary>
+//        /// <summary>Целевой размер для маленького спрайта.</summary>
 //        private const int TARGET_SMALL_SIZE = 128;
 //        private const string START_DIR = "Assets/GameData/AddressableAssets/Images";
 //        private const string GROUP_NAME_GENERATED_SPRITES = "Generated Sprites";
@@ -24,7 +24,7 @@
 
 //        /// <summary>
 //        /// Добавляет пункт в верхнее меню Unity
-//        /// </summary>
+//        ///</summary>
 //        //[MenuItem("_Game03/Генерировать спрайты 128x128")]
 //        private static void CreateSprites()
 //        {
@@ -71,7 +71,6 @@
 //                    continue;
 //                }
 
-
 //                // Получаем путь относительно START_DIR
 //                string relativePath = file[(START_DIR.Length + 1)..];
 //                CreateDualSprites(relativePath, EQUIPMENT_PREFIX_SMALL);
@@ -82,7 +81,6 @@
 //            // Выводим уведомление в центре экрана редактора
 //            _ = EditorUtility.DisplayDialog(nameof(SpriteGenerator), "Генерация спрайтов успешно завершена!", "OK");
 //        }
-
 
 //        private static void CreateDualSprites(string assetPathInput, string suffix)
 //        {
@@ -165,7 +163,7 @@
 
 //        /// <summary>
 //        /// Извлекает конкретный уровень мип-мапа из исходной текстуры для получения изображения высокого качества.
-//        /// </summary>
+//        ///</summary>
 //        private static void CreateHighQualitySmallVersion(string sourcePath, string targetPath, int targetSize)
 //        {
 //            Texture2D sourceTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(sourcePath);
@@ -252,7 +250,7 @@
 
 //        /// <summary>
 //        /// Регистрирует ассет в указанной группе Addressables.
-//        /// </summary>
+//        ///</summary>
 //        /// <param name="guid">GUID ассета.</param>
 //        /// <param name="address">Адрес, который будет назначен ассету.</param>
 //        /// <param name="groupName">Имя целевой группы.</param>
@@ -275,7 +273,7 @@
 
 //        /// <summary>
 //        /// Возвращает существующую группу Addressables или создает новую с настройками по умолчанию.
-//        /// </summary>
+//        ///</summary>
 //        /// <param name="settings">Текущие настройки Addressables.</param>
 //        /// <param name="groupName">Имя группы.</param>
 //        /// <returns>Объект группы <see cref="AddressableAssetGroup"/>.</returns>

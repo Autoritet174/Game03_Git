@@ -3,6 +3,7 @@ using System;
 
 namespace Assets.GameData.Scenes.Collection
 {
+    /// <summary>Связывает выбор элементов коллекции с панелями текущей сцены.</summary>
     public class PanelCollectionContext : IPanelCollectionContext
     {
         private CollectionSceneInitializator collectionSceneInitializator;
@@ -15,15 +16,15 @@ namespace Assets.GameData.Scenes.Collection
         {
             switch (collectionMode)
             {
-                case ECollectionMode.Hero:
-                    collectionSceneInitializator.PanelSelectedHero__context.Show(elementId);
+                case ECollectionMode.hero:
+                    collectionSceneInitializator.panelSelectedHero__context.Show(elementId);
                     //_CollectionSceneInitializator.OnResized();
                     break;
-                case ECollectionMode.Equipment:
-                    collectionSceneInitializator.PanelSelectedEquipment__context.Show(elementId);
+                case ECollectionMode.equipment:
+                    collectionSceneInitializator.panelSelectedEquipment__context.Show(elementId);
                     break;
             }
-            collectionSceneInitializator.PanelCollection__prefab__context.GetElement(elementId)?.SetSelected(true, clearOthers: true);
+            collectionSceneInitializator.panelCollection__prefab__context.GetElement(elementId)?.SetSelected(true, clearOthers: true);
         }
     }
 }

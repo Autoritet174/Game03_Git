@@ -4,9 +4,7 @@ using UnityEngine;
 
 namespace Assets.GameData.Prefabs
 {
-    /// <summary>
-    /// Кнопка фильтра внутри PanelCollectionTopButtons.
-    /// </summary>
+    /// <summary>Кнопка фильтра внутри PanelCollectionTopButtons.</summary>
     public class FilterButton
     {
         public const float SIZE = 86f;
@@ -16,43 +14,43 @@ namespace Assets.GameData.Prefabs
         private const float LABEL_HEIGHT = 13f;
         private const float LABEL_FONTSIZE = 18f;
 
-        private readonly RectTransform _RectTransform;
-        private readonly GameObject _GameObject;
-        private readonly RectTransform _Button_RectTransform;
-        private readonly RectTransform _Label_RectTransform;
-        private readonly TextMeshProUGUI _TextMeshProUGUILabel;
+        private readonly RectTransform rectTransform;
+        private readonly GameObject gameObject;
+        private readonly RectTransform button_RectTransform;
+        private readonly RectTransform label_RectTransform;
+        private readonly TextMeshProUGUI textMeshProUGUILabel;
 
         public FilterButton(string name, Transform parent)
         {
-            _RectTransform = GameObjectFinder.FindByName<RectTransform>(name, parent);
-            _GameObject = _RectTransform.gameObject;
-            _Button_RectTransform = GameObjectFinder.FindByName<RectTransform>("Button", _RectTransform.transform);
-            _Label_RectTransform = GameObjectFinder.FindByName<RectTransform>("Label", _RectTransform.transform);
-            _TextMeshProUGUILabel = GameObjectFinder.FindByName<TextMeshProUGUI>("Label", _RectTransform.transform);
+            rectTransform = GameObjectFinder.FindByName<RectTransform>(name, parent);
+            gameObject = rectTransform.gameObject;
+            button_RectTransform = GameObjectFinder.FindByName<RectTransform>("Button", rectTransform.transform);
+            label_RectTransform = GameObjectFinder.FindByName<RectTransform>("Label", rectTransform.transform);
+            textMeshProUGUILabel = GameObjectFinder.FindByName<TextMeshProUGUI>("Label", rectTransform.transform);
         }
 
         public void SetActive(bool active)
         {
-            _GameObject.SetActive(active);
+            gameObject.SetActive(active);
         }
 
         public void OnResized(int position)
         {
             float coefHeight = G.GetCoefHeight();
             float size = SIZE * coefHeight;
-            _RectTransform.sizeDelta = new Vector2(size, size);
+            rectTransform.sizeDelta = new(size, size);
             float spacing = SPACING * coefHeight;
 
             float shiftX = position > 0 ? SPACING_ADDITIONAL : 0f;
-            _RectTransform.anchoredPosition = new Vector2(spacing + shiftX + (position * (size + spacing)), -spacing);
+            rectTransform.anchoredPosition = new(spacing + shiftX + (position * (size + spacing)), -spacing);
 
             float buttonSize = BUTTON_SIZE * coefHeight;
-            _Button_RectTransform.sizeDelta = new Vector2(buttonSize, buttonSize);
+            button_RectTransform.sizeDelta = new(buttonSize, buttonSize);
 
-            _Label_RectTransform.sizeDelta = new Vector2(size, LABEL_HEIGHT * coefHeight);
-            _Label_RectTransform.anchoredPosition = new Vector2(0f, -size);
+            label_RectTransform.sizeDelta = new(size, LABEL_HEIGHT * coefHeight);
+            label_RectTransform.anchoredPosition = new(0f, -size);
 
-            _TextMeshProUGUILabel.fontSize = LABEL_FONTSIZE * coefHeight;
+            textMeshProUGUILabel.fontSize = LABEL_FONTSIZE * coefHeight;
         }
     }
 }

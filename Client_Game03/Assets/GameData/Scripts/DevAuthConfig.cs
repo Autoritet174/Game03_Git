@@ -4,9 +4,7 @@ using UnityEngine;
 
 namespace Assets.GameData.Scripts
 {
-    /// <summary>
-    /// Dev-only prefill credentials from gitignored Main.dev.ini (see Main.dev.ini.example).
-    /// </summary>
+    /// <summary>Dev-only prefill credentials from gitignored Main.dev.ini (see Main.dev.ini.example).</summary>
     public static class DevAuthConfig
     {
         private const string CONFIG_RELATIVE_PATH = "GameData/Config/Main.dev.ini";
@@ -23,12 +21,7 @@ namespace Assets.GameData.Scripts
             return false;
 #endif
             string path = Path.Combine(Application.dataPath, CONFIG_RELATIVE_PATH);
-            if (!File.Exists(path))
-            {
-                return false;
-            }
-
-            return TryParseAuthSection(path, out email, out password);
+            return File.Exists(path) && TryParseAuthSection(path, out email, out password);
         }
 
         private static bool TryParseAuthSection(string path, out string email, out string password)
@@ -62,8 +55,8 @@ namespace Assets.GameData.Scripts
                     continue;
                 }
 
-                string key = line.Substring(0, eqIndex).Trim();
-                string value = line.Substring(eqIndex + 1).Trim();
+                string key = line[..eqIndex].Trim();
+                string value = line[(eqIndex + 1)..].Trim();
 
                 if (string.Equals(key, KEY_EMAIL, StringComparison.OrdinalIgnoreCase))
                 {

@@ -4,6 +4,7 @@ using UnityEditor.SceneManagement;
 
 namespace Assets.GameData.Scripts
 {
+    /// <summary>Выбирает стартовую сцену при запуске игры из редактора.</summary>
     [InitializeOnLoad]
     internal static class InitializatorStartScene
     {
@@ -17,16 +18,16 @@ namespace Assets.GameData.Scripts
             // Если игра запускается (перед входом в Play Mode)
             if (state == PlayModeStateChange.ExitingEditMode)
             {
-                string StartScenePath = $"Assets/GameData/Scenes/Auth/{GameSceneManager.SceneName.Auth}Scene.unity";
+                string startScenePath = $"Assets/GameData/Scenes/Auth/{GameSceneManager.ESceneName.auth}Scene.unity";
 
                 string path = EditorSceneManager.GetActiveScene().path;
                 // Проверяем, не загружена ли уже нужная сцена
-                if (path != StartScenePath && !path.StartsWith("Assets/GameData/Scenes/TEST_"))
+                if (path != startScenePath && !path.StartsWith("Assets/GameData/Scenes/TEST_"))
                 {
                     // Сохраняем текущую сцену (если нужно)
                     if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
                     {
-                        _ = EditorSceneManager.OpenScene(StartScenePath);
+                        _ = EditorSceneManager.OpenScene(startScenePath);
                     }
                     else
                     {

@@ -5,8 +5,11 @@ using System.Collections;
 using UnityEngine;
 using L = General.LocalizationKeys;
 
+/// <summary>Запрашивает подтверждение, завершает соединение и закрывает игру с учётом платформы.</summary>
 public static class GameExitHandler
 {
+
+    #region Завершение сеанса игры
     public static void ExitGame()
     {
         UniTaskRunner.Run(ExitGameAsync);
@@ -14,7 +17,7 @@ public static class GameExitHandler
 
     public static async UniTask ExitGameAsync()
     {
-        bool yesNo = await GameMessage.ShowLocaleYesNo(L.UI.Label.ExitGame);
+        bool yesNo = await GameMessage.ShowLocaleYesNoAsync(L.UI.Label.ExitGame);
         if (!yesNo)
         {
             return;
@@ -78,6 +81,10 @@ public static class GameExitHandler
         }
     }
 
+    #endregion Завершение сеанса игры
+
+    #region Определение платформы
+
     private static bool IsInEditor()
     {
         return Application.isEditor;
@@ -104,6 +111,10 @@ public static class GameExitHandler
     {
         return Application.platform == RuntimePlatform.WebGLPlayer;
     }
+
+    #endregion Определение платформы
+
+    #region Выход на целевой платформе
 
     private static void QuitInEditor()
     {
@@ -159,4 +170,6 @@ public static class GameExitHandler
             System.Diagnostics.Process.GetCurrentProcess().Kill();
         }
     }
+
+    #endregion Выход на целевой платформе
 }

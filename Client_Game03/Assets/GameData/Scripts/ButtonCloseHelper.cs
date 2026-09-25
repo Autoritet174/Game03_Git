@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Assets.GameData.Scripts
 {
+    /// <summary>Пересчитывает размеры и положение кнопки закрытия.</summary>
     internal static class ButtonCloseHelper
     {
         private const float LENGHT = 90;
@@ -9,7 +10,7 @@ namespace Assets.GameData.Scripts
         {
             float coefHeight = G.GetCoefHeight();
             float size = LENGHT * coefHeight;
-            rectTransform.sizeDelta = new Vector2(size, size);
+            rectTransform.sizeDelta = new(size, size);
         }
     }
 }

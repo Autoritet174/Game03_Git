@@ -10,13 +10,11 @@ namespace Assets.GameData.Scripts
     /// Используется для элементов, которые по задумке проекта обязаны присутствовать на сцене или в prefab.
     /// Если объект не найден — это ошибка проектирования (сломанная сцена, prefab или имя), а не штатная игровая ситуация.
     /// Поэтому методы поиска по имени и типу выбрасывают исключение, а не возвращают null.
-    /// </summary>
+    ///</summary>
     public static class GameObjectFinder
     {
 
-        /// <summary>
-        /// Возвращает игровой объект из текущей сцены по тегу, находящийся в корне сцены. 
-        /// </summary>
+        /// <summary>Возвращает игровой объект из текущей сцены по тегу, находящийся в корне сцены.</summary>
         /// <param name="tag">Тег искомого объекта.</param>
         /// <returns>Объект с заданным тегом или null, если не найден.</returns>
         public static GameObject FindByTag(string tag)
@@ -36,16 +34,14 @@ namespace Assets.GameData.Scripts
             throw new Exception($"Не найден GameObject с тегом {tag}");
         }
 
-
-        /// <summary>
-        /// Рекурсивно ищет игровой объект по имени во всех объектах текущей сцены.
-        /// </summary>
+        /// <summary>Рекурсивно ищет игровой объект по имени во всех объектах текущей сцены.</summary>
         /// <param name="name">Имя искомого объекта.</param>
         /// <returns>Объект с заданным именем.</returns>
         public static GameObject FindByName(string name)
         {
             GameObject[] rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
-            foreach (GameObject gameObject in rootObjects) {
+            foreach (GameObject gameObject in rootObjects)
+            {
                 if (gameObject.transform.name == name)
                 {
                     return gameObject;
@@ -63,10 +59,7 @@ namespace Assets.GameData.Scripts
             throw new Exception($"Не найден GameObject с именем {name}");
         }
 
-
-        /// <summary>
-        /// Рекурсивно ищет объект по имени среди всех потомков заданного Transform.
-        /// </summary>
+        /// <summary>Рекурсивно ищет объект по имени среди всех потомков заданного Transform.</summary>
         /// <param name="name">Имя искомого объекта.</param>
         /// <param name="parent">Родительский Transform для начала поиска.</param>
         /// <returns>Объект с заданным именем.</returns>
@@ -90,10 +83,12 @@ namespace Assets.GameData.Scripts
         {
             return FindByName<T>(name, startParent.transform);
         }
+
         public static T FindByName<T>(string name, RectTransform startParent) where T : Component
         {
             return FindByName<T>(name, startParent.transform);
         }
+
         public static T FindByName<T>(string name, TextMeshProUGUI startParent) where T : Component
         {
             return FindByName<T>(name, startParent.transform);
@@ -103,7 +98,7 @@ namespace Assets.GameData.Scripts
         /// Ищет объект указанного типа в активной сцене.
         /// Если имя не указано, возвращает первый найденный объект указанного типа.
         /// Если указан startParent, поиск выполняется начиная с его дочерних объектов.
-        /// </summary>
+        ///</summary>
         /// <typeparam name="T">Тип компонента, который требуется найти.</typeparam>
         /// <param name="name">Имя искомого объекта (необязательный параметр).</param>
         /// <param name="startParent">Трансформ, откуда начинать поиск (или null для поиска от корня сцены).</param>
@@ -140,11 +135,10 @@ namespace Assets.GameData.Scripts
             );
         }
 
-
         /// <summary>
         /// Рекурсивный поиск объекта указанного типа по имени среди дочерних объектов.
         /// Если имя не указано, возвращает первый найденный объект указанного типа.
-        /// </summary>
+        ///</summary>
         /// <typeparam name="T">Тип компонента, который требуется найти.</typeparam>
         /// <param name="parent">Родительский трансформ для поиска.</param>
         /// <param name="name">Имя искомого объекта (или null для поиска первого объекта).</param>

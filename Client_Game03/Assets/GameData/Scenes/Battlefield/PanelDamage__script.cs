@@ -20,67 +20,67 @@ namespace Assets.GameData.Scenes.Battlefield
         public float height { get; private set; }
 
         /// <summary>Корневая область панели статистики.</summary>
-        private RectTransform PanelDamage__RectTransform;
+        private RectTransform panelDamage__RectTransform;
         /// <summary>Область прокручиваемого списка показателей.</summary>
-        private RectTransform PanelProgressBars__RectTransform;
+        private RectTransform panelProgressBars__RectTransform;
         /// <summary>Контейнер строк статистики.</summary>
-        private RectTransform PanelProgressBarsContent__RectTransform;
+        private RectTransform panelProgressBarsContent__RectTransform;
 
         /// <summary>Объект вертикальной полосы прокрутки.</summary>
-        private GameObject ScrollbarVertical__GameObject;
+        private GameObject scrollbarVertical__GameObject;
         /// <summary>Область вертикальной полосы прокрутки.</summary>
-        private RectTransform ScrollbarVertical__RectTransform;
+        private RectTransform scrollbarVertical__RectTransform;
 
         /// <summary>Область кнопки нанесённого урона.</summary>
-        private RectTransform ButtonDamageDone__RectTransform;
+        private RectTransform buttonDamageDone__RectTransform;
         /// <summary>Область кнопки выполненного лечения.</summary>
-        private RectTransform ButtonHealingDone__RectTransform;
+        private RectTransform buttonHealingDone__RectTransform;
         /// <summary>Область кнопки полученного урона.</summary>
-        private RectTransform ButtonDamageRecieved__RectTransform;
+        private RectTransform buttonDamageRecieved__RectTransform;
         /// <summary>Область кнопки полученного лечения.</summary>
-        private RectTransform ButtonHealingRecieved__RectTransform;
+        private RectTransform buttonHealingRecieved__RectTransform;
         /// <summary>Фон кнопки нанесённого урона.</summary>
-        private Image ButtonDamageDone__Image;
+        private Image buttonDamageDone__Image;
         /// <summary>Фон кнопки выполненного лечения.</summary>
-        private Image ButtonHealingDone__Image;
+        private Image buttonHealingDone__Image;
         /// <summary>Фон кнопки полученного урона.</summary>
-        private Image ButtonDamageRecieved__Image;
+        private Image buttonDamageRecieved__Image;
         /// <summary>Фон кнопки полученного лечения.</summary>
-        private Image ButtonHealingRecieved__Image;
+        private Image buttonHealingRecieved__Image;
         /// <summary>Сцена, предоставляющая текущую статистику боя.</summary>
         public BattlefieldSceneInitializator battlefieldSceneInitializator { get; set; }
 
-        /// <summary>
-        /// Прогресс бары, которые отображаются в панели.
-        /// </summary>
+        /// <summary>Прогресс бары, которые отображаются в панели.</summary>
         private readonly List<ProgressBar__prefab__script> listProgressBars = new();
 
         /// <summary>Выбранный показатель статистики.</summary>
-        private ProgressBar__prefab__script.DisplayMode displayMode = ProgressBar__prefab__script.DisplayMode.DamageDone;
+        private ProgressBar__prefab__script.EDisplayMode displayMode = ProgressBar__prefab__script.EDisplayMode.damageDone;
+
+        #region Подготовка и обновление статистики
         /// <summary>Находит элементы панели и подключает кнопки выбора показателя.</summary>
         public void Initialize()
         {
-            PanelDamage__RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelDamage");
+            panelDamage__RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelDamage");
 
-            PanelProgressBars__RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelProgressBars", PanelDamage__RectTransform);
-            ButtonDamageDone__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonDamageDone", PanelDamage__RectTransform);
-            ButtonHealingDone__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonHealingDone", PanelDamage__RectTransform);
-            ButtonDamageRecieved__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonDamageRecieved", PanelDamage__RectTransform);
-            ButtonHealingRecieved__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonHealingRecieved", PanelDamage__RectTransform);
-            ButtonDamageDone__Image = ButtonDamageDone__RectTransform.GetComponent<Image>();
-            ButtonHealingDone__Image = ButtonHealingDone__RectTransform.GetComponent<Image>();
-            ButtonDamageRecieved__Image = ButtonDamageRecieved__RectTransform.GetComponent<Image>();
-            ButtonHealingRecieved__Image = ButtonHealingRecieved__RectTransform.GetComponent<Image>();
-            ButtonDamageDone__RectTransform.gameObject.SetClickOnButton(ButtonDamageDoneOnClick);
-            ButtonHealingDone__RectTransform.gameObject.SetClickOnButton(ButtonHealingDoneOnClick);
-            ButtonDamageRecieved__RectTransform.gameObject.SetClickOnButton(ButtonDamageRecievedOnClick);
-            ButtonHealingRecieved__RectTransform.gameObject.SetClickOnButton(ButtonHealingRecievedOnClick);
+            panelProgressBars__RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelProgressBars", panelDamage__RectTransform);
+            buttonDamageDone__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonDamageDone", panelDamage__RectTransform);
+            buttonHealingDone__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonHealingDone", panelDamage__RectTransform);
+            buttonDamageRecieved__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonDamageRecieved", panelDamage__RectTransform);
+            buttonHealingRecieved__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonHealingRecieved", panelDamage__RectTransform);
+            buttonDamageDone__Image = buttonDamageDone__RectTransform.GetComponent<Image>();
+            buttonHealingDone__Image = buttonHealingDone__RectTransform.GetComponent<Image>();
+            buttonDamageRecieved__Image = buttonDamageRecieved__RectTransform.GetComponent<Image>();
+            buttonHealingRecieved__Image = buttonHealingRecieved__RectTransform.GetComponent<Image>();
+            buttonDamageDone__RectTransform.gameObject.SetClickOnButton(ButtonDamageDoneOnClick);
+            buttonHealingDone__RectTransform.gameObject.SetClickOnButton(ButtonHealingDoneOnClick);
+            buttonDamageRecieved__RectTransform.gameObject.SetClickOnButton(ButtonDamageRecievedOnClick);
+            buttonHealingRecieved__RectTransform.gameObject.SetClickOnButton(ButtonHealingRecievedOnClick);
 
-            RectTransform PanelProgressBarsViewport__RectTransform = GameObjectFinder.FindByName<RectTransform>("Viewport", PanelProgressBars__RectTransform);
-            PanelProgressBarsContent__RectTransform = GameObjectFinder.FindByName<RectTransform>("Content", PanelProgressBarsViewport__RectTransform);
+            RectTransform panelProgressBarsViewport__RectTransform = GameObjectFinder.FindByName<RectTransform>("Viewport", panelProgressBars__RectTransform);
+            panelProgressBarsContent__RectTransform = GameObjectFinder.FindByName<RectTransform>("Content", panelProgressBarsViewport__RectTransform);
 
-            ScrollbarVertical__GameObject = GameObjectFinder.FindByName("ScrollbarVertical", PanelProgressBars__RectTransform);
-            ScrollbarVertical__RectTransform = ScrollbarVertical__GameObject.GetComponent<RectTransform>();
+            scrollbarVertical__GameObject = GameObjectFinder.FindByName("ScrollbarVertical", panelProgressBars__RectTransform);
+            scrollbarVertical__RectTransform = scrollbarVertical__GameObject.GetComponent<RectTransform>();
 
             initialized = true;
             OnResized(G.GetCoefHeight());
@@ -89,7 +89,7 @@ namespace Assets.GameData.Scenes.Battlefield
         /// <summary>Создаёт строку статистики и обновляет раскладку панели.</summary>
         public void AddProgressBar()
         {
-            GameObject gameObject = AddressablePrefabProvider.ProgressBar.SafeInstant(PanelProgressBarsContent__RectTransform.transform);
+            GameObject gameObject = AddressablePrefabProvider.progressBar.SafeInstant(panelProgressBarsContent__RectTransform.transform);
             if (gameObject == null)
             {
                 return;
@@ -99,9 +99,9 @@ namespace Assets.GameData.Scenes.Battlefield
             ProgressBar__prefab__script bar = gameObject.GetComponent<ProgressBar__prefab__script>();
             listProgressBars.Add(bar);
             bar.Initialize();
-            bar.this__RectTransform.anchorMin = new Vector2(0, 1);
-            bar.this__RectTransform.anchorMax = new Vector2(0, 1);
-            bar.this__RectTransform.pivot = new Vector2(0, 1);
+            bar.this__RectTransform.anchorMin = new(0, 1);
+            bar.this__RectTransform.anchorMax = new(0, 1);
+            bar.this__RectTransform.pivot = new(0, 1);
             OnResized(G.GetCoefHeight());
         }
 
@@ -139,43 +139,45 @@ namespace Assets.GameData.Scenes.Battlefield
         {
             return displayMode switch
             {
-                ProgressBar__prefab__script.DisplayMode.DamageDone => hero.damageDone,
-                ProgressBar__prefab__script.DisplayMode.DamageRecieved => hero.damageReceived,
-                ProgressBar__prefab__script.DisplayMode.HealingDone => hero.healingDone,
-                ProgressBar__prefab__script.DisplayMode.HealingRecieved => hero.healingReceived,
+                ProgressBar__prefab__script.EDisplayMode.damageDone => hero.damageDone,
+                ProgressBar__prefab__script.EDisplayMode.damageRecieved => hero.damageReceived,
+                ProgressBar__prefab__script.EDisplayMode.healingDone => hero.healingDone,
+                ProgressBar__prefab__script.EDisplayMode.healingRecieved => hero.healingReceived,
                 _ => 0f
             };
         }
 
+        #endregion Подготовка и обновление статистики
+
         /// <summary>Обновляет размеры и положение элементов панели.</summary>
         public void OnResized(float coefHeight, float top = 0, float buttom = 0, float left = 0, float right = 0)
         {
-            PanelDamage__RectTransform.sizeDelta = new Vector2(343 * coefHeight, 820 * coefHeight);// 10 + 10 + 0.75*30 + 30*24
-            PanelDamage__RectTransform.anchoredPosition = new Vector2(20 * coefHeight, 0);
+            panelDamage__RectTransform.sizeDelta = new(343 * coefHeight, 820 * coefHeight);// 10 + 10 + 0.75*30 + 30*24
+            panelDamage__RectTransform.anchoredPosition = new(20 * coefHeight, 0);
 
             float buttonsSize = 70 * coefHeight;
             float buttonPos = 4 * coefHeight;
 
-            ButtonDamageDone__RectTransform.sizeDelta = new Vector2(buttonsSize, buttonsSize);
-            ButtonHealingDone__RectTransform.sizeDelta = new Vector2(buttonsSize, buttonsSize);
-            ButtonDamageRecieved__RectTransform.sizeDelta = new Vector2(buttonsSize, buttonsSize);
-            ButtonHealingRecieved__RectTransform.sizeDelta = new Vector2(buttonsSize, buttonsSize);
+            buttonDamageDone__RectTransform.sizeDelta = new(buttonsSize, buttonsSize);
+            buttonHealingDone__RectTransform.sizeDelta = new(buttonsSize, buttonsSize);
+            buttonDamageRecieved__RectTransform.sizeDelta = new(buttonsSize, buttonsSize);
+            buttonHealingRecieved__RectTransform.sizeDelta = new(buttonsSize, buttonsSize);
 
-            ButtonDamageDone__RectTransform.anchoredPosition = new Vector2(buttonPos, -buttonPos);
-            ButtonHealingDone__RectTransform.anchoredPosition = new Vector2((buttonPos * 2) + buttonsSize, -buttonPos);
-            ButtonDamageRecieved__RectTransform.anchoredPosition = new Vector2((buttonPos * 3) + (buttonsSize * 2), -buttonPos);
-            ButtonHealingRecieved__RectTransform.anchoredPosition = new Vector2((buttonPos * 4) + (buttonsSize * 3), -buttonPos);
+            buttonDamageDone__RectTransform.anchoredPosition = new(buttonPos, -buttonPos);
+            buttonHealingDone__RectTransform.anchoredPosition = new((buttonPos * 2) + buttonsSize, -buttonPos);
+            buttonDamageRecieved__RectTransform.anchoredPosition = new((buttonPos * 3) + (buttonsSize * 2), -buttonPos);
+            buttonHealingRecieved__RectTransform.anchoredPosition = new((buttonPos * 4) + (buttonsSize * 3), -buttonPos);
 
             float verticalBarWidth = 13 * coefHeight;
-            ScrollbarVertical__RectTransform.anchoredPosition = new Vector2(verticalBarWidth, 0);
-            ScrollbarVertical__RectTransform.sizeDelta = new Vector2(verticalBarWidth, 0);
+            scrollbarVertical__RectTransform.anchoredPosition = new(verticalBarWidth, 0);
+            scrollbarVertical__RectTransform.sizeDelta = new(verticalBarWidth, 0);
 
-            float PanelProgressBars__offsets = 4 * coefHeight;
-            PanelProgressBars__RectTransform.SetOffsets(
-                left: PanelProgressBars__offsets,
-                right: PanelProgressBars__offsets + verticalBarWidth,
-                top: (PanelProgressBars__offsets * 2) + buttonsSize,
-                bottom: PanelProgressBars__offsets);
+            float panelProgressBars__offsets = 4 * coefHeight;
+            panelProgressBars__RectTransform.SetOffsets(
+                left: panelProgressBars__offsets,
+                right: panelProgressBars__offsets + verticalBarWidth,
+                top: (panelProgressBars__offsets * 2) + buttonsSize,
+                bottom: panelProgressBars__offsets);
 
             float barHeight = 30 * coefHeight;
             float barHeightShift = barHeight * 2f;
@@ -184,71 +186,75 @@ namespace Assets.GameData.Scenes.Battlefield
             {
                 RectTransform r = v.this__RectTransform;
 
-                r.anchoredPosition = new Vector2(0, (-barHeight * (i + 1)) - barHeightShift);
-                r.sizeDelta = new Vector2(PanelProgressBars__RectTransform.rect.width - (10 * coefHeight), barHeight);
+                r.anchoredPosition = new(0, (-barHeight * (i + 1)) - barHeightShift);
+                r.sizeDelta = new(panelProgressBars__RectTransform.rect.width - (10 * coefHeight), barHeight);
                 i++;
             }
             Refresh();
         }
 
+        #region Переключение показателей
+
         /// <summary>Выбирает отображение нанесённого урона.</summary>
         private void ButtonDamageDoneOnClick()
         {
-            ChangeDisplayMode(ProgressBar__prefab__script.DisplayMode.DamageDone);
+            ChangeDisplayMode(ProgressBar__prefab__script.EDisplayMode.damageDone);
         }
 
         /// <summary>Выбирает отображение выполненного лечения.</summary>
         private void ButtonHealingDoneOnClick()
         {
-            ChangeDisplayMode(ProgressBar__prefab__script.DisplayMode.HealingDone);
+            ChangeDisplayMode(ProgressBar__prefab__script.EDisplayMode.healingDone);
         }
 
         /// <summary>Выбирает отображение полученного урона.</summary>
         private void ButtonDamageRecievedOnClick()
         {
-            ChangeDisplayMode(ProgressBar__prefab__script.DisplayMode.DamageRecieved);
+            ChangeDisplayMode(ProgressBar__prefab__script.EDisplayMode.damageRecieved);
         }
 
         /// <summary>Выбирает отображение полученного лечения.</summary>
         private void ButtonHealingRecievedOnClick()
         {
-            ChangeDisplayMode(ProgressBar__prefab__script.DisplayMode.HealingRecieved);
+            ChangeDisplayMode(ProgressBar__prefab__script.EDisplayMode.healingRecieved);
         }
 
         /// <summary>Переключает показатель и немедленно обновляет панель без покадрового опроса.</summary>
-        private void ChangeDisplayMode(ProgressBar__prefab__script.DisplayMode displayMode)
+        private void ChangeDisplayMode(ProgressBar__prefab__script.EDisplayMode displayMode)
         {
             this.displayMode = displayMode;
             switch (displayMode)
             {
-                case ProgressBar__prefab__script.DisplayMode.DamageDone:
-                    ButtonDamageDone__Image.color = Color.white;
-                    ButtonHealingDone__Image.color = Color.gray;
-                    ButtonDamageRecieved__Image.color = Color.gray;
-                    ButtonHealingRecieved__Image.color = Color.gray;
+                case ProgressBar__prefab__script.EDisplayMode.damageDone:
+                    buttonDamageDone__Image.color = Color.white;
+                    buttonHealingDone__Image.color = Color.gray;
+                    buttonDamageRecieved__Image.color = Color.gray;
+                    buttonHealingRecieved__Image.color = Color.gray;
                     break;
-                case ProgressBar__prefab__script.DisplayMode.HealingDone:
-                    ButtonDamageDone__Image.color = Color.gray;
-                    ButtonHealingDone__Image.color = Color.white;
-                    ButtonDamageRecieved__Image.color = Color.gray;
-                    ButtonHealingRecieved__Image.color = Color.gray;
+                case ProgressBar__prefab__script.EDisplayMode.healingDone:
+                    buttonDamageDone__Image.color = Color.gray;
+                    buttonHealingDone__Image.color = Color.white;
+                    buttonDamageRecieved__Image.color = Color.gray;
+                    buttonHealingRecieved__Image.color = Color.gray;
                     break;
-                case ProgressBar__prefab__script.DisplayMode.DamageRecieved:
-                    ButtonDamageDone__Image.color = Color.gray;
-                    ButtonHealingDone__Image.color = Color.gray;
-                    ButtonDamageRecieved__Image.color = Color.white;
-                    ButtonHealingRecieved__Image.color = Color.gray;
+                case ProgressBar__prefab__script.EDisplayMode.damageRecieved:
+                    buttonDamageDone__Image.color = Color.gray;
+                    buttonHealingDone__Image.color = Color.gray;
+                    buttonDamageRecieved__Image.color = Color.white;
+                    buttonHealingRecieved__Image.color = Color.gray;
                     break;
-                case ProgressBar__prefab__script.DisplayMode.HealingRecieved:
-                    ButtonDamageDone__Image.color = Color.gray;
-                    ButtonHealingDone__Image.color = Color.gray;
-                    ButtonDamageRecieved__Image.color = Color.gray;
-                    ButtonHealingRecieved__Image.color = Color.white;
+                case ProgressBar__prefab__script.EDisplayMode.healingRecieved:
+                    buttonDamageDone__Image.color = Color.gray;
+                    buttonHealingDone__Image.color = Color.gray;
+                    buttonDamageRecieved__Image.color = Color.gray;
+                    buttonHealingRecieved__Image.color = Color.white;
                     break;
                 default:
                     throw new NotImplementedException();
             }
             Refresh();
         }
+
+        #endregion Переключение показателей
     }
 }

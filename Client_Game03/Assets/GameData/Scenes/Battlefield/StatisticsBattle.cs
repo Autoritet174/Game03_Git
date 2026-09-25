@@ -28,11 +28,19 @@ namespace Assets.GameData.Scenes.Battlefield
         public void ApplyDamage(BattlefieldLogRecord_Damage record)
         {
             if (!appliedRecords.Add(record.index))
+            {
                 return;
+            }
+
             if (heroes.TryGetValue(record.hero1Id, out StatisticsHero source))
+            {
                 source.damageDone += record.damage;
+            }
+
             if (heroes.TryGetValue(record.hero2Id, out StatisticsHero target))
+            {
                 target.damageReceived += record.damage;
+            }
         }
     }
 }

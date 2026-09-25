@@ -9,39 +9,51 @@ using System.Security.Cryptography;
 namespace Assets.GameData.Scripts
 {
 
-    public enum SecureStorageKey {//AccessToken =1 ,
-        RefreshToken=2 , RefreshTokenExpirationAt=3}
+    /// <summary>Определяет данные авторизации, сохраняемые в защищённом хранилище.</summary>
+    public enum ESecureStorageKey
+    {//AccessToken =1 ,
+        refreshToken = 2, refreshTokenExpirationAt = 3
+    }
 
-    /// <summary>
-    /// Обеспечивает защищенное хранение данных на Windows (DPAPI), Android (Keystore) и iOS (Keychain).
-    /// </summary>
+    /// <summary>Обеспечивает защищенное хранение данных на Windows (DPAPI), Android (Keystore) и iOS (Keychain).</summary>
     public static class SecureStorageProvider
     {
-        public static void SetValue(SecureStorageKey key, string value)
+        public static void SetValue(ESecureStorageKey key, string value)
         {
-            SetValue(key.ToString(), value);
-        }
-        public static void SetValue(SecureStorageKey key, DateTimeOffset? value)
-        {
-            SetValue(key.ToString(), value?.ToString("yyyy.MM.dd.HH.mm.ss") ?? string.Empty);
+            SetValue(GetStorageKey(key), value);
         }
 
-        public static string GetString(SecureStorageKey key)
+        public static void SetValue(ESecureStorageKey key, DateTimeOffset? value)
         {
-            return GetValue(key.ToString());
+            SetValue(GetStorageKey(key), value?.ToString("yyyy.MM.dd.HH.mm.ss") ?? string.Empty);
         }
-        public static DateTimeOffset? GetDateTimeOffset(SecureStorageKey key)
+
+        public static string GetString(ESecureStorageKey key)
         {
-            string storedValue = GetValue(key.ToString());
+            return GetValue(GetStorageKey(key));
+        }
+
+        public static DateTimeOffset? GetDateTimeOffset(ESecureStorageKey key)
+        {
+            string storedValue = GetValue(GetStorageKey(key));
             return !string.IsNullOrEmpty(storedValue) && DateTimeOffset.TryParseExact(storedValue, "yyyy.MM.dd.HH.mm.ss", null, System.Globalization.DateTimeStyles.None, out DateTimeOffset result)
                 ? result
                 : null;
         }
 
-        #region Private Methods
-        /// <summary>
-        /// Сохраняет значение в защищенное хранилище.
-        /// </summary>
+        /// <summary>Сохраняет прежние ключи PlayerPrefs независимо от имён элементов перечисления.</summary>
+        private static string GetStorageKey(ESecureStorageKey key)
+        {
+            return key switch
+            {
+                ESecureStorageKey.refreshToken => "RefreshToken",
+                ESecureStorageKey.refreshTokenExpirationAt => "RefreshTokenExpirationAt",
+                _ => ((int)key).ToString()
+            };
+        }
+
+        #region Работа с защищённым хранилищем
+        /// <summary>Сохраняет значение в защищенное хранилище.</summary>
         /// <param name="key">Ключ доступа к данным.</param>
         /// <param name="value">Строковое значение для сохранения.</param>
         /// <exception cref="ArgumentNullException">Выбрасывается, если key или value равны null.</exception>
@@ -62,10 +74,7 @@ namespace Assets.GameData.Scripts
 #endif
         }
 
-
-        /// <summary>
-        /// Извлекает значение из защищенного хранилища.
-        /// </summary>
+        /// <summary>Извлекает значение из защищенного хранилища.</summary>
         /// <param name="key">Ключ доступа.</param>
         /// <returns>Строковое значение или null, если ключ не найден.</returns>
         /// <exception cref="ArgumentNullException">Выбрасывается, если key равен null.</exception>
@@ -87,11 +96,8 @@ namespace Assets.GameData.Scripts
 #endif
         }
 
-
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR
-        /// <summary>
-        /// Сохраняет данные на Windows, используя DPAPI (Data Protection API).
-        /// </summary>
+        /// <summary>Сохраняет данные на Windows, используя DPAPI (Data Protection API).</summary>
         private static void SaveWindows(string key, string value)
         {
             // 1. Переводим строку в байты UTF-8
@@ -107,9 +113,7 @@ namespace Assets.GameData.Scripts
             PlayerPrefs.Save();
         }
 
-        /// <summary>
-        /// Загружает и расшифровывает данные на Windows.
-        /// </summary>
+        /// <summary>Загружает и расшифровывает данные на Windows.</summary>
         private static string LoadWindows(string key)
         {
             string storedBase64 = PlayerPrefs.GetString(GetHashedKey(key), null);
@@ -141,6 +145,7 @@ namespace Assets.GameData.Scripts
             return $"win_sec_{key}";
         }
 #endif
+
+        #endregion Работа с защищённым хранилищем
     }
-    #endregion Private Methods
 }

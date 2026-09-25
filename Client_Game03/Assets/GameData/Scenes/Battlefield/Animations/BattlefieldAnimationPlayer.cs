@@ -28,59 +28,73 @@ namespace Assets.GameData.Scenes.Battlefield.Animations
         public void SetSpeed(float value)
         {
             if (value <= 0 || float.IsNaN(value) || float.IsInfinity(value))
+            {
                 throw new ArgumentOutOfRangeException(nameof(value));
+            }
+
             speed = value;
             foreach (Tween tween in tweens.Keys)
+            {
                 tween.timeScale = speed;
+            }
         }
 
         /// <summary>Запускает новую анимацию и ожидает её завершения без покадрового опроса; отмена уничтожает tween.</summary>
         public async UniTask PlayAsync(Tween tween, CancellationToken cancellationToken)
         {
             if (tween == null)
+            {
                 throw new ArgumentNullException(nameof(tween));
-            tween.SetId(tween);
+            }
+
+            _ = tween.SetId(tween);
             if (disposed || cancellationToken.IsCancellationRequested)
             {
-                DOTween.Kill(tween, false);
+                _ = DOTween.Kill(tween, false);
                 cancellationToken.ThrowIfCancellationRequested();
                 throw new ObjectDisposedException(nameof(BattlefieldAnimationPlayer));
             }
 
             UniTaskCompletionSource completion = new();
             bool completed = false;
-            tween.SetAutoKill(true).SetRecyclable(false).SetUpdate(true);
+            _ = tween.SetAutoKill(true).SetRecyclable(false).SetUpdate(true);
             tween.timeScale = speed;
             tween.onComplete += () => completed = true;
             tween.onKill += () =>
             {
-                tweens.Remove(tween);
+                _ = tweens.Remove(tween);
                 if (cancellationToken.IsCancellationRequested || disposed)
-                    completion.TrySetCanceled(cancellationToken);
+                {
+                    _ = completion.TrySetCanceled(cancellationToken);
+                }
                 else if (completed)
-                    completion.TrySetResult();
+                {
+                    _ = completion.TrySetResult();
+                }
                 else
-                    completion.TrySetException(new InvalidOperationException("Анимация боя прервана до завершения."));
+                {
+                    _ = completion.TrySetException(new InvalidOperationException("Анимация боя прервана до завершения."));
+                }
             };
             tweens.Add(tween, completion);
 
             // Токен сцены отменяется в главном потоке Unity, где допустимо уничтожать tween.
             using (cancellationToken.Register(() =>
             {
-                DOTween.Kill(tween, false);
+                _ = DOTween.Kill(tween, false);
                 // DOTween может отложить OnKill до своего следующего обновления.
-                completion.TrySetCanceled(cancellationToken);
+                _ = completion.TrySetCanceled(cancellationToken);
             }))
             {
                 try
                 {
-                    tween.Play();
+                    _ = tween.Play();
                     await completion.Task;
                     cancellationToken.ThrowIfCancellationRequested();
                 }
                 finally
                 {
-                    tweens.Remove(tween);
+                    _ = tweens.Remove(tween);
                 }
             }
         }
@@ -95,12 +109,15 @@ namespace Assets.GameData.Scenes.Battlefield.Animations
         public void Dispose()
         {
             if (disposed)
-                return;
-            disposed = true;
-            foreach (var pair in new List<KeyValuePair<Tween, UniTaskCompletionSource>>(tweens))
             {
-                DOTween.Kill(pair.Key, false);
-                pair.Value.TrySetCanceled();
+                return;
+            }
+
+            disposed = true;
+            foreach (KeyValuePair<Tween, UniTaskCompletionSource> pair in new List<KeyValuePair<Tween, UniTaskCompletionSource>>(tweens))
+            {
+                _ = DOTween.Kill(pair.Key, false);
+                _ = pair.Value.TrySetCanceled();
             }
             tweens.Clear();
         }

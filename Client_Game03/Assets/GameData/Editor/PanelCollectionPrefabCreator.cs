@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Assets.GameData.Editor
 {
+    /// <summary>Создаёт префаб панели коллекции из объекта сцены.</summary>
     public static class PanelCollectionPrefabCreator
     {
         private const string PREFAB_PATH = "Assets/GameData/Prefabs/PanelCollection__prefab.prefab";

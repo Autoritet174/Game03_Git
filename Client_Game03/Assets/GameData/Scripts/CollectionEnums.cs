@@ -1,11 +1,13 @@
+/// <summary>Определяет режим отображения коллекции.</summary>
 public enum ECollectionMode
 {
-    Hero,
-    Equipment
+    hero,
+    equipment
 }
 
+/// <summary>Определяет тип элемента коллекции для расчёта страниц.</summary>
 public enum ECollectionElement
 {
-    Hero,
-    Equipment
+    hero,
+    equipment
 }

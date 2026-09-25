@@ -4,60 +4,65 @@ using UnityEngine;
 
 namespace Assets.GameData.Scenes.SelectBattlefield
 {
+    /// <summary>Создаёт категории полей боя и настраивает интерфейс подготовки сражения.</summary>
     public class SelectBattlefieldSceneInitializator : MonoBehaviour
     {
         public bool initialized { get; private set; }
+
         public float width { get; private set; }
+
         public float height { get; private set; }
+
         public const float SCROLLVIEW_WIDTH = 32f;
 
         public PanelPrepareBattle panelPrepareBattle { get; private set; }
-        public PanelTop__prefab__scriptMB PanelTop__prefab__context { get; private set; }
-        private RectTransform ScrollViewCollectionMain__RectTransform;
-        private RectTransform ScrollbarVertical__RectTransform;
-        private RectTransform ViewportMain__RectTransform;
-        private RectTransform ContentMain__RectTransform;
+
+        public PanelTop__prefab__scriptMB panelTop__prefab__context { get; private set; }
+
+        private RectTransform scrollViewCollectionMain__RectTransform;
+        private RectTransform scrollbarVertical__RectTransform;
+        private RectTransform viewportMain__RectTransform;
+        private RectTransform contentMain__RectTransform;
 
         private readonly Dictionary<string, BattlefieldCategory> dictBattlefieldCategory = new();
 
-
         private void Start()
         {
-            PanelTop__prefab__context = GameObjectFinder.FindByName("PanelTop__prefab").GetComponent<PanelTop__prefab__scriptMB>();
-            PanelTop__prefab__context.Initialize();
-            PanelTop__prefab__context.SetActionOnButtonClose(G.ButtonCloseOnClick);
+            panelTop__prefab__context = GameObjectFinder.FindByName("PanelTop__prefab").GetComponent<PanelTop__prefab__scriptMB>();
+            panelTop__prefab__context.Initialize();
+            panelTop__prefab__context.SetActionOnButtonClose(G.ButtonCloseOnClick);
 
-            panelPrepareBattle = new PanelPrepareBattle
+            panelPrepareBattle = new()
             {
-                SceneOnResized = OnResized,
+                sceneOnResized = OnResized,
                 selectBattlefieldSceneInitializator = this
             };
 
             // ScrollViewCollectionMain
             {
-                ScrollViewCollectionMain__RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollViewCollectionMain");
+                scrollViewCollectionMain__RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollViewCollectionMain");
 
-                ScrollbarVertical__RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollbarVertical", ScrollViewCollectionMain__RectTransform);
+                scrollbarVertical__RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollbarVertical", scrollViewCollectionMain__RectTransform);
 
                 // ViewportMain
                 {
-                    ViewportMain__RectTransform = GameObjectFinder.FindByName<RectTransform>("ViewportMain", ScrollViewCollectionMain__RectTransform);
+                    viewportMain__RectTransform = GameObjectFinder.FindByName<RectTransform>("ViewportMain", scrollViewCollectionMain__RectTransform);
 
                     // ContentMain
                     {
-                        ContentMain__RectTransform = GameObjectFinder.FindByName<RectTransform>("ContentMain");
+                        contentMain__RectTransform = GameObjectFinder.FindByName<RectTransform>("ContentMain");
 
                         // Испытательные площадки
                         {
                             BattlefieldCategory scrollViewCollection_TestPlatforms = new("TestPlatforms", panelPrepareBattle);
-                            dictBattlefieldCategory.Add(scrollViewCollection_TestPlatforms.Name, scrollViewCollection_TestPlatforms);
+                            dictBattlefieldCategory.Add(scrollViewCollection_TestPlatforms.name, scrollViewCollection_TestPlatforms);
                             scrollViewCollection_TestPlatforms.ButtonsAdd(General.EBattleFiled.TestPlatforms__Polygon);
                         }
 
                         // Шахты
                         {
                             BattlefieldCategory scrollViewCollection_Mines = new("Mines", panelPrepareBattle);
-                            dictBattlefieldCategory.Add(scrollViewCollection_Mines.Name, scrollViewCollection_Mines);
+                            dictBattlefieldCategory.Add(scrollViewCollection_Mines.name, scrollViewCollection_Mines);
                             scrollViewCollection_Mines.ButtonsAdd(General.EBattleFiled.Mines__Iron);
                         }
                     }
@@ -65,10 +70,8 @@ namespace Assets.GameData.Scenes.SelectBattlefield
                 }
             }
 
-
-            
             panelPrepareBattle.Initialize();
-            _ = ScrollViewCollectionMain__RectTransform.gameObject.GetComponent<PanelCollection__prefab__scriptMB>();
+            _ = scrollViewCollectionMain__RectTransform.gameObject.GetComponent<PanelCollection__prefab__scriptMB>();
 
             initialized = true;
             OnResized();
@@ -105,17 +108,15 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
             float coefHeight = G.GetCoefHeight();
 
+            panelTop__prefab__context.OnResized(coefHeight);
 
-            PanelTop__prefab__context.OnResized(coefHeight);
+            scrollViewCollectionMain__RectTransform.sizeDelta = new(width, height - (G.PANELTOP_HEIGHT * coefHeight));
 
-
-            ScrollViewCollectionMain__RectTransform.sizeDelta = new Vector2(width, height - (G.PANELTOP_HEIGHT * coefHeight));
-
-            float ScrollView_Width = SCROLLVIEW_WIDTH * coefHeight;
-            ScrollbarVertical__RectTransform.sizeDelta = new Vector2(ScrollView_Width, 0f);
-            ViewportMain__RectTransform.sizeDelta = new Vector2(width - ScrollView_Width, 0f);
-            ViewportMain__RectTransform.anchoredPosition = Vector2.zero;
-            ContentMain__RectTransform.anchoredPosition = Vector2.zero;
+            float scrollView_Width = SCROLLVIEW_WIDTH * coefHeight;
+            scrollbarVertical__RectTransform.sizeDelta = new(scrollView_Width, 0f);
+            viewportMain__RectTransform.sizeDelta = new(width - scrollView_Width, 0f);
+            viewportMain__RectTransform.anchoredPosition = Vector2.zero;
+            contentMain__RectTransform.anchoredPosition = Vector2.zero;
 
             foreach (KeyValuePair<string, BattlefieldCategory> item in dictBattlefieldCategory)
             {

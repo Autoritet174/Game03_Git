@@ -1,13 +1,13 @@
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
 using General;
-using System;
 using TMPro;
 using UnityEngine;
 using L = General.LocalizationKeys;
 
 namespace Assets.GameData.Scenes.SelectBattlefield
 {
+    /// <summary>Отображает поле боя и открывает подготовку выбранного сражения.</summary>
     public class BattlefieldButton
     {
         private const float LABEL_HEIGHT = 27;
@@ -23,11 +23,11 @@ namespace Assets.GameData.Scenes.SelectBattlefield
         private readonly RectTransform imageSelected__RectTransform;
         private readonly TextMeshProUGUI label__TextMeshProUGUI;
 
-        public EBattleFiled BattlefieldId { get; }
+        public EBattleFiled battlefieldId { get; }
 
         public BattlefieldButton(EBattleFiled battlefieldId, BattlefieldCategory parentBattlefieldCategory)
         {
-            BattlefieldId = battlefieldId;
+            this.battlefieldId = battlefieldId;
             this.parentBattlefieldCategory = parentBattlefieldCategory;
             parentTransform = parentBattlefieldCategory.rectTransform.transform;
 
@@ -47,19 +47,18 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             imageMask__RectTransform.gameObject.SetClickOnGameObject(OnClick);
         }
 
-
         public void OnResize(float dungeonButtonWidth, float dungeonButtonHeight)
         {
             float coefHeight = G.GetCoefHeight();
 
-            imageMask__RectTransform.sizeDelta = new Vector2(dungeonButtonWidth, dungeonButtonHeight);
-            image__RectTransform.sizeDelta = new Vector2(dungeonButtonWidth, dungeonButtonHeight);
+            imageMask__RectTransform.sizeDelta = new(dungeonButtonWidth, dungeonButtonHeight);
+            image__RectTransform.sizeDelta = new(dungeonButtonWidth, dungeonButtonHeight);
 
             float imageSelectedSize = IMAGE_SELECTED_SIZE * coefHeight;
-            imageSelectedMask__RectTransform.sizeDelta = new Vector2(dungeonButtonWidth + imageSelectedSize, dungeonButtonHeight + imageSelectedSize);
-            imageSelected__RectTransform.sizeDelta = new Vector2(dungeonButtonWidth + imageSelectedSize, dungeonButtonHeight + imageSelectedSize);
+            imageSelectedMask__RectTransform.sizeDelta = new(dungeonButtonWidth + imageSelectedSize, dungeonButtonHeight + imageSelectedSize);
+            imageSelected__RectTransform.sizeDelta = new(dungeonButtonWidth + imageSelectedSize, dungeonButtonHeight + imageSelectedSize);
 
-            label__TextMeshProUGUI.rectTransform.sizeDelta = new Vector2(0f, LABEL_HEIGHT * coefHeight);
+            label__TextMeshProUGUI.rectTransform.sizeDelta = new(0f, LABEL_HEIGHT * coefHeight);
             label__TextMeshProUGUI.fontSize = LABEL_FONTSIZE * coefHeight;
         }
 
@@ -75,7 +74,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
         private void OnClick()
         {
-            parentBattlefieldCategory.panelPrepareBattle.Show(BattlefieldId);
+            parentBattlefieldCategory.panelPrepareBattle.Show(battlefieldId);
         }
     }
 }

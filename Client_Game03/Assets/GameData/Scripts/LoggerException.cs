@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 namespace Assets.GameData.Scripts
 {
 
+    /// <summary>Формирует подробный отчёт об исключении и сохраняет его в журнал.</summary>
     public static class LoggerException
     {
         //        public enum Error { Info, Warning, ErrorUser };
@@ -33,10 +34,7 @@ namespace Assets.GameData.Scripts
         //#endif
         //        }
 
-        /// <summary>
-        /// LogWarning
-        /// </summary>
-        /// <param name="message"></param>
+        /// <summary>LogWarning</summary>
         //        public static void LogW(object message)
         //        {
         //#if UNITY_EDITOR
@@ -44,15 +42,10 @@ namespace Assets.GameData.Scripts
         //#endif
         //        }
 
-        /// <summary>
-        /// Объект блокировки для синхронизации записи логов.
-        /// </summary>
-        private static readonly object _logFileLock = new();
+        /// <summary>Объект блокировки для синхронизации записи логов.</summary>
+        private static readonly object logFileLock = new();
 
-        /// <summary>
-        /// Записать исключение в лог файл.
-        /// </summary>
-        /// <param name="message"></param>
+        /// <summary>Записать исключение в лог файл.</summary>
         public static void LogException(Exception ex)
         {
             if (ex == null)
@@ -67,12 +60,12 @@ namespace Assets.GameData.Scripts
                 string logText = PrepareLogText(ex, nowUtc);
 
                 // Асинхронная запись в файл без вызова Unity API
-                UniTask.RunOnThreadPool(() =>
+                _ = UniTask.RunOnThreadPool(() =>
                 {
                     string dir = Path.Combine(Application.dataPath, @"Logs");
                     string fileName = $"{Path.Combine(dir, $"ApplicationException_[{nowUtc:yyyy-MM-dd}].log")}";
 
-                    lock (_logFileLock)
+                    lock (logFileLock)
                     {
                         _ = Directory.CreateDirectory(dir);
                         File.AppendAllText(fileName, logText, Encoding.UTF8);
@@ -85,6 +78,7 @@ namespace Assets.GameData.Scripts
                 Debug.LogError($"Exception when logging an exception: {logEx}");
             }
         }
+
         private static string PrepareLogText(Exception ex, DateTime nowUtc)
         {
             StringBuilder sb = new();

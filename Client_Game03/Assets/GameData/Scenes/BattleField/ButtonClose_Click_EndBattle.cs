@@ -6,6 +6,7 @@ using L = General.LocalizationKeys;
 
 namespace Assets.GameData.Scenes.Battlefield
 {
+    /// <summary>Завершает просмотр боя и возвращает игрока в главное меню.</summary>
     public class ButtonClose_Click_EndBattle : MonoBehaviour
     {
         public void OnClick()
@@ -15,7 +16,7 @@ namespace Assets.GameData.Scenes.Battlefield
 
         private async UniTask OnClickAsync(CancellationToken cancellationToken)
         {
-            bool yesNo = await GameMessage.ShowLocaleYesNo(L.UI.Label.EndBattle);
+            bool yesNo = await GameMessage.ShowLocaleYesNoAsync(L.UI.Label.EndBattle);
             if (!yesNo)
             {
                 return;
@@ -24,7 +25,7 @@ namespace Assets.GameData.Scenes.Battlefield
             bool result = await Game03Client.Battlefield.BattlefieldProvider.CombatBreakAsync(CancellationTokenManager.Create("CombatBreakAsync"));
             if (result)
             {
-                GameSceneManager.Load(GameSceneManager.SceneName.MainMenu);
+                GameSceneManager.Load(GameSceneManager.ESceneName.mainMenu);
             }
             else
             {

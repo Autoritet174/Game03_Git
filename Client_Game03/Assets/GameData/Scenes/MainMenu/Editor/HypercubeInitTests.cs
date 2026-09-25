@@ -16,7 +16,7 @@ public class HypercubeInitTests
     [SetUp]
     public void SetUp()
     {
-        root = new GameObject("Hypercube test");
+        root = new("Hypercube test");
         hypercube = root.AddComponent<HypercubeInit>();
     }
 
@@ -88,7 +88,7 @@ public class HypercubeInitTests
     {
         root.transform.localScale = Vector3.one * parentScale;
         root.transform.rotation = Quaternion.Euler(0f, 0f, 30f);
-        root.transform.position = new Vector3(3f, -2f, 10f);
+        root.transform.position = new(3f, -2f, 10f);
         hypercube.rotateXY = hypercube.rotateXZ = hypercube.rotateXW = false;
         hypercube.rotateYZ = hypercube.rotateYW = hypercube.rotateZW = false;
         hypercube.wDistance = 5f;

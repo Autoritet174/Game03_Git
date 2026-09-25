@@ -7,20 +7,16 @@ using System.Threading;
 
 namespace Assets.GameData.Scripts
 {
-    /// <summary>
-    /// Статический класс, предназначенный для отправки запросов серверу игры с целью проверки его доступности ("Ping").
-    /// </summary>
+    /// <summary>Статический класс, предназначенный для отправки запросов серверу игры с целью проверки его доступности ("Ping").</summary>
     internal static class GameServerPinger
     {
-        /// <summary>
-        /// Внутренний статический экземпляр HTTP-клиента для взаимодействия с удалённым сервером.
-        /// </summary>
-        private static readonly HttpClient _httpClient = new();
+        /// <summary>Внутренний статический экземпляр HTTP-клиента для взаимодействия с удалённым сервером.</summary>
+        private static readonly HttpClient httpClient = new();
 
         /// <summary>
         /// Асинхронный метод, отправляющий GET-запрос серверу и проверяющий наличие отклика 'pong'.
         /// Возвращает true, если отклик соответствует ожиданиям, иначе возвращает false. CancellationToken генерируется автоматически из CancellationTokenManager.
-        /// </summary>
+        ///</summary>
         /// <returns>True, если сервер ответил "pong"; False в противном случае.</returns>
         internal static async UniTask<bool> PingAsync()
         {
@@ -28,7 +24,7 @@ namespace Assets.GameData.Scripts
             {
                 using HttpRequestMessage request = new(HttpMethod.Get, Url.PING);
                 CancellationToken ct = CancellationTokenManager.Create("ping", 5);
-                using HttpResponseMessage response = await _httpClient.SendAsync(request, ct).AsUniTask();
+                using HttpResponseMessage response = await httpClient.SendAsync(request, ct).AsUniTask();
                 string responseContent = await response.Content.ReadAsStringAsync().AsUniTask();
                 if (!string.IsNullOrWhiteSpace(responseContent))
                 {

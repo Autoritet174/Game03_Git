@@ -14,10 +14,13 @@ using L = General.LocalizationKeys;
 
 namespace Assets.GameData.Scenes.Collection.Prefabs
 {
+    /// <summary>Показывает выбранный предмет и управляет его экипировкой.</summary>
     public class PanelSelectedEquipment__prefab__scriptMB : MonoBehaviour, IPrefab
     {
         public bool initialized { get; private set; }
+
         public float width { get; private set; }
+
         public float height { get; private set; }
 
         private const float WIDTH_BASE = 535f;
@@ -41,9 +44,10 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
         private const float IMAGE_CONTAINER_SPACING = 10f;
 
         public Guid equipmentId { get; private set; }
-        public bool isVisible { get; private set; }
-        public bool isEquipped { get; private set; }
 
+        public bool isVisible { get; private set; }
+
+        public bool isEquipped { get; private set; }
 
         private RectTransform rectTransform;
 
@@ -84,15 +88,19 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
         private readonly Stat__prefab__script[] stats = new Stat__prefab__script[7];
 
         public Action sceneOnResized { get; set; }
+
         public Action tabButtonHeroesOnClick { get; set; }
+
         public PanelCollection__prefab__scriptMB panelCollectionContext { get; set; }
+
         public PanelSelectedHero__prefab__scriptMB panelSelectedHeroContext { get; set; }
+
+        #region Подготовка и отображение панели
 
         public void Initialize()
         {
             rectTransform = gameObject.GetComponent<RectTransform>();
-            rectTransform.anchoredPosition = new Vector2(0f, 0f);
-
+            rectTransform.anchoredPosition = new(0f, 0f);
 
             // Верхняя панель
             {
@@ -101,7 +109,6 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
                 buttonClose__RectTransform.gameObject.SetClickOnGameObject(Hide);
                 labelSelectedEquipment__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label_SelectedEquipment", panelTop__RectTransform);
             }
-
 
             // Нижняя панель
             {
@@ -120,7 +127,6 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
                     panelBottomTabButton2__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonTab2Text", panelBottomTabButton2__RectTransform);
                     panelBottomTabButton2__TextMeshProUGUI.SetText("{Tab2}");
                 }
-
 
                 // панель "Вкладка 1"
                 {
@@ -169,11 +175,11 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
                     {
                         panelStat__RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelStats", panelTab1__RectTransform);
 
-                        statLevel = new Stat__prefab__script("Level", 1, GameObjectFinder.FindByName("StatLevel", panelStat__RectTransform));
+                        statLevel = new("Level", 1, GameObjectFinder.FindByName("StatLevel", panelStat__RectTransform));
                         for (int i = 0; i < stats.Length; i++)
                         {
                             string name = $"Stat{i + 1}";
-                            stats[i] = new Stat__prefab__script(name, i + 2, GameObjectFinder.FindByName(name, panelStat__RectTransform));
+                            stats[i] = new(name, i + 2, GameObjectFinder.FindByName(name, panelStat__RectTransform));
                         }
 
                     }
@@ -189,7 +195,7 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
             this.equipmentId = equipmentId;
             equipment = CollectionProvider.GetCollectionEquipmentsFromCache().First(a => a.id == equipmentId);
             labelSelectedEquipment__TextMeshProUGUI.SetText(equipment.baseEquipment.name);
-            selectedEquipment__Image.sprite = AddressablePrefabProvider.Equipments[equipment.baseEquipment.name];
+            selectedEquipment__Image.sprite = AddressablePrefabProvider.equipments[equipment.baseEquipment.name];
             selectedEquipment__Image.preserveAspect = true; // Сохраняет пропорции изображения
             selectedEquipmentRarity__Image.sprite = AddressablePrefabProvider.GetRarity(equipment.baseEquipment.rarity);
 
@@ -216,7 +222,6 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
             {
                 stats[i].SetActive(false);
             }
-
 
             UpdateButtons();
 
@@ -247,24 +252,22 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
             width = WIDTH_BASE * coefHeight;
             height = Screen.height - top;
             float h1 = G.PANELTOP_HEIGHT * coefHeight;
-            rectTransform.sizeDelta = new Vector2(width, height);
-            rectTransform.anchoredPosition = new Vector2(-right - WIDTH_SPACING, 0f);
+            rectTransform.sizeDelta = new(width, height);
+            rectTransform.anchoredPosition = new(-right - WIDTH_SPACING, 0f);
 
             // Верхняя панель где написано название экипировки
-            panelTop__RectTransform.sizeDelta = new Vector2(width, h1);
+            panelTop__RectTransform.sizeDelta = new(width, h1);
 
             float button_close_spacing = BUTTON_CLOSE_SPACING * coefHeight;
             float buttonCloseSize = h1 - (button_close_spacing * 2);
-            buttonClose__RectTransform.sizeDelta = new Vector2(buttonCloseSize, buttonCloseSize);
-            buttonClose__RectTransform.anchoredPosition = new Vector2(button_close_spacing, -button_close_spacing);
+            buttonClose__RectTransform.sizeDelta = new(buttonCloseSize, buttonCloseSize);
+            buttonClose__RectTransform.anchoredPosition = new(button_close_spacing, -button_close_spacing);
 
-            labelSelectedEquipment__TextMeshProUGUI.rectTransform.sizeDelta = new Vector2(width - h1, h1);
+            labelSelectedEquipment__TextMeshProUGUI.rectTransform.sizeDelta = new(width - h1, h1);
             labelSelectedEquipment__TextMeshProUGUI.fontSize = LABEL_HERO_NAME_FONTSIZE * coefHeight;
 
-
             // Нижняя панель с характеристиками экипировки
-            panelBottom__RectTransform.sizeDelta = new Vector2(width, height - h1);
-
+            panelBottom__RectTransform.sizeDelta = new(width, height - h1);
 
             // Кнопки вкладок
             float tabButtonW = TAB_BUTTON_WIDTH * coefHeight;
@@ -272,40 +275,38 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
             float tabButtonS = TAB_BUTTON_SPACING * coefHeight;
             float tabFontSize = TAB_BUTTON_FONTSIZE * coefHeight;
 
-            panelBottomTabButton1__RectTransform.sizeDelta = new Vector2(tabButtonW, tabButtonH);
-            panelBottomTabButton1__RectTransform.anchoredPosition = new Vector2(tabButtonS, -tabButtonS);
+            panelBottomTabButton1__RectTransform.sizeDelta = new(tabButtonW, tabButtonH);
+            panelBottomTabButton1__RectTransform.anchoredPosition = new(tabButtonS, -tabButtonS);
             panelBottomTabButton1__TextMeshProUGUI.fontSize = tabFontSize;
 
-            panelBottomTabButton2__RectTransform.sizeDelta = new Vector2(tabButtonW, tabButtonH);
-            panelBottomTabButton2__RectTransform.anchoredPosition = new Vector2((tabButtonS * 2) + tabButtonW, -tabButtonS);
+            panelBottomTabButton2__RectTransform.sizeDelta = new(tabButtonW, tabButtonH);
+            panelBottomTabButton2__RectTransform.anchoredPosition = new((tabButtonS * 2) + tabButtonW, -tabButtonS);
             panelBottomTabButton2__TextMeshProUGUI.fontSize = tabFontSize;
-
 
             float imageContainerSpacing = IMAGE_CONTAINER_SPACING * coefHeight;
             float imageContainerWidth = (width - (imageContainerSpacing * 3f)) / 2f;
-            imageContainer__RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, imageContainerSpacing);
-            imageContainer__RectTransform.sizeDelta = new Vector2(imageContainerWidth, imageContainerWidth);
-
+            imageContainer__RectTransform.anchoredPosition = new(-imageContainerSpacing, imageContainerSpacing);
+            imageContainer__RectTransform.sizeDelta = new(imageContainerWidth, imageContainerWidth);
 
             // Кнопки
             float buttonHeight = BUTTON_HEIGHT * coefHeight;
             float buttonY = 0f;
 
             buttonY += (imageContainerSpacing * 2f) + imageContainerWidth;
-            buttonShowHero__RectTransform.sizeDelta = new Vector2(imageContainerWidth, buttonHeight);
-            buttonShowHero__RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, buttonY);
+            buttonShowHero__RectTransform.sizeDelta = new(imageContainerWidth, buttonHeight);
+            buttonShowHero__RectTransform.anchoredPosition = new(-imageContainerSpacing, buttonY);
 
             buttonY += imageContainerSpacing + buttonHeight;
-            buttonSell__RectTransform.sizeDelta = new Vector2(imageContainerWidth, buttonHeight);
-            buttonSell__RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, buttonY);
+            buttonSell__RectTransform.sizeDelta = new(imageContainerWidth, buttonHeight);
+            buttonSell__RectTransform.anchoredPosition = new(-imageContainerSpacing, buttonY);
 
             buttonY += imageContainerSpacing + buttonHeight;
-            buttonTakeOnAlt__RectTransform.sizeDelta = new Vector2(imageContainerWidth, buttonHeight);
-            buttonTakeOnAlt__RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, buttonY);
+            buttonTakeOnAlt__RectTransform.sizeDelta = new(imageContainerWidth, buttonHeight);
+            buttonTakeOnAlt__RectTransform.anchoredPosition = new(-imageContainerSpacing, buttonY);
 
             buttonY += imageContainerSpacing + buttonHeight;
-            buttonTakeOnOff__RectTransform.sizeDelta = new Vector2(imageContainerWidth, buttonHeight);
-            buttonTakeOnOff__RectTransform.anchoredPosition = new Vector2(-imageContainerSpacing, buttonY);
+            buttonTakeOnOff__RectTransform.sizeDelta = new(imageContainerWidth, buttonHeight);
+            buttonTakeOnOff__RectTransform.anchoredPosition = new(-imageContainerSpacing, buttonY);
 
             float fontSize = 15 * coefHeight;
             buttonTakeOnOff__TextMeshProUGUI.fontSize = fontSize;
@@ -313,18 +314,15 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
             buttonShowHero__TextMeshProUGUI.fontSize = fontSize;
             buttonSell__TextMeshProUGUI.fontSize = fontSize;
 
-
             float panelTabHeight = height - h1 - tabButtonH - (tabButtonS * 2);
-            panelTab1__RectTransform.sizeDelta = new Vector2(width, panelTabHeight);
-
-
+            panelTab1__RectTransform.sizeDelta = new(width, panelTabHeight);
 
             // Stats
-            panelStat__RectTransform.anchoredPosition = new Vector2(0, imageContainerSpacing);
+            panelStat__RectTransform.anchoredPosition = new(0, imageContainerSpacing);
             float panelSlotSpacing = Slot.PANELSLOT_SPACING * coefHeight;
-            float PanelStatWidth = width - (3f * panelSlotSpacing) - imageContainerWidth;
+            float panelStatWidth = width - (3f * panelSlotSpacing) - imageContainerWidth;
 
-            panelStat__RectTransform.sizeDelta = new Vector2(width - (3f * panelSlotSpacing) - imageContainerWidth, PanelStatWidth * 576f / 244.06f);
+            panelStat__RectTransform.sizeDelta = new(width - (3f * panelSlotSpacing) - imageContainerWidth, panelStatWidth * 576f / 244.06f);
 
             statLevel.OnResized();
             foreach (Stat__prefab__script i in stats)
@@ -332,6 +330,10 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
                 i.OnResized();
             }
         }
+
+        #endregion Подготовка и отображение панели
+
+        #region Действия с экипировкой
 
         private async UniTask TakeOnOffOnClickAsync()
         {
@@ -377,7 +379,7 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
             {
                 // экипировка не одета, одеваем
 
-                Guid heroId = panelSelectedHeroContext.HeroId;
+                Guid heroId = panelSelectedHeroContext.heroId;
                 if (heroId == Guid.Empty)
                 {
                     tabButtonHeroesOnClick();
@@ -390,9 +392,8 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
                 ESlot slotId = CollectionProvider.GetSlotId(equipment, inAltSlot);
                 Equipment equipmentEquipped = CollectionProvider.GetCollectionEquipmentsFromCache().FirstOrDefault(a => a.heroId == heroId && a.slotId == slotId);
 
-
                 result = await CollectionProvider.EquipmentTakeOnAsync(equipmentId,
-                    panelSelectedHeroContext.HeroId, inAltSlot,
+                    panelSelectedHeroContext.heroId, inAltSlot,
                     CancellationTokenManager.Create("CollectionProvider.EquipmentTakeOnAsync", 5));
                 if (result)
                 {
@@ -404,7 +405,6 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
                         RefreshViewerElementOwnerImage(equipmentEquipped.id);
                     }
 
-
                     Show(equipmentId);
                     panelSelectedHeroContext.Show(equipment.heroId.Value);
                     RefreshViewerElementOwnerImage(equipmentId);
@@ -415,6 +415,10 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
                 }
             }
         }
+
+        #endregion Действия с экипировкой
+
+        #region Обновление состояния интерфейса
 
         private void UpdateButtons()
         {
@@ -466,5 +470,7 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
 
             element.RefreshOwnerImage();
         }
+
+        #endregion Обновление состояния интерфейса
     }
 }

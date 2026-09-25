@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Assets.GameData.Scripts
 {
+    /// <summary>Запускает асинхронные действия с обработкой ошибок и отменой при уничтожении объекта.</summary>
     public static class UniTaskRunner
     {
         public static void RunAsync(this MonoBehaviour host, Func<CancellationToken, UniTask> action)

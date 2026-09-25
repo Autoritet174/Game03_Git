@@ -32,7 +32,7 @@ namespace Assets.GameData.Scenes.Battlefield.Animations
         private Vector2 offset;
 
         /// <summary>Признак занятости объекта анимацией.</summary>
-        public bool Active { get; private set; }
+        public bool active { get; private set; }
 
         /// <summary>Сохраняет ссылки на компоненты переиспользуемого числа.</summary>
         public Health(GameObject gameObject, HealthHub healthHub, BattlefieldAnimationPlayer animations)
@@ -53,28 +53,30 @@ namespace Assets.GameData.Scenes.Battlefield.Animations
             offset = Vector2.zero;
             text.color = value < 0 ? Color.red : Color.green;
             text.text = (value < 0 ? value.ToStr() : $"+{value.ToStr()}") + (isCrit ? " CRIT" : "");
-            Active = true;
+            active = true;
             gameObject.SetActive(true);
             OnResize();
             try
             {
                 await animations.PlayAsync(
-                    DOTween.To(() => offset, value => offset = value, destination, healthHub.AnimationHealthChangeTime)
+                    DOTween.To(() => offset, value => offset = value, destination, healthHub.animationHealthChangeTime)
                         .SetEase(Ease.Linear).OnUpdate(RefreshPosition), token);
             }
             finally
             {
-                Active = false;
+                active = false;
                 this.parent = null;
                 if (gameObject != null)
+                {
                     gameObject.SetActive(false);
+                }
             }
         }
 
         /// <summary>Обновляет размер шрифта и позицию при изменении разрешения.</summary>
         public void OnResize()
         {
-            text.fontSize = healthHub.FontSize * G.GetCoefHeight();
+            text.fontSize = healthHub.fontSize * G.GetCoefHeight();
             RefreshPosition();
         }
 

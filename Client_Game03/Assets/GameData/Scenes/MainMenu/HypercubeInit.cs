@@ -95,9 +95,9 @@ public class HypercubeInit : MonoBehaviour
     /// <summary>Общий буфер четырёх вершин; SetVertices копирует его содержимое в меш.</summary>
     private Vector3[] faceVertices;
     /// <summary>Неизменные индексы треугольников для двух сторон каждой грани.</summary>
-    private static readonly int[] FaceTriangles = { 0, 1, 2, 0, 2, 3, 2, 1, 0, 3, 2, 0 };
+    private static readonly int[] faceTriangles = { 0, 1, 2, 0, 2, 3, 2, 1, 0, 3, 2, 0 };
     /// <summary>Неизменные координаты текстуры каждой грани.</summary>
-    private static readonly Vector2[] FaceUVs = { new(0, 0), new(1, 0), new(1, 1), new(0, 1) };
+    private static readonly Vector2[] faceUVs = { new(0, 0), new(1, 0), new(1, 1), new(0, 1) };
 
     /// <summary>Текущие углы поворота в шести координатных плоскостях.</summary>
     private float angleXY, angleXZ, angleXW, angleYZ, angleYW, angleZW;
@@ -147,7 +147,7 @@ public class HypercubeInit : MonoBehaviour
             // Насыщенность (Saturation) и Яркость (Value) выставляем на максимум (1.0),
             // чтобы цвета получились сочными и четкими.
             //faceColors[i] = Color.HSVToRGB(i / 24f, 1f, 1f); // Распределяем тон (Hue) равномерно от 0.0 до 1.0
-            faceColors[i] = new Color(64 / 255f, 217 / 255f, 71 / 255f);//41D947
+            faceColors[i] = new(64 / 255f, 217 / 255f, 71 / 255f);//41D947
         }
         // ---------------------------------------------------------------------
 
@@ -158,7 +158,7 @@ public class HypercubeInit : MonoBehaviour
             float y = (i & 2) == 0 ? -1 : 1;
             float z = (i & 4) == 0 ? -1 : 1;
             float w = (i & 8) == 0 ? -1 : 1;
-            points[i] = new Vector4(x, y, z, w);
+            points[i] = new(x, y, z, w);
         }
 
         // --- 2. Генерация объектов Ребер ---
@@ -229,7 +229,7 @@ public class HypercubeInit : MonoBehaviour
 
                         if (mr.sharedMaterial == null)
                         {
-                            mr.sharedMaterial = new Material(faceShader);
+                            mr.sharedMaterial = new(faceShader);
                         }
 
                         mr.sharedMaterial.mainTexture = facetTexture;
@@ -237,7 +237,10 @@ public class HypercubeInit : MonoBehaviour
 
                         if (mf.sharedMesh == null)
                         {
-                            mf.sharedMesh = new Mesh { name = "FaceMesh_" + faceIndex };
+                            mf.sharedMesh = new()
+                            {
+                                name = "FaceMesh_" + faceIndex
+                            };
                         }
 
                         meshes[faceIndex] = mf.sharedMesh;
@@ -246,8 +249,8 @@ public class HypercubeInit : MonoBehaviour
                         {
                             mesh.SetVertices(faceVertices);
                         }
-                        mesh.triangles = FaceTriangles;
-                        mesh.SetUVs(0, FaceUVs);
+                        mesh.triangles = faceTriangles;
+                        mesh.SetUVs(0, faceUVs);
 
                         faceIndex++;
                     }
@@ -260,9 +263,7 @@ public class HypercubeInit : MonoBehaviour
         UpdateFaceColors();
     }
 
-    /// <summary>
-    /// Обновление параметров ребер
-    /// </summary>
+    /// <summary>Обновление параметров ребер</summary>
     public void UpdateLineSettings()
     {
         if (!isInitialized || lines == null)
@@ -272,7 +273,7 @@ public class HypercubeInit : MonoBehaviour
 
         if (lineMaterial == null)
         {
-            lineMaterial = new Material(Shader.Find("Sprites/Default"));
+            lineMaterial = new(Shader.Find("Sprites/Default"));
         }
 
         for (int i = 0; i < lines.Length; i++)
@@ -294,9 +295,7 @@ public class HypercubeInit : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Динамическое обновление цветов всех 24 плоскостей на лету
-    /// </summary>
+    /// <summary>Динамическое обновление цветов всех 24 плоскостей на лету</summary>
     public void UpdateFaceColors()
     {
         if (!isInitialized || meshRenderers == null || faceColors == null)
@@ -475,22 +474,49 @@ public class HypercubeInit : MonoBehaviour
         }
     }
 
+    #region Вращение в четырёхмерных плоскостях
+
     /// <summary>Возвращает вершину после поворота в плоскости XY.</summary>
     private Vector4 RotateXY(Vector4 v, float rad)
-    { float s = Mathf.Sin(rad), c = Mathf.Cos(rad); return new Vector4((v.x * c) - (v.y * s), (v.x * s) + (v.y * c), v.z, v.w); }
+    {
+        float s = Mathf.Sin(rad), c = Mathf.Cos(rad);
+        return new((v.x * c) - (v.y * s), (v.x * s) + (v.y * c), v.z, v.w);
+    }
+
     /// <summary>Возвращает вершину после поворота в плоскости XZ.</summary>
     private Vector4 RotateXZ(Vector4 v, float rad)
-    { float s = Mathf.Sin(rad), c = Mathf.Cos(rad); return new Vector4((v.x * c) - (v.z * s), v.y, (v.x * s) + (v.z * c), v.w); }
+    {
+        float s = Mathf.Sin(rad), c = Mathf.Cos(rad);
+        return new((v.x * c) - (v.z * s), v.y, (v.x * s) + (v.z * c), v.w);
+    }
+
     /// <summary>Возвращает вершину после поворота в плоскости XW.</summary>
     private Vector4 RotateXW(Vector4 v, float rad)
-    { float s = Mathf.Sin(rad), c = Mathf.Cos(rad); return new Vector4((v.x * c) - (v.w * s), v.y, v.z, (v.x * s) + (v.w * c)); }
+    {
+        float s = Mathf.Sin(rad), c = Mathf.Cos(rad);
+        return new((v.x * c) - (v.w * s), v.y, v.z, (v.x * s) + (v.w * c));
+    }
+
     /// <summary>Возвращает вершину после поворота в плоскости YZ.</summary>
     private Vector4 RotateYZ(Vector4 v, float rad)
-    { float s = Mathf.Sin(rad), c = Mathf.Cos(rad); return new Vector4(v.x, (v.y * c) - (v.z * s), (v.y * s) + (v.z * c), v.w); }
+    {
+        float s = Mathf.Sin(rad), c = Mathf.Cos(rad);
+        return new(v.x, (v.y * c) - (v.z * s), (v.y * s) + (v.z * c), v.w);
+    }
+
     /// <summary>Возвращает вершину после поворота в плоскости YW.</summary>
     private Vector4 RotateYW(Vector4 v, float rad)
-    { float s = Mathf.Sin(rad), c = Mathf.Cos(rad); return new Vector4(v.x, (v.y * c) - (v.w * s), v.z, (v.y * s) + (v.w * c)); }
+    {
+        float s = Mathf.Sin(rad), c = Mathf.Cos(rad);
+        return new(v.x, (v.y * c) - (v.w * s), v.z, (v.y * s) + (v.w * c));
+    }
+
     /// <summary>Возвращает вершину после поворота в плоскости ZW.</summary>
     private Vector4 RotateZW(Vector4 v, float rad)
-    { float s = Mathf.Sin(rad), c = Mathf.Cos(rad); return new Vector4(v.x, v.y, (v.z * c) - (v.w * s), (v.z * s) + (v.w * c)); }
+    {
+        float s = Mathf.Sin(rad), c = Mathf.Cos(rad);
+        return new(v.x, v.y, (v.z * c) - (v.w * s), (v.z * s) + (v.w * c));
+    }
+
+    #endregion Вращение в четырёхмерных плоскостях
 }

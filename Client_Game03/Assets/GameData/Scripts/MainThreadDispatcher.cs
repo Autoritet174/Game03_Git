@@ -2,24 +2,25 @@ using System;
 using System.Collections.Concurrent;
 using UnityEngine;
 
+/// <summary>Передаёт действия из фоновых потоков в очередь главного потока Unity.</summary>
 public class MainThreadDispatcher : MonoBehaviour
 {
-    private static ConcurrentQueue<Action> _queue;
-    private static MainThreadDispatcher _instance;
-    private static bool _initialized = false;
+    private static ConcurrentQueue<Action> queue;
+    private static MainThreadDispatcher instance;
+    private static bool initialized = false;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void InitializeOnLoad()
     {
         // Этот метод вызовется автоматически при запуске игры
         // ДО загрузки сцены и гарантированно в основном потоке
-        if (_instance == null && !_initialized)
+        if (instance == null && !initialized)
         {
-            var go = new GameObject("MainThreadDispatcher");
-            _instance = go.AddComponent<MainThreadDispatcher>();
+            GameObject go = new("MainThreadDispatcher");
+            instance = go.AddComponent<MainThreadDispatcher>();
             GameObject.DontDestroyOnLoad(go);
-            _queue = new ConcurrentQueue<Action>();
-            _initialized = true;
+            queue = new();
+            initialized = true;
 
             //Debug.Log("MainThreadDispatcher: Автоматически инициализирован при загрузке");
         }
@@ -34,22 +35,22 @@ public class MainThreadDispatcher : MonoBehaviour
         }
 
         // Если еще не инициализирован, инициализируем сейчас
-        if (_queue == null)
-        {
-            _queue = new ConcurrentQueue<Action>();
-        }
+        queue ??= new();
 
-        _queue.Enqueue(action);
+        queue.Enqueue(action);
 
         //Debug.Log($"MainThreadDispatcher: Действие добавлено в очередь. Очередь: {_queue.Count}");
     }
 
     private void Update()
     {
-        if (_queue == null || _queue.IsEmpty) return;
+        if (queue == null || queue.IsEmpty)
+        {
+            return;
+        }
 
         int executed = 0;
-        while (_queue.TryDequeue(out var action) && executed < 1000)
+        while (queue.TryDequeue(out Action action) && executed < 1000)
         {
             try
             {
@@ -70,14 +71,16 @@ public class MainThreadDispatcher : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (_instance == this)
+        if (instance == this)
         {
-            _instance = null;
-            _initialized = false;
+            instance = null;
+            initialized = false;
 
-            if (_queue != null)
+            if (queue != null)
             {
-                while (_queue.TryDequeue(out _)) { }
+                while (queue.TryDequeue(out _))
+                {
+                }
                 //Debug.Log("MainThreadDispatcher: Очищен при уничтожении");
             }
         }

@@ -10,13 +10,14 @@ using UnityEditor.AddressableAssets.Settings;
 
 namespace Assets.GameData.Editor
 {
+    /// <summary>Регистрирует адреса игровых ресурсов в каталоге Addressables.</summary>
     public static class AddressableNamesGenerator
     {
 
         private const string START_DIR = "Assets/GameData/AddressableAssets/Images";
         private const string GROUP_NAME_GENERATED_SPRITES = "Auto Generated Sprites";
-        private static readonly string[] Dirs = { "Heroes", "Equipment", "UI", "SmithingMaterials", "Npcs" };
-        private static readonly string[] Formats = { ".jpg", ".png" };
+        private static readonly string[] dirs = { "Heroes", "Equipment", "UI", "SmithingMaterials", "Npcs" };
+        private static readonly string[] formats = { ".jpg", ".png" };
 
         [MenuItem("_Game03/Генерировать имена addressable")]
         public static void Generate()
@@ -28,7 +29,7 @@ namespace Assets.GameData.Editor
             }
 
             List<string> dirsList = new();
-            foreach (string dir in Dirs)
+            foreach (string dir in dirs)
             {
                 dirsList.Add(Path.Combine(START_DIR, dir).ToDirectSlash().ToLowerInvariant());
             }
@@ -36,7 +37,7 @@ namespace Assets.GameData.Editor
             List<string> filesList = new(files.Where(file =>
             {
                 string fileL = file.ToLowerInvariant();
-                return Formats.Any(format => fileL.EndsWith(format))
+                return formats.Any(format => fileL.EndsWith(format))
                                 && dirsList.Any(dir => fileL.StartsWith(dir));
             }));
             foreach (string file in filesList)
@@ -44,7 +45,7 @@ namespace Assets.GameData.Editor
                 string assetPathInput = file[(START_DIR.Length + 1)..];
                 string assetPath = Path.Combine(START_DIR, assetPathInput).ToDirectSlash();
                 string assetAddressableName = assetPathInput.Replace('/', '-');
-                if (Formats.Any(format => assetAddressableName.EndsWith(format)))
+                if (formats.Any(format => assetAddressableName.EndsWith(format)))
                 {
                     int indexLastComma = assetAddressableName.LastIndexOf('.');
                     assetAddressableName = assetAddressableName[..indexLastComma];
@@ -61,10 +62,7 @@ namespace Assets.GameData.Editor
             _ = EditorUtility.DisplayDialog("AddressableNamesGenerator", "AddressableNamesGenerator work complete", "OK");
         }
 
-
-        /// <summary>
-        /// Добавляет ассет в систему Addressables в указанную группу и назначает ему адрес.
-        /// </summary>
+        /// <summary>Добавляет ассет в систему Addressables в указанную группу и назначает ему адрес.</summary>
         /// <param name="path">Путь к ассету в проекте.</param>
         /// <param name="address">Уникальный адрес ассета.</param>
         /// <param name="groupName">Имя группы (например, "EquipmentIcons").</param>
@@ -84,7 +82,7 @@ namespace Assets.GameData.Editor
             AddressableAssetGroup targetGroup = settings.FindGroup(groupName);
             if (targetGroup == null)
             {
-                // Создаем новую группу, если она не найдена. 
+                // Создаем новую группу, если она не найдена.
                 // Используем схемы настроек из стандартной группы для корректного Build/Load Path.
                 targetGroup = settings.CreateGroup(
                     groupName,

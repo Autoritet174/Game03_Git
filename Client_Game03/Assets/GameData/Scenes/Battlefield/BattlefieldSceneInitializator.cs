@@ -40,13 +40,13 @@ namespace Assets.GameData.Scenes.Battlefield
         private const string ANIMATION_SPEED_PREFS_KEY = "Battlefield.AnimationSpeed";
 
         /// <summary>Базовый размер кнопки скорости.</summary>
-        private const float AnimationSpeedButtonSize = 128f;
+        private const float ANIMATION_SPEED_BUTTON_SIZE = 128f;
 
         /// <summary>Базовый отступ кнопки скорости от края экрана.</summary>
-        private const float ButtonPadding = 25f;
+        private const float BUTTON_PADDING = 25f;
 
         /// <summary>Базовый размер шрифта кнопки скорости.</summary>
-        private const float AnimationSpeedButtonFontSize = 50f;
+        private const float ANIMATION_SPEED_BUTTON_FONT_SIZE = 50f;
 
         /// <summary>Область кнопки скорости.</summary>
         private RectTransform animationSpeedButtonRect;
@@ -87,6 +87,8 @@ namespace Assets.GameData.Scenes.Battlefield
         /// <summary>Признак завершённой инициализации интерфейса.</summary>
         private bool initialized;
 
+        #region Жизненный цикл сцены
+
         /// <summary>Подготавливает представление и запускает единственный асинхронный сценарий боя.</summary>
         private void Start()
         {
@@ -99,6 +101,25 @@ namespace Assets.GameData.Scenes.Battlefield
             this.RunAsync(StartAsync);
         }
 
+        /// <summary>Отменяет воспроизведение и снимает подписки при выходе со сцены.</summary>
+        private void OnDisable()
+        {
+            initialized = false;
+            Canvas.willRenderCanvases -= RefreshLayoutIfNeeded;
+            if (animationSpeedButton != null)
+            {
+                animationSpeedButton.onClick.RemoveListener(AnimationSpeedChange);
+            }
+
+            playbackCancellation?.Cancel();
+            animations?.Dispose();
+            canvasDamage__Transform = null;
+        }
+
+        #endregion Жизненный цикл сцены
+
+        #region Инициализация сцены
+
         /// <summary>Создаёт карточки героев, статистику и обработчики интерфейса.</summary>
         private bool TryInitialize()
         {
@@ -109,14 +130,25 @@ namespace Assets.GameData.Scenes.Battlefield
             }
 
             animationSpeed = LoadAnimationSpeed();
-            animations = new BattlefieldAnimationPlayer(animationSpeed);
-            statisticsBattle = new StatisticsBattle();
+            animations = new(animationSpeed);
+            statisticsBattle = new();
             Transform unitsCanvas = GameObjectFinder.FindByName("CanvasUnits").transform;
             canvasDamage__Transform = GameObjectFinder.FindByName("CanvasDamage").transform;
-            healthHub = new HealthHub(animations, canvasDamage__Transform);
+            healthHub = new(animations, canvasDamage__Transform);
             CreateUnits(spawnedBattlefield.spawnedHeroPlayerList, true, unitsCanvas);
             CreateUnits(spawnedBattlefield.spawnedHeroEnemyList, false, unitsCanvas);
 
+            InitializeControls();
+            InitializeStatisticsPanel();
+
+            initialized = true;
+            OnResized();
+            return true;
+        }
+
+        /// <summary>Настраивает кнопку скорости и надпись текущего хода.</summary>
+        private void InitializeControls()
+        {
             animationSpeedButtonRect = GameObjectFinder.FindByName<RectTransform>("AnimationSpeedButton");
             animationSpeedButtonText = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", animationSpeedButtonRect);
             animationSpeedButtonText.text = $"X{animationSpeed:0}";
@@ -124,8 +156,15 @@ namespace Assets.GameData.Scenes.Battlefield
             animationSpeedButton.onClick.AddListener(AnimationSpeedChange);
             turnRect = GameObjectFinder.FindByName<RectTransform>("TurnText");
             turnText = turnRect.GetComponent<TextMeshProUGUI>();
+        }
 
-            damagePanel = new PanelDamage__script { battlefieldSceneInitializator = this };
+        /// <summary>Создаёт панель статистики и строки для всех участников боя.</summary>
+        private void InitializeStatisticsPanel()
+        {
+            damagePanel = new()
+            {
+                battlefieldSceneInitializator = this
+            };
             damagePanel.Initialize();
             foreach (BattlefieldUnit unit in battlefieldUnits.Values)
             {
@@ -133,9 +172,6 @@ namespace Assets.GameData.Scenes.Battlefield
             }
 
             damagePanel.Refresh();
-            initialized = true;
-            OnResized();
-            return true;
         }
 
         /// <summary>Создаёт карточки одной команды и начальные строки статистики.</summary>
@@ -149,6 +185,10 @@ namespace Assets.GameData.Scenes.Battlefield
                 statisticsBattle.AddHero(hero.spawnedId, isPlayer, baseHero.name);
             }
         }
+
+        #endregion Инициализация сцены
+
+        #region Воспроизведение боя
 
         /// <summary>Загружает лог, ожидает все действия и параллельные визуальные последствия.</summary>
         private async UniTask StartAsync(CancellationToken destructionToken)
@@ -166,7 +206,7 @@ namespace Assets.GameData.Scenes.Battlefield
                 }
 
                 BattlefieldLogPlayer player = new(spawnedBattlefield.battlefieldLog, message => Debug.LogWarning(message));
-                player.RecordStarted += SetCurrentRecord;
+                player.recordStarted += SetCurrentRecord;
                 player.RegisterRecord<BattlefieldLogRecord_TurnStart>(PlayTurnAsync);
                 player.RegisterRecord<BattlefieldLogRecord_ChangeActionPoints>(PlayActionPointsAsync);
                 player.RegisterRecord<BattlefieldLogRecord_Damage>(PlayDamageAsync);
@@ -183,6 +223,7 @@ namespace Assets.GameData.Scenes.Battlefield
                     _ = await UniTask.WhenAll(feedbackTasks).SuppressCancellationThrow();
                     throw;
                 }
+
                 await UniTask.WhenAll(feedbackTasks);
                 feedbackTasks.Clear();
             }
@@ -197,8 +238,7 @@ namespace Assets.GameData.Scenes.Battlefield
                 playbackCancellation = null;
             }
         }
-        #region Фукнции делающие какое то действие
-        #endregion Фукнции делающие какое то действие
+
         /// <summary>Запоминает реальный индекс записи, а не её порядковый номер в коллекции.</summary>
         private void SetCurrentRecord(int index)
         {
@@ -219,7 +259,7 @@ namespace Assets.GameData.Scenes.Battlefield
             token.ThrowIfCancellationRequested();
             if (TryGetUnit(record.spawnedHeroId, out BattlefieldUnit unit))
             {
-                unit.RefreshActionPoints(unit.SpawnedHero.actionPoints + record.countAP);
+                unit.RefreshActionPoints(unit.spawnedHero.actionPoints + record.countAP);
             }
 
             return UniTask.CompletedTask;
@@ -254,6 +294,7 @@ namespace Assets.GameData.Scenes.Battlefield
                     }
                 }
             }
+
             Debug.LogWarning($"Атака {record.index}: нет доступной карточки атакующего или цели; применяются последствия.");
             await impact(token);
         }
@@ -270,10 +311,20 @@ namespace Assets.GameData.Scenes.Battlefield
             return false;
         }
 
+        #endregion Воспроизведение боя
+
+        #region Скорость анимаций
+
         /// <summary>Циклически переключает и сохраняет скорость всех анимаций текущего боя.</summary>
         private void AnimationSpeedChange()
         {
-            animationSpeed = animationSpeed switch { 1f => 2f, 2f => 5f, 5f => 10f, _ => 1f };
+            animationSpeed = animationSpeed switch
+            {
+                1f => 2f,
+                2f => 5f,
+                5f => 10f,
+                _ => 1f
+            };
             animations.SetSpeed(animationSpeed);
             animationSpeedButtonText.text = $"X{animationSpeed:0}";
             PlayerPrefs.SetFloat(ANIMATION_SPEED_PREFS_KEY, animationSpeed);
@@ -286,6 +337,10 @@ namespace Assets.GameData.Scenes.Battlefield
             float value = PlayerPrefs.GetFloat(ANIMATION_SPEED_PREFS_KEY, 1f);
             return value is 1f or 2f or 5f or 10f ? value : 1f;
         }
+
+        #endregion Скорость анимаций
+
+        #region Раскладка интерфейса
 
         /// <summary>Реагирует на изменение экрана перед отрисовкой Canvas, не управляя временем анимаций.</summary>
         private void RefreshLayoutIfNeeded()
@@ -308,27 +363,14 @@ namespace Assets.GameData.Scenes.Battlefield
 
             healthHub.OnResize();
             float coefficient = G.GetCoefHeight();
-            animationSpeedButtonRect.sizeDelta = Vector2.one * (AnimationSpeedButtonSize * coefficient);
-            animationSpeedButtonRect.anchoredPosition = new Vector2(-ButtonPadding, ButtonPadding) * coefficient;
-            animationSpeedButtonText.fontSize = AnimationSpeedButtonFontSize * coefficient;
+            animationSpeedButtonRect.sizeDelta = Vector2.one * (ANIMATION_SPEED_BUTTON_SIZE * coefficient);
+            animationSpeedButtonRect.anchoredPosition = new Vector2(-BUTTON_PADDING, BUTTON_PADDING) * coefficient;
+            animationSpeedButtonText.fontSize = ANIMATION_SPEED_BUTTON_FONT_SIZE * coefficient;
             turnRect.anchoredPosition = new Vector2(-25, -108) * coefficient;
             turnText.fontSize = 70 * coefficient;
             damagePanel.OnResized(coefficient);
         }
 
-        /// <summary>Отменяет воспроизведение и снимает подписки при выходе со сцены.</summary>
-        private void OnDisable()
-        {
-            initialized = false;
-            Canvas.willRenderCanvases -= RefreshLayoutIfNeeded;
-            if (animationSpeedButton != null)
-            {
-                animationSpeedButton.onClick.RemoveListener(AnimationSpeedChange);
-            }
-
-            playbackCancellation?.Cancel();
-            animations?.Dispose();
-            canvasDamage__Transform = null;
-        }
+        #endregion Раскладка интерфейса
     }
 }

@@ -4,12 +4,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+/// <summary>Назначает синхронные и асинхронные обработчики событий интерфейса.</summary>
 public static class EventHelper
 {
 
-    /// <summary>
-    /// Метод для навешивания событий наведения и ухода курсора с асинхронными делегатами.
-    /// </summary>
+    #region Наведение указателя
+
+    /// <summary>Метод для навешивания событий наведения и ухода курсора с асинхронными делегатами.</summary>
     public static void SetHoverEvents(this GameObject gameObject, Func<UniTask> onPointerEnter, Func<UniTask> onPointerExit)
     {
         if (gameObject == null)
@@ -26,12 +27,7 @@ public static class EventHelper
         handler.SetupHoverEvents(onPointerEnter, onPointerExit);
     }
 
-    /// <summary>
-    /// Метод для навешивания событий наведения и ухода курсора с синхронными делегатами.
-    /// </summary>
-    /// <param name="gameObject"></param>
-    /// <param name="onPointerEnter"></param>
-    /// <param name="onPointerExit"></param>
+    /// <summary>Метод для навешивания событий наведения и ухода курсора с синхронными делегатами.</summary>
     public static void SetHoverEvents(this GameObject gameObject, Action onPointerEnter, Action onPointerExit)
     {
         if (gameObject == null)
@@ -48,12 +44,11 @@ public static class EventHelper
         handler.SetupHoverEvents(onPointerEnter, onPointerExit);
     }
 
-    /// <summary>
-    /// Назначает событие клика на кнопку, удаляя все предыдущие слушатели. Если компонент Button отсутствует, выбрасывается исключение.
-    /// </summary>
-    /// <param name="gameObject"></param>
-    /// <param name="action"></param>
-    /// <exception cref="InvalidOperationException"></exception>
+    #endregion Наведение указателя
+
+    #region Назначение обработчиков нажатия
+
+    /// <summary>Назначает событие клика на кнопку, удаляя все предыдущие слушатели. Если компонент Button отсутствует, выбрасывается исключение.</summary>
     public static void SetClickOnButton(this GameObject gameObject, Action action)
     {
         if (!gameObject.TryGetComponent(out Button button))
@@ -65,10 +60,7 @@ public static class EventHelper
         onClick.AddListener(() => action());
     }
 
-
-    /// <summary>
-    /// Метод для навешивания события клика на GameObject или его Button компонент. Удаляет все другие Listener.
-    /// </summary>
+    /// <summary>Метод для навешивания события клика на GameObject или его Button компонент. Удаляет все другие Listener.</summary>
     public static void SetClickOnButton(this GameObject gameObject, Func<UniTask> onClick)
     {
         if (gameObject == null)
@@ -85,9 +77,7 @@ public static class EventHelper
         button.onClick.AddListener(() => onClick?.Invoke().Forget());
     }
 
-    /// <summary>
-    /// Метод для навешивания события клика на GameObject без компонента Button.
-    /// </summary>
+    /// <summary>Метод для навешивания события клика на GameObject без компонента Button.</summary>
     public static void SetClickOnGameObject(this GameObject gameObject, Action action)
     {
         if (gameObject == null)
@@ -120,9 +110,7 @@ public static class EventHelper
         clickHandler.SetupClickEvent(onClick);
     }
 
-    /// <summary>
-    /// Метод для навешивания события клика на UI элемент с поддержкой параметра.
-    /// </summary>
+    /// <summary>Метод для навешивания события клика на UI элемент с поддержкой параметра.</summary>
     public static void SetClickEvent<T>(this GameObject gameObject, Func<T, UniTask> onClick, T parameter)
     {
         if (gameObject == null)
@@ -140,9 +128,7 @@ public static class EventHelper
         button.onClick.AddListener(() => onClick?.Invoke(parameter).Forget());
     }
 
-    /// <summary>
-    /// Метод для навешивания асинхронного события клика на UI элемент с поддержкой параметра.
-    /// </summary>
+    /// <summary>Метод для навешивания асинхронного события клика на UI элемент с поддержкой параметра.</summary>
     public static void SetClickEvent<T>(this GameObject gameObject, Func<T, UniTask> asyncOnClick, T parameter, bool handleExceptions = true)
     {
         if (gameObject == null)
@@ -182,9 +168,10 @@ public static class EventHelper
         button.onClick.AddListener(() => ExecuteWithExceptionHandling().Forget());
     }
 
-
+    #endregion Назначение обработчиков нажатия
 
     // Класс-обработчик, который будет добавляться к кнопкам
+    /// <summary>Передаёт события входа и выхода указателя назначенным обработчикам.</summary>
     internal class ButtonHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         private Func<UniTask> onEnterAsync;
@@ -232,6 +219,7 @@ public static class EventHelper
     }
 
     // Класс-обработчик для кликов (используется как альтернатива Button)
+    /// <summary>Передаёт нажатие указателя назначенному обработчику объекта.</summary>
     internal class ButtonClickHandlerCustom : MonoBehaviour, IPointerClickHandler
     {
         private Func<UniTask> onClickAsync;

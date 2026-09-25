@@ -1,5 +1,4 @@
 using Cysharp.Threading.Tasks;
-using General;
 using System;
 using System.Threading;
 using TMPro;
@@ -10,18 +9,18 @@ using L = General.LocalizationKeys;
 
 namespace Assets.GameData.Scripts
 {
+    /// <summary>Загружает и отображает игровые сообщения и диалоги подтверждения.</summary>
     public class GameMessage : MonoBehaviour
     {
         private const string OBJECT_NAME = "GameMessage (id=p25hg2gr)";
         private const string PREFAB_ADDRESS = "GameMessage-Canvas"; // Адрес префаба в Addressables
-        private static bool _opened = false;
-        private static GameObject _currentInstance;
-        private static AsyncOperationHandle<GameObject> _prefabHandle;
+        private static bool opened = false;
+        private static GameObject currentInstance;
+        private static AsyncOperationHandle<GameObject> prefabHandle;
 
-        public static bool Exists => _currentInstance != null;
+        public static bool exists => currentInstance != null;
 
         private static bool resultYesNo = false;
-
 
         private static readonly string textYes = Game03Client.LocalizationManager.GetValue(L.UI.Button.Yes);
         private static readonly string textYesHover = $"{textYes} [Enter]";
@@ -32,6 +31,8 @@ namespace Assets.GameData.Scripts
         private static readonly string textOk = Game03Client.LocalizationManager.GetValue(L.UI.Button.Ok);
         private static readonly string textOkHover = $"{textOk} [Enter/Escape]";
 
+        #region Загрузка префаба сообщения
+
         public static async UniTask PreloadAsync(CancellationToken cancellationToken = default)
         {
             if (IsPrefabReady())
@@ -39,17 +40,17 @@ namespace Assets.GameData.Scripts
                 return;
             }
 
-            if (!_prefabHandle.IsValid())
+            if (!prefabHandle.IsValid())
             {
-                _prefabHandle = Addressables.LoadAssetAsync<GameObject>(PREFAB_ADDRESS);
+                prefabHandle = Addressables.LoadAssetAsync<GameObject>(PREFAB_ADDRESS);
             }
 
-            if (!_prefabHandle.IsDone)
+            if (!prefabHandle.IsDone)
             {
-                await _prefabHandle.ToUniTask(cancellationToken: cancellationToken);
+                _ = await prefabHandle.ToUniTask(cancellationToken: cancellationToken);
             }
 
-            if (_prefabHandle.Status != AsyncOperationStatus.Succeeded)
+            if (prefabHandle.Status != AsyncOperationStatus.Succeeded)
             {
                 Debug.LogError($"Failed to preload prefab: {PREFAB_ADDRESS}");
             }
@@ -57,85 +58,77 @@ namespace Assets.GameData.Scripts
 
         private static bool IsPrefabReady()
         {
-            return _prefabHandle.IsValid() && _prefabHandle.Status == AsyncOperationStatus.Succeeded;
+            return prefabHandle.IsValid() && prefabHandle.Status == AsyncOperationStatus.Succeeded;
         }
 
         private static GameObject GetPrefabAsset()
         {
             if (IsPrefabReady())
             {
-                return _prefabHandle.Result;
+                return prefabHandle.Result;
             }
 
-            if (!_prefabHandle.IsValid())
+            if (!prefabHandle.IsValid())
             {
-                _prefabHandle = Addressables.LoadAssetAsync<GameObject>(PREFAB_ADDRESS);
+                prefabHandle = Addressables.LoadAssetAsync<GameObject>(PREFAB_ADDRESS);
             }
 
-            if (!_prefabHandle.IsDone)
+            if (!prefabHandle.IsDone)
             {
-                _prefabHandle.WaitForCompletion();
+                _ = prefabHandle.WaitForCompletion();
             }
 
-            if (_prefabHandle.Status != AsyncOperationStatus.Succeeded)
+            if (prefabHandle.Status != AsyncOperationStatus.Succeeded)
             {
                 Debug.LogError($"Failed to load prefab: {PREFAB_ADDRESS}");
                 return null;
             }
 
-            return _prefabHandle.Result;
+            return prefabHandle.Result;
         }
 
-        /// <summary>
-        /// Выводит игровое сообщение и ожидает закрытие окна.
-        /// </summary>
+        #endregion Загрузка префаба сообщения
+
+        #region Отображение сообщений
+
+        /// <summary>Выводит игровое сообщение и ожидает закрытие окна.</summary>
         public static async UniTask ShowAndWaitCloseAsync(string message)
         {
             Show(message, true);
-            await UniTask.WaitUntil(() => !_opened);
+            await UniTask.WaitUntil(() => !opened);
         }
 
-        /// <summary>
-        /// Выводит игровое сообщение по ключу локализации и ожидает закрытие окна.
-        /// </summary>
+        /// <summary>Выводит игровое сообщение по ключу локализации и ожидает закрытие окна.</summary>
         public static async UniTask ShowLocaleAndWaitCloseAsync(string keyLocalization)
         {
             Show(Game03Client.LocalizationManager.GetValue(keyLocalization), true);
-            await UniTask.WaitUntil(() => !_opened);
+            await UniTask.WaitUntil(() => !opened);
         }
 
-        /// <summary>
-        /// Выводит игровое сообщение по ключу локализации и ожидает закрытие окна.
-        /// </summary>
-        public static async UniTask<bool> ShowLocaleYesNo(string keyLocalization)
+        /// <summary>Выводит игровое сообщение по ключу локализации и ожидает закрытие окна.</summary>
+        public static async UniTask<bool> ShowLocaleYesNoAsync(string keyLocalization)
         {
             resultYesNo = false;
             Show(Game03Client.LocalizationManager.GetValue(keyLocalization), buttonActiveClose: false, yesNoDialog: true);
-            await UniTask.WaitUntil(() => !_opened);
+            await UniTask.WaitUntil(() => !opened);
             return resultYesNo;
         }
 
-        /// <summary>
-        /// Выводит игровое сообщение по ключу локализации и ожидает закрытие окна.
-        /// </summary>
+        /// <summary>Выводит игровое сообщение по ключу локализации и ожидает закрытие окна.</summary>
         public static async UniTask ShowErrorAndWaitCloseAsync(Exception ex)
         {
             Show("APP_EXCEPTION: An exception has occurred, see log file.", true);
             LoggerException.LogException(ex);
-            await UniTask.WaitUntil(() => !_opened);
+            await UniTask.WaitUntil(() => !opened);
         }
 
-        /// <summary>
-        /// Выводит игровое сообщение по ключу локализации.
-        /// </summary>
+        /// <summary>Выводит игровое сообщение по ключу локализации.</summary>
         public static void ShowLocale(string keyLocalization, bool buttonActive)
         {
             Show(Game03Client.LocalizationManager.GetValue(keyLocalization), buttonActive);
         }
 
-        /// <summary>
-        /// Выводит сообщение об ошибке, детали исключения записываются в лог.
-        /// </summary>
+        /// <summary>Выводит сообщение об ошибке, детали исключения записываются в лог.</summary>
         public static void ShowError(Exception ex)
         {
             Show($"APP_EXCEPTION: An exception has occurred, see log file.", true);
@@ -143,9 +136,7 @@ namespace Assets.GameData.Scripts
             LoggerException.LogException(ex);
         }
 
-        /// <summary>
-        /// Основной метод отображения сообщения.
-        /// </summary>
+        /// <summary>Основной метод отображения сообщения.</summary>
         public static void Show(string message, bool buttonActiveClose, bool yesNoDialog = false)
         {
             if (string.IsNullOrWhiteSpace(message))
@@ -155,9 +146,8 @@ namespace Assets.GameData.Scripts
                 buttonActiveClose = true;
             }
 
-
             // Если окно уже существует, обновляем текст
-            if (_currentInstance != null)
+            if (currentInstance != null)
             {
                 UpdateMessage(message, buttonActiveClose, yesNoDialog: yesNoDialog);
                 return;
@@ -174,17 +164,17 @@ namespace Assets.GameData.Scripts
                 return;
             }
 
-            _currentInstance = prefabAsset.SafeInstant();
-            if (_currentInstance == null)
+            currentInstance = prefabAsset.SafeInstant();
+            if (currentInstance == null)
             {
                 return;
             }
-            _currentInstance.name = OBJECT_NAME;
-            _opened = true;
+            currentInstance.name = OBJECT_NAME;
+            opened = true;
 
-            if (!_currentInstance.TryGetComponent(out Canvas canvas))
+            if (!currentInstance.TryGetComponent(out Canvas canvas))
             {
-                UnityEngine.Object.Destroy(_currentInstance);
+                UnityEngine.Object.Destroy(currentInstance);
                 throw new Exception("Canvas component not found in the prefab.");
             }
 
@@ -198,12 +188,10 @@ namespace Assets.GameData.Scripts
             UpdateMessage(message, buttonActiveClose, yesNoDialog: yesNoDialog);
         }
 
-        /// <summary>
-        /// Обновляет текст и кнопку в уже созданном окне.
-        /// </summary>
+        /// <summary>Обновляет текст и кнопку в уже созданном окне.</summary>
         private static void UpdateMessage(string message, bool buttonActiveClose, bool yesNoDialog = false)
         {
-            Canvas canvas = _currentInstance.GetComponent<Canvas>();
+            Canvas canvas = currentInstance.GetComponent<Canvas>();
             Transform windowsImageTransform = canvas.transform.Find("Frame");
             GameObject mainTextLabel = windowsImageTransform.Find("MainText-Label").gameObject;
 
@@ -285,6 +273,10 @@ namespace Assets.GameData.Scripts
             }
         }
 
+        #endregion Отображение сообщений
+
+        #region Ответы и закрытие окна
+
         private static void PressYes()
         {
             //InputManager.Unregister(PressYes);
@@ -292,6 +284,7 @@ namespace Assets.GameData.Scripts
             resultYesNo = true;
             Close();
         }
+
         private static void PressNo()
         {
             //InputManager.Unregister(PressYes);
@@ -299,6 +292,7 @@ namespace Assets.GameData.Scripts
             resultYesNo = false;
             Close();
         }
+
         private static void PressOk()
         {
             //InputManager.Unregister(PressOk);
@@ -309,27 +303,29 @@ namespace Assets.GameData.Scripts
         {
             try
             {
-                if (_currentInstance != null)
+                if (currentInstance != null)
                 {
-                    UnityEngine.Object.Destroy(_currentInstance);
-                    _currentInstance = null;
+                    UnityEngine.Object.Destroy(currentInstance);
+                    currentInstance = null;
                 }
             }
             catch (Exception ex)
             {
                 Debug.LogError(ex);
             }
-            _opened = false;
+            opened = false;
         }
 
         public static void CloseIfNotButton()
         {
-            if (!_currentInstance)
+            if (!currentInstance)
             {
-                UnityEngine.Object.Destroy(_currentInstance);
-                _currentInstance = null;
-                _opened = false;
+                UnityEngine.Object.Destroy(currentInstance);
+                currentInstance = null;
+                opened = false;
             }
         }
+
+        #endregion Ответы и закрытие окна
     }
 }

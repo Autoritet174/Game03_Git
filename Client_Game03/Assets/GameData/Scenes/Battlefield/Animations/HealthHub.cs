@@ -12,13 +12,13 @@ namespace Assets.GameData.Scenes.Battlefield.Animations
     public class HealthHub
     {
         /// <summary>Длительность показа одного числа при скорости ×1.</summary>
-        public float AnimationHealthChangeTime { get; } = 3f;
+        public float animationHealthChangeTime { get; } = 3f;
 
         /// <summary>Базовый размер шрифта числа.</summary>
-        public float FontSize { get; } = 35f;
+        public float fontSize { get; } = 35f;
 
         /// <summary>Базовое расстояние перемещения числа.</summary>
-        public float Distance { get; } = 80f;
+        public float distance { get; } = 80f;
 
         /// <summary>Переиспользуемые объекты чисел.</summary>
         private readonly List<Health> animationsList = new();
@@ -41,14 +41,17 @@ namespace Assets.GameData.Scenes.Battlefield.Animations
         {
             token.ThrowIfCancellationRequested();
             if (value == 0)
+            {
                 return;
-            Health health = animationsList.Find(item => !item.Active);
+            }
+
+            Health health = animationsList.Find(item => !item.active);
             if (health == null)
             {
-                health = new Health(AddressablePrefabProvider.HealthChange.SafeInstant(canvas), this, animations);
+                health = new(AddressablePrefabProvider.healthChange.SafeInstant(canvas), this, animations);
                 animationsList.Add(health);
             }
-            Vector2 offset = GetPointFromAngle(Distance, RandomShared.NextSingle(-180, 180));
+            Vector2 offset = GetPointFromAngle(distance, RandomShared.NextSingle(-180, 180));
             await health.PlayAsync(value, isCrit, parent, offset, token);
         }
 
@@ -56,17 +59,24 @@ namespace Assets.GameData.Scenes.Battlefield.Animations
         public void OnResize()
         {
             foreach (Health health in animationsList)
-                if (health.Active)
+            {
+                if (health.active)
+                {
                     health.OnResize();
+                }
+            }
         }
 
         /// <summary>Возвращает смещение по расстоянию и углу; нулевой угол направлен вверх.</summary>
         private static Vector2 GetPointFromAngle(float distance, float angleDegrees)
         {
             if (distance < 0)
+            {
                 throw new ArgumentOutOfRangeException(nameof(distance));
+            }
+
             float radians = angleDegrees * Mathf.Deg2Rad;
-            return new Vector2(distance * Mathf.Sin(radians), distance * Mathf.Cos(radians));
+            return new(distance * Mathf.Sin(radians), distance * Mathf.Cos(radians));
         }
     }
 }

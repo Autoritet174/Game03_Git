@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using L = General.LocalizationKeys;
@@ -15,7 +14,7 @@ namespace Assets.GameData.Prefabs
     /// <summary>
     /// Управляет сворачиванием/разворачиванием группы UI-элементов (ячеек)
     /// с асинхронной анимацией высоты.
-    /// </summary>
+    ///</summary>
     public class PanelGroupDivider__prefab__script
     {
         private const float DIVIDER_BUTTON_HEIGHT = 45f;
@@ -25,133 +24,125 @@ namespace Assets.GameData.Prefabs
         private const float PADDING = 22.5f;
         public PanelGroupDivider__prefab__script(GroupCollectionElement groupCollectionElement, PanelCollection__prefab__scriptMB parent)
         {
-            _PanelCollection = parent;
-            _CollectionElementList = groupCollectionElement.List;
-            _GroupName = groupCollectionElement.Name;
+            panelCollection = parent;
+            collectionElementList = groupCollectionElement.List;
+            groupName = groupCollectionElement.Name;
 
-            _GameObject = AddressablePrefabProvider.GroupDividerPrefabAddressableGameObject.SafeInstant();
-            _GameObject.transform.SetParent(parent.panelCollectionViewer_Content__Transform, false);
+            gameObject = AddressablePrefabProvider.groupDividerPrefabAddressableGameObject.SafeInstant();
+            gameObject.transform.SetParent(parent.panelCollectionViewer_Content__Transform, false);
 
-            _RectTransform = _GameObject.GetComponent<RectTransform>();
+            rectTransform = gameObject.GetComponent<RectTransform>();
 
             // Кнопка переключения видимости
             {
-                _DividerButton__GameObject = GameObjectFinder.FindByName("DividerButton", _GameObject);
-                _DividerButton__RectTransform = _DividerButton__GameObject.GetComponent<RectTransform>();
-                _DividerButton__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", _DividerButton__GameObject);
+                dividerButton__GameObject = GameObjectFinder.FindByName("DividerButton", gameObject);
+                dividerButton__RectTransform = dividerButton__GameObject.GetComponent<RectTransform>();
+                dividerButton__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", dividerButton__GameObject);
 
                 string text;
-                if (string.IsNullOrWhiteSpace(_GroupName))
+                if (string.IsNullOrWhiteSpace(groupName))
                 {
                     text = Game03Client.LocalizationManager.GetValue(L.UI.Label.NoGroup);
-                    _DividerButton__TextMeshProUGUI.fontStyle = FontStyles.Italic;
+                    dividerButton__TextMeshProUGUI.fontStyle = FontStyles.Italic;
                 }
                 else
                 {
-                    text = _GroupName;
-                    _DividerButton__TextMeshProUGUI.fontStyle = FontStyles.Normal;
+                    text = groupName;
+                    dividerButton__TextMeshProUGUI.fontStyle = FontStyles.Normal;
                 }
-                _DividerButton__TextMeshProUGUI.text = $"{text} ({_CollectionElementList.Count()})";
+                dividerButton__TextMeshProUGUI.text = $"{text} ({collectionElementList.Count()})";
 
                 // Привязываем метод ToggleGroup к событию клика
                 {
-                    Button dividerButton_Button = _DividerButton__GameObject.GetComponent<Button>();
+                    Button dividerButton_Button = dividerButton__GameObject.GetComponent<Button>();
                     dividerButton_Button.onClick.RemoveAllListeners();
                     dividerButton_Button.onClick.AddListener(ToggleGroup);
                 }
 
-
                 // Изображения - линии окантовки
                 {
-                    Image_Arrow__Image = GameObjectFinder.FindByName<Image>("Image_Arrow", _DividerButton__GameObject);
-                    Image_Up__RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Up", _DividerButton__GameObject);
-                    Image_Down__RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Down", _DividerButton__GameObject);
-                    Image_Left__RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Left", _DividerButton__GameObject);
-                    Image_Right__RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Right", _DividerButton__GameObject);
+                    image_Arrow__Image = GameObjectFinder.FindByName<Image>("Image_Arrow", dividerButton__GameObject);
+                    image_Up__RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Up", dividerButton__GameObject);
+                    image_Down__RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Down", dividerButton__GameObject);
+                    image_Left__RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Left", dividerButton__GameObject);
+                    image_Right__RectTransform = GameObjectFinder.FindByName<RectTransform>("Image_Right", dividerButton__GameObject);
                 }
             }
 
             // Контейнер контента
             {
-                _CellsContainer__GameObject = GameObjectFinder.FindByName("CellsContainer", _GameObject.transform);
-                _CellsContainer__RectTransform = _CellsContainer__GameObject.GetComponent<RectTransform>();
-                _CellsContainer__GridLayoutGroup = _CellsContainer__GameObject.GetComponent<GridLayoutGroup>();
-                CellsContainer__Transform = _CellsContainer__GameObject.transform;
+                cellsContainer__GameObject = GameObjectFinder.FindByName("CellsContainer", gameObject.transform);
+                cellsContainer__RectTransform = cellsContainer__GameObject.GetComponent<RectTransform>();
+                cellsContainer__GridLayoutGroup = cellsContainer__GameObject.GetComponent<GridLayoutGroup>();
+                cellsContainer__Transform = cellsContainer__GameObject.transform;
             }
 
-
-            _PanelIconCollectionElementList = new();
-            foreach (CollectionElement collectionElement in _CollectionElementList)
+            panelIconCollectionElementList = new();
+            foreach (CollectionElement collectionElement in collectionElementList)
             {
-                _PanelIconCollectionElementList.Add(new(this, collectionElement, parent));
+                panelIconCollectionElementList.Add(new(this, collectionElement, parent));
             }
 
             OnResized();
         }
 
-        public Transform CellsContainer__Transform { get; }
+        public Transform cellsContainer__Transform { get; }
 
-        private readonly PanelCollection__prefab__scriptMB _PanelCollection;
-        private readonly string _GroupName;
+        private readonly PanelCollection__prefab__scriptMB panelCollection;
+        private readonly string groupName;
 
-        private readonly GameObject _GameObject;
-        private readonly RectTransform _RectTransform;
+        private readonly GameObject gameObject;
+        private readonly RectTransform rectTransform;
 
-        private readonly GameObject _DividerButton__GameObject;
-        private readonly RectTransform _DividerButton__RectTransform;
-        /// <summary>
-        /// Кнопка, при клике на которую происходит сворачивание/разворачивание.
-        /// </summary>
+        private readonly GameObject dividerButton__GameObject;
+        private readonly RectTransform dividerButton__RectTransform;
+        /// <summary>Кнопка, при клике на которую происходит сворачивание/разворачивание.</summary>
         //private readonly Button _DividerButton_Button;
 
-        private readonly Image Image_Arrow__Image;
-        private readonly RectTransform Image_Up__RectTransform;
-        private readonly RectTransform Image_Down__RectTransform;
-        private readonly RectTransform Image_Left__RectTransform;
-        private readonly RectTransform Image_Right__RectTransform;
+        private readonly Image image_Arrow__Image;
+        private readonly RectTransform image_Up__RectTransform;
+        private readonly RectTransform image_Down__RectTransform;
+        private readonly RectTransform image_Left__RectTransform;
+        private readonly RectTransform image_Right__RectTransform;
 
         /// <summary>
         /// Контейнер, содержащий все ячейки инвентаря для этой группы.
         /// На этом объекте должен быть RectTransform.
-        /// </summary>
-        private readonly GameObject _CellsContainer__GameObject;
-        private readonly RectTransform _CellsContainer__RectTransform;
-        private readonly GridLayoutGroup _CellsContainer__GridLayoutGroup;
+        ///</summary>
+        private readonly GameObject cellsContainer__GameObject;
+        private readonly RectTransform cellsContainer__RectTransform;
+        private readonly GridLayoutGroup cellsContainer__GridLayoutGroup;
 
-        private readonly TextMeshProUGUI _DividerButton__TextMeshProUGUI;
+        private readonly TextMeshProUGUI dividerButton__TextMeshProUGUI;
 
-        private readonly IEnumerable<CollectionElement> _CollectionElementList;
-        private readonly List<PanelIconCollectionElement> _PanelIconCollectionElementList;
+        private readonly IEnumerable<CollectionElement> collectionElementList;
+        private readonly List<PanelIconCollectionElement> panelIconCollectionElementList;
 
         ///// <summary>
         ///// Флаг, переключаем в true при вызове OnDestroy для остановки анимаций.
-        ///// </summary>
+        /////</summary>
         //private bool _Destroying = false;
 
-        /// <summary>
-        /// Текущее состояние группы (true - развернута, false - свернута).
-        /// </summary>
-        private bool _Expanded = true;
+        /// <summary>Текущее состояние группы (true - развернута, false - свернута).</summary>
+        private bool expanded = true;
 
-
-        public List<Guid> GetSelectedElements() {
-            return _PanelIconCollectionElementList.Where(a=>a.selected).Select(a => a.Id).ToList();
+        public List<Guid> GetSelectedElements()
+        {
+            return panelIconCollectionElementList.Where(a => a.selected).Select(a => a.id).ToList();
         }
 
-        /// <summary>
-        /// Переключает состояние группы и запускает анимацию.
-        /// </summary>
+        /// <summary>Переключает состояние группы и запускает анимацию.</summary>
         private void ToggleGroup()
         {
             //Debug.Log(1);
-            _Expanded = !_Expanded;
+            expanded = !expanded;
 
-            if (_Expanded)
+            if (expanded)
             {
                 //    // Разворачивание
                 //    // Сначала активируем контейнер, чтобы он участвовал в макете, но с высотой 0
-                _CellsContainer__GameObject.SetActive(true);
-                Image_Arrow__Image.sprite = AddressablePrefabProvider.UI_button_with_arrow_v4;
+                cellsContainer__GameObject.SetActive(true);
+                image_Arrow__Image.sprite = AddressablePrefabProvider.ui_button_with_arrow_v4;
                 //_CellsContainer_RectTransform.sizeDelta = new Vector2();
                 //    //await AnimateHeightAsync(0, expandedHeight, token);
             }
@@ -160,8 +151,8 @@ namespace Assets.GameData.Prefabs
                 //    // Сворачивание
                 //    //await AnimateHeightAsync(expandedHeight, 0, token);
                 //    // После завершения анимации деактивируем контейнер
-                _CellsContainer__GameObject.SetActive(false);
-                Image_Arrow__Image.sprite = AddressablePrefabProvider.UI_button_with_arrow_v4_reverse;
+                cellsContainer__GameObject.SetActive(false);
+                image_Arrow__Image.sprite = AddressablePrefabProvider.ui_button_with_arrow_v4_reverse;
             }
             OnResized();
             //await UniTask.Delay(1); // Заглушка для асинхронности
@@ -170,15 +161,15 @@ namespace Assets.GameData.Prefabs
 
         public void OnResized()
         {
-            float width = _PanelCollection.panelCollectionViewer_Width;
+            float width = panelCollection.panelCollectionViewer_Width;
             float coefHeight = G.GetCoefHeight();
             float buttonHeight = DIVIDER_BUTTON_HEIGHT * coefHeight;
             float height = buttonHeight;
 
-            _DividerButton__RectTransform.sizeDelta = new Vector2(width, buttonHeight);
-            _DividerButton__TextMeshProUGUI.fontSize = DIVIDER_BUTTON_FONTSIZE * coefHeight;
+            dividerButton__RectTransform.sizeDelta = new(width, buttonHeight);
+            dividerButton__TextMeshProUGUI.fontSize = DIVIDER_BUTTON_FONTSIZE * coefHeight;
 
-            if (_Expanded)
+            if (expanded)
             {
                 float spacing = SPACING * coefHeight;
                 float cellSize = CELL_SIZE * coefHeight;
@@ -196,16 +187,15 @@ namespace Assets.GameData.Prefabs
                 spacing = ((int)(spacing * coefWidth * 10f)) / 10f;
                 cellSize = ((int)(cellSize * coefWidth * 10f)) / 10f;
 
-                _CellsContainer__GridLayoutGroup.padding.left = padding;
-                _CellsContainer__GridLayoutGroup.padding.right = padding;
-                _CellsContainer__GridLayoutGroup.padding.top = padding;
-                _CellsContainer__GridLayoutGroup.padding.bottom = padding;
-                _CellsContainer__GridLayoutGroup.spacing = new Vector2(spacing, spacing);
-                _CellsContainer__GridLayoutGroup.cellSize = new Vector2(cellSize, cellSize);
-
+                cellsContainer__GridLayoutGroup.padding.left = padding;
+                cellsContainer__GridLayoutGroup.padding.right = padding;
+                cellsContainer__GridLayoutGroup.padding.top = padding;
+                cellsContainer__GridLayoutGroup.padding.bottom = padding;
+                cellsContainer__GridLayoutGroup.spacing = new(spacing, spacing);
+                cellsContainer__GridLayoutGroup.cellSize = new(cellSize, cellSize);
 
                 // вычисляем количество строк
-                int countCollectionElement = _CollectionElementList.Count();
+                int countCollectionElement = collectionElementList.Count();
                 int countRows = (countCollectionElement / countCellInRow) + (countCollectionElement % countCellInRow == 0 ? 0 : 1);
                 if (countRows < 1)
                 {
@@ -214,39 +204,38 @@ namespace Assets.GameData.Prefabs
 
                 float heightContainer = (countRows * cellSize) + ((countRows - 1) * spacing)
                     + (padding * 4);// по сути нужно 2 но чтобы сделать низ длиннее поставил 4
-                _CellsContainer__RectTransform.sizeDelta = new Vector2(width, heightContainer);
-                _CellsContainer__RectTransform.anchoredPosition = new Vector2(0f, -DIVIDER_BUTTON_HEIGHT * coefHeight);
+                cellsContainer__RectTransform.sizeDelta = new(width, heightContainer);
+                cellsContainer__RectTransform.anchoredPosition = new(0f, -DIVIDER_BUTTON_HEIGHT * coefHeight);
 
-                _PanelIconCollectionElementList.ForEach(a => a.OnResized());
+                panelIconCollectionElementList.ForEach(a => a.OnResized());
 
                 height += heightContainer;
             }
 
-            _RectTransform.sizeDelta = new Vector2(width, height);
+            rectTransform.sizeDelta = new(width, height);
 
             float sizeLine = 4 * coefHeight;
-            Image_Up__RectTransform.sizeDelta = new Vector2(0, sizeLine);
-            Image_Down__RectTransform.sizeDelta = new Vector2(0, sizeLine);
-            Image_Left__RectTransform.sizeDelta = new Vector2(sizeLine, 0);
-            Image_Right__RectTransform.sizeDelta = new Vector2(sizeLine, 0);
-            Image_Arrow__Image.rectTransform.sizeDelta = new Vector2(74*coefHeight, 37*coefHeight);
-            Image_Arrow__Image.rectTransform.anchoredPosition = new Vector2(-sizeLine, -sizeLine);
+            image_Up__RectTransform.sizeDelta = new(0, sizeLine);
+            image_Down__RectTransform.sizeDelta = new(0, sizeLine);
+            image_Left__RectTransform.sizeDelta = new(sizeLine, 0);
+            image_Right__RectTransform.sizeDelta = new(sizeLine, 0);
+            image_Arrow__Image.rectTransform.sizeDelta = new(74 * coefHeight, 37 * coefHeight);
+            image_Arrow__Image.rectTransform.anchoredPosition = new(-sizeLine, -sizeLine);
         }
 
         public void Destroy()
         {
             //_Destroying = true;
-            UnityEngine.Object.Destroy(_GameObject);
+            UnityEngine.Object.Destroy(gameObject);
         }
 
         public void UnselectAll()
         {
-            _PanelIconCollectionElementList.ForEach(_a => _a.SetSelected(false));
+            panelIconCollectionElementList.ForEach(a => a.SetSelected(false));
         }
 
         //private async UniTask ShowEquipment()
         //{
-
 
         //    _Init_Collection.ButtonTakeOnOff_RectTransform.gameObject.SetClickEvent(async () =>
         //    {
@@ -298,7 +287,6 @@ namespace Assets.GameData.Prefabs
         //                        else
         //                        {
 
-
         //                        }
         //                        // надеваем экипировку на героя
         //                        // через вебсокет команда на сервер, на сервере такая же проверка так как не верим клиенту
@@ -308,13 +296,11 @@ namespace Assets.GameData.Prefabs
         //                    }
         //            }
 
-
         //        }
         //        else
         //        {
         //            throw new Exception();
         //        }
-
 
         //        string slotName = equipment.BaseEquipment.EquipmentType.SlotType.Name;
         //        if (Initializator.Slots1by1.Any(a => string.Compare(slotName, a, StringComparison.InvariantCultureIgnoreCase) == 0))
@@ -325,7 +311,6 @@ namespace Assets.GameData.Prefabs
         //    }, true);
         //    await UniTask.Yield();
         //}
-
 
     }
 }

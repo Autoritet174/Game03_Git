@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Assets.GameData.Scenes.Auth
 {
+    /// <summary>Обрабатывает нажатие кнопки регистрации на сцене авторизации.</summary>
     public class Button_Reg : MonoBehaviour
     {
         public void OnClick()
@@ -46,7 +47,6 @@ namespace Assets.GameData.Scenes.Auth
             //    Assets.GameData.Scripts.Logger2.Log("[HTTP] " + ex.Message);
             //}
         }
-
 
     }
 }

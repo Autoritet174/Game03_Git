@@ -9,36 +9,39 @@ using L = General.LocalizationKeys;
 
 namespace Assets.GameData.Scenes.Auth
 {
+    /// <summary>Подготавливает интерфейс авторизации и восстанавливает сохранённый сеанс.</summary>
     public class AuthSceneInitializator : MonoBehaviour
     {
 
-        private bool _initialized = false;
-        private float _width, _height;
+        private bool initialized = false;
+        private float width, height;
 
-        private Button _ButtonLogin_Button;
+        private Button buttonLogin_Button;
 
-        private RectTransform _ButtonLogin_RectTransform;
-        private RectTransform _ButtonReg_RectTransform;
-        private RectTransform _ButtonExitGame_RectTransform;
-        private RectTransform _InputTextWithLabelEmail_RectTransform;
-        private RectTransform _InputTextWithLabelPassword_RectTransform;
-        private TextMeshProUGUI _LabelEmail_TextMeshProUGUI;
-        private TextMeshProUGUI _LabelPassword_TextMeshProUGUI;
-        private TextMeshProUGUI _TextEmail_TextMeshProUGUI;
-        private TextMeshProUGUI _TextPassword_TextMeshProUGUI;
-        private TextMeshProUGUI _TextButtonLogin_TextMeshProUGUI;
-        private TextMeshProUGUI _TextButtonReg_TextMeshProUGUI;
-        private TextMeshProUGUI _TextButtonExitGame_TextMeshProUGUI;
+        private RectTransform buttonLogin_RectTransform;
+        private RectTransform buttonReg_RectTransform;
+        private RectTransform buttonExitGame_RectTransform;
+        private RectTransform inputTextWithLabelEmail_RectTransform;
+        private RectTransform inputTextWithLabelPassword_RectTransform;
+        private TextMeshProUGUI labelEmail_TextMeshProUGUI;
+        private TextMeshProUGUI labelPassword_TextMeshProUGUI;
+        private TextMeshProUGUI textEmail_TextMeshProUGUI;
+        private TextMeshProUGUI textPassword_TextMeshProUGUI;
+        private TextMeshProUGUI textButtonLogin_TextMeshProUGUI;
+        private TextMeshProUGUI textButtonReg_TextMeshProUGUI;
+        private TextMeshProUGUI textButtonExitGame_TextMeshProUGUI;
 
-        private Image _ImageBackground_Image;
-        private float _ImageBackground_CoefWH = 1f;
+        private Image imageBackground_Image;
+        private float imageBackground_CoefWH = 1f;
+
+        #region Жизненный цикл сцены
 
         private void Start()
         {
             InitTextLocalization();
             InitObjects();
 
-            _initialized = true;
+            initialized = true;
             OnResizeWindow();
             this.RunAsync(StartAsync);
         }
@@ -48,9 +51,9 @@ namespace Assets.GameData.Scenes.Auth
             bool visibleInputFields = false;
             try
             {
-                string refreshToken = SecureStorageProvider.GetString(SecureStorageKey.RefreshToken);
+                string refreshToken = SecureStorageProvider.GetString(ESecureStorageKey.refreshToken);
                 //AuthHelper.LogRefreshToken(refreshToken);
-                DateTimeOffset? refreshTokenExpirationAt = SecureStorageProvider.GetDateTimeOffset(SecureStorageKey.RefreshTokenExpirationAt);
+                DateTimeOffset? refreshTokenExpirationAt = SecureStorageProvider.GetDateTimeOffset(ESecureStorageKey.refreshTokenExpirationAt);
                 if (string.IsNullOrWhiteSpace(refreshToken)
                     || refreshTokenExpirationAt == null
                     || refreshTokenExpirationAt.Value < DateTimeOffset.UtcNow)
@@ -86,16 +89,20 @@ namespace Assets.GameData.Scenes.Auth
 
         private void Update()
         {
-            if (!_initialized)
+            if (!initialized)
             {
                 return;
             }
 
-            if (!Mathf.Approximately(Screen.height, _height) || !Mathf.Approximately(Screen.width, _width))
+            if (!Mathf.Approximately(Screen.height, height) || !Mathf.Approximately(Screen.width, width))
             {
                 OnResizeWindow();
             }
         }
+
+        #endregion Жизненный цикл сцены
+
+        #region Подготовка и раскладка интерфейса
 
         private void InitTextLocalization()
         {
@@ -108,81 +115,87 @@ namespace Assets.GameData.Scenes.Auth
 
         private void InitObjects()
         {
-            _ButtonLogin_Button = GameObjectFinder.FindByName<Button>("Button_Login (id=bf6euydu)");
+            buttonLogin_Button = GameObjectFinder.FindByName<Button>("Button_Login (id=bf6euydu)");
 
-            _ButtonLogin_RectTransform = GameObjectFinder.FindByName<RectTransform>("Button_Login (id=bf6euydu)");
-            _ButtonReg_RectTransform = GameObjectFinder.FindByName<RectTransform>("Button_Reg (id=4flrrger)");
-            _ButtonExitGame_RectTransform = GameObjectFinder.FindByName<RectTransform>("Button_ExitGame (id=qn0sq5e5)");
-            _InputTextWithLabelEmail_RectTransform = GameObjectFinder.FindByName<RectTransform>("InputTextWithLabel_Email (id=sejzo1c1)");
-            _InputTextWithLabelPassword_RectTransform = GameObjectFinder.FindByName<RectTransform>("InputTextWithLabel_Password (id=0jyjud2d)");
+            buttonLogin_RectTransform = GameObjectFinder.FindByName<RectTransform>("Button_Login (id=bf6euydu)");
+            buttonReg_RectTransform = GameObjectFinder.FindByName<RectTransform>("Button_Reg (id=4flrrger)");
+            buttonExitGame_RectTransform = GameObjectFinder.FindByName<RectTransform>("Button_ExitGame (id=qn0sq5e5)");
+            inputTextWithLabelEmail_RectTransform = GameObjectFinder.FindByName<RectTransform>("InputTextWithLabel_Email (id=sejzo1c1)");
+            inputTextWithLabelPassword_RectTransform = GameObjectFinder.FindByName<RectTransform>("InputTextWithLabel_Password (id=0jyjud2d)");
 
-            _LabelEmail_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label_Email (id=ndtil638)");
-            _LabelPassword_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label_Password (id=e319ahd6)");
-            _TextEmail_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text_Email (id=n4tnenbq)");
-            _TextPassword_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text_Password (id=72r1zdv1)");
-            _TextButtonLogin_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text_ButtonLogin (id=wf6fw0y1)");
-            _TextButtonReg_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text_ButtonReg (id=tsuvx5vf)");
-            _TextButtonExitGame_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text_ButtonExitGame (id=flb78tua)");
+            labelEmail_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label_Email (id=ndtil638)");
+            labelPassword_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label_Password (id=e319ahd6)");
+            textEmail_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text_Email (id=n4tnenbq)");
+            textPassword_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text_Password (id=72r1zdv1)");
+            textButtonLogin_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text_ButtonLogin (id=wf6fw0y1)");
+            textButtonReg_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text_ButtonReg (id=tsuvx5vf)");
+            textButtonExitGame_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text_ButtonExitGame (id=flb78tua)");
 
-            _ImageBackground_Image = GameObjectFinder.FindByName<Image>("Image_Background (id=i16uj497)");
-            if (_ImageBackground_Image.sprite != null)
+            imageBackground_Image = GameObjectFinder.FindByName<Image>("Image_Background (id=i16uj497)");
+            if (imageBackground_Image.sprite != null)
             {
-                Texture2D texture = _ImageBackground_Image.sprite.texture;
-                _ImageBackground_CoefWH = texture.width / (float)texture.height;
+                Texture2D texture = imageBackground_Image.sprite.texture;
+                imageBackground_CoefWH = texture.width / (float)texture.height;
             }
         }
 
         private void OnResizeWindow()
         {
-            _height = Screen.height;
-            _width = Screen.width;
+            height = Screen.height;
+            width = Screen.width;
 
-            float coefHeight = _height / 1080f;
-            float coefWidth = _width / 1920f;
+            float coefHeight = height / 1080f;
+            float coefWidth = width / 1920f;
 
-            _ButtonLogin_RectTransform.anchoredPosition = new Vector2(0, -268.3601f * coefHeight);
-            _ButtonLogin_RectTransform.sizeDelta = new Vector2(292.24f * coefHeight, 79.52002f * coefHeight);
+            buttonLogin_RectTransform.anchoredPosition = new(0, -268.3601f * coefHeight);
+            buttonLogin_RectTransform.sizeDelta = new(292.24f * coefHeight, 79.52002f * coefHeight);
 
-            _ButtonReg_RectTransform.anchoredPosition = new Vector2(-20f * coefWidth, -400f * coefHeight);
-            _ButtonExitGame_RectTransform.anchoredPosition = new Vector2(-20f * coefWidth, -473f * coefHeight);
-            _ButtonExitGame_RectTransform.sizeDelta = _ButtonReg_RectTransform.sizeDelta = new Vector2(220f * coefHeight, 65f * coefHeight);
+            buttonReg_RectTransform.anchoredPosition = new(-20f * coefWidth, -400f * coefHeight);
+            buttonExitGame_RectTransform.anchoredPosition = new(-20f * coefWidth, -473f * coefHeight);
+            buttonExitGame_RectTransform.sizeDelta = buttonReg_RectTransform.sizeDelta = new(220f * coefHeight, 65f * coefHeight);
 
-            _InputTextWithLabelEmail_RectTransform.anchoredPosition = new Vector2(0f, -48.29327f * coefHeight);
-            _InputTextWithLabelPassword_RectTransform.anchoredPosition = new Vector2(0f, -160f * coefHeight);
-            _InputTextWithLabelPassword_RectTransform.sizeDelta = _InputTextWithLabelEmail_RectTransform.sizeDelta = new Vector2(768f * coefHeight, 96.58661f * coefHeight);
+            inputTextWithLabelEmail_RectTransform.anchoredPosition = new(0f, -48.29327f * coefHeight);
+            inputTextWithLabelPassword_RectTransform.anchoredPosition = new(0f, -160f * coefHeight);
+            inputTextWithLabelPassword_RectTransform.sizeDelta = inputTextWithLabelEmail_RectTransform.sizeDelta = new(768f * coefHeight, 96.58661f * coefHeight);
 
             float fontSize = 36f * coefHeight;
-            _LabelEmail_TextMeshProUGUI.fontSize = fontSize;
-            _LabelPassword_TextMeshProUGUI.fontSize = fontSize;
-            _TextEmail_TextMeshProUGUI.fontSize = fontSize;
-            _TextPassword_TextMeshProUGUI.fontSize = fontSize;
+            labelEmail_TextMeshProUGUI.fontSize = fontSize;
+            labelPassword_TextMeshProUGUI.fontSize = fontSize;
+            textEmail_TextMeshProUGUI.fontSize = fontSize;
+            textPassword_TextMeshProUGUI.fontSize = fontSize;
 
             fontSize = 26f * coefHeight;
-            _TextButtonLogin_TextMeshProUGUI.fontSize = fontSize;
-            _TextButtonReg_TextMeshProUGUI.fontSize = fontSize;
-            _TextButtonExitGame_TextMeshProUGUI.fontSize = fontSize;
+            textButtonLogin_TextMeshProUGUI.fontSize = fontSize;
+            textButtonReg_TextMeshProUGUI.fontSize = fontSize;
+            textButtonExitGame_TextMeshProUGUI.fontSize = fontSize;
 
             // Background
-            float coefScreen = _width / _height;
-            _ImageBackground_Image.rectTransform.sizeDelta = coefScreen > _ImageBackground_CoefWH
-                ? new Vector2(_width, _width / _ImageBackground_CoefWH)
-                : new Vector2(_height * _ImageBackground_CoefWH, _height);
+            float coefScreen = width / height;
+            imageBackground_Image.rectTransform.sizeDelta = coefScreen > imageBackground_CoefWH
+                ? new Vector2(width, width / imageBackground_CoefWH)
+                : new Vector2(height * imageBackground_CoefWH, height);
         }
+
+        #endregion Подготовка и раскладка интерфейса
+
+        #region Видимость полей ввода
 
         private void SetVisibleInputFields(bool visible)
         {
-            _ButtonLogin_Button.gameObject.SetActive(visible);
-            _InputTextWithLabelEmail_RectTransform.gameObject.SetActive(visible);
-            _InputTextWithLabelPassword_RectTransform.gameObject.SetActive(visible);
+            buttonLogin_Button.gameObject.SetActive(visible);
+            inputTextWithLabelEmail_RectTransform.gameObject.SetActive(visible);
+            inputTextWithLabelPassword_RectTransform.gameObject.SetActive(visible);
         }
 
         private async UniTask SetVisibleInputFieldsAsync(bool visible)
         {
-            _ButtonLogin_Button.gameObject.SetActive(visible);
-            _InputTextWithLabelEmail_RectTransform.gameObject.SetActive(visible);
-            _InputTextWithLabelPassword_RectTransform.gameObject.SetActive(visible);
+            buttonLogin_Button.gameObject.SetActive(visible);
+            inputTextWithLabelEmail_RectTransform.gameObject.SetActive(visible);
+            inputTextWithLabelPassword_RectTransform.gameObject.SetActive(visible);
             await UniTask.Yield();
         }
+
+        #endregion Видимость полей ввода
 
     }
 }

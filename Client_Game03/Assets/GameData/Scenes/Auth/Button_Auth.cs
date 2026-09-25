@@ -9,6 +9,7 @@ using L = General.LocalizationKeys;
 
 namespace Assets.GameData.Scenes.Auth
 {
+    /// <summary>Запускает авторизацию по введённым данным.</summary>
     public class Button_Auth : MonoBehaviour
     {
         private void Start()
@@ -17,6 +18,7 @@ namespace Assets.GameData.Scenes.Auth
             //button.onClick.AddListener(() => ButtonLoginOnClick().Forget());
             button.gameObject.SetClickOnButton(ButtonLoginOnClick);
         }
+
         public static async UniTask ButtonLoginOnClick()
         {
             Button buttonLogin = null;
@@ -25,7 +27,6 @@ namespace Assets.GameData.Scenes.Auth
                 TMP_InputField textEmail = GameObjectFinder.FindByName<TMP_InputField>("InputText_Email (id=96oaypns)");
                 TMP_InputField textPassword = GameObjectFinder.FindByName<TMP_InputField>("InputText_Password (id=9vfnj9oh)");
                 buttonLogin = GameObjectFinder.FindByName<Button>("Button_Login (id=bf6euydu)");
-
 
                 // Проверка емаил
                 string emailString = textEmail.text?.Trim() ?? string.Empty;

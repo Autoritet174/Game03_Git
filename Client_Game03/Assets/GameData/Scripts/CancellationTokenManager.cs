@@ -7,21 +7,21 @@ namespace Assets.GameData.Scripts
     /// <summary>
     /// Статический класс для централизованного управления токенами отмены.
     /// Каждый токен связан с глобальной отменой выхода из приложения и таймаутом.
-    /// </summary>
+    ///</summary>
     internal class CancellationTokenManager
     {
         // Глобальный источник отмены при выходе из приложения.
-        private static readonly CancellationTokenSource _globalQuitCts = new();
-        public static CancellationToken GlobalQuitToken => _globalQuitCts.Token;
+        private static readonly CancellationTokenSource globalQuitCts = new();
+        public static CancellationToken globalQuitToken => globalQuitCts.Token;
 
         // Словарь для хранения активных связанных токенов: (Name, (TimeoutCTS, LinkedCTS)).
-        private static readonly Dictionary<string, (CancellationTokenSource TimeoutCts, CancellationTokenSource LinkedCts)> _activeTokens = new();
-        private static readonly object _lock = new();
+        private static readonly Dictionary<string, (CancellationTokenSource TimeoutCts, CancellationTokenSource LinkedCts)> activeTokens = new();
+        private static readonly object syncRoot = new();
 
         /// <summary>
         /// Создает новый токен отмены, связанный с глобальной отменой и таймаутом.
         /// Если токен с таким именем уже существует, он отменяется и удаляется.
-        /// </summary>
+        ///</summary>
         /// <param name="name">Уникальное имя токена.</param>
         /// <param name="sec">Время таймаута в секундах, после которого токен будет отменен.</param>
         /// <returns>Новый связанный токен отмены.</returns>
@@ -39,8 +39,7 @@ namespace Assets.GameData.Scripts
                 throw new ArgumentOutOfRangeException(nameof(sec), "Время ожидания должно быть больше нуля.");
             }
 
-
-            if (G.IsApplicationQuitting)
+            if (G.isApplicationQuitting)
             {
                 // Если какой то Task начал выполняться после начала процесса выхода из приложения, то он запросит получение токена и сразу получит токен с флагом отмены
                 CancellationTokenSource ctsTemp = new();
@@ -52,11 +51,11 @@ namespace Assets.GameData.Scripts
             CancellationTokenSource timeoutCts = new(TimeSpan.FromSeconds(sec));
 
             // Связывание: (1) таймаут, (2) глобальный выход
-            var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(timeoutCts.Token, _globalQuitCts.Token);
+            var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(timeoutCts.Token, globalQuitCts.Token);
 
-            lock (_lock)
+            lock (syncRoot)
             {
-                if (_activeTokens.TryGetValue(name, out (CancellationTokenSource TimeoutCts, CancellationTokenSource LinkedCts) oldSources))
+                if (activeTokens.TryGetValue(name, out (CancellationTokenSource TimeoutCts, CancellationTokenSource LinkedCts) oldSources))
                 {
                     // Отмена и удаление старых источников
                     try
@@ -74,33 +73,34 @@ namespace Assets.GameData.Scripts
                     }
                     catch { }
 
-                    _ = _activeTokens.Remove(name);
+                    _ = activeTokens.Remove(name);
                 }
 
                 // Добавление новых связанных источников в словарь
-                _activeTokens.Add(name, (timeoutCts, linkedCts));
+                activeTokens.Add(name, (timeoutCts, linkedCts));
             }
 
             return linkedCts.Token;
         }
 
-        public static CancellationToken CreateAbility() {
+        public static CancellationToken CreateAbility()
+        {
             return Create("UseAbility", 3);
         }
 
         /// <summary>
         /// Отменяет глобальный токен выхода и все активные локальные токены.
         /// Должен быть вызван при завершении работы приложения.
-        /// </summary>
+        ///</summary>
         public static void CancelAllTokens()
         {
-            _globalQuitCts.Cancel();
+            globalQuitCts.Cancel();
 
-            lock (_lock)
+            lock (syncRoot)
             {
-                if (_activeTokens.Count > 0)
+                if (activeTokens.Count > 0)
                 {
-                    foreach (KeyValuePair<string, (CancellationTokenSource TimeoutCts, CancellationTokenSource LinkedCts)> item in _activeTokens)
+                    foreach (KeyValuePair<string, (CancellationTokenSource TimeoutCts, CancellationTokenSource LinkedCts)> item in activeTokens)
                     {
                         try
                         {
@@ -127,7 +127,7 @@ namespace Assets.GameData.Scripts
                         catch { }
 
                     }
-                    _activeTokens.Clear();
+                    activeTokens.Clear();
                 }
             }
         }

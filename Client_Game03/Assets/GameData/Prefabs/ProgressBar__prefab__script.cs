@@ -3,9 +3,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>Отображает полосу значения с подписями и настраиваемыми цветами.</summary>
 public class ProgressBar__prefab__script : MonoBehaviour, IPrefab
 {
-    public enum DisplayMode { DamageDone, HealingDone, DamageRecieved, HealingRecieved, HealthBar }
+    /// <summary>Определяет показатель, отображаемый полосой статистики.</summary>
+    public enum EDisplayMode
+    {
+        damageDone, healingDone, damageRecieved, healingRecieved, healthBar
+    }
+
     public bool initialized { get; private set; }
 
     public float width { get; private set; }
@@ -21,16 +27,17 @@ public class ProgressBar__prefab__script : MonoBehaviour, IPrefab
     private float textLeft_left = 3;
     private float textRight_right = 3;
 
-    private RectTransform _HealthImagePercent__RectTransform;
-    private RectTransform _HealthImageColorBar__RectTransform;
+    private RectTransform healthImagePercent__RectTransform;
+    private RectTransform healthImageColorBar__RectTransform;
 
     //public GameObject this__GameObject { get; set; }
     public RectTransform this__RectTransform { get; private set; }
-    private RectTransform _TextLeft__RectTransform;
-    private TextMeshProUGUI _TextLeft__TextMeshProUGUI;
-    private RectTransform _TextRight__RectTransform;
-    private TextMeshProUGUI _TextRight__TextMeshProUGUI;
-    private Image _HealthImageColorBar__Image;
+
+    private RectTransform textLeft__RectTransform;
+    private TextMeshProUGUI textLeft__TextMeshProUGUI;
+    private RectTransform textRight__RectTransform;
+    private TextMeshProUGUI textRight__TextMeshProUGUI;
+    private Image healthImageColorBar__Image;
     private float healthimagecolorbar_right = HEALTH_IMAGE_COLOR_BAR_RIGHT;
 
     public float value { get; set; } = 0f;
@@ -44,15 +51,15 @@ public class ProgressBar__prefab__script : MonoBehaviour, IPrefab
         //}
 
         this__RectTransform = gameObject.GetComponent<RectTransform>();
-        _HealthImagePercent__RectTransform = GameObjectFinder.FindByName<RectTransform>("HealthImagePercent", gameObject);
-        _HealthImageColorBar__RectTransform = GameObjectFinder.FindByName<RectTransform>("HealthImageColorBar", gameObject);
+        healthImagePercent__RectTransform = GameObjectFinder.FindByName<RectTransform>("HealthImagePercent", gameObject);
+        healthImageColorBar__RectTransform = GameObjectFinder.FindByName<RectTransform>("HealthImageColorBar", gameObject);
 
-        _TextLeft__RectTransform = GameObjectFinder.FindByName<RectTransform>("TextLeft", gameObject);
-        _TextRight__RectTransform = GameObjectFinder.FindByName<RectTransform>("TextRight", gameObject);
-        _TextLeft__TextMeshProUGUI = _TextLeft__RectTransform.GetComponent<TextMeshProUGUI>();
-        _TextRight__TextMeshProUGUI = _TextRight__RectTransform.GetComponent<TextMeshProUGUI>();
+        textLeft__RectTransform = GameObjectFinder.FindByName<RectTransform>("TextLeft", gameObject);
+        textRight__RectTransform = GameObjectFinder.FindByName<RectTransform>("TextRight", gameObject);
+        textLeft__TextMeshProUGUI = textLeft__RectTransform.GetComponent<TextMeshProUGUI>();
+        textRight__TextMeshProUGUI = textRight__RectTransform.GetComponent<TextMeshProUGUI>();
 
-        _HealthImageColorBar__Image = _HealthImageColorBar__RectTransform.gameObject.GetComponent<Image>();
+        healthImageColorBar__Image = healthImageColorBar__RectTransform.gameObject.GetComponent<Image>();
 
         SetTextRight("");
         SetTextLeft("");
@@ -62,28 +69,33 @@ public class ProgressBar__prefab__script : MonoBehaviour, IPrefab
         Refresh();
     }
 
+    #region Настройка подписей и цветов
+
     public void SetTextLeft(string text)
     {
         textLeft = text;
-        _TextLeft__TextMeshProUGUI.SetText(text);
+        textLeft__TextMeshProUGUI.SetText(text);
     }
 
     public void SetTextRight(string text)
     {
         textRight = text;
-        _TextRight__TextMeshProUGUI.SetText(text);
+        textRight__TextMeshProUGUI.SetText(text);
     }
+
     public void SetColorTextLeft(Color color)
     {
-        _TextLeft__TextMeshProUGUI.color = color;
+        textLeft__TextMeshProUGUI.color = color;
     }
+
     public void SetColorTextRight(Color color)
     {
-        _TextRight__TextMeshProUGUI.color = color;
+        textRight__TextMeshProUGUI.color = color;
     }
+
     public void SetColorBar(Color color)
     {
-        _HealthImageColorBar__Image.color = color;
+        healthImageColorBar__Image.color = color;
     }
 
     public void SetTextLeftOffsetLeft(float value)
@@ -96,9 +108,11 @@ public class ProgressBar__prefab__script : MonoBehaviour, IPrefab
         textRight_right = value;
     }
 
-    /// <summary>
-    /// Обновляет визуальное состояние прогресс бара на панели
-    /// </summary>
+    #endregion Настройка подписей и цветов
+
+    #region Обновление полосы
+
+    /// <summary>Обновляет визуальное состояние прогресс бара на панели</summary>
     public void Refresh()
     {
         float progressBarWidth = this__RectTransform.rect.width;
@@ -117,7 +131,7 @@ public class ProgressBar__prefab__script : MonoBehaviour, IPrefab
         {
             width = progressBarWidth;
         }
-        _HealthImagePercent__RectTransform.sizeDelta = new Vector2(width, 0);
+        healthImagePercent__RectTransform.sizeDelta = new(width, 0);
 
         float widthColorBar = width - healthimagecolorbar_right;
         if (widthColorBar < 0)
@@ -128,9 +142,8 @@ public class ProgressBar__prefab__script : MonoBehaviour, IPrefab
         {
             widthColorBar = progressBarWidth;
         }
-        _HealthImageColorBar__RectTransform.sizeDelta = new Vector2(widthColorBar, 0);
+        healthImageColorBar__RectTransform.sizeDelta = new(widthColorBar, 0);
     }
-
 
     public void OnResized(float coefHeight, float top = 0, float buttom = 0, float left = 0, float right = 0)
     {
@@ -138,12 +151,14 @@ public class ProgressBar__prefab__script : MonoBehaviour, IPrefab
 
         //float width = (_Width - (1f * 2)) * SpawnedHero.HealthPercent;
         //_HealthImagePercent__RectTransform.sizeDelta = new Vector2(width, _Health_Height * coefHeight);
-        this__RectTransform.anchoredPosition = new Vector2(0, POSY_SHIFT * coefHeight);
+        this__RectTransform.anchoredPosition = new(0, POSY_SHIFT * coefHeight);
 
         healthimagecolorbar_right = HEALTH_IMAGE_COLOR_BAR_RIGHT * coefHeight;
 
-        _TextLeft__RectTransform.SetHorizontalOffsets(textLeft_left * coefHeight, 0);
-        _TextRight__RectTransform.SetHorizontalOffsets(0, textRight_right * coefHeight);
+        textLeft__RectTransform.SetHorizontalOffsets(textLeft_left * coefHeight, 0);
+        textRight__RectTransform.SetHorizontalOffsets(0, textRight_right * coefHeight);
     }
+
+    #endregion Обновление полосы
 
 }
