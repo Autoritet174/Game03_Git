@@ -24,6 +24,25 @@ namespace Assets.GameData.Scenes.Battlefield
             list_StatisticsHero.Add(hero);
         }
 
+        /// <summary>Начисляет выполненное и полученное исцеление ровно один раз, включая лечение самого себя.</summary>
+        public void ApplyHealing(BattlefieldLogRecord_Healing record)
+        {
+            if (!appliedRecords.Add(record.index))
+            {
+                return;
+            }
+
+            if (heroes.TryGetValue(record.hero1Id, out StatisticsHero source))
+            {
+                source.healingDone += record.healing;
+            }
+
+            if (heroes.TryGetValue(record.hero2Id, out StatisticsHero target))
+            {
+                target.healingReceived += record.healing;
+            }
+        }
+
         /// <summary>Учитывает конкретное показанное событие без поиска будущих записей в логе.</summary>
         public void ApplyDamage(BattlefieldLogRecord_Damage record)
         {

@@ -212,6 +212,9 @@ namespace Assets.GameData.Scenes.Battlefield
                 player.RegisterRecord<BattlefieldLogRecord_Damage>(PlayDamageAsync);
                 player.RegisterImpactEffect<BattlefieldLogRecord_Damage>(record => record.isPerodic ? null : record.indexReason);
                 player.RegisterAbility(EBattlefieldLogAbility.attack, PlayAttackAsync);
+                player.RegisterRecord<BattlefieldLogRecord_Healing>(PlayHealingEffectAsync);
+                player.RegisterImpactEffect<BattlefieldLogRecord_Healing>(record => record.indexReason);
+                player.RegisterAbility(EBattlefieldLogAbility.healing, PlayHealingAsync);
 
                 try
                 {
@@ -277,6 +280,33 @@ namespace Assets.GameData.Scenes.Battlefield
             statisticsBattle.ApplyDamage(record);
             damagePanel.Refresh();
             return UniTask.CompletedTask;
+        }
+
+        /// <summary>Обновляет здоровье и статистику в момент исцеления, сохраняя ожидание зелёных чисел.</summary>
+        private UniTask PlayHealingEffectAsync(BattlefieldLogRecord_Healing record, CancellationToken token)
+        {
+            token.ThrowIfCancellationRequested();
+            if (TryGetUnit(record.hero2Id, out BattlefieldUnit target))
+            {
+                feedbackTasks.Add(target.ApplyHealingAsync(record.healing, token));
+            }
+
+            statisticsBattle.ApplyHealing(record);
+            damagePanel.Refresh();
+            return UniTask.CompletedTask;
+        }
+
+        /// <summary>Воспроизводит исцеление; при отсутствии целителя всё равно применяет записанные последствия.</summary>
+        private async UniTask PlayHealingAsync(BattlefieldLogRecord_UseAbility record,
+            Func<CancellationToken, UniTask> impact, CancellationToken token)
+        {
+            if (TryGetUnit(record.spawnedHero1Id, out BattlefieldUnit healer))
+            {
+                await healer.PlayHealingAsync(impact, token);
+                return;
+            }
+
+            await impact(token);
         }
 
         /// <summary>Воспроизводит атаку по первой доступной цели; все записанные последствия обрабатываются в момент попадания.</summary>

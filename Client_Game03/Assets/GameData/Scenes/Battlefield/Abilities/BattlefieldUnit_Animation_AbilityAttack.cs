@@ -3,23 +3,12 @@ using DG.Tweening;
 using System;
 using System.Threading;
 using UnityEngine;
+using static Assets.GameData.Scenes.Battlefield.BattlefieldAbilityAnimationConstants;
 
 namespace Assets.GameData.Scenes.Battlefield
 {
     public partial class BattlefieldUnit
     {
-        /// <summary>Длительность увеличения карточки при скорости ×1.</summary>
-        public const float ANIMATION_ATTACK_TIME_STAGE_1 = 0.3f;
-
-        /// <summary>Номинальная длительность рывка; фактический рывок заканчивается на расстоянии ширины карточки.</summary>
-        public const float ANIMATION_ATTACK_TIME_STAGE_2 = 0.5f;
-
-        /// <summary>Длительность возврата и уменьшения карточки.</summary>
-        public const float ANIMATION_ATTACK_TIME_STAGE_3 = 0.4f;
-
-        /// <summary>Пауза после возврата перед следующим действием.</summary>
-        public const float ANIMATION_ATTACK_TIME_STAGE_4 = 0.5f;
-
         /// <summary>Последовательно ожидает увеличение, рывок, попадание, возврат и заключительную паузу.</summary>
         public async UniTask PlayAttackAsync(BattlefieldUnit target, Func<CancellationToken, UniTask> impact, CancellationToken token)
         {
@@ -29,7 +18,7 @@ namespace Assets.GameData.Scenes.Battlefield
             try
             {
                 await animations.PlayAsync(
-                    DOTween.To(() => attackScaleValue, value => attackScaleValue = value, 1.3f, ANIMATION_ATTACK_TIME_STAGE_1)
+                    DOTween.To(() => attackScaleValue, value => attackScaleValue = value, RAISED_CARD_SCALE, CARD_RAISE_DURATION)
                         .SetEase(Ease.Linear), token);
 
                 Vector2 destination = target.GetFormationPosition();
@@ -40,10 +29,10 @@ namespace Assets.GameData.Scenes.Battlefield
                     float remaining = width / distance;
                     float impactProgress = (1f - Mathf.Pow(remaining, 1f / 6f)) / 1.2f;
                     float travelled = 1f - remaining;
-                    var contact = Vector2.LerpUnclamped(origin, destination, travelled);
+                    Vector2 contact = Vector2.LerpUnclamped(origin, destination, travelled);
                     await animations.PlayAsync(
                         DOTween.To(() => animationPositionValue, value => animationPositionValue = value,
-                            contact, ANIMATION_ATTACK_TIME_STAGE_2 * impactProgress)
+                            contact, ATTACK_LUNGE_DURATION * impactProgress)
                             .SetEase((time, duration, overshoot, period) =>
                                 (1f - Mathf.Pow(1f - (1.2f * impactProgress * time / duration), 6f)) / travelled), token);
                 }
@@ -52,18 +41,18 @@ namespace Assets.GameData.Scenes.Battlefield
                 token.ThrowIfCancellationRequested();
                 Sequence returning = DOTween.Sequence()
                     .Join(DOTween.To(() => animationPositionValue, value => animationPositionValue = value,
-                        origin, ANIMATION_ATTACK_TIME_STAGE_3).SetEase(Ease.Linear))
+                        origin, CARD_LOWER_DURATION).SetEase(Ease.Linear))
                     .Join(DOTween.To(() => attackScaleValue, value => attackScaleValue = value,
-                        1f, ANIMATION_ATTACK_TIME_STAGE_3).SetEase(Ease.Linear));
+                        NORMAL_CARD_SCALE, CARD_LOWER_DURATION).SetEase(Ease.Linear));
                 await animations.PlayAsync(returning, token);
-                await animations.DelayAsync(ANIMATION_ATTACK_TIME_STAGE_4, token);
+                await animations.DelayAsync(POST_ATTACK_DELAY, token);
             }
             finally
             {
                 if (rectTransform != null)
                 {
                     animationPositionValue = origin;
-                    attackScaleValue = 1f;
+                    attackScaleValue = NORMAL_CARD_SCALE;
                 }
             }
         }

@@ -283,6 +283,15 @@ namespace Assets.GameData.Scenes.Battlefield
             await UniTask.WhenAll(death, healthHub.PlayAsync(-damage, isCrit, rectTransform, token));
         }
 
+        /// <summary>Применяет фактическое серверное исцеление и показывает зелёное число над целью.</summary>
+        public async UniTask ApplyHealingAsync(float healing, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            spawnedHero.health = Mathf.Min(spawnedHero.healthMax, spawnedHero.health + healing);
+            RefreshHealth();
+            await healthHub.PlayAsync(healing, false, rectTransform, cancellationToken);
+        }
+
         /// <summary>Совмещает независимые масштабы атаки и смерти без конкурирующих записей в Transform.</summary>
         private void RefreshScale()
         {

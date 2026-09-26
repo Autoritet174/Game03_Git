@@ -26,15 +26,18 @@ namespace Assets.GameData.Scenes.Battlefield.Tests
 
         /// <summary>Воспроизводит реальный пример полностью и сверяет каждое последствие и итоговую статистику.</summary>
         [Test]
-        public async Task SampleLogAppliesEveryRecordAndDamageExactlyOnce()
+        public async Task SampleLogAppliesEveryRecordAndHealthChangeExactlyOnce()
         {
-            string json = File.ReadAllText(Path.Combine(Application.dataPath, "../TestData/пример лога.txt"));
+            string json = File.ReadAllText(Path.Combine(Application.dataPath, "../TestData/battle_log.json"));
             List<BattlefieldLogRecordBase> records = JSON.Deserialize<List<BattlefieldLogRecordBase>>(json);
             BattlefieldLogPlayer player = new(records, Assert.Fail);
             List<int> processed = new();
             StatisticsBattle statistics = new();
             BattlefieldLogRecord_Damage[] damages = records.OfType<BattlefieldLogRecord_Damage>().ToArray();
-            foreach (Guid id in damages.SelectMany(damage => new[] { damage.hero1Id, damage.hero2Id }).Distinct())
+            BattlefieldLogRecord_Healing[] healings = records.OfType<BattlefieldLogRecord_Healing>().ToArray();
+            IEnumerable<Guid> participants = damages.SelectMany(damage => new[] { damage.hero1Id, damage.hero2Id })
+                .Concat(healings.SelectMany(healing => new[] { healing.hero1Id, healing.hero2Id })).Distinct();
+            foreach (Guid id in participants)
             {
                 statistics.AddHero(id, true, id.ToString());
             }
@@ -49,15 +52,25 @@ namespace Assets.GameData.Scenes.Battlefield.Tests
             });
             player.RegisterImpactEffect<BattlefieldLogRecord_Damage>(record => record.isPerodic ? null : record.indexReason);
             player.RegisterAbility(EBattlefieldLogAbility.attack, (record, impact, token) => impact(token));
+            player.RegisterRecord<BattlefieldLogRecord_Healing>((record, token) =>
+            {
+                statistics.ApplyHealing(record);
+                return UniTask.CompletedTask;
+            });
+            player.RegisterImpactEffect<BattlefieldLogRecord_Healing>(record => record.indexReason);
+            player.RegisterAbility(EBattlefieldLogAbility.healing, (record, impact, token) => impact(token));
 
             await player.PlayAsync(CancellationToken.None);
 
             CollectionAssert.AreEqual(records.OrderBy(record => record.index).Select(record => record.index), processed);
-            Assert.That(damages.Length, Is.EqualTo(64));
+            Assert.That(damages, Is.Not.Empty);
+            Assert.That(healings, Is.Not.Empty);
             foreach (StatisticsHero hero in statistics.list_StatisticsHero)
             {
                 Assert.That(hero.damageDone, Is.EqualTo(damages.Where(damage => damage.hero1Id == hero.heroId).Sum(damage => damage.damage)));
                 Assert.That(hero.damageReceived, Is.EqualTo(damages.Where(damage => damage.hero2Id == hero.heroId).Sum(damage => damage.damage)));
+                Assert.That(hero.healingDone, Is.EqualTo(healings.Where(healing => healing.hero1Id == hero.heroId).Sum(healing => healing.healing)));
+                Assert.That(hero.healingReceived, Is.EqualTo(healings.Where(healing => healing.hero2Id == hero.heroId).Sum(healing => healing.healing)));
             }
         }
 
@@ -163,6 +176,64 @@ namespace Assets.GameData.Scenes.Battlefield.Tests
             Assert.That(statistics.list_StatisticsHero.Sum(hero => hero.damageReceived), Is.EqualTo(25f));
         }
 
+        /// <summary>Исцеление применяется после подъёма, один раз и до уменьшения, без преждевременного перехода к следующему ходу.</summary>
+        [Test]
+        public async Task HealingIsAppliedAtImpactBeforeReturnCompletes()
+        {
+            BattlefieldLogPlayer player = new(ParseRecords(AbilityJson(1, 2) + "," + HealingJson(2, 1) + "," +
+                "{\"$type\":\"turn_start\",\"index\":3,\"turn\":2}"), Assert.Fail);
+            UniTaskCompletionSource liftGate = new();
+            UniTaskCompletionSource returnGate = new();
+            List<int> processed = new();
+            int healings = 0;
+            player.recordStarted += processed.Add;
+            player.RegisterRecord<BattlefieldLogRecord_TurnStart>((record, token) => UniTask.CompletedTask);
+            player.RegisterRecord<BattlefieldLogRecord_Healing>((record, token) =>
+            {
+                healings++;
+                return UniTask.CompletedTask;
+            });
+            player.RegisterImpactEffect<BattlefieldLogRecord_Healing>(record => record.indexReason);
+            player.RegisterAbility(EBattlefieldLogAbility.healing, async (record, impact, token) =>
+            {
+                await liftGate.Task;
+                await impact(token);
+                await impact(token);
+                await returnGate.Task;
+            });
+
+            Task playback = player.PlayAsync(CancellationToken.None).AsTask();
+            Assert.That(healings, Is.Zero);
+            CollectionAssert.AreEqual(new[] { 1 }, processed);
+            liftGate.TrySetResult();
+            Assert.That(healings, Is.EqualTo(1));
+            CollectionAssert.AreEqual(new[] { 1, 2 }, processed);
+            Assert.That(playback.IsCompleted, Is.False);
+            returnGate.TrySetResult();
+            await playback;
+            CollectionAssert.AreEqual(new[] { 1, 2, 3 }, processed);
+        }
+
+        /// <summary>Лечение союзника и самого себя заполняет оба показателя без повторного начисления.</summary>
+        [TestCase(false)]
+        [TestCase(true)]
+        public void HealingStatisticsAreIdempotent(bool selfHealing)
+        {
+            BattlefieldLogRecord_Healing healing = (BattlefieldLogRecord_Healing)ParseRecords(HealingJson(2, 1, selfHealing))[0];
+            StatisticsBattle statistics = new();
+            statistics.AddHero(healing.hero1Id, true, "Source");
+            if (!selfHealing)
+            {
+                statistics.AddHero(healing.hero2Id, true, "Target");
+            }
+
+            statistics.ApplyHealing(healing);
+            statistics.ApplyHealing(healing);
+            Assert.That(statistics.list_StatisticsHero.Single(hero => hero.heroId == healing.hero1Id).healingDone, Is.EqualTo(25f));
+            Assert.That(statistics.list_StatisticsHero.Single(hero => hero.heroId == healing.hero2Id).healingReceived, Is.EqualTo(25f));
+            Assert.That(statistics.list_StatisticsHero.Sum(hero => hero.damageDone + hero.damageReceived), Is.Zero);
+        }
+
         /// <summary>Пустой лог завершается сразу и не требует отдельного кадра.</summary>
         [Test]
         public async Task EmptyLogCompletes()
@@ -243,6 +314,13 @@ namespace Assets.GameData.Scenes.Battlefield.Tests
         private static string AbilityJson(int index, int ability = 1)
         {
             return $"{{\"$type\":\"use_ability\",\"index\":{index},\"spawnedHero1Id\":\"00000000-0000-0000-0000-000000000001\",\"ability\":{ability},\"spawnedHeroTargets\":[]}}";
+        }
+
+        /// <summary>Создаёт JSON лечения союзника или самого целителя.</summary>
+        private static string HealingJson(int index, int reason, bool selfHealing = false)
+        {
+            string targetId = selfHealing ? "00000000-0000-0000-0000-000000000001" : "00000000-0000-0000-0000-000000000002";
+            return $"{{\"$type\":\"healing\",\"index\":{index},\"indexReason\":{reason},\"hero1Id\":\"00000000-0000-0000-0000-000000000001\",\"hero2Id\":\"{targetId}\",\"healing\":25}}";
         }
 
         /// <summary>Создаёт JSON последствия с заданной причиной и признаком периодического урона.</summary>
