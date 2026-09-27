@@ -1,6 +1,7 @@
 using Assets.GameData.Scenes.Battlefield.Animations;
 using Assets.GameData.Scripts;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using General;
 using General.DTO.Battlefield;
 using General.DTO.Entities.GameData;
@@ -65,6 +66,21 @@ namespace Assets.GameData.Scenes.Battlefield
 
         /// <summary>Надпись текущего хода.</summary>
         private TextMeshProUGUI turnText;
+
+        /// <summary>Длительность появления и скрытия панели в секундах.</summary>
+        private const float TURN_INFO_FADE_SECONDS = 1f;
+
+        /// <summary>Длительность показа полностью видимой панели в секундах.</summary>
+        private const float TURN_INFO_HOLD_SECONDS = 1f;
+
+        /// <summary>Общая прозрачность фона панели и её текста.</summary>
+        private CanvasGroup panelInfoCanvasGroup;
+
+        /// <summary>Панель сообщения о начале хода.</summary>
+        private RectTransform panelInfoRect;
+
+        /// <summary>Текст сообщения о начале хода.</summary>
+        private TextMeshProUGUI panelInfoText;
 
         /// <summary>Фактический серверный индекс последнего начатого события.</summary>
         public int battlefieldIndexAnimationStarted { get; private set; } = -1;
@@ -139,6 +155,7 @@ namespace Assets.GameData.Scenes.Battlefield
             CreateUnits(spawnedBattlefield.spawnedHeroEnemyList, false, unitsCanvas);
 
             InitializeControls();
+            InitializeInfoPanel();
             InitializeStatisticsPanel();
 
             initialized = true;
@@ -158,6 +175,33 @@ namespace Assets.GameData.Scenes.Battlefield
             turnText = turnRect.GetComponent<TextMeshProUGUI>();
         }
 
+        /// <summary>Создаёт подпись панели с тем же шрифтом, что и счётчик ходов, и скрывает её до начала хода.</summary>
+        private void InitializeInfoPanel()
+        {
+            panelInfoRect = GameObjectFinder.FindByName<RectTransform>("PanelInfo");
+            panelInfoCanvasGroup = panelInfoRect.GetComponent<CanvasGroup>();
+            if (panelInfoCanvasGroup == null)
+            {
+                panelInfoCanvasGroup = panelInfoRect.gameObject.AddComponent<CanvasGroup>();
+            }
+
+            panelInfoCanvasGroup.alpha = 0f;
+            panelInfoCanvasGroup.interactable = false;
+            panelInfoCanvasGroup.blocksRaycasts = false;
+            panelInfoText = Instantiate(turnText, panelInfoRect);
+            panelInfoText.name = "TurnStartText";
+            panelInfoText.text = string.Empty;
+            panelInfoText.alignment = TextAlignmentOptions.Center;
+            panelInfoText.raycastTarget = false;
+            panelInfoText.margin = Vector4.zero;
+            RectTransform textRect = panelInfoText.rectTransform;
+            textRect.anchorMin = Vector2.zero;
+            textRect.anchorMax = Vector2.one;
+            textRect.offsetMin = Vector2.zero;
+            textRect.offsetMax = Vector2.zero;
+            panelInfoRect.gameObject.SetActive(false);
+        }
+
         /// <summary>Создаёт панель статистики и строки для всех участников боя.</summary>
         private void InitializeStatisticsPanel()
         {
@@ -166,7 +210,7 @@ namespace Assets.GameData.Scenes.Battlefield
                 battlefieldSceneInitializator = this
             };
             damagePanel.Initialize();
-            foreach (BattlefieldUnit unit in battlefieldUnits.Values)
+            for (int i = 0; i < battlefieldUnits.Count; i++)
             {
                 damagePanel.AddProgressBar();
             }
@@ -248,12 +292,34 @@ namespace Assets.GameData.Scenes.Battlefield
             battlefieldIndexAnimationStarted = index;
         }
 
-        /// <summary>Отображает начало серверного хода.</summary>
-        private UniTask PlayTurnAsync(BattlefieldLogRecord_TurnStart record, CancellationToken token)
+        /// <summary>Плавно показывает начало хода, выдерживает паузу и скрывает панель с учётом текущей скорости боя.</summary>
+        private async UniTask PlayTurnAsync(BattlefieldLogRecord_TurnStart record, CancellationToken token)
         {
             token.ThrowIfCancellationRequested();
             turnText.text = $"{LM.GetValue(L.UI.Label.Turn)}: {record.turn}";
-            return UniTask.CompletedTask;
+            panelInfoText.text = turnText.text;
+            panelInfoCanvasGroup.alpha = 0f;
+            panelInfoRect.gameObject.SetActive(true);
+            try
+            {
+                Sequence sequence = DOTween.Sequence()
+                    .Append(panelInfoCanvasGroup.DOFade(1f, TURN_INFO_FADE_SECONDS).SetEase(Ease.Linear))
+                    .AppendInterval(TURN_INFO_HOLD_SECONDS)
+                    .Append(panelInfoCanvasGroup.DOFade(0f, TURN_INFO_FADE_SECONDS).SetEase(Ease.Linear));
+                await animations.PlayAsync(sequence, token);
+            }
+            finally
+            {
+                if (panelInfoCanvasGroup != null)
+                {
+                    panelInfoCanvasGroup.alpha = 0f;
+                }
+
+                if (panelInfoRect != null)
+                {
+                    panelInfoRect.gameObject.SetActive(false);
+                }
+            }
         }
 
         /// <summary>Применяет серверное изменение очков действия как приращение текущего значения.</summary>
@@ -392,13 +458,16 @@ namespace Assets.GameData.Scenes.Battlefield
             }
 
             healthHub.OnResize();
-            float coefficient = G.GetCoefHeight();
-            animationSpeedButtonRect.sizeDelta = Vector2.one * (ANIMATION_SPEED_BUTTON_SIZE * coefficient);
-            animationSpeedButtonRect.anchoredPosition = new Vector2(-BUTTON_PADDING, BUTTON_PADDING) * coefficient;
-            animationSpeedButtonText.fontSize = ANIMATION_SPEED_BUTTON_FONT_SIZE * coefficient;
-            turnRect.anchoredPosition = new Vector2(-25, -108) * coefficient;
-            turnText.fontSize = 70 * coefficient;
-            damagePanel.OnResized(coefficient);
+            float coefHeight = G.GetCoefHeight();
+            animationSpeedButtonRect.sizeDelta = Vector2.one * (ANIMATION_SPEED_BUTTON_SIZE * coefHeight);
+            animationSpeedButtonRect.anchoredPosition = new Vector2(-BUTTON_PADDING, BUTTON_PADDING) * coefHeight;
+            animationSpeedButtonText.fontSize = ANIMATION_SPEED_BUTTON_FONT_SIZE * coefHeight;
+            turnRect.anchoredPosition = new Vector2(-25, -108) * coefHeight;
+            turnText.fontSize = 70 * coefHeight;
+            panelInfoRect.sizeDelta = new Vector2(1000f, 90f) * coefHeight;
+            panelInfoRect.anchoredPosition = new Vector2(0f, -100f) * coefHeight;
+            panelInfoText.fontSize = 60f * coefHeight;
+            damagePanel.OnResized(coefHeight);
         }
 
         #endregion Раскладка интерфейса

@@ -45,31 +45,31 @@
 			"Damage": "Урон",
 			
 			"Slot":{
-				"Head": "Голова",
-				"Armor": "Доспех",
-				"Hands": "Руки",
-				"Feet": "Ноги",
-				"Bracelet": "Браслет",
-				"Weapon": "Оружие",
-				"WeaponShield": "Оружие/Щит",
-				"Neck": "Шея",
-				"Ring": "Кольцо",
-				"Earring": "Серьга",
-				"Trinket": "Аксессуар"
+				"head": "Голова",
+				"armor": "Доспех",
+				"hands": "Руки",
+				"feet": "Ноги",
+				"bracelet": "Браслет",
+				"weapon": "Оружие",
+				"weaponShield": "Оружие/Щит",
+				"neck": "Шея",
+				"ring": "Кольцо",
+				"earring": "Серьга",
+				"trinket": "Аксессуар"
 			},
 			
 			"Stat": {
-				"Level": "Уровень",
-				"Health": "Здоровье",
-				"Strength": "Сила",
-				"Agility": "Ловкость",
-				"Intelligence": "Интеллект",
-				"CritChance": "Критический удар (шанс)",
-				"CritMultiplier": "Критический удар (множ.)",
-				"Versality": "Универсальность",
-				"Initiative": "Инициатива",
-				"Haste": "Скорость",
-				"Damage": "Урон"
+				"level": "Уровень",
+				"health": "Здоровье",
+				"strength": "Сила",
+				"agility": "Ловкость",
+				"intelligence": "Интеллект",
+				"critChance": "Критический удар (шанс)",
+				"critMultiplier": "Критический удар (множ.)",
+				"versality": "Универсальность",
+				"initiative": "Инициатива",
+				"haste": "Скорость",
+				"damage": "Урон"
 			}
 			
 			

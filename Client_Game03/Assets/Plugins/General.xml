@@ -56,6 +56,12 @@
             Data Transfer Object. Корневой контейнер для данных.
             </summary>
         </member>
+        <member name="T:General.DTO.Entities.GameData.Ability">
+            <summary>Способность героя или нпс.</summary>
+        </member>
+        <member name="M:General.DTO.Entities.GameData.Ability.#ctor(System.Int32,System.String,System.Int32,General.EBattlefieldLogAbility,System.Int32)">
+            <summary>Способность героя или нпс.</summary>
+        </member>
         <member name="T:General.DTO.Entities.GameData.BaseEquipment">
             <summary> Представляет базовую сущность предмета. </summary>
         </member>
@@ -286,7 +292,6 @@
             Строка, представляющая время в формате "dd hh mm s".
             Пример: "05m 10s", "01h 05m 10s", "1d 01h 05m 10s".
             </returns>
-            <exception cref="T:System.ArgumentOutOfRangeException">Выбрасывается, если <paramref name="sec"/> меньше нуля.</exception>
         </member>
         <member name="T:General.GlobalJsonContext">
             <summary>
@@ -335,6 +340,11 @@
             </summary>
         </member>
         <member name="P:General.GlobalJsonContext.DtoContainerGameData">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:General.GlobalJsonContext.Ability">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
@@ -389,6 +399,11 @@
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
         </member>
+        <member name="P:General.GlobalJsonContext.X_BaseHero_Ability">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
         <member name="P:General.GlobalJsonContext.X_Battlefield_BaseHero">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
@@ -410,6 +425,11 @@
             </summary>
         </member>
         <member name="P:General.GlobalJsonContext.DtoResponseAuthReg">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:General.GlobalJsonContext.EBattlefieldLogAbility">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
@@ -455,6 +475,11 @@
             </summary>
         </member>
         <member name="P:General.GlobalJsonContext.DictionaryInt32ListSingle">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:General.GlobalJsonContext.IEnumerableAbility">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
@@ -509,6 +534,11 @@
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
         </member>
+        <member name="P:General.GlobalJsonContext.IEnumerableX_BaseHero_Ability">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
         <member name="P:General.GlobalJsonContext.IEnumerableX_Battlefield_BaseHero">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
@@ -535,6 +565,11 @@
             </summary>
         </member>
         <member name="P:General.GlobalJsonContext.ListHero">
+            <summary>
+            Defines the source generated JSON serialization contract metadata for a given type.
+            </summary>
+        </member>
+        <member name="P:General.GlobalJsonContext.ListAbility">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
