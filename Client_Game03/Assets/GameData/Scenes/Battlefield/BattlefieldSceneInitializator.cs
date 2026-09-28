@@ -68,10 +68,10 @@ namespace Assets.GameData.Scenes.Battlefield
         private TextMeshProUGUI turnText;
 
         /// <summary>Длительность появления и скрытия панели в секундах.</summary>
-        private const float TURN_INFO_FADE_SECONDS = 1f;
+        private const float TURN_INFO_FADE_SECONDS = 0.5f;
 
         /// <summary>Длительность показа полностью видимой панели в секундах.</summary>
-        private const float TURN_INFO_HOLD_SECONDS = 1f;
+        private const float TURN_INFO_HOLD_SECONDS = 0.7f;
 
         /// <summary>Общая прозрачность фона панели и её текста.</summary>
         private CanvasGroup panelInfoCanvasGroup;
