@@ -7,7 +7,6 @@ using General.DTO.Entities.GameData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using TMPro;
 using UnityEngine;
@@ -28,6 +27,7 @@ public class AllHeroes : MonoBehaviour
     private const float HERO_NAME_BOTTOM_OFFSET = 993f;
     private const float HERO_NAME_FONT_SIZE = 66.66666f;
     private const float ICON_WIDTH_RATIO = 0.9f;
+    private const int HERO_TABLE_ROW_COUNT = 13;
 
     [SerializeField]
     private GameObject prefabIconHero;
@@ -313,32 +313,17 @@ public class AllHeroes : MonoBehaviour
 
     #region Подробные характеристики героя
 
-    /// <summary>Размещает сведения о базовом герое под именем в правой части окна.</summary>
+    /// <summary>Размещает основные сведения и таблицу под именем в правой части окна.</summary>
     private static void CreateHeroDetails(BaseHero hero, TextMeshProUGUI heroName)
     {
-        TextMeshProUGUI details = Instantiate(heroName, heroName.transform.parent, false);
-        details.name = "Text_HeroDetails";
-        details.raycastTarget = false;
-        details.alignment = TextAlignmentOptions.TopLeft;
-        details.fontStyle = FontStyles.Normal;
-        details.richText = true;
-        details.textWrappingMode = TextWrappingModes.NoWrap;
-        details.enableAutoSizing = true;
-        details.fontSizeMin = 1f;
-        details.fontSizeMax = 32f;
-        details.margin = Vector4.zero;
-
-        RectTransform rectTransform = details.rectTransform;
-        rectTransform.anchorMin = new(0.52f, 0.04f);
-        rectTransform.anchorMax = new(0.98f, 0.90f);
-        rectTransform.offsetMin = Vector2.zero;
-        rectTransform.offsetMax = Vector2.zero;
-
-        details.text = BuildHeroDetails(hero);
+        RectTransform details = CreateDetailsContainer("HeroDetails", heroName.transform.parent);
+        details.anchorMin = new(0.52f, 0.04f);
+        details.anchorMax = new(0.98f, 0.90f);
+        BuildHeroDetails(hero, details, heroName);
     }
 
-    /// <summary>Формирует основные сведения и таблицу характеристик базового героя.</summary>
-    private static string BuildHeroDetails(BaseHero hero)
+    /// <summary>Формирует сведения о герое и двенадцать строк таблицы с четырьмя колонками.</summary>
+    private static void BuildHeroDetails(BaseHero hero, RectTransform details, TextMeshProUGUI template)
     {
         string mainStat = hero.mainStat switch
         {
@@ -349,25 +334,104 @@ public class AllHeroes : MonoBehaviour
             _ => hero.mainStat.ToString()
         };
 
-        StringBuilder text = new();
-        _ = text.Append("<line-height=135%>");
-        _ = text.AppendLine(GetRarityLabel(hero.rarity));
-        _ = text.AppendLine($"{Game03Client.LocalizationManager.GetValue(L.UI.Label.mainStat)}: {mainStat}");
-        _ = text.AppendLine();
-        AppendDiceDetails(text, GetStatLabel(nameof(BaseHero.health)), hero.health);
-        AppendDiceDetails(text, GetStatLabel(nameof(BaseHero.damage)), hero.damage);
-        AppendDiceDetails(text, GetStatLabel(nameof(BaseHero.strength)), hero.strength);
-        AppendDiceDetails(text, GetStatLabel(nameof(BaseHero.agility)), hero.agility);
-        AppendDiceDetails(text, GetStatLabel(nameof(BaseHero.intelligence)), hero.intelligence);
-        AppendDiceDetails(text, GetStatLabel(nameof(BaseHero.critChance)), hero.critChance);
-        AppendDiceDetails(text, GetStatLabel(nameof(BaseHero.critMultiplier)), hero.critMultiplier);
-        AppendDiceDetails(text, GetStatLabel(nameof(BaseHero.haste)), hero.haste);
-        AppendDiceDetails(text, GetStatLabel(nameof(BaseHero.versality)), hero.versality);
-        AppendDiceDetails(text, GetStatLabel(nameof(BaseHero.endurancePhysical)), hero.endurancePhysical);
-        AppendDiceDetails(text, GetStatLabel(nameof(BaseHero.enduranceMagical)), hero.enduranceMagical);
-        AppendDiceDetails(text, GetStatLabel(nameof(BaseHero.initiative)), hero.initiative);
-        _ = text.Append("</line-height>");
-        return text.ToString();
+        string summary = $"{Game03Client.LocalizationManager.GetValue(L.UI.Label.rarity)}: {GetRarityLabel(hero.rarity)}"
+            + $"\n{Game03Client.LocalizationManager.GetValue(L.UI.Label.mainStat)}: {mainStat}";
+        TextMeshProUGUI summaryText = CreateDetailsCell(details, template, summary,
+            new(0f, 0.84f), Vector2.one, TextAlignmentOptions.TopLeft, 32f);
+        summaryText.name = "HeroDetailsSummary";
+
+        RectTransform table = CreateDetailsContainer("HeroDetailsTable", details);
+        table.anchorMax = new(1f, 0.8f);
+
+        AppendTableRow(table, template, 0,
+            Game03Client.LocalizationManager.GetValue(L.UI.Label.characteristic),
+            Game03Client.LocalizationManager.GetValue(L.UI.Label.expectedValue),
+            Game03Client.LocalizationManager.GetValue(L.UI.Label.dice),
+            Game03Client.LocalizationManager.GetValue(L.UI.Label.range), true);
+
+        AppendDiceDetails(table, template, 0, GetStatLabel(nameof(BaseHero.health)), hero.health);
+        AppendDiceDetails(table, template, 1, GetStatLabel(nameof(BaseHero.damage)), hero.damage);
+        AppendDiceDetails(table, template, 2, GetStatLabel(nameof(BaseHero.strength)), hero.strength);
+        AppendDiceDetails(table, template, 3, GetStatLabel(nameof(BaseHero.agility)), hero.agility);
+        AppendDiceDetails(table, template, 4, GetStatLabel(nameof(BaseHero.intelligence)), hero.intelligence);
+        AppendDiceDetails(table, template, 5, GetStatLabel(nameof(BaseHero.critChance)), hero.critChance);
+        AppendDiceDetails(table, template, 6, GetStatLabel(nameof(BaseHero.critMultiplier)), hero.critMultiplier);
+        AppendDiceDetails(table, template, 7, GetStatLabel(nameof(BaseHero.haste)), hero.haste);
+        AppendDiceDetails(table, template, 8, GetStatLabel(nameof(BaseHero.versality)), hero.versality);
+        AppendDiceDetails(table, template, 9, GetStatLabel(nameof(BaseHero.endurancePhysical)), hero.endurancePhysical);
+        AppendDiceDetails(table, template, 10, GetStatLabel(nameof(BaseHero.enduranceMagical)), hero.enduranceMagical);
+        AppendDiceDetails(table, template, 11, GetStatLabel(nameof(BaseHero.initiative)), hero.initiative);
+
+        CreateTableGrid(table);
+    }
+
+    /// <summary>Создаёт контейнер, растянутый по родителю и не зависящий от размера окна.</summary>
+    private static RectTransform CreateDetailsContainer(string name, Transform parent)
+    {
+        GameObject container = new(name, typeof(RectTransform));
+        container.layer = parent.gameObject.layer;
+        RectTransform rectTransform = container.GetComponent<RectTransform>();
+        rectTransform.SetParent(parent, false);
+        rectTransform.anchorMin = Vector2.zero;
+        rectTransform.anchorMax = Vector2.one;
+        rectTransform.offsetMin = Vector2.zero;
+        rectTransform.offsetMax = Vector2.zero;
+        return rectTransform;
+    }
+
+    /// <summary>Создаёт текстовую ячейку с собственным выравниванием и автоподбором размера шрифта.</summary>
+    private static TextMeshProUGUI CreateDetailsCell(RectTransform parent, TextMeshProUGUI template,
+        string text, Vector2 anchorMin, Vector2 anchorMax, TextAlignmentOptions alignment, float fontSizeMax, FontStyles fontStyle = FontStyles.Normal, bool wrapText = false)
+    {
+        TextMeshProUGUI cell = Instantiate(template, parent, false);
+        cell.name = "Cell";
+        cell.raycastTarget = false;
+        cell.alignment = alignment;
+        cell.fontStyle = fontStyle;
+        cell.richText = false;
+        cell.textWrappingMode = wrapText ? TextWrappingModes.Normal : TextWrappingModes.NoWrap;
+        cell.overflowMode = TextOverflowModes.Ellipsis;
+        cell.enableAutoSizing = true;
+        cell.fontSizeMin = 1f;
+        cell.fontSizeMax = fontSizeMax;
+        cell.margin = new(8f, 2f, 8f, 2f);
+        cell.text = text;
+
+        RectTransform rectTransform = cell.rectTransform;
+        rectTransform.anchorMin = anchorMin;
+        rectTransform.anchorMax = anchorMax;
+        rectTransform.offsetMin = Vector2.zero;
+        rectTransform.offsetMax = Vector2.zero;
+        return cell;
+    }
+
+    /// <summary>Рисует внешнюю рамку и разделители всех строк и колонок.</summary>
+    private static void CreateTableGrid(RectTransform table)
+    {
+        float[] columnEdges = { 0f, 0.44f, 0.58f, 0.78f, 1f };
+        foreach (float edge in columnEdges)
+        {
+            CreateTableLine(table, new(edge, 0f), new(edge, 1f), true);
+        }
+
+        for (int row = 0; row <= HERO_TABLE_ROW_COUNT; row++)
+        {
+            float edge = row / (float)HERO_TABLE_ROW_COUNT;
+            CreateTableLine(table, new(0f, edge), new(1f, edge), false);
+        }
+    }
+
+    private static void CreateTableLine(RectTransform table, Vector2 anchorMin, Vector2 anchorMax, bool vertical)
+    {
+        RectTransform line = CreateDetailsContainer(vertical ? "ColumnBorder" : "RowBorder", table);
+        line.anchorMin = anchorMin;
+        line.anchorMax = anchorMax;
+        line.sizeDelta = vertical ? new(1f, 0f) : new(0f, 1f);
+        line.anchoredPosition = Vector2.zero;
+
+        Image image = line.gameObject.AddComponent<Image>();
+        image.color = new(1f, 1f, 1f, 0.5f);
+        image.raycastTarget = false;
     }
 
     /// <summary>Получает подпись по имени свойства DTO, сохраняя регистр ключей в JSON локализации.</summary>
@@ -391,19 +455,36 @@ public class AllHeroes : MonoBehaviour
 
         return localizationKey is null
             ? rarity.ToString()
-            : $"{Game03Client.LocalizationManager.GetValue(localizationKey)} ({rarity})";
+            : $"{Game03Client.LocalizationManager.GetValue(localizationKey)}";
     }
 
-    /// <summary>Выводит границы и математическое ожидание из общего DTO без случайного броска.</summary>
-    private static void AppendDiceDetails(StringBuilder text, string label, Dice dice)
+    /// <summary>Добавляет ячейки строки: название слева, ожидание справа, Dice и диапазон по центру.</summary>
+    private static void AppendDiceDetails(RectTransform table, TextMeshProUGUI template, int row, string label, Dice dice)
     {
-        if (dice is null)
-        {
-            _ = text.AppendLine($"{label}<pos=48%>—<pos=65%>—<pos=82%>—");
-            return;
-        }
+        string expected = dice is null ? "—" : dice.expected.ToString();
+        string expression = dice is null ? "—" : dice.ToStr().Replace("d", "<color=#00FF00>d</color>");
+        string range = dice is null ? "—" : $"{dice.min} - {dice.max}";
+        AppendTableRow(table, template, row + 1, label, expected, expression, range);
+    }
 
-        _ = text.AppendLine($"{label}<pos=48%>{dice.min}<pos=65%>{dice.max}<pos=82%>{dice.expected}");
+    /// <summary>Создаёт строку таблицы; заголовки выделяет полужирным шрифтом.</summary>
+    private static void AppendTableRow(RectTransform table, TextMeshProUGUI template, int row,
+        string label, string expected, string expression, string range, bool isHeader = false)
+    {
+        float bottom = 1f - (row + 1) / (float)HERO_TABLE_ROW_COUNT;
+        float top = 1f - row / (float)HERO_TABLE_ROW_COUNT;
+        FontStyles fontStyle = isHeader ? FontStyles.Bold : FontStyles.Normal;
+        float secondaryFontSize = isHeader ? 32f : 24f;
+
+        _ = CreateDetailsCell(table, template, label,
+            new(0f, bottom), new(0.44f, top), TextAlignmentOptions.Left, 32f, fontStyle, isHeader);
+        _ = CreateDetailsCell(table, template, expected,
+            new(0.44f, bottom), new(0.58f, top), TextAlignmentOptions.Right, 32f, fontStyle, isHeader);
+        TextMeshProUGUI diceCell = CreateDetailsCell(table, template, expression,
+            new(0.58f, bottom), new(0.78f, top), TextAlignmentOptions.Center, secondaryFontSize, fontStyle, isHeader);
+        diceCell.richText = !isHeader;
+        _ = CreateDetailsCell(table, template, range,
+            new(0.78f, bottom), new(1f, top), TextAlignmentOptions.Center, secondaryFontSize, fontStyle, isHeader);
     }
 
     #endregion Подробные характеристики героя

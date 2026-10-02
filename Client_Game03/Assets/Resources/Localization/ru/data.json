@@ -41,6 +41,12 @@
 			"dead": "Мёртв",
 			"damage": "Урон",
 			"mainStat": "Осн. характеристика",
+			"rarity": "Редкость",
+
+			"characteristic": "Характеристика",
+			"expectedValue": "Ожидаемое значение",
+			"dice": "Dice",
+			"range": "Диапазон",
 			"Slot": {
 				"head": "Голова",
 				"armor": "Доспех",
