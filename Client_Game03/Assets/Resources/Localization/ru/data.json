@@ -1,50 +1,47 @@
 {
-	"UI" : {
+	"UI": {
 		"Button": {
-			"Ok": "Ок",
-			"Yes": "Да",
-			"No": "Нет",
-			"Login": "Вход",
-			"Reg": "Регистрация",
-			"ExitGame": "Выйти из игры",
-			"Heroes": "Герои",
-			"Equipment": "Экипировка",
-			"ChangingEquipment": "Смена экипировки",
-			"Item": "Предмет",
-			"TakeOn": "Одеть",
-			"TakeOnAlt": "Одеть в другой слот",
-			"TakeOff": "Снять",
-			"Sell": "Продать",
-			"ShowHero": "Показать героя",
-			"Cancel": "Отмена",
-			"StartBattle": "В бой",
+			"ok": "Ок",
+			"yes": "Да",
+			"no": "Нет",
+			"login": "Вход",
+			"reg": "Регистрация",
+			"exitGame": "Выйти из игры",
+			"heroes": "Герои",
+			"equipment": "Экипировка",
+			"changingEquipment": "Смена экипировки",
+			"item": "Предмет",
+			"takeOn": "Одеть",
+			"takeOnAlt": "Одеть в другой слот",
+			"takeOff": "Снять",
+			"sell": "Продать",
+			"showHero": "Показать героя",
+			"cancel": "Отмена",
+			"startBattle": "В бой",
 			"Ability": {
-				"Attack": "Атака"
+				"attack": "Атака"
 			}
 		},
 		"Label": {
-			"ExitGame": "Выйти из игры?",
-			"Email": "Электронная почта",
-			"Password": "Пароль",
-			"NoGroup": "Нет группы",
-			"EndBattle": "Завершить бой",
-			
-			"Battlefield_TestPlatforms": "Испытательные площадки",
-			"Battlefield_TestPlatforms__Polygon": "Полигон",
-			
-			"Battlefield_Mines": "Шахты",
-			"Battlefield_Mines__Iron": "Железо",
-			
-			"Battlefield_Dungeons": "Подземелья",
-			"ConnectionLost": "Соединение прервано",
-			"Reconnecting": "Переподключение",
-			"Try": "Попытка",
-			"After": "Через",
-			"Turn": "Ход",
-			"Dead": "Мёртв",
-			"Damage": "Урон",
-			
-			"Slot":{
+			"exitGame": "Выйти из игры?",
+			"email": "Электронная почта",
+			"password": "Пароль",
+			"noGroup": "Нет группы",
+			"endBattle": "Завершить бой",
+			"battlefieldTestPlatforms": "Испытательные площадки",
+			"battlefieldTestPlatformsPolygon": "Полигон",
+			"battlefieldMines": "Шахты",
+			"battlefieldMinesIron": "Железо",
+			"battlefieldDungeons": "Подземелья",
+			"connectionLost": "Соединение прервано",
+			"reconnecting": "Переподключение",
+			"try": "Попытка",
+			"after": "Через",
+			"turn": "Ход",
+			"dead": "Мёртв",
+			"damage": "Урон",
+			"mainStat": "Осн. характеристика",
+			"Slot": {
 				"head": "Голова",
 				"armor": "Доспех",
 				"hands": "Руки",
@@ -55,9 +52,9 @@
 				"neck": "Шея",
 				"ring": "Кольцо",
 				"earring": "Серьга",
-				"trinket": "Аксессуар"
+				"trinket": "Аксессуар",
+				"waist": "Пояс"
 			},
-			
 			"Stat": {
 				"level": "Уровень",
 				"health": "Здоровье",
@@ -69,44 +66,52 @@
 				"versality": "Универсальность",
 				"initiative": "Инициатива",
 				"haste": "Скорость",
-				"damage": "Урон"
+				"damage": "Урон",
+				"endurancePhysical": "Выносливось физ.",
+				"enduranceMagical": "Выносливось маг.",
+				"universal": "Универсальный"
+			},
+			"Rarity": {
+				"r1": "Обычный",
+				"r2": "Необычный",
+				"r3": "Редкий",
+				"r4": "Эпический",
+				"r5": "Легендарный"
 			}
-			
-			
 		}
 	},
 	"Error": {
-		"UnknownError" : "Неизвесная ошибка",
+		"unknownError": "Неизвесная ошибка",
 		"User": {
-			"NotEmail" : "Введённый текст не емаил",
-			"EmailEmpty" : "Не введен email",
-			"PasswordEmpty" : "Не введен пароль"
+			"notEmail": "Введённый текст не емаил",
+			"emailEmpty": "Не введен email",
+			"passwordEmpty": "Не введен пароль"
 		},
 		"Server": {
-			"Timeout" : "Время ожидания ответа от сервера истекло",
-			"Unavailable" : "Сервер не доступен",
-			"InvalidResponse": "Неверный ответ от сервера",
-			"InvalidCredentials" : "Неверные учетные данные",
-			"TooManyRequests" : "Слишком много попыток, попробуйте через {TIME_REMAINING}",
-			"AccountBannedUntil" : "Ваша учётная запись заблокирована. Повторите попытку через {TIME_REMAINING}. Учётная запись будет разблокирована {DATETIME_EXPIRATION}.",
-			"AccountBannedPermanently" : "Ваша учётная запись заблокирована бессрочно.",
-			"NoInternetConnection" : "Возможно, отсутствует подключение к интернету",
-			"OpeningWebSocketFailed" : "Соединение не установлено",
-			"LoadingCollectionFailed" : "Ошибка при загрузке коллекции",
-			"UserAlreadyExists" : "Пользователь уже существует",
-			"Required2FA" : "Требуется двухфакторная аутентификация",
-			"RefreshTokenErrorCreating" : "Ошибка при создании обновляемого токена",
-			"CombatBreak" : "Ошибка прерывания боя"
+			"timeout": "Время ожидания ответа от сервера истекло",
+			"unavailable": "Сервер не доступен",
+			"invalidResponse": "Неверный ответ от сервера",
+			"invalidCredentials": "Неверные учетные данные",
+			"tooManyRequests": "Слишком много попыток, попробуйте через {timeRemaining}",
+			"accountBannedUntil": "Ваша учётная запись заблокирована. Повторите попытку через {timeRemaining}. Учётная запись будет разблокирована {datetimeExpiration}.",
+			"accountBannedPermanently": "Ваша учётная запись заблокирована бессрочно.",
+			"noInternetConnection": "Возможно, отсутствует подключение к интернету",
+			"openingWebSocketFailed": "Соединение не установлено",
+			"loadingCollectionFailed": "Ошибка при загрузке коллекции",
+			"userAlreadyExists": "Пользователь уже существует",
+			"required2FA": "Требуется двухфакторная аутентификация",
+			"refreshTokenErrorCreating": "Ошибка при создании обновляемого токена",
+			"combatBreak": "Ошибка прерывания боя",
+			"invalidRequest": "Некорректный запрос"
 		}
 	},
-	
-	"Info" : {
-		"Authentication" : "Аутентификация",
-		"AuthenticationSuccess" : "Авторизация успешна",
-		"OpeningWebSocket" : "Установка соединения",
-		"LoadingData" : "Загрузка данных",
-		"LoadingCollection" : "Загрузка коллекции",
-		"CheckingServerAvailability" : "Проверка доступности сервера",
-		"SelectHero" : "Выбери героя"
+	"Info": {
+		"authentication": "Аутентификация",
+		"authenticationSuccess": "Авторизация успешна",
+		"openingWebSocket": "Установка соединения",
+		"loadingData": "Загрузка данных",
+		"loadingCollection": "Загрузка коллекции",
+		"checkingServerAvailability": "Проверка доступности сервера",
+		"selectHero": "Выбери героя"
 	}
 }

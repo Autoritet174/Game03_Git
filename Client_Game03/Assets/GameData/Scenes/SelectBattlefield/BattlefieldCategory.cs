@@ -22,7 +22,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
         private const float DUNGEON_BUTTON_HEIGHT = 121.7602f;
 
-        private readonly Dictionary<General.EBattleFiled, BattlefieldButton> buttons = new();
+        private readonly Dictionary<General.EBattlefield, BattlefieldButton> buttons = new();
 
         public string name { get; }
 
@@ -44,7 +44,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             rectTransform = gameObject.GetComponent<RectTransform>();
             textName__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("TextName", gameObject.transform);
             contentBlock__GridLayoutGroup = GameObjectFinder.FindByName<GridLayoutGroup>("ContentBlock", gameObject.transform);
-            localizationKey = $"{L.UI.Label.Battlefield}_{name}";
+            localizationKey = $"{L.UI.Label.battlefield}{name}";
             textName__TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(localizationKey));
         }
 
@@ -53,7 +53,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             buttons.Clear();
         }
 
-        public void ButtonsAdd(EBattleFiled battlefieldId)
+        public void ButtonsAdd(EBattlefield battlefieldId)
         {
             BattlefieldButton button = new(battlefieldId, this);
             buttons.Add(button.battlefieldId, button);
@@ -101,7 +101,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
                 (dungeonButtonHeight * rowCount) + ((CONTENT_LEFTRIGHTBOTTOM + CONTENT_TOP + CONTENT_BOTTOMADDITIONAL + (CONTENT_SPACING * (rowCount - 1))) * coefHeight)
                 );
 
-            foreach (KeyValuePair<EBattleFiled, BattlefieldButton> item in buttons)
+            foreach (KeyValuePair<EBattlefield, BattlefieldButton> item in buttons)
             {
                 item.Value.OnResize(dungeonButtonWidth, dungeonButtonHeight);
             }

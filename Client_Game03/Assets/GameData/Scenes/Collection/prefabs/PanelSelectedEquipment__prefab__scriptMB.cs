@@ -118,7 +118,7 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
                 {
                     panelBottomTabButton1__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonTab1", panelBottom__RectTransform);
                     panelBottomTabButton1__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonTab1Text", panelBottomTabButton1__RectTransform);
-                    panelBottomTabButton1__TextMeshProUGUI.SetText(LocalizationManager.GetValue(L.UI.Button.Item));
+                    panelBottomTabButton1__TextMeshProUGUI.SetText(LocalizationManager.GetValue(L.UI.Button.item));
                 }
 
                 // кнопка "Вкладка 2"
@@ -136,7 +136,7 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
                     {
                         buttonSell__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonSell", panelTab1__RectTransform);
                         buttonSell__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonSellText", buttonSell__RectTransform);
-                        buttonSell__TextMeshProUGUI.text = LocalizationManager.GetValue(L.UI.Button.Sell);
+                        buttonSell__TextMeshProUGUI.text = LocalizationManager.GetValue(L.UI.Button.sell);
                     }
 
                     // Кнопка "Надеть/Снять"
@@ -150,7 +150,7 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
                     {
                         buttonTakeOnAlt__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonTakeOnAlt", panelTab1__RectTransform);
                         buttonTakeOnAlt__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonTakeOnAltText", buttonTakeOnAlt__RectTransform);
-                        buttonTakeOnAlt__TextMeshProUGUI.SetText(LocalizationManager.GetValue(L.UI.Button.TakeOnAlt));
+                        buttonTakeOnAlt__TextMeshProUGUI.SetText(LocalizationManager.GetValue(L.UI.Button.takeOnAlt));
                         buttonTakeOnAlt__Button = buttonTakeOnAlt__RectTransform.gameObject.GetComponent<Button>();
                         buttonTakeOnAlt__RectTransform.gameObject.SetClickOnButton(TakeOnOffInAltSlotOnClickAsync);
                     }
@@ -159,7 +159,7 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
                     {
                         buttonShowHero__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonShowHero", panelTab1__RectTransform);
                         buttonShowHero__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonShowHeroText", buttonShowHero__RectTransform);
-                        buttonShowHero__TextMeshProUGUI.text = LocalizationManager.GetValue(L.UI.Button.ShowHero);
+                        buttonShowHero__TextMeshProUGUI.text = LocalizationManager.GetValue(L.UI.Button.showHero);
                         buttonShowHero__Button = buttonShowHero__RectTransform.gameObject.GetComponent<Button>();
                     }
 
@@ -383,7 +383,7 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
                 if (heroId == Guid.Empty)
                 {
                     tabButtonHeroesOnClick();
-                    GameMessage.Show(LocalizationManager.GetValue(L.Info.SelectHero), true);
+                    GameMessage.Show(LocalizationManager.GetValue(L.Info.selectHero), true);
                     return;
                 }
 
@@ -427,13 +427,13 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
             {
                 buttonTakeOnAlt__Button.interactable = false;
                 buttonShowHero__Button.interactable = true;
-                textLocalKey = L.UI.Button.TakeOff;
+                textLocalKey = L.UI.Button.takeOff;
             }
             else
             {
                 buttonTakeOnAlt__Button.interactable = HaveAltSlot();
                 buttonShowHero__Button.interactable = false;
-                textLocalKey = L.UI.Button.TakeOn;
+                textLocalKey = L.UI.Button.takeOn;
             }
             buttonTakeOnOff__TextMeshProUGUI.SetText(LocalizationManager.GetValue(textLocalKey));
         }

@@ -37,7 +37,7 @@ namespace Assets.GameData.Scripts
         /// <summary>Выполняет параллельную предварительную загрузку ассетов.</summary>
         public static async UniTask PreLoadAssetsAsync()
         {
-            DtoContainerGameData dtoContainer = Game03Client.GameData.Container;
+            DtoContainerGameData dtoContainer = Game03Client.GameData.container;
 
             nullSprite = await Addressables.LoadAssetAsync<Sprite>("Null").ToUniTask();
 

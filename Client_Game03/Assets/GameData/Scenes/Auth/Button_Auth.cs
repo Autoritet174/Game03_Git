@@ -32,12 +32,12 @@ namespace Assets.GameData.Scenes.Auth
                 string emailString = textEmail.text?.Trim() ?? string.Empty;
                 if (emailString == string.Empty)
                 {
-                    GameMessage.ShowLocale(L.Error.User.EmailEmpty, true);
+                    GameMessage.ShowLocale(L.Error.User.emailEmpty, true);
                     return;
                 }
                 if (!emailString.IsEmail())
                 {
-                    GameMessage.ShowLocale(L.Error.User.NotEmail, true);
+                    GameMessage.ShowLocale(L.Error.User.notEmail, true);
                     return;
                 }
 
@@ -45,7 +45,7 @@ namespace Assets.GameData.Scenes.Auth
                 string passwordString = textPassword.text?.Trim() ?? string.Empty;
                 if (passwordString == string.Empty)
                 {
-                    GameMessage.ShowLocale(L.Error.User.PasswordEmpty, true);
+                    GameMessage.ShowLocale(L.Error.User.passwordEmpty, true);
                     return;
                 }
 

@@ -296,7 +296,7 @@ namespace Assets.GameData.Scenes.Battlefield
         private async UniTask PlayTurnAsync(BattlefieldLogRecord_TurnStart record, CancellationToken token)
         {
             token.ThrowIfCancellationRequested();
-            turnText.text = $"{LM.GetValue(L.UI.Label.Turn)}: {record.turn}";
+            turnText.text = $"{LM.GetValue(L.UI.Label.turn)}: {record.turn}";
             panelInfoText.text = turnText.text;
             panelInfoCanvasGroup.alpha = 0f;
             panelInfoRect.gameObject.SetActive(true);

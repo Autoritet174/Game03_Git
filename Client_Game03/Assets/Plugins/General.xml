@@ -429,12 +429,12 @@
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
         </member>
-        <member name="P:General.GlobalJsonContext.EBattlefieldLogAbility">
+        <member name="P:General.GlobalJsonContext.EBattlefield">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
         </member>
-        <member name="P:General.GlobalJsonContext.EBattleFiled">
+        <member name="P:General.GlobalJsonContext.EBattlefieldLogAbility">
             <summary>
             Defines the source generated JSON serialization contract metadata for a given type.
             </summary>
@@ -646,60 +646,40 @@
             </summary>
         </member>
         <member name="T:General.LocalizationKeys.UI">
-            <summary>
-            Группа ключей, относящихся к элементам пользовательского интерфейса (UI).
-            </summary>
+            <summary>Группа ключей, относящихся к элементам пользовательского интерфейса (UI).</summary>
         </member>
         <member name="T:General.LocalizationKeys.UI.Button">
-            <summary>
-            Ключи для текста, отображаемого на кнопках.
-            </summary>
+            <summary>Ключи для текста, отображаемого на кнопках.</summary>
         </member>
         <member name="T:General.LocalizationKeys.UI.Label">
-            <summary>
-            Ключи для текста, отображаемого на метках (Label) или заголовках.
-            </summary>
+            <summary>Ключи для текста, отображаемого на метках (Label) или заголовках.</summary>
         </member>
         <member name="T:General.LocalizationKeys.Error">
-            <summary>
-            Группа ключей, относящихся к сообщениям об ошибках.
-            </summary>
+            <summary>Группа ключей, относящихся к сообщениям об ошибках.</summary>
         </member>
         <member name="T:General.LocalizationKeys.Error.Server">
-            <summary>
-            Ключи для ошибок, связанных с взаимодействием с сервером.
-            </summary>
+            <summary>Ключи для ошибок, связанных с взаимодействием с сервером.</summary>
         </member>
         <member name="T:General.LocalizationKeys.Error.User">
-            <summary>
-            Ключи для ошибок, связанных с некорректным вводом данных пользователем.
-            </summary>
+            <summary>Ключи для ошибок, связанных с некорректным вводом данных пользователем.</summary>
         </member>
         <member name="T:General.LocalizationKeys.Info">
-            <summary>
-            Группа ключей, относящихся к информационным сообщениям (например, о статусе).
-            </summary>
+            <summary>Группа ключей, относящихся к информационным сообщениям (например, о статусе).</summary>
         </member>
-        <member name="F:General.LocalizationKeys.KEY_LOCALIZATION">
+        <member name="F:General.LocalizationKeys.keyLocalization">
             <summary>
             Специальный ключ-маркер для автоматического определения строк,
             которые должны быть получены из системы локализации.
             </summary>
         </member>
-        <member name="F:General.LocalizationKeys.DATETIME_EXPIRATION">
-            <summary>
-            Ключ-заполнитель для указания даты и времени истечения срока.
-            </summary>
+        <member name="F:General.LocalizationKeys.datetimeExpiration">
+            <summary>Ключ-заполнитель для указания даты и времени истечения срока.</summary>
         </member>
-        <member name="F:General.LocalizationKeys.TIME_REMAINING">
-            <summary>
-            Ключ-заполнитель для указания оставшегося времени (в формате времени).
-            </summary>
+        <member name="F:General.LocalizationKeys.timeRemaining">
+            <summary>Ключ-заполнитель для указания оставшегося времени (в формате времени).</summary>
         </member>
-        <member name="F:General.LocalizationKeys.SECONDS_REMAINING">
-            <summary>
-            Ключ-заполнитель для указания оставшегося времени (в секундах).
-            </summary>
+        <member name="F:General.LocalizationKeys.secondsRemaining">
+            <summary>Ключ-заполнитель для указания оставшегося времени (в секундах).</summary>
         </member>
         <member name="T:General.RandomShared">
             <summary>
@@ -982,7 +962,7 @@
             Класс предоставляющий ссылки на API сервера.
             </summary>
         </member>
-        <member name="P:General.Url.GAME_DATA">
+        <member name="P:General.Url.gameData">
             <summary> URL. Все игровые данные нужные на клиенте игры. </summary>
         </member>
     </members>

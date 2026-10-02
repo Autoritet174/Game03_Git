@@ -324,7 +324,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_text
-      value: '{UI.Button.Reg}'
+      value: '{UI.Button.reg}'
       objectReference: {fileID: 0}
     - target: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_fontSize
@@ -602,7 +602,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5454568065863142396, guid: ad30f6bb67d557a448f4be15d5210435, type: 3}
       propertyPath: m_text
-      value: '{UI.Label.Email}'
+      value: '{UI.Label.email}'
       objectReference: {fileID: 0}
     - target: {fileID: 6618445939301808511, guid: ad30f6bb67d557a448f4be15d5210435, type: 3}
       propertyPath: m_Name
@@ -866,7 +866,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_text
-      value: '{UI.Button.ExitGame}'
+      value: '{UI.Button.exitGame}'
       objectReference: {fileID: 0}
     - target: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_fontSize
@@ -1346,7 +1346,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_text
-      value: '{UI.Button.Login}'
+      value: '{UI.Button.login}'
       objectReference: {fileID: 0}
     - target: {fileID: 6959858570856518911, guid: 372dfdf7a9e0be34f861bae506c16578, type: 3}
       propertyPath: m_fontSize
@@ -1516,7 +1516,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5454568065863142396, guid: ad30f6bb67d557a448f4be15d5210435, type: 3}
       propertyPath: m_text
-      value: '{UI.Label.Password}'
+      value: '{UI.Label.password}'
       objectReference: {fileID: 0}
     - target: {fileID: 6618445939301808511, guid: ad30f6bb67d557a448f4be15d5210435, type: 3}
       propertyPath: m_Name

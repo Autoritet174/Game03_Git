@@ -21,7 +21,7 @@ namespace Assets.GameData.Scenes.Collection
             PanelCollection__prefab__scriptMB panelCollection
             )
         {
-            id = collectionElement.Id;
+            id = collectionElement.id;
             this.panelGroupDivider = panelGroupDivider;
             this.collectionElement = collectionElement;
             this.panelCollection = panelCollection;
@@ -76,16 +76,16 @@ namespace Assets.GameData.Scenes.Collection
 
             this.textMeshPro = textMeshPro;
 
-            textMeshPro.text = this.collectionElement.Name;//.ToUpper1Char();
+            textMeshPro.text = this.collectionElement.name;//.ToUpper1Char();
             textMeshPro.fontSize = TEXT_COLLECTION_ELEMENT_FONTSIZE;
-            imageRarity.sprite = AddressablePrefabProvider.GetRarity(this.collectionElement.Rarity);
+            imageRarity.sprite = AddressablePrefabProvider.GetRarity(this.collectionElement.rarity);
             imageRarity.preserveAspect = true;
             imageRarity.type = Image.Type.Simple; // Режим без растягивания;
 
             imageCollectionElement.sprite = this.panelCollection.collectionMode switch
             {
-                ECollectionMode.hero => AddressablePrefabProvider.heroes[$"{this.collectionElement.Name}_face"],
-                ECollectionMode.equipment => AddressablePrefabProvider.equipments[this.collectionElement.Name],
+                ECollectionMode.hero => AddressablePrefabProvider.heroes[$"{this.collectionElement.name}_face"],
+                ECollectionMode.equipment => AddressablePrefabProvider.equipments[this.collectionElement.name],
                 _ => throw new NotImplementedException(),
             };
             imageCollectionElement.preserveAspect = true;
@@ -100,8 +100,8 @@ namespace Assets.GameData.Scenes.Collection
 
             selectedImage_GameObject = GameObjectFinder.FindByName("ImageSelected", gameObject.transform);
 
-            equipment = this.collectionElement.TypeCollectionElement == TypeCollectionElement.Equipment
-                ? CollectionProvider.GetCollectionEquipmentsFromCache().First(a => a.id == this.collectionElement.Id) : null;
+            equipment = this.collectionElement.typeCollectionElement == TypeCollectionElement.Equipment
+                ? CollectionProvider.GetCollectionEquipmentsFromCache().First(a => a.id == this.collectionElement.id) : null;
 
             RefreshOwnerImage();
             this.panelCollection.AddElement(this);
@@ -170,7 +170,7 @@ namespace Assets.GameData.Scenes.Collection
 
         private void OnClick()
         {
-            panelCollection.panelCollectionContext.OnClick(collectionElement.Id, panelCollection.collectionMode);
+            panelCollection.panelCollectionContext.OnClick(collectionElement.id, panelCollection.collectionMode);
             //switch (_PanelCollection.CollectionMode)
             //{
             //    case ECollectionMode.Hero:
@@ -191,7 +191,7 @@ namespace Assets.GameData.Scenes.Collection
 
         private void OnPointerExit()
         {
-            rarity_Image.sprite = AddressablePrefabProvider.GetRarity(collectionElement.Rarity);
+            rarity_Image.sprite = AddressablePrefabProvider.GetRarity(collectionElement.rarity);
         }
     }
 }

@@ -23,9 +23,9 @@ namespace Assets.GameData.Scenes.SelectBattlefield
         private readonly RectTransform imageSelected__RectTransform;
         private readonly TextMeshProUGUI label__TextMeshProUGUI;
 
-        public EBattleFiled battlefieldId { get; }
+        public EBattlefield battlefieldId { get; }
 
-        public BattlefieldButton(EBattleFiled battlefieldId, BattlefieldCategory parentBattlefieldCategory)
+        public BattlefieldButton(EBattlefield battlefieldId, BattlefieldCategory parentBattlefieldCategory)
         {
             this.battlefieldId = battlefieldId;
             this.parentBattlefieldCategory = parentBattlefieldCategory;
@@ -40,7 +40,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
             label__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Label", parentTransform);
 
-            string localizationKey = $"{L.UI.Label.Battlefield}_{battlefieldId}";
+            string localizationKey = $"{L.UI.Label.battlefield}{battlefieldId.ToString().ToUpper1Char()}";
             label__TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(localizationKey));
 
             imageMask__RectTransform.gameObject.SetHoverEvents(OnPointerEnter, OnPointerExit);

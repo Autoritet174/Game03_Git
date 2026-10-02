@@ -1,4 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Game03Client;
 using System;
 using System.IO;
@@ -67,9 +67,9 @@ namespace Assets.GameData.Scripts
 #endif
             General.Url.Init(ReadServerBaseUrlFromIni(configPath));
 
-            GameLanguage lang = GameLanguage.Ru;
+            GameLanguage lang = GameLanguage.ru;
 
-            string path = $"localization/{lang.NameShort}/data";
+            string path = $"localization/{lang.nameShort}/data";
             TextAsset jsonFile = Resources.Load<TextAsset>(path);
             General.StringCapsule capsule = new()
             {
@@ -153,7 +153,7 @@ namespace Assets.GameData.Scripts
 
         private static void LogGameMessage(string m)
         {
-            int index = m.IndexOf(General.LocalizationKeys.KEY_LOCALIZATION);
+            int index = m.IndexOf(General.LocalizationKeys.keyLocalization);
             if (index > 0)
             {
                 int index1 = m.IndexOf('<', index) + 1;

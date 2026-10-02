@@ -33,7 +33,7 @@ namespace Assets.GameData.Scenes.Battlefield
         /// <summary>Итоговый масштаб погибшего героя.</summary>
         private static readonly float scaleDead = scaleAlive * 0.65f;
         /// <summary>Длительность уменьшения погибшего героя при скорости ×1.</summary>
-        private const float AnimationDeathScaleTime = 2f;
+        private const float ANIMATION_DEATH_SCALE_TIME = 2f;
         /// <summary>Ширина карточки при базовом разрешении.</summary>
         private static readonly float width = 150;
         /// <summary>Высота карточки при базовом разрешении.</summary>
@@ -159,7 +159,7 @@ namespace Assets.GameData.Scenes.Battlefield
             this.animations = animations;
 
             GameObject gameObject = AddressablePrefabProvider.battlefieldUnit.SafeInstant(canvasUnits__Transform);
-            BaseHero dtoBaseHero = Game03Client.GameData.Container.baseHeroes.First(a => a.id == spawnedHeroes.baseHeroId);
+            BaseHero dtoBaseHero = Game03Client.GameData.container.baseHeroes.First(a => a.id == spawnedHeroes.baseHeroId);
 
             gameObject.name = $"Unit{(isMyUnit ? "Player" : "Enemy")}_{dtoBaseHero.name}";
 
@@ -184,7 +184,7 @@ namespace Assets.GameData.Scenes.Battlefield
             progressBar = GameObjectFinder.FindByName<ProgressBar__prefab__script>("ProgressBar__prefab", gameObject.transform);
             progressBar.SetTextRightOffsetRight(20);
             progressBar.Initialize();
-            textDead = LM.GetValue(L.UI.Label.Dead).ToUpperInvariant();
+            textDead = LM.GetValue(L.UI.Label.dead).ToUpperInvariant();
 
             healthImageStat__RectTransform = GameObjectFinder.FindByName<RectTransform>("HealthImageStat", gameObject.transform);
 
@@ -277,7 +277,7 @@ namespace Assets.GameData.Scenes.Battlefield
             if (wasAlive && spawnedHero.health <= 0)
             {
                 death = animations.PlayAsync(
-                    DOTween.To(() => lifeScaleValue, value => lifeScaleValue = value, scaleDead, AnimationDeathScaleTime)
+                    DOTween.To(() => lifeScaleValue, value => lifeScaleValue = value, scaleDead, ANIMATION_DEATH_SCALE_TIME)
                         .SetEase(Ease.Linear), token);
             }
             await UniTask.WhenAll(death, healthHub.PlayAsync(-damage, isCrit, rectTransform, token));

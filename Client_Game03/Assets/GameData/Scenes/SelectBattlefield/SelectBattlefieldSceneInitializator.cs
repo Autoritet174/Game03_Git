@@ -56,14 +56,14 @@ namespace Assets.GameData.Scenes.SelectBattlefield
                         {
                             BattlefieldCategory scrollViewCollection_TestPlatforms = new("TestPlatforms", panelPrepareBattle);
                             dictBattlefieldCategory.Add(scrollViewCollection_TestPlatforms.name, scrollViewCollection_TestPlatforms);
-                            scrollViewCollection_TestPlatforms.ButtonsAdd(General.EBattleFiled.TestPlatforms__Polygon);
+                            scrollViewCollection_TestPlatforms.ButtonsAdd(General.EBattlefield.testPlatformsPolygon);
                         }
 
                         // Шахты
                         {
                             BattlefieldCategory scrollViewCollection_Mines = new("Mines", panelPrepareBattle);
                             dictBattlefieldCategory.Add(scrollViewCollection_Mines.name, scrollViewCollection_Mines);
-                            scrollViewCollection_Mines.ButtonsAdd(General.EBattleFiled.Mines__Iron);
+                            scrollViewCollection_Mines.ButtonsAdd(General.EBattlefield.minesIron);
                         }
                     }
 

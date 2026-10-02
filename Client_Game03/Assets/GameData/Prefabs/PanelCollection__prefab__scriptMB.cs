@@ -244,8 +244,8 @@ public class PanelCollection__prefab__scriptMB : MonoBehaviour, IPrefab
             };
 
             IOrderedEnumerable<Game03Client.Collection.GroupCollectionElement> sorted = grouped
-                .Where(static a => a.List.Count() > 0)
-                .OrderByDescending(static a => a.Priority);
+                .Where(static a => a.list.Count() > 0)
+                .OrderByDescending(static a => a.priority);
 
             foreach (Game03Client.Collection.GroupCollectionElement item in sorted)
             {

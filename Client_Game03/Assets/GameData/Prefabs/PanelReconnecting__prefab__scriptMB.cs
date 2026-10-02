@@ -40,15 +40,15 @@ public class PanelReconnecting__prefab__scriptMB : MonoBehaviour
         buttonCancel__Button = GameObjectFinder.FindByName<Button>("ButtonCancel", panelReconnecting.transform);
         buttonCancel__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonCancel", panelReconnecting.transform);
         buttonCancel__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("Text", buttonCancel__RectTransform.transform);
-        buttonCancel__TextMeshProUGUI.text = Game03Client.LocalizationManager.GetValue(L.UI.Button.Cancel);
+        buttonCancel__TextMeshProUGUI.text = Game03Client.LocalizationManager.GetValue(L.UI.Button.cancel);
 
         labelReconnecting__RectTransform = GameObjectFinder.FindByName<RectTransform>("LabelReconnecting", panelReconnecting.transform);
         labelReconnecting__TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("LabelReconnecting", panelReconnecting.transform);
 
-        textConnectionLost = Game03Client.LocalizationManager.GetValue(L.UI.Label.ConnectionLost);
-        textReconnecting = Game03Client.LocalizationManager.GetValue(L.UI.Label.Reconnecting);
-        textTry = Game03Client.LocalizationManager.GetValue(L.UI.Label.Try);
-        textAfter = Game03Client.LocalizationManager.GetValue(L.UI.Label.After).ToLowerInvariant();
+        textConnectionLost = Game03Client.LocalizationManager.GetValue(L.UI.Label.connectionLost);
+        textReconnecting = Game03Client.LocalizationManager.GetValue(L.UI.Label.reconnecting);
+        textTry = Game03Client.LocalizationManager.GetValue(L.UI.Label.@try);
+        textAfter = Game03Client.LocalizationManager.GetValue(L.UI.Label.after).ToLowerInvariant();
 
         UpdateState();
 
@@ -106,15 +106,15 @@ public class PanelReconnecting__prefab__scriptMB : MonoBehaviour
 
     private void UpdateState()
     {
-        if (Game03Client.WebSocketProvider.State == Microsoft.AspNetCore.SignalR.Client.HubConnectionState.Reconnecting)
+        if (Game03Client.WebSocketProvider.state == Microsoft.AspNetCore.SignalR.Client.HubConnectionState.Reconnecting)
         {
             if (!visible)
             {
                 Visible(true);
             }
 
-            double sec = Game03Client.WebSocketProvider.retryPolicy?.SecondsUntilNextAttempt ?? 0;
-            long attempt = Game03Client.WebSocketProvider.retryPolicy?.CurrentAttemptCount ?? 1;
+            double sec = Game03Client.WebSocketProvider.retryPolicy?.secondsUntilNextAttempt ?? 0;
+            long attempt = Game03Client.WebSocketProvider.retryPolicy?.currentAttemptCount ?? 1;
 
             labelReconnecting__TextMeshProUGUI.text = $"{textConnectionLost}\r\n{(sec <= 0 ? textReconnecting + "..." : $"{textTry} ({attempt}), {textAfter} {sec:0.0}")}";
         }

@@ -34,7 +34,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
         private RectTransform heroesSelectedAndMaxLabel__RectTransform;
         private TextMeshProUGUI heroesSelectedAndMaxLabel__TextMeshProUGUI;
 
-        private EBattleFiled battlefieldId;
+        private EBattlefield battlefieldId;
         private bool battleStarting;
 
         private General.DTO.Entities.GameData.Battlefield battlefield = null;
@@ -66,7 +66,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
             startBattleButton__GameObject = GameObjectFinder.FindByName("StartBattleButton", gameObject);
             startBattleButton__RectTransform = startBattleButton__GameObject.GetComponent<RectTransform>();
-            GameObjectFinder.FindByName<TextMeshProUGUI>("Text", startBattleButton__GameObject).SetText(LM.GetValue(L.UI.Button.StartBattle));
+            GameObjectFinder.FindByName<TextMeshProUGUI>("Text", startBattleButton__GameObject).SetText(LM.GetValue(L.UI.Button.startBattle));
             startBattleButton__GameObject.GetComponent<Button>().onClick.AddListener(() => StartBattleAsync().Forget());
 
             // Панель подготовки к бою
@@ -102,7 +102,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
 
         public bool isVisible => gameObject.activeSelf;
 
-        public void Show(EBattleFiled battlefieldId)
+        public void Show(EBattlefield battlefieldId)
         {
             this.battlefieldId = battlefieldId;
             battleStarting = false;
@@ -110,7 +110,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             panelCollection__prefab.PanelTopButtons_ResetPageCurrent();
             gameObject.SetActive(true);
 
-            battlefield = Game03Client.GameData.Container.battlefields.First(a => a.id == battlefieldId);
+            battlefield = Game03Client.GameData.container.battlefields.First(a => a.id == battlefieldId);
 
             //_PanelCollectionContext.Actions.Clear();
             //_PanelCollectionContext.Actions.Add(UpdateHeroesSelectedAndMaxLabel);
@@ -158,7 +158,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
         {
             int selectedCount = panelCollection__prefab.GetSelectedElements().Count;
             int max = battlefield.maxHeroCount;
-            heroesSelectedAndMaxLabel__TextMeshProUGUI.SetText($"{LM.GetValue(L.UI.Button.Heroes)} {selectedCount}/{max}");
+            heroesSelectedAndMaxLabel__TextMeshProUGUI.SetText($"{LM.GetValue(L.UI.Button.heroes)} {selectedCount}/{max}");
         }
 
         private async UniTask StartBattleAsync()
@@ -171,7 +171,7 @@ namespace Assets.GameData.Scenes.SelectBattlefield
             Guid[] heroIds = panelCollection__prefab.GetSelectedElements().ToArray();
             if (heroIds.Length == 0)
             {
-                GameMessage.Show(LM.GetValue(L.Info.SelectHero), true);
+                GameMessage.Show(LM.GetValue(L.Info.selectHero), true);
                 return;
             }
 

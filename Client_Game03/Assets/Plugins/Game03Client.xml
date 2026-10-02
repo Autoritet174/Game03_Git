@@ -15,22 +15,17 @@
             Группа элемента коллекции.
             </summary>
         </member>
-        <member name="M:Game03Client.Collection.GroupCollectionElement.#ctor(System.String,System.Collections.Generic.IEnumerable{Game03Client.Collection.CollectionElement})">
-            <summary>
-            Группа элемента коллекции.
-            </summary>
-        </member>
-        <member name="P:Game03Client.Collection.GroupCollectionElement.Name">
+        <member name="P:Game03Client.Collection.GroupCollectionElement.name">
             <summary>
             Возвращает имя группы элемента коллекции.
             </summary>
         </member>
-        <member name="P:Game03Client.Collection.GroupCollectionElement.List">
+        <member name="P:Game03Client.Collection.GroupCollectionElement.list">
             <summary>
             Получает коллекцию, содержащихся в этом экземпляре.
             </summary>
         </member>
-        <member name="P:Game03Client.Collection.GroupCollectionElement.Priority">
+        <member name="P:Game03Client.Collection.GroupCollectionElement.priority">
             <summary>
             Возвращает или устанавливает уровень приоритета группы.
             </summary>
@@ -56,32 +51,32 @@
             <param name="nameLocale">Наименование языка на это же языке.</param>
             <param name="nameShort">Наименование языка на английском в две буквы.</param>
         </member>
-        <member name="P:Game03Client.GameLanguage.NameEnglish">
+        <member name="P:Game03Client.GameLanguage.nameEnglish">
             <summary>
             Наименование языка на английском языке.
             </summary>
         </member>
-        <member name="P:Game03Client.GameLanguage.NameLocale">
+        <member name="P:Game03Client.GameLanguage.nameLocale">
             <summary>
             Наименование языка на этом же языке.
             </summary>
         </member>
-        <member name="P:Game03Client.GameLanguage.NameShort">
+        <member name="P:Game03Client.GameLanguage.nameShort">
             <summary>
             Двухбуквенное имя в нижнем регистре.
             </summary>
         </member>
-        <member name="P:Game03Client.GameLanguage.En">
+        <member name="P:Game03Client.GameLanguage.en">
             <summary>
             Английский.
             </summary>
         </member>
-        <member name="P:Game03Client.GameLanguage.Ru">
+        <member name="P:Game03Client.GameLanguage.ru">
             <summary>
             Русский.
             </summary>
         </member>
-        <member name="P:Game03Client.GameLanguage.AllLanguages">
+        <member name="P:Game03Client.GameLanguage.allLanguages">
             <summary>
             Все языки доступные в игре.
             </summary>

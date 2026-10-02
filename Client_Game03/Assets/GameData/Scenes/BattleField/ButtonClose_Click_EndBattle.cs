@@ -16,7 +16,7 @@ namespace Assets.GameData.Scenes.Battlefield
 
         private async UniTask OnClickAsync(CancellationToken cancellationToken)
         {
-            bool yesNo = await GameMessage.ShowLocaleYesNoAsync(L.UI.Label.EndBattle);
+            bool yesNo = await GameMessage.ShowLocaleYesNoAsync(L.UI.Label.endBattle);
             if (!yesNo)
             {
                 return;
@@ -29,7 +29,7 @@ namespace Assets.GameData.Scenes.Battlefield
             }
             else
             {
-                await GameMessage.ShowAndWaitCloseAsync(L.Error.Server.CombatBreak);
+                await GameMessage.ShowAndWaitCloseAsync(L.Error.Server.combatBreak);
             }
         }
     }

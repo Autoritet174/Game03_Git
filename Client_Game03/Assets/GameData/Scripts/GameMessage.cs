@@ -22,13 +22,13 @@ namespace Assets.GameData.Scripts
 
         private static bool resultYesNo = false;
 
-        private static readonly string textYes = Game03Client.LocalizationManager.GetValue(L.UI.Button.Yes);
+        private static readonly string textYes = Game03Client.LocalizationManager.GetValue(L.UI.Button.yes);
         private static readonly string textYesHover = $"{textYes} [Enter]";
 
-        private static readonly string textNo = Game03Client.LocalizationManager.GetValue(L.UI.Button.No);
+        private static readonly string textNo = Game03Client.LocalizationManager.GetValue(L.UI.Button.no);
         private static readonly string textNoHover = $"{textNo} [Escape]";
 
-        private static readonly string textOk = Game03Client.LocalizationManager.GetValue(L.UI.Button.Ok);
+        private static readonly string textOk = Game03Client.LocalizationManager.GetValue(L.UI.Button.ok);
         private static readonly string textOkHover = $"{textOk} [Enter/Escape]";
 
         #region Загрузка префаба сообщения

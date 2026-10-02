@@ -105,7 +105,7 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
                 {
                     panelBottomTabButton1_RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonTab1", panelBottom__RectTransform);
                     panelBottomTabButton1_TextMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("ButtonTab1Text", panelBottomTabButton1_RectTransform);
-                    panelBottomTabButton1_TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(L.UI.Button.Equipment));
+                    panelBottomTabButton1_TextMeshProUGUI.SetText(Game03Client.LocalizationManager.GetValue(L.UI.Button.equipment));
                 }
 
                 // кнопка "Вкладка 2"

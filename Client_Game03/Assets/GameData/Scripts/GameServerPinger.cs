@@ -22,7 +22,7 @@ namespace Assets.GameData.Scripts
         {
             try
             {
-                using HttpRequestMessage request = new(HttpMethod.Get, Url.PING);
+                using HttpRequestMessage request = new(HttpMethod.Get, Url.ping);
                 CancellationToken ct = CancellationTokenManager.Create("ping", 5);
                 using HttpResponseMessage response = await httpClient.SendAsync(request, ct).AsUniTask();
                 string responseContent = await response.Content.ReadAsStringAsync().AsUniTask();

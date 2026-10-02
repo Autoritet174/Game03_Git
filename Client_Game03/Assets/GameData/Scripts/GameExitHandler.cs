@@ -17,7 +17,7 @@ public static class GameExitHandler
 
     public static async UniTask ExitGameAsync()
     {
-        bool yesNo = await GameMessage.ShowLocaleYesNoAsync(L.UI.Label.ExitGame);
+        bool yesNo = await GameMessage.ShowLocaleYesNoAsync(L.UI.Label.exitGame);
         if (!yesNo)
         {
             return;

@@ -25,8 +25,8 @@ namespace Assets.GameData.Prefabs
         public PanelGroupDivider__prefab__script(GroupCollectionElement groupCollectionElement, PanelCollection__prefab__scriptMB parent)
         {
             panelCollection = parent;
-            collectionElementList = groupCollectionElement.List;
-            groupName = groupCollectionElement.Name;
+            collectionElementList = groupCollectionElement.list;
+            groupName = groupCollectionElement.name;
 
             gameObject = AddressablePrefabProvider.groupDividerPrefabAddressableGameObject.SafeInstant();
             gameObject.transform.SetParent(parent.panelCollectionViewer_Content__Transform, false);
@@ -42,7 +42,7 @@ namespace Assets.GameData.Prefabs
                 string text;
                 if (string.IsNullOrWhiteSpace(groupName))
                 {
-                    text = Game03Client.LocalizationManager.GetValue(L.UI.Label.NoGroup);
+                    text = Game03Client.LocalizationManager.GetValue(L.UI.Label.noGroup);
                     dividerButton__TextMeshProUGUI.fontStyle = FontStyles.Italic;
                 }
                 else
@@ -260,12 +260,12 @@ namespace Assets.GameData.Prefabs
 
         //        if (equipment.HeroId != null && equipment.SlotId != null)
         //        {
-        //            _Init_Collection.ButtonTakeOnOff_TextMeshProUGUI.text = Game03Client.LocalizationManager.GetValue(L.UI.Button.TakeOff);
+        //            _Init_Collection.ButtonTakeOnOff_TextMeshProUGUI.text = Game03Client.LocalizationManager.GetValue(L.UI.Button.takeOff);
         //        }
         //        else if (equipment.HeroId == null && equipment.SlotId == null)
         //        {
         //            // Предмет ни на кого не одет
-        //            _Init_Collection.ButtonTakeOnOff_TextMeshProUGUI.text = Game03Client.LocalizationManager.GetValue(L.UI.Button.TakeOn);
+        //            _Init_Collection.ButtonTakeOnOff_TextMeshProUGUI.text = Game03Client.LocalizationManager.GetValue(L.UI.Button.takeOn);
         //            int slotTypeId = equipment.BaseEquipment.EquipmentType.SlotTypeId;
         //            switch (slotTypeId)
         //            {

@@ -14,7 +14,7 @@ namespace Assets.GameData.Scenes.Auth
     {
         public static void LogRefreshToken(string refreshToken = null)
         {
-            refreshToken ??= Game03Client.Auth.RefreshToken;
+            refreshToken ??= Game03Client.Auth.refreshToken;
             if (!string.IsNullOrWhiteSpace(refreshToken))
             {
                 using var sha256 = SHA256.Create();
@@ -31,8 +31,8 @@ namespace Assets.GameData.Scenes.Auth
 
         private static void SaveTokenInSecureStorageProvider()
         {
-            SecureStorageProvider.SetValue(ESecureStorageKey.refreshToken, Game03Client.Auth.RefreshToken);
-            SecureStorageProvider.SetValue(ESecureStorageKey.refreshTokenExpirationAt, Game03Client.Auth.RefreshTokenExpirationAt);
+            SecureStorageProvider.SetValue(ESecureStorageKey.refreshToken, Game03Client.Auth.refreshToken);
+            SecureStorageProvider.SetValue(ESecureStorageKey.refreshTokenExpirationAt, Game03Client.Auth.refreshTokenExpirationAt);
         }
 
         public static async UniTask<bool> AuthAndLoadDataAsync(string email = null, string password = null, string refreshToken = null)
@@ -55,46 +55,46 @@ namespace Assets.GameData.Scenes.Auth
 
                 bool success;
 
-                GameMessage.ShowLocale(L.Info.CheckingServerAvailability, false);
+                GameMessage.ShowLocale(L.Info.checkingServerAvailability, false);
                 success = await GameServerPinger.PingAsync();
                 if (!success)
                 {
                     // ClearTokenInSecureStorageProvider();
-                    GameMessage.ShowLocale(L.Error.Server.Unavailable, true);
+                    GameMessage.ShowLocale(L.Error.Server.unavailable, true);
                     return false;
                 }
 
-                GameMessage.ShowLocale(L.Info.Authentication, false);
+                GameMessage.ShowLocale(L.Info.authentication, false);
                 DtoRequestAuthReg dto = AuthManager.GetDtoRequestAuthReg(email, password, refreshToken);
                 success = await Game03Client.Auth.AuthentificationAsync(dto, type,
                     CancellationTokenManager.Create("Game03Client.Auth.AuthentificationAsync"));
                 if (!success)
                 {
                     ClearTokenInSecureStorageProvider();
-                    GameMessage.ShowLocale(L.Error.Server.InvalidResponse, true);
+                    GameMessage.ShowLocale(L.Error.Server.invalidResponse, true);
                     return false;
                 }
 
                 // Открываем веб сокет
-                GameMessage.ShowLocale(L.Info.OpeningWebSocket, false);
+                GameMessage.ShowLocale(L.Info.openingWebSocket, false);
                 success = await Game03Client.WebSocketProvider.ConnectAsync(
                     CancellationTokenManager.Create("Game03Client.WebSocketClient.ConnectAsync", 5),
                     CancellationTokenManager.globalQuitToken);
                 if (!success)
                 {
                     ClearTokenInSecureStorageProvider();
-                    GameMessage.ShowLocale(L.Error.Server.OpeningWebSocketFailed, true);
+                    GameMessage.ShowLocale(L.Error.Server.openingWebSocketFailed, true);
                     return false;
                 }
 
                 // Загрузка игровых данных не связанных с конкретным пользователем
-                GameMessage.ShowLocale(L.Info.LoadingData, false);
+                GameMessage.ShowLocale(L.Info.loadingData, false);
                 success = await Game03Client.GameData.LoadGameDataAsync(CancellationTokenManager.Create("Game03Client.GameData.LoadGameData"));
                 if (!success)
                 {
                     ClearTokenInSecureStorageProvider();
                     await Game03Client.WebSocketProvider.DisconnectAsync();
-                    GameMessage.ShowLocale(L.Error.Server.LoadingCollectionFailed, true);
+                    GameMessage.ShowLocale(L.Error.Server.loadingCollectionFailed, true);
                     Debug.Log("Loading game data failed");
                     return false;
                 }
@@ -103,14 +103,14 @@ namespace Assets.GameData.Scenes.Auth
                 await AddressablePrefabProvider.PreLoadAssetsAsync();
 
                 // Загрузка коллекции пользователя
-                GameMessage.ShowLocale(L.Info.LoadingCollection, false);
+                GameMessage.ShowLocale(L.Info.loadingCollection, false);
 
                 CancellationToken ct = CancellationTokenManager.Create("Game03Client.Collection.CollectionProvider.LoadAllCollectionFromServerAsync");
                 success = await Game03Client.Collection.CollectionProvider.LoadAllCollectionFromServerAsync(ct);
                 if (!success)
                 {
                     ClearTokenInSecureStorageProvider();
-                    GameMessage.ShowLocale(L.Error.Server.LoadingCollectionFailed, true);
+                    GameMessage.ShowLocale(L.Error.Server.loadingCollectionFailed, true);
                     Debug.LogError("Loading collection failed");
                     return false;
                 }

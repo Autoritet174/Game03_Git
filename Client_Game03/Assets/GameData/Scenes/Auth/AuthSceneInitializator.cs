@@ -106,11 +106,11 @@ namespace Assets.GameData.Scenes.Auth
 
         private void InitTextLocalization()
         {
-            GameObjectFinder.FindByName<TextMeshProUGUI>("Label_Email (id=ndtil638)").text = Game03Client.LocalizationManager.GetValue(L.UI.Label.Email);
-            GameObjectFinder.FindByName<TextMeshProUGUI>("Label_Password (id=e319ahd6)").text = Game03Client.LocalizationManager.GetValue(L.UI.Label.Password);
-            GameObjectFinder.FindByName<TextMeshProUGUI>("Text_ButtonLogin (id=wf6fw0y1)").text = Game03Client.LocalizationManager.GetValue(L.UI.Button.Login);
-            GameObjectFinder.FindByName<TextMeshProUGUI>("Text_ButtonReg (id=tsuvx5vf)").text = Game03Client.LocalizationManager.GetValue(L.UI.Button.Reg);
-            GameObjectFinder.FindByName<TextMeshProUGUI>("Text_ButtonExitGame (id=flb78tua)").text = Game03Client.LocalizationManager.GetValue(L.UI.Button.ExitGame);
+            GameObjectFinder.FindByName<TextMeshProUGUI>("Label_Email (id=ndtil638)").text = Game03Client.LocalizationManager.GetValue(L.UI.Label.email);
+            GameObjectFinder.FindByName<TextMeshProUGUI>("Label_Password (id=e319ahd6)").text = Game03Client.LocalizationManager.GetValue(L.UI.Label.password);
+            GameObjectFinder.FindByName<TextMeshProUGUI>("Text_ButtonLogin (id=wf6fw0y1)").text = Game03Client.LocalizationManager.GetValue(L.UI.Button.login);
+            GameObjectFinder.FindByName<TextMeshProUGUI>("Text_ButtonReg (id=tsuvx5vf)").text = Game03Client.LocalizationManager.GetValue(L.UI.Button.reg);
+            GameObjectFinder.FindByName<TextMeshProUGUI>("Text_ButtonExitGame (id=flb78tua)").text = Game03Client.LocalizationManager.GetValue(L.UI.Button.exitGame);
         }
 
         private void InitObjects()

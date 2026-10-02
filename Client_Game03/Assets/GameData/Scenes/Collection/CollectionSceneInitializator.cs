@@ -38,9 +38,9 @@ public class CollectionSceneInitializator : MonoBehaviour
         {
             panelTop__prefab__context = GameObjectFinder.FindByName("PanelTop__prefab").GetComponent<PanelTop__prefab__scriptMB>();
             buttonHeroes__TabButton = new("ButtonHeroes (id=40jhb51a)", "Text (TMP) (id=wl92ls1m)", TabButtonHeroesOnClick);
-            buttonHeroes__TabButton.SetText($"{Game03Client.LocalizationManager.GetValue(L.UI.Button.Heroes)}\r\n{Game03Client.Collection.CollectionProvider.GetCountHeroes()}");
+            buttonHeroes__TabButton.SetText($"{Game03Client.LocalizationManager.GetValue(L.UI.Button.heroes)}\r\n{Game03Client.Collection.CollectionProvider.GetCountHeroes()}");
             buttonEquipment__TabButton = new("ButtonEquipment (id=k5hqeyat)", "Text (TMP) (id=cklw2id1)", TabButtonEquipmentOnClick);
-            buttonEquipment__TabButton.SetText($"{Game03Client.LocalizationManager.GetValue(L.UI.Button.Equipment)}\r\n{Game03Client.Collection.CollectionProvider.GetCountEquipments()}");
+            buttonEquipment__TabButton.SetText($"{Game03Client.LocalizationManager.GetValue(L.UI.Button.equipment)}\r\n{Game03Client.Collection.CollectionProvider.GetCountEquipments()}");
             panelTop__prefab__context.Initialize();
             panelTop__prefab__context.SetActionOnButtonClose(G.ButtonCloseOnClick);
         }
