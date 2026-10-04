@@ -37,7 +37,8 @@ public class AllHeroes : MonoBehaviour
 
     private ScrollRect scrollRect;
     private RectTransform content;
-    private RectTransform closeButton;
+
+    public PanelTop__prefab__scriptMB panelTop__prefab__context { get; private set; }
     private RectTransform scrollRectTransform;
     private RectTransform verticalScrollbar;
     private GridLayoutGroup gridLayout;
@@ -94,7 +95,11 @@ public class AllHeroes : MonoBehaviour
     {
         scrollRect = GameObjectFinder.FindByName<ScrollRect>("Scroll View (id=2e9cbb1a)");
         content = GameObjectFinder.FindByName<RectTransform>("Content (id=0a40ce51)", startParent: scrollRect.transform);
-        closeButton = GameObjectFinder.FindByName<RectTransform>("ButtonClose");
+
+        panelTop__prefab__context = GameObjectFinder.FindByName("PanelTop__prefab").GetComponent<PanelTop__prefab__scriptMB>();
+        panelTop__prefab__context.Initialize();
+        panelTop__prefab__context.SetActionOnButtonClose(G.ButtonCloseOnClick);
+
         verticalScrollbar = GameObjectFinder.FindByName<RectTransform>("Scrollbar Vertical (id=75511cdc)");
         scrollRectTransform = scrollRect.GetComponent<RectTransform>();
         gridLayout = content.GetComponent<GridLayoutGroup>();
@@ -194,7 +199,9 @@ public class AllHeroes : MonoBehaviour
             heroName.fontSize = cellWidth * 0.16f;
         }
 
-        ButtonCloseHelper.UpdateSize(closeButton);
+
+        float coefHeight = G.GetCoefHeight();
+        panelTop__prefab__context.OnResized(coefHeight);
 
         foreach ((GameObject instance, RectTransform closeButton, TextMeshProUGUI heroName) viewer in heroViewers)
         {

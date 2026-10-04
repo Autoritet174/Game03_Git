@@ -20,6 +20,8 @@ public class PanelTop__prefab__scriptMB : MonoBehaviour, IPrefab
         this__RectTransform = GetComponent<RectTransform>();
         buttonClose__RectTransform = GameObjectFinder.FindByName<RectTransform>("ButtonClose", this__RectTransform.transform);
         initialized = true;
+        float coefHeight = G.GetCoefHeight();
+        OnResized(coefHeight);
     }
 
     public void SetActionOnButtonClose(Action action)
