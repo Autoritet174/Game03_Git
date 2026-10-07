@@ -151,7 +151,6 @@ public class PanelCollection__prefab__scriptMB : MonoBehaviour, IPrefab
 
     private void PanelCollectionViewer_Initialize()
     {
-
         panelCollectionViewer__RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelCollectionViewer", gameObject);
         panelCollectionViewer_ScrollbarVertical__RectTransform = GameObjectFinder.FindByName<RectTransform>("ScrollbarVertical", panelCollectionViewer__RectTransform);
         panelCollectionViewer_Content__Transform = GameObjectFinder.FindByName<Transform>("Content", panelCollectionViewer__RectTransform);

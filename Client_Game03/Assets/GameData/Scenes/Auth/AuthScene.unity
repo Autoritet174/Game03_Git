@@ -1204,6 +1204,10 @@ PrefabInstance:
       value: PanelReconnecting
       objectReference: {fileID: 0}
     - target: {fileID: 9132512861660918997, guid: 5cd4fed668761f340b12a79c616d763c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9132512861660918997, guid: 5cd4fed668761f340b12a79c616d763c, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -1650,7 +1654,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2032354754
 MonoBehaviour:
   m_ObjectHideFlags: 0

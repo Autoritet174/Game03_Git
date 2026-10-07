@@ -306,7 +306,7 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
 
             // Stats
             panelStatWidth = width - (3f * panelSlotSpacing) - imageContainerWidth;
-            panelStatHeight = panelStatWidth * 576f / 244.06f;
+            panelStatHeight = panelStatWidth * (576f / 244.06f);
             panelStat_RectTransform.sizeDelta = new(panelStatWidth, panelStatHeight);
             panelStat_RectTransform.anchoredPosition = new(-imageContainerSpacing, imageContainerSpacing);
             statLevel.OnResized();
