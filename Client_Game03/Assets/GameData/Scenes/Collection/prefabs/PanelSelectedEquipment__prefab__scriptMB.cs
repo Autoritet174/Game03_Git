@@ -175,7 +175,7 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
                     {
                         panelStat__RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelStats", panelTab1__RectTransform);
 
-                        statLevel = new("Level", 1, GameObjectFinder.FindByName("StatLevel", panelStat__RectTransform));
+                        statLevel = new(nameof(L.UI.Label.Stat.level), 1, GameObjectFinder.FindByName("StatLevel", panelStat__RectTransform));
                         for (int i = 0; i < stats.Length; i++)
                         {
                             string name = $"Stat{i + 1}";

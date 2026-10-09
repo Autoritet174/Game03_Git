@@ -63,7 +63,9 @@ namespace Assets.GameData.Scenes.Collection
             labelSlot_RectTransform = GameObjectFinder.FindByName<RectTransform>("LabelSlot", rectTransform);
 
             textMeshProUGUI = GameObjectFinder.FindByName<TextMeshProUGUI>("LabelSlot", rectTransform);
-            string lKey = L.UI.Label.Slot.GetKey(name);
+            // Имя объекта префаба начинается с заглавной буквы, а ключ локализации — со строчной.
+            string localizationName = char.ToLowerInvariant(name[0]) + name.Substring(1);
+            string lKey = L.UI.Label.Slot.GetKey(localizationName);
             string text = Game03Client.LocalizationManager.GetValue(lKey);
             if (suffix != "")
             {

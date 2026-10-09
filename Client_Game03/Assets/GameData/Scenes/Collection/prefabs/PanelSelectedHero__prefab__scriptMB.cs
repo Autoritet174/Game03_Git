@@ -147,13 +147,13 @@ namespace Assets.GameData.Scenes.Collection.Prefabs
                     {
                         panelStat_RectTransform = GameObjectFinder.FindByName<RectTransform>("PanelStats", panelTab1_RectTransform);
 
-                        statLevel = new("Level", 1, GameObjectFinder.FindByName("StatLevel", panelStat_RectTransform));
-                        statHealth = new("Health", 2, GameObjectFinder.FindByName("StatHealth", panelStat_RectTransform));
-                        statStrength = new("Strength", 3, GameObjectFinder.FindByName("StatStrength", panelStat_RectTransform));
-                        statAgility = new("Agility", 4, GameObjectFinder.FindByName("StatAgility", panelStat_RectTransform));
-                        statIntelligence = new("Intelligence", 5, GameObjectFinder.FindByName("StatIntelligence", panelStat_RectTransform));
-                        statCritChance = new("CritChance", 6, GameObjectFinder.FindByName("StatCritChance", panelStat_RectTransform));
-                        statCritMultiplier = new("CritMultiplier", 7, GameObjectFinder.FindByName("StatCritPower", panelStat_RectTransform));
+                        statLevel = new(nameof(L.UI.Label.Stat.level), 1, GameObjectFinder.FindByName("StatLevel", panelStat_RectTransform));
+                        statHealth = new(nameof(L.UI.Label.Stat.health), 2, GameObjectFinder.FindByName("StatHealth", panelStat_RectTransform));
+                        statStrength = new(nameof(L.UI.Label.Stat.strength), 3, GameObjectFinder.FindByName("StatStrength", panelStat_RectTransform));
+                        statAgility = new(nameof(L.UI.Label.Stat.agility), 4, GameObjectFinder.FindByName("StatAgility", panelStat_RectTransform));
+                        statIntelligence = new(nameof(L.UI.Label.Stat.intelligence), 5, GameObjectFinder.FindByName("StatIntelligence", panelStat_RectTransform));
+                        statCritChance = new(nameof(L.UI.Label.Stat.critChance), 6, GameObjectFinder.FindByName("StatCritChance", panelStat_RectTransform));
+                        statCritMultiplier = new(nameof(L.UI.Label.Stat.critMultiplier), 7, GameObjectFinder.FindByName("StatCritPower", panelStat_RectTransform));
                     }
                 }
             }
