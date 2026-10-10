@@ -64,7 +64,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\GameData\Editor\PanelCollectionPrefabCreator.cs" />
-    <Compile Include="Assets\GameData\Scenes\Battlefield\Editor\BattlefieldPlaybackTests.cs" />
     <Compile Include="Assets\GameData\Editor\AddressableNamesGenerator.cs" />
     <Compile Include="Assets\GameData\Scenes\MainMenu\Editor\HypercubeInitTests.cs" />
   </ItemGroup>

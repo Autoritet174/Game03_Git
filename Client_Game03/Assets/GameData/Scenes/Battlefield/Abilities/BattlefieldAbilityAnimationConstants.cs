@@ -23,5 +23,8 @@ namespace Assets.GameData.Scenes.Battlefield
 
         /// <summary>Пауза с поднятой карточкой после появления числа исцеления.</summary>
         public const float HEALING_HOLD_DURATION = 1f;
+
+        /// <summary>Длительность полёта файербола от героя до цели.</summary>
+        public const float FIRE_BOLT_FLIGHT_DURATION = 0.5f;
     }
 }

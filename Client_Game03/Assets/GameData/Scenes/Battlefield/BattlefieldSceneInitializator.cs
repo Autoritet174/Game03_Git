@@ -395,6 +395,7 @@ namespace Assets.GameData.Scenes.Battlefield
             await impact(token);
         }
 
+
         /// <summary>Находит карточку или сообщает об отсутствующем участнике серверного события.</summary>
         private bool TryGetUnit(Guid id, out BattlefieldUnit unit)
         {
